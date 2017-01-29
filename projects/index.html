@@ -1,0 +1,32 @@
+---
+layout: page
+title: Projects
+notitle?: True
+rank: B
+---
+
+
+
+<div class="posts flex-container">
+
+    {% assign projects = site.collections | where: "label", "projects" | first %}
+    {% assign projs = projects.docs | sort: 'date' | reverse %}
+    {% for post in projs%}
+        <div class="fade" style="    width: calc(100% * (1/3) - 10px - 1px);text-align:center;">
+
+            {%if !!post.pic%}
+                <a href="{{site.baseurl}}{{ post.url }}">
+                <img src="{{site.baseurl}}{{post.pic}}" alt="{{ post.title }}" style="padding-bottom:0; margin: 0 auto;
+                overflow:hidden;max-width:100%;max-height:7rem" ></a>
+            {%endif%}
+            <p style="margin-bottom:0">
+                {% if !!post.shorttitle %}
+                {{post.shorttitle}} 
+                {% else %}
+                {{post.title}}
+                {%endif%}
+                </p>
+
+        </div>
+    {% endfor %}
+</div>

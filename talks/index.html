@@ -1,0 +1,35 @@
+---
+layout: page
+title: Talks
+disqusId: ec28422226751827afed49a157f0e0ad03fbde63
+rank: C
+---
+
+<p>
+    A collection of talks that I've given and related materials such as slides.
+</p>
+<hr>
+
+<div class="posts" style="text-align:left" >
+    {% for post in  site.categories.talks %}
+    <div>
+        <strong><a style="color: #000000;" href="{{site.baseurl}}{{ post.url }}"> {{ post.title}} </a></strong>
+        {% if !!post.subtitle %} 
+        <em>@ {{post.subtitle}}</em>
+        {% endif %}
+        <br>
+        <small><em>{{post.date | date:"%B %d, %Y"}}</em></small>
+        {% if !!post.tags %}
+        | <small>
+            {%capture tagsentence%}{{ post.tags | array_to_sentence_string }}{%endcapture%}
+            {% assign stripped = (tagsentence | lstrip) %}
+            {% if stripped != '' %}
+            tags: {{tagsentence}}
+            {%endif%}
+        </small>
+        {% endif %}
+        <div>
+            {% endfor %}
+        </div>
+    </div>
+</div>

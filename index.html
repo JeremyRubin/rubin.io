@@ -1,0 +1,129 @@
+---
+title: Home
+disqusId: 0ae992346ca47c09a5792bd23ae15d5d860f6bf0
+layout: page
+notitle?: True
+sidebartitle: Home
+rank: A
+---
+
+<div class="bio-info">
+    <div class="hide-small" id="bio-pic">
+        <img src="{{site.baseurl}}/public/img/jeremy2.png" />
+    </div>
+    <div id="bio-text">
+        <p>
+        Hi, I'm Jeremy Rubin.
+        </p>
+        <p>
+        I'm deeply involved in cryptocurrency, having co-founded <a
+            href="{{site.baseurl}}/projects/tidbit">Tidbit</a>, the <a
+            href="{{site.baseurl}}/projects/mit-bitcoin-project">MIT Bitcoin
+        Project</a>, the <a href="https://github.com/mit-dci">MIT Digital
+        Currency Initiative</a>, serving on the planning committee for the
+    <a href="https://scalingbitcoin.org">Scaling Bitcoin</a> conference series since its inception, and serving as an advisor to
+    startups like <a href="https://lightyear.io">Lightyear</a> and <a href="https://homesidekick.com">HomeSidekick</a>. I'm
+    currently focused on improving the core protocols and technology.
+        </p>
+
+        <p>
+        Besides cryptocurrency related topics, my other interests include hardware and manufacturing,
+        functional programming, and longboarding.
+        </p>
+        <p>
+        I graduated from MIT in 2016 with my
+        M.Eng in Electrical Engineering and Computer Science under
+        <a href="http://people.csail.mit.edu/rivest/">Professor Ronald L. Rivest</a> and my S.B. in Computer Science and
+        Engineering. 
+        </p>
+
+        <p>
+        I'm available for talks, workshops, special projects, short-term contract work, or
+        consulting in the cryptocurrency and security space. Just <a href="mailto:jr@mit.edu">email me</a>.
+        </p>
+    </div>
+    <div class="clearfix">
+    </div>
+
+</div>
+<div>
+    <h3 style="text-align:center;"> Latest Projects</h3>
+
+    <div class="posts flex-container">
+
+        {% assign projects = site.collections | where: "label", "projects" | first %}
+        {% assign projs = projects.docs | sort: 'date' | reverse %}
+        {% for post in projs limit:3%}
+        <div class="fade" style="    width: calc(100% * (1/3) - 10px - 1px);text-align:center;">
+
+            {%if !!post.pic%}
+            <a href="{{site.baseurl}}{{ post.url }}">
+                <img src="{{site.baseurl}}{{post.pic}}" alt="{{ post.title }}" style="padding-bottom:0; margin: 0 auto;
+                overflow:hidden;max-width:100%;max-height:7rem" ></a>
+            {%endif%}
+            <p style="margin-bottom:0">
+            {% if !!post.shorttitle %}
+            {{post.shorttitle}} 
+            {% else %}
+            {{post.title}}
+            {%endif%}
+            </p>
+
+        </div>
+        {% endfor %}
+    </div>
+    <br>
+    <div>
+        <p style="text-align:center;">
+        <a href="{{site.baseurl}}/projects">See More Projects</a>
+        </p>
+    </div>
+</div>
+
+
+<div>
+    <h3 style="text-align:center;"> Latest Blogposts</h3>
+
+    <div>
+        <ul style="list-style-type:none">
+
+            {% for post in site.categories.blog limit:3%}
+            <li>
+
+                <small><em>{{post.date | date:"%D"}}</em></small>
+                <strong><a style="color: #000000;" href="{{site.baseurl}}{{ post.url }}"> {{ post.title}} </a></strong>
+
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div>
+        <p style="text-align:center;">
+        <a href="{{site.baseurl}}/blog">See More Blogposts</a>
+        </p>
+    </div>
+</div>
+<div>
+    <h3 style="text-align:center;"> Latest Talks</h3>
+
+    <div>
+        <ul style="list-style-type:none">
+
+            {% for post in site.categories.talks limit:3%}
+            <li>
+
+                <strong><a style="color: #000000;" href="{{site.baseurl}}{{ post.url }}"> {{ post.title}} </a></strong>
+                {% if !!post.subtitle %} 
+                <em>@ {{post.subtitle}}</em>
+                {% endif %}
+
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div>
+        <p style="text-align:center;">
+        <a href="{{site.baseurl}}/talks">See More Talks</a>
+        </p>
+    </div>
+</div>

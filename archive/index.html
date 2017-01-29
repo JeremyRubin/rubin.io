@@ -1,0 +1,35 @@
+---
+layout: page
+title: Archive
+disqusId:  18d2ffa7c23e1282d0bac4afa40e384b493effda
+rank: Z
+---
+{% assign projects = site.collections | where: "label", "projects" | first %}
+{% assign all = (projects.docs | merge:site.posts)%}
+{% assign sorted_posts = (all | sort:"date" | reverse) %}
+
+<p>This is an archival page which (should) list all content on this site in reverse chronological order.
+If you see something missing, please let me know!</p>
+<hr>
+
+<div class="posts" style="text-align:left" >
+    {% for post in  sorted_posts%}
+    <div>
+        <strong><a style="color: #000000;" href="{{site.baseurl}}{{ post.url }}"> {{ post.title}} </a></strong>
+        {% if !!post.subtitle %} 
+        (<em>{{post.subtitle}}</em>)
+        {% endif %}
+        <br>
+        <small><em>{{post.date | date:"%B %d, %Y"}}</em></small>
+        {% if !!post.tags %}
+        <small>
+            {%capture tagsentence%}{{ post.tags | array_to_sentence_string }}{%endcapture%}
+            {% assign stripped = (tagsentence | lstrip) %}
+            {% if stripped != '' %}
+            | tags: {{tagsentence}}
+            {%endif%}
+        </small>
+        {% endif %}
+    <div>
+    {% endfor %}
+</div>

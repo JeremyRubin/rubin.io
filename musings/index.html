@@ -1,0 +1,44 @@
+---
+layout: page
+title: Musings
+disqusId: 0ffa55e62d5bc7b5738376caebb264e296096f3c
+rank: E
+---
+
+<p>
+    I think about a lot of ideas and sometimes unceremoniously scrap them. In
+    order to make these ideas available, I'm putting them out as musings.
+</p>
+<p>
+    My goal is to only "sit on" an idea for so long -- if it sits for too long,
+    I should just put it out there to see if anyone else is interested!
+</p>
+<p>
+    I'm back-filling these as I find various half-developed project notes on my
+    computer.
+</p>
+<hr>
+
+<div class="posts" style="text-align:left" >
+    {% for post in  site.categories.musings %}
+    <div>
+        <strong><a style="color: #000000;" href="{{site.baseurl}}{{ post.url }}"> {{ post.title}} </a></strong>
+        {% if !!post.subtitle %} 
+        (<em>{{post.subtitle}}</em>)
+        {% endif %}
+        <br>
+        <small><em>{{post.date | date:"%B %d, %Y"}}</em></small>
+        {% if !!post.tags %}
+        | <small>
+            {%capture tagsentence%}{{ post.tags | array_to_sentence_string }}{%endcapture%}
+            {% assign stripped = (tagsentence | lstrip) %}
+            {% if stripped != '' %}
+            tags: {{tagsentence}}
+            {%endif%}
+        </small>
+        {% endif %}
+        <div>
+            {% endfor %}
+        </div>
+    </div>
+</div>

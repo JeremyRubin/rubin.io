@@ -1,0 +1,43 @@
+# Dependencies
+gems:
+    - mini_magick
+    - jekyll-sitemap
+    - octopress-paginate
+    - jekyll-feed
+env: production
+markdown:      kramdown
+highlighter:      pygments
+
+# Permalinks
+permalink:        pretty
+
+# Setup
+title:            'Jeremy Rubin'
+tagline:          ''
+description:     'Bitcoin, Hardware, FP, ML, Crypto @ MIT' 
+url:            http://rubin.io
+
+keep_files: [public]
+
+author:
+  name:           'Jeremy Rubin'
+  twitter:            https://twitter.com/JeremyRubin
+  resume:         /public/pdfs/resume.pdf
+
+pagination:
+    title_suffix: " (page :num)"
+
+
+# Custom vars
+version:          2.1.0
+
+github:
+  repo:           https://github.com/jeremyrubin
+collections:
+  projects:
+      output: true
+      permalink: /projects/:path/
+  talks:
+      output: true
+      permalink: /talks/:path/
+
