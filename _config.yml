@@ -6,7 +6,7 @@ gems:
     - jekyll-feed
 env: production
 markdown:      kramdown
-highlighter:      pygments
+highlighter:      rouge
 
 # Permalinks
 permalink:        pretty
