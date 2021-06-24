@@ -8,39 +8,60 @@ rank: A
 ---
 
 <div class="bio-info">
+    <div style="text-align:center">
+        <h1>
+            Hi, I'm Jeremy Rubin.
+        </h1>
+    </div>
     <div class="hide-small" id="bio-pic">
-        <img src="{{site.baseurl}}/public/img/jeremy2.png" />
+        <img src="{{site.baseurl}}/public/img/jeremy3.jpg" />
     </div>
     <div id="bio-text">
         <p>
-        Hi, I'm Jeremy Rubin.
+            I'm the founder of <a href="https://judica.org">Judica</a>, a
+            bitcoin research and development organization focused on developing
+            <a href="learn.sapio-lang.org">Sapio</a>, a smart contract
+            programming language for bitcoin.
         </p>
         <p>
-        I'm deeply involved in cryptocurrency, having co-founded <a
-            href="{{site.baseurl}}/projects/tidbit">Tidbit</a>, the <a
-            href="{{site.baseurl}}/projects/mit-bitcoin-project">MIT Bitcoin
-        Project</a>, the <a href="https://github.com/mit-dci">MIT Digital
-        Currency Initiative</a>, serving on the planning committee for the
-    <a href="https://scalingbitcoin.org">Scaling Bitcoin</a> conference series since its inception, and serving as an advisor to
-    startups like <a href="https://lightyear.io">Lightyear</a> and <a href="https://homesidekick.com">HomeSidekick</a>. I'm
-    currently focused on improving the core protocols and technology.
+            Hit me up for talks, workshops, special projects, and strategic consulting.
+            I also angel invest in startups (non crypto too).
+            To get in touch, <a href="mailto:jr@mit.edu">email me</a>!
+        </p>
+    </div>
+    <div id="bio-text">
+        <p>
+        <h4>highlights:</h4>
+        <ul>
+            <li>
+                <a href="{{site.baseurl}}/projects/tidbit">Tidbit:</a>
+                NJ's AG tried to jail me for saving the free web.
+            </li>
+            <li>
+                <a href="{{site.baseurl}}/projects/mit-bitcoin-project">MIT
+                    Bitcoin Project:</a> Gave every MIT undergrad $100 of bitcoin
+            </li>
+            <li>
+                Co-Founded the <a href="https://github.com/mit-dci">MIT
+                    Digital Currency Initiative</a>
+            </li>
+            <li>
+                Co-Founded <a href="https://scalingbitcoin.org">Scaling Bitcoin</a>
+            </li>
+            <li>
+                MIT '16 MEng EECS + SB CSE
+            </li>
+            <li>
+                Thesis supervised by <a href="http://people.csail.mit.edu/rivest/">Professor Ronald L. Rivest</a>
+            </li>
+            <li>
+                Censored by the US Government for saying <a href="https://fucknazis.us">Fuck Nazis</a>.
+            </li>
+        </ul>
+
         </p>
 
-        <p>
-        Besides cryptocurrency related topics, my other interests include hardware and manufacturing,
-        functional programming, and longboarding.
-        </p>
-        <p>
-        I graduated from MIT in 2016 with my
-        M.Eng in Electrical Engineering and Computer Science under
-        <a href="http://people.csail.mit.edu/rivest/">Professor Ronald L. Rivest</a> and my S.B. in Computer Science and
-        Engineering. 
-        </p>
 
-        <p>
-        I'm available for talks, workshops, special projects, short-term contract work, or
-        consulting in the cryptocurrency and security space. Just <a href="mailto:jr@mit.edu">email me</a>.
-        </p>
     </div>
     <div class="clearfix">
     </div>
@@ -59,14 +80,14 @@ rank: A
             {%if !!post.pic%}
             <a href="{{site.baseurl}}{{ post.url }}">
                 <img src="{{site.baseurl}}{{post.pic}}" alt="{{ post.title }}" style="padding-bottom:0; margin: 0 auto;
-                overflow:hidden;max-width:100%;max-height:7rem" ></a>
+                overflow:hidden;max-width:100%;max-height:7rem"></a>
             {%endif%}
             <p style="margin-bottom:0">
-            {% if !!post.shorttitle %}
-            {{post.shorttitle}} 
-            {% else %}
-            {{post.title}}
-            {%endif%}
+                {% if !!post.shorttitle %}
+                {{post.shorttitle}}
+                {% else %}
+                {{post.title}}
+                {%endif%}
             </p>
 
         </div>
@@ -75,7 +96,7 @@ rank: A
     <br>
     <div>
         <p style="text-align:center;">
-        <a href="{{site.baseurl}}/projects">See More Projects</a>
+            <a href="{{site.baseurl}}/projects">See More Projects</a>
         </p>
     </div>
 </div>
@@ -99,7 +120,7 @@ rank: A
     </div>
     <div>
         <p style="text-align:center;">
-        <a href="{{site.baseurl}}/blog">See More Blogposts</a>
+            <a href="{{site.baseurl}}/blog">See More Blogposts</a>
         </p>
     </div>
 </div>
@@ -113,7 +134,7 @@ rank: A
             <li>
 
                 <strong><a style="color: #000000;" href="{{site.baseurl}}{{ post.url }}"> {{ post.title}} </a></strong>
-                {% if !!post.subtitle %} 
+                {% if !!post.subtitle %}
                 <em>@ {{post.subtitle}}</em>
                 {% endif %}
 
@@ -123,7 +144,7 @@ rank: A
     </div>
     <div>
         <p style="text-align:center;">
-        <a href="{{site.baseurl}}/talks">See More Talks</a>
+            <a href="{{site.baseurl}}/talks">See More Talks</a>
         </p>
     </div>
 </div>
