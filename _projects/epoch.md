@@ -7,7 +7,7 @@ subtitle: Hansel and Gretel, left bread crumb trails as they went, but birds ate
 pic: /public/img/epoch.png
 date: 2019-10-26
 ---
-[![Judica](/public/img/epoch.png)](https://github.com/bitcoin/bitcoin/pull/17268)
+[![Tx Graph](/public/img/epoch.png)](https://github.com/bitcoin/bitcoin/pull/17268)
 {: .center-image .rounded }
 
 The Epoch Mempool is a project to improve the asymptotic complexity of many of
