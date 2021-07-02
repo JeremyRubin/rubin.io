@@ -376,7 +376,7 @@ primitives that compose nicely for permissionless innovation.
 
 
 _Thanks to those who reviewed drafts of this post and provided valuable
-feedback improving the clarity and accuracy of thi post, including
+feedback improving the clarity and accuracy of this post, including
 [pyskell](https://github.com/pyskell), [Keagan
 McClelland](https://twitter.com/ProofOfKeags), [Ryan
 Gentry](https://twitter.com/RyanTheGentry), and [Olaoluwa
