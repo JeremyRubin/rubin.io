@@ -275,7 +275,7 @@ elliptic curve operations. This functionality already exists for up to 5-byte
 messages. A hash preimage revelation can emulate a signer compactly. Using
 binary expansions and addition could be used to allow signing of values more
 compactly (e.g., 2x16x32 byte hashes could be used to construct a signature of
-a post-hoc selected Sequence lock). Therefore it is appropriate to think of
+a post-hoc selected Sequence lock). [Read more here](/blog/2021/07/02/signing-5-bytes/). Therefore it is appropriate to think of
 CSFS as an expansion of the efficiency of this technique, reusability of keys,
 and the types of data that can be signed over. Although CSFS is famously used
 to build covenants by comparing a CSFS signature to a CHECKSIG signature and
