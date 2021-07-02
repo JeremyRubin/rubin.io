@@ -375,5 +375,8 @@ described in this post is an opportunity to upgrade bitcoin with simple
 primitives that compose nicely for permissionless innovation.
 
 
-_Thanks to those who reviewed drafts of this post, names elided so as not to be
-misconstrued as endorsement._
+_Thanks to those who reviewed drafts of this post and provided valuable
+feedback, including [pyskell](https://github.com/pyskell), [Keagan
+McClelland](https://twitter.com/ProofOfKeags), [Ryan
+Gentry](https://twitter.com/RyanTheGentry), and other names elided so as not to
+be misconstrued as endorsement._
