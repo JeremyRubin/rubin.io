@@ -89,9 +89,15 @@ either.
 
 Cat enables appending data onto other pieces of data. Diabolically simple
 functionality that has many advanced use cases by itself and in concert with
-other opcodes. There are many "good" use cases of cat like requiring sighash
-types, requiring specific R values, etc, but there are too many devious use
-cases to list here.
+other opcodes. There are many "straightforward" use cases of cat like requiring
+sighash types, requiring specific R values, etc, but there are too many devious
+use cases to list here.  Andrew Poelstra has a decent blogpost series ([part
+1](https://www.wpsoftware.net/andrew/blog/cat-and-schnorr-tricks-i.html) and
+[part
+ii](https://www.wpsoftware.net/andrew/blog/cat-and-schnorr-tricks-ii.html)) if
+you're interested to read more. In particular, with much cleverness, it seems
+possible one could implement full covenants with just CAT, which covers
+(inefficiently) most of the other techniques discussed in this post.
 
 
 #### CSFS: CHECKSIGFROMSTACK
