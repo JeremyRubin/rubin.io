@@ -318,11 +318,12 @@ could alone:
     The protocol is essentially identical to the Eltoo paper, however there are
     a couple subtle differences required for dynamic fee rates.
 4. CTV + APO: Slightly Different
-   1. It's commonly claimed that APO is a perfect substitute for CTV. This is
-      false. Their digests are slightly different, as such there are some niche
-    smart contracts that could use the differences in commitment structure for
-    interesting effects (CTV commits to all scriptsigs and sequences, APO cannot
-    cover that data but can cover a few variants of less data covered).
+   1. Several sources have claimed that APO offers a strict superset
+      of CTV's functionality (but not efficiency). This is false. Their digests
+      are slightly different, as such there are some niche smart contracts that could
+      use the differences in commitment structure for interesting effects (CTV
+      commits to all scriptsigs and sequences, APO cannot cover that data but can
+      cover a few variants of less data covered).
 
 
 By all means not an exhaustive list -- feel free to message me with additions.
