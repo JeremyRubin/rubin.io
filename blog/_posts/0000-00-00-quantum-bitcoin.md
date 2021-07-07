@@ -38,6 +38,10 @@ stack, so instead we'll (for simplicity) also show how to use a new opcode that
 uses verify semantics, OP\_SUBSTRINGEQUALVERIFY that checks a splice of a string
 for equality.
 
+> Fun Fact: OP\_CAT existed in Bitcoin untill 2010, when Satoshi "secretly"
+> forked out a bunch of opcodes. So in theory the original Bitcoin implementation
+> supported Post Quantum cryptography out of the box!
+
 ```
 ... FOR j in 0..=5
     <0>
