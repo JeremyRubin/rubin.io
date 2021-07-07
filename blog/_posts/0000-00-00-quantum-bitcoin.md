@@ -2,7 +2,8 @@
 comments: True
 disqusId: 3d15c3e24acd5794eec1f2637d1a842936617b23 
 layout: post
-title: OP\_CAT = Quantum Proof Bitcoin
+title: Quantum Proofing Bitcoin with a CAT
+subtitle: no cats harmed in the making of this post
 date: 2021-07-06
 ---
 
