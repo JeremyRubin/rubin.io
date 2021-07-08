@@ -4,6 +4,7 @@ disqusId: ef6b1778a418b2c4afc943de00421bbdc066b315
 layout: post
 title: Drawing the Blockchain
 date: 2017-02-25
+permalink: /blog/2017/02/25/correct-blockchain-pointers/
 ---
 
 ![This is correct]({{site.baseurl}}/public/img/bitcoin/blockchainpointers.png)

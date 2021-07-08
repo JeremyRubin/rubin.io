@@ -5,6 +5,7 @@ layout: post
 title: Open Letter on Diversity & Inclusion at Scaling Bitcoin
 subtitle: ATTN&#58; Scaling Bitcoin Participants and Sponsors
 date: 2017-09-27
+permalink: /blog/2017/09/27/scaling-diversity-and-inclusion/
 ---
 We started [Scaling Bitcoin](https://scalingbitcoin.org) with a deep commitment to diversity and inclusion.
 Fundamentally, Scaling Bitcoin is about bringing together elements of the

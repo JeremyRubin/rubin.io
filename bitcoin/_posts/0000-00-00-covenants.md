@@ -4,6 +4,7 @@ disqusId: 44f7db5bc4b35bf7c51d7d5cb460919dadfd72bb
 layout: post
 title: Templates, Eltoo, and Covenants, Oh My! 
 date: 2021-07-02
+permalink: /blog/2021/07/02/covenants/
 ---
 
 ![](/public/img/post-covenant-meme.png)

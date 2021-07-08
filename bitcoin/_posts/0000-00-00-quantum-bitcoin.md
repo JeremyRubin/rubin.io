@@ -5,6 +5,7 @@ layout: post
 title: Quantum Proofing Bitcoin with a CAT
 subtitle: no cats harmed in the making of this post
 date: 2021-07-06
+permalink: /blog/2021/07/06/quantum-bitcoin/
 ---
 
 I recently published [a blog

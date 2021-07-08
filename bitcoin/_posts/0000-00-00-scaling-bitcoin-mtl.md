@@ -5,6 +5,7 @@ layout: post
 title: Scaling Bitcoin
 subtitle: Part One
 date: 2015-09-11
+permalink: /blog/2015/09/11/scaling-bitcoin-mtl/
 ---
 
 I'm honored to be serving as Program Chair for the first ever Scaling Bitcoin in Montreal.

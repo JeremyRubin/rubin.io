@@ -1,0 +1,34 @@
+---
+layout: page
+title: Bitcoin Posts
+disqusId: 12ca6df123ee64b816b5848d34e9d278cf1d0934
+rank: E
+---
+
+<p>
+    Do you like Bitcoin? Then these posts are for you!
+</p>
+
+<div class="posts" style="text-align:left" >
+    {% for post in  site.categories.bitcoin %}
+    <div>
+        <strong><a style="color: #000000;" href="{{site.baseurl}}{{ post.url }}"> {{ post.title}} </a></strong>
+        {% if !!post.subtitle %} 
+        (<em>{{post.subtitle}}</em>)
+        {% endif %}
+        <br>
+        <small><em>{{post.date | date:"%B %d, %Y"}}</em></small>
+        {% if !!post.tags %}
+        | <small>
+            {%capture tagsentence%}{{ post.tags | array_to_sentence_string }}{%endcapture%}
+            {% assign stripped = (tagsentence | lstrip) %}
+            {% if stripped != '' %}
+            tags: {{tagsentence}}
+            {%endif%}
+        </small>
+        {% endif %}
+        <div>
+            {% endfor %}
+        </div>
+    </div>
+</div>

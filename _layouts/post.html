@@ -10,4 +10,12 @@ filterPaginated: True
     {{ content }}
 </div>
 
+<table>
+    {%for post in site.related_posts %}
+    <tr style="border:none;">
+        <td style="border:none;outline:none;"><small><em>{{post.date | date:"%B %d, %Y"}}</em></small></td>
+        <td style="border:none;outline:none;"><a style="color: #000000;" href="{{site.baseurl}}{{ post.url }}"> {{ post.title}} </a></td>
+    </tr>
+    {%endfor%}
+</table>
 

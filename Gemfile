@@ -6,5 +6,7 @@ group :jekyll_plugins do
       gem 'jekyll-feed'
       gem 'jekyll-watch'
       gem 'webrick'
+      gem 'classifier-reborn'
+      gem 'gsl'
 end
 

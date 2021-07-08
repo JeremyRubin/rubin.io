@@ -4,6 +4,7 @@ disqusId: 4d29ec4a631014c3e615fbbdc0205862836c1536
 layout: post
 title: CheckSigFromStack for 5 Byte Values
 date: 2021-07-02
+permalink: /blog/2021/07/02/signing-5-bytes/
 ---
 
 I recently published [a blog post](https://rubin.io/blog/2021/07/02/covenants/)

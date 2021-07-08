@@ -8,11 +8,22 @@ paginate:
   limit: false
   per_page: 5
   permalink: /page/:num/
-  category: 'blog'
+  categories: ['blog', 'shenzhen', 'bitcoin']
 ---
 
+<h1>
+  Jeremy Rubin's Blog
+</h1>
+
+Here you'll find an assorted mix of content from yours truly. I post about a lot
+of things, but primarily <a href="/bitcoin/">Bitcoin</a>.
+
+<p>
+categories: <a href="/bitcoin/">Bitcoin</a>, <a href="/shenzhen/">Shenzhen Journey</a>.
+</p>
 <div class="posts">
   {% for post in paginator.posts %}
+<hr>
   <div class="post">
     <h2 class="post-title">
         <a href="{{site.baseurl}}{{ post.url }}">
@@ -26,18 +37,19 @@ paginate:
 
     {{ post.content }}
   </div>
+<hr>
   {% endfor %}
 </div>
 
 <div class="pagination">
-  {% if paginator.next_page %}
-  <a class="pagination-item older" href="{{site.baseurl}}{{paginator.next_page_path}}">Older</a>
-  {% else %}
-    <span class="pagination-item older">Older</span>
-  {% endif %}
   {% if paginator.previous_page %}
     <a class="pagination-item newer" href="{{site.baseurl}}{{paginator.previous_page_path}}">Newer</a>
   {% else %}
     <span class="pagination-item newer">Newer</span>
+  {% endif %}
+  {% if paginator.next_page %}
+  <a class="pagination-item older" href="{{site.baseurl}}{{paginator.next_page_path}}">Older</a>
+  {% else %}
+    <span class="pagination-item older">Older</span>
   {% endif %}
 </div>

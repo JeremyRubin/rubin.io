@@ -30,7 +30,7 @@ pagination:
 
 # Custom vars
 version:          4.2.0
-
+lsi: true
 github:
   repo:           https://github.com/jeremyrubin
 collections:
