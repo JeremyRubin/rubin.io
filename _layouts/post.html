@@ -6,14 +6,24 @@ filterPaginated: True
 <div class="post">
     <h1 class="post-title">{{ page.title }}</h1>
     {% if !!page.subtitle %}<h3>{{page.subtitle}}</h3>{%endif%}
+    {% include comments.html %}
     <div>
         <span class="post-date">{{ page.date | date_to_string }}
-        <a class="twitter-share-button" href="https://twitter.com/intent/tweet?text={{page.title | url_encode}}"> Tweet</a>
         </span>
     </div>
     {{ content }}
-</div>
+    <div>
+    <h3>
+        <span style="vertical-align: text-top;">
+    {% include comments.html %}
+        </span>
+        <span style="vertical-align: super;">
+to continue the conversation...
+        </span>
+    </h3>
 
+    </div>
+</div>
 {% if site.related_posts != empty %}
 <aside class="related">
   <h3>You might also enjoy...</h3>
