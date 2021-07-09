@@ -14,15 +14,18 @@ filterPaginated: True
     {{ content }}
 </div>
 
-<h3> You might also enjoy reading...</h3>
-<table style="border:none;">
-    <tbody>
-    {%for post in site.related_posts  limit:3%}
-    <tr style="border:none;">
-        <td style="border:none;outline:none;"><small><em>{{post.date | date:"%B %d, %Y"}}</em></small></td>
-        <td style="border:none;outline:none;"><a style="color: #000000;" href="{{site.baseurl}}{{ post.url }}"> {{ post.title}} </a></td>
-    </tr>
-    {%endfor%}
-    </tbody>
-</table>
-
+{% if site.related_posts != empty %}
+<aside class="related">
+  <h3>You might also enjoy...</h3>
+  <ul class="related-posts">
+    {% for post in site.related_posts limit:3 %}
+      <li>
+        <a href="{{ site.baseurl }}{{ post.url }}">
+          {{ post.title }}
+          <small><time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date_to_string }}</time></small>
+        </a>
+      </li>
+    {% endfor %}
+  </ul>
+</aside>
+{% endif %}
