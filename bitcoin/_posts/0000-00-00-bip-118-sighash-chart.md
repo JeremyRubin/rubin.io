@@ -4,6 +4,7 @@ disqusId: c5848eb3fe8becc556c00d9aa842adfa96070243
 layout: post
 title: BIP-118 What Gets Hashed Chart
 date: 2021-07-09
+hashtags: [ANYPREVOUT, BIP118, Bitcoin]
 ---
 As a part of my ongoing review of BIP-118 I put together a
 [chart](https://docs.google.com/spreadsheets/d/1KeWJ_cly9zoRX5_h70RTniRT2m8_iaVceK_aF6obWeM)
