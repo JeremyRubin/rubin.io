@@ -28,7 +28,7 @@ that may be changed in the future. For example, Taproot (a change proposed to
 Bitcoin) uses a Witness V1 script. Before Taproot activates, Witness V1 Scripts
 are *always* valid no matter if they're signed or not. After it activates, a
 new rule takes effect in consensus, and Witness V1 Scripts will be processed in
-accordance with Taproot's rules. Becuase the Mempool is stricter, it never lets in
+accordance with Taproot's rules. Because the Mempool is stricter, it never lets in
 any Witness V1 script spends until it knows how to properly validate it. That way,
 for a miner who doesn't want to upgrade to Taproot, they can use the old rules in their
 Mempool and not ever mine a bad block.
@@ -109,7 +109,7 @@ Here, where we say it behaves as a NOP we don't check any rules and skip the che
 See where the problem lies? If we ever *did* get around to a future upgrade
 here, then old miners who refuse to upgrade would be more than happy to accept
 invalid transactions into their mempool, and then following the fork, would end
-up mining invlaid blocks leading to potential network partitions.
+up mining invalid blocks leading to potential network partitions.
 
 That would be bad! Let's not do that.
 
