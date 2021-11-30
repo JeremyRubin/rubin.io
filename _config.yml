@@ -32,7 +32,7 @@ pagination:
 version:          4.2.0
 lsi: true
 github:
-  repo:           https://github.com/jeremyrubin
+  repo:           https://github.com/jeremyrubin/rubin.io
 collections:
   projects:
       output: true
