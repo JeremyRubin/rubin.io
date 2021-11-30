@@ -17,7 +17,7 @@ tagline:          ''
 description:     'Bitcoin, Hardware, FP, ML, Crypto @ MIT' 
 url:            http://rubin.io
 
-keep_files: [public]
+keep_files: [public, .git]
 
 author:
   name:           'Jeremy Rubin'
