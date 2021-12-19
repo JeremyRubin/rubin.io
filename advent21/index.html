@@ -1,0 +1,33 @@
+---
+layout: page
+title: Rubin's 2021 Bitcoin Advent Calendar
+disqusId: 82d7bca614c6f13feb9e3bdecad3a806bddca688
+rank: E
+---
+
+
+<img src="/public/img/bitcoin/advent/holidaycard.png"></img>
+<p>
+    Happy Holidays! Below you can find an index of the posts in chronological order for the 2021
+    Bitcoin Advent Calendar I put together. There's still a few more days to go!
+</p>
+
+{% assign filtered_posts = site.categories.bitcoin | where_exp: "item", "item.hashtags contains 'AdventCalendar'" | sort 'date' %}
+<div class="posts" style="text-align:left">
+    {% for post in filtered_posts %}
+    <div>
+        <strong><a style="color: #000000;" href="{{site.baseurl}}{{ post.url }}"> {{ post.title}} </a></strong> {% if !!post.subtitle %} (
+        <em>{{post.subtitle}}</em>) {% endif %}
+        <br>
+        <small><em>{{post.date | date:"%B %d, %Y"}}</em></small> {% if !!post.tags %} | <small>
+            {%capture tagsentence%}{{ post.tags | array_to_sentence_string }}{%endcapture%}
+            {% assign stripped = (tagsentence | lstrip) %}
+            {% if stripped != '' %}
+            tags: {{tagsentence}}
+            {%endif%}
+        </small> {% endif %}
+        <div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
