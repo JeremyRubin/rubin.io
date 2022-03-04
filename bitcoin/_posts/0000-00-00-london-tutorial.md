@@ -4,7 +4,7 @@ disqusId: 3df8c67051ffb4335ba41f34ad5b0c42499a976c
 layout: post
 title: London Advancing Bitcoin Tutorial
 subtitle: "Content for Following Along!"
-date: 2021-03-04
+date: 2022-03-04
 hashtags: [Bitcoin, Covenants, Sapio]
 ---
 

@@ -7,6 +7,5 @@ group :jekyll_plugins do
       gem 'jekyll-watch'
       gem 'webrick'
       gem 'classifier-reborn'
-      gem 'gsl'
 end
 
