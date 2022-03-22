@@ -125,11 +125,21 @@ To actually create it, click on the parent txn and then sign it...
 and then broadcast it (with real money you'll want to verify before doing this)
 ![](/public/img/bitcoin/sapio-studio-tut-ctv6/Screen-Shot-2022-03-22-at-10.37.03-AM.png)
 it'll now pop up in the mempool.
+
+n.b. BUG ALERT: the viewer on the right hand side is a little glitchy. before playing
+with the psbts/txn signing logic, always close it and re-open by clicking on the txn 
+you want.
 ![](/public/img/bitcoin/sapio-studio-tut-ctv6/Screen-Shot-2022-03-22-at-10.37.14-AM.png)
 ![](/public/img/bitcoin/sapio-studio-tut-ctv6/Screen-Shot-2022-03-22-at-10.37.25-AM.png)
+Now you can click on the begin redeem txn and broadcast and sign that one so it's in the mempool
 ![](/public/img/bitcoin/sapio-studio-tut-ctv6/Screen-Shot-2022-03-22-at-10.44.38-AM.png)
+Click on the updatable output, and you'll see some options.
 ![](/public/img/bitcoin/sapio-studio-tut-ctv6/Screen-Shot-2022-03-22-at-10.44.57-AM.png)
 ![](/public/img/bitcoin/sapio-studio-tut-ctv6/Screen-Shot-2022-03-22-at-11.53.45-AM.png)
+click on spend hot, and fill out the form. Hit submit, and then hit recompile.
+
+Be sure to pick an amount that is amount in input - fee (todo: make this smarter!).
 ![](/public/img/bitcoin/sapio-studio-tut-ctv6/Screen-Shot-2022-03-22-at-11.53.54-AM.png)
+if all is well, you'll see a hot spend.
 ![](/public/img/bitcoin/sapio-studio-tut-ctv6/Screen-Shot-2022-03-22-at-11.47.10-AM.png)
 ![](/public/img/bitcoin/sapio-studio-tut-ctv6/Screen-Shot-2022-03-22-at-11.47.20-AM.png)
