@@ -70,14 +70,33 @@ Leave that running in  tab
 yarn start-electron
 ```
 
+Once it launches this is what you should see:
 ![](/public/img/bitcoin/sapio-studio-tut-ctv6/1-sapio-studio-init.png)
+Go ahead and click on settings to configure the sapio cli for the first time.
 ![](/public/img/bitcoin/sapio-studio-tut-ctv6/Screen-Shot-2022-03-22-at-10.16.35-AM.png)
+First, let's configure our sapio-cli. Go head and do "Configured Here" and leave
+everything blank. Click on the select file and point sapio studio to your (freshly done) release build of sapio-cli.
+
+Click Save Settings.
 ![](/public/img/bitcoin/sapio-studio-tut-ctv6/Screen-Shot-2022-03-22-at-10.17.37-AM.png)
+
+Now, you should see the following confirmation.
 ![](/public/img/bitcoin/sapio-studio-tut-ctv6/Screen-Shot-2022-03-22-at-10.18.09-AM.png)
+
+Next let's configure your node. Clikc select file and point it to your
+.cookie file and then configure the node as Signet & set the RPC port to whatever you used. Save it.
 ![](/public/img/bitcoin/sapio-studio-tut-ctv6/Screen-Shot-2022-03-22-at-10.18.59-AM.png)
+
+Click test connection -- it should tell you... something.
 ![](/public/img/bitcoin/sapio-studio-tut-ctv6/Screen-Shot-2022-03-22-at-10.19.39-AM.png)
+
+Navigate back to wallet. You should see some balance or something (assuming you did the faucet).
 ![](/public/img/bitcoin/sapio-studio-tut-ctv6/Screen-Shot-2022-03-22-at-10.20.12-AM.png)
+
+Next, click "Load WASM Plugin" and find your plugin-example/target/wasm32-unknown-unknown/debug/*.wasm files. Go ahead and pick the jamesob vault one.
 ![](/public/img/bitcoin/sapio-studio-tut-ctv6/Screen-Shot-2022-03-22-at-10.20.41-AM.png)
+
+Next, click Create new contract.
 ![](/public/img/bitcoin/sapio-studio-tut-ctv6/Screen-Shot-2022-03-22-at-10.21.17-AM.png)
 ![](/public/img/bitcoin/sapio-studio-tut-ctv6/Screen-Shot-2022-03-22-at-10.22.07-AM.png)
 ![](/public/img/bitcoin/sapio-studio-tut-ctv6/Screen-Shot-2022-03-22-at-10.27.25-AM.png)
