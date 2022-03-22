@@ -142,4 +142,10 @@ Be sure to pick an amount that is amount in input - fee (todo: make this smarter
 ![](/public/img/bitcoin/sapio-studio-tut-ctv6/Screen-Shot-2022-03-22-at-11.53.54-AM.png)
 if all is well, you'll see a hot spend.
 ![](/public/img/bitcoin/sapio-studio-tut-ctv6/Screen-Shot-2022-03-22-at-11.47.10-AM.png)
+
+if you picked a relative timelock > 1 block, try playing with the simulate tab :D.
+
+
+If you navigate back to the CONTRACTS tab you can pull up contracts you previously made /
+recompilations with effects, even across sessions.
 ![](/public/img/bitcoin/sapio-studio-tut-ctv6/Screen-Shot-2022-03-22-at-11.47.20-AM.png)
