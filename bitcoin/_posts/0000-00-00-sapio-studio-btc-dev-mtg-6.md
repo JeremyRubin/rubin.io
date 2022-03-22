@@ -92,5 +92,7 @@ yarn start-electron
 ![](/public/image/sapio-studio-tut-ctv6/Screen-Shot-2022-03-22-at-10.37.25-AM.png)
 ![](/public/image/sapio-studio-tut-ctv6/Screen-Shot-2022-03-22-at-10.44.38-AM.png)
 ![](/public/image/sapio-studio-tut-ctv6/Screen-Shot-2022-03-22-at-10.44.57-AM.png)
+![](/public/image/sapio-studio-tut-ctv6/Screen-Shot-2022-03-22-at-11.53.45-AM.png)
+![](/public/image/sapio-studio-tut-ctv6/Screen-Shot-2022-03-22-at-11.53.54-AM.png)
 ![](/public/image/sapio-studio-tut-ctv6/Screen-Shot-2022-03-22-at-11.47.10-AM.png)
 ![](/public/image/sapio-studio-tut-ctv6/Screen-Shot-2022-03-22-at-11.47.20-AM.png)
