@@ -30,6 +30,7 @@ pagination:
 
 # Custom vars
 version:          4.2.0
+lsi: true
 collections:
   projects:
       output: true
