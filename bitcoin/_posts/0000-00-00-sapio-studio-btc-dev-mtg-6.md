@@ -98,20 +98,54 @@ Next, click "Load WASM Plugin" and find your plugin-example/target/wasm32-unknow
 
 Next, click Create new contract.
 ![](/public/img/bitcoin/sapio-studio-tut-ctv6/Screen-Shot-2022-03-22-at-10.21.17-AM.png)
+
+You'll see a little applet for the JameVault. Look at that handsome guy!
 ![](/public/img/bitcoin/sapio-studio-tut-ctv6/Screen-Shot-2022-03-22-at-10.22.07-AM.png)
+
+Next, we need to create some Taproot keys for this -- gonna need some command line action:
+
+```bash
+./bitcoin-cli -signet getaddressinfo $(./bitcoin-cli -signet getnewaddress "vault_project" "bech32m")
+```
+
+and then copy the witness program. do this twice -- one for cold one for hot.
 ![](/public/img/bitcoin/sapio-studio-tut-ctv6/Screen-Shot-2022-03-22-at-10.27.25-AM.png)
+
+Now click on your applet and start filling it out. You can get new addresses by clicking on Bitcoin Node (just not keys yet)
 ![](/public/img/bitcoin/sapio-studio-tut-ctv6/Screen-Shot-2022-03-22-at-10.35.18-AM.png)
+n.b. sometimes things are in btc, sometimes in sats. c'est la vie.
 ![](/public/img/bitcoin/sapio-studio-tut-ctv6/Screen-Shot-2022-03-22-at-10.35.48-AM.png)
+finish up and click submit
 ![](/public/img/bitcoin/sapio-studio-tut-ctv6/Screen-Shot-2022-03-22-at-10.36.02-AM.png)
+If all is right, you should see a contract get created!
 ![](/public/img/bitcoin/sapio-studio-tut-ctv6/Screen-Shot-2022-03-22-at-10.36.17-AM.png)
+To actually create it, click on the parent txn and then sign it...
 ![](/public/img/bitcoin/sapio-studio-tut-ctv6/Screen-Shot-2022-03-22-at-10.36.51-AM.png)
 ![](/public/img/bitcoin/sapio-studio-tut-ctv6/Screen-Shot-2022-03-22-at-10.37.00-AM.png)
+and then broadcast it (with real money you'll want to verify before doing this)
 ![](/public/img/bitcoin/sapio-studio-tut-ctv6/Screen-Shot-2022-03-22-at-10.37.03-AM.png)
+it'll now pop up in the mempool.
+
+n.b. BUG ALERT: the viewer on the right hand side is a little glitchy. before playing
+with the psbts/txn signing logic, always close it and re-open by clicking on the txn 
+you want.
 ![](/public/img/bitcoin/sapio-studio-tut-ctv6/Screen-Shot-2022-03-22-at-10.37.14-AM.png)
 ![](/public/img/bitcoin/sapio-studio-tut-ctv6/Screen-Shot-2022-03-22-at-10.37.25-AM.png)
+Now you can click on the begin redeem txn and broadcast and sign that one so it's in the mempool
 ![](/public/img/bitcoin/sapio-studio-tut-ctv6/Screen-Shot-2022-03-22-at-10.44.38-AM.png)
+Click on the updatable output, and you'll see some options.
 ![](/public/img/bitcoin/sapio-studio-tut-ctv6/Screen-Shot-2022-03-22-at-10.44.57-AM.png)
 ![](/public/img/bitcoin/sapio-studio-tut-ctv6/Screen-Shot-2022-03-22-at-11.53.45-AM.png)
+click on spend hot, and fill out the form. Hit submit, and then hit recompile.
+
+Be sure to pick an amount that is amount in input - fee (todo: make this smarter!).
 ![](/public/img/bitcoin/sapio-studio-tut-ctv6/Screen-Shot-2022-03-22-at-11.53.54-AM.png)
+if all is well, you'll see a hot spend.
 ![](/public/img/bitcoin/sapio-studio-tut-ctv6/Screen-Shot-2022-03-22-at-11.47.10-AM.png)
+
+if you picked a relative timelock > 1 block, try playing with the simulate tab :D.
+
+
+If you navigate back to the CONTRACTS tab you can pull up contracts you previously made /
+recompilations with effects, even across sessions.
 ![](/public/img/bitcoin/sapio-studio-tut-ctv6/Screen-Shot-2022-03-22-at-11.47.20-AM.png)
