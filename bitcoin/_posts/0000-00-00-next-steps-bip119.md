@@ -478,9 +478,10 @@ I believe the community's next steps are:
 1. Before November, if Speedy Trial passes, then all users should ensure they
    upgrade to validate CTV
 1. If Speedy Trial fails, at least we were at the ball, and we can either try
-   again _next year_ or we can re-evaluate the design of CTV against
-   alternatives that would take more time to prepare engineering wise (e.g.,
-   more general covenants, small tweaks to CTV).
+   again _next year_, meaning CTV would be availble for use in at minimum 1.5
+   years, or we can re-evaluate the design of CTV against alternatives that
+   would take more time to prepare engineering wise (e.g., more general
+   covenants, small tweaks to CTV).
 
 ## What is *Jeremy Rubin* going to do?
 
