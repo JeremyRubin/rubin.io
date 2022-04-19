@@ -137,6 +137,7 @@ identified a flaw in the proposal". See section 4 for more on this.
     - [John Carvalho/Synonym](https://github.com/JeremyRubin/utxos.org/issues/28)
     - [Dr M Robotix](https://github.com/JeremyRubin/utxos.org/issues/39)
 1. Ample time to have produced a nack with a technical basis.
+1. 7 regular meetings over ~16 weeks to discuss the upgrade.
 1. There exists software from multiple different parties for using CTV to
 accomplish various tasks. None of these users have uncovered issue or difficulty
 with CTV.
@@ -156,7 +157,9 @@ that's a lob high in the air and slow. But it looks like it's going out, so you
 do a little victory dance only to uncover that... the ball lands in. You had enough
 time to get to the ball, but you chose not to because you didn't think it would
 go in. Contrast this to a forced error -- your opponent hits a shot so hard and
-fast across the court no human could reach it let alone hit it.
+fast across the court no human could reach it let alone return it[^winner].
+
+[^winner]: technically, if you don't touch it, this is a winner. A forced error, as [Mike West](https://twitter.com/bitcoins/status/1516522926463410187) notes, is where you still got your racquet to the ball. However, winners and forced errors are pretty similar in contrast to unforced errors.
 
 What's this got to do with Bitcoin?
 
