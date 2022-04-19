@@ -2,7 +2,7 @@
 comments: True
 disqusId: f6bbf00808c926dd264a3e0e89cbcfece2f53976
 layout: post
-title: "Listicle: 7 Theses on a next step for BIP-119"
+title: "7 Theses on a next step for BIP-119"
 subtitle: "Martin Luther had 99, I'm going to give you 7"
 date: 2022-04-17
 hashtags: [Bitcoin, Covenants, Sapio]
@@ -429,10 +429,13 @@ consensus upgrades.
 When I've previously asked maintainers for clarity on what 'merge rubric' they
 might apply to the CTV pull request, I've been effectively stonewalled with no
 criterion (even for things that were historically merged) and claims that
-soft-fork discussion is outside the purview of maintainership.
+soft-fork discussion is outside the purview of maintainership. To be clear, I'm
+not asking maintainers _to merge_, merely when they do make the decision to,
+what they are evaluating. The reticence to make clear guidelines around this
+was surprising to me, at first.
 
-This isn't the maintainer's fault that they cannot give me any guidance, it's
-how it has to be.
+But then I understood: it isn't the maintainer's fault that they cannot give me
+any guidance, it's how it **must** be.
 
 The idea that Bitcoin Core might serve as the deciding body for consensus
 upgrades puts developers of Bitcoin Core into a dangerous position in the
@@ -442,10 +445,18 @@ whatever nefarious goal. Making it clear that soft-forks are released by
 independent efforts and adopted by the community at large is the only process
 we can take that keeps Bitcoin Core apolitical and unexposed.
 
+We've seen in other communities what it looks like when lead devs exert too
+much influence over the protocol and reference clients directly. Not good. We
+do not want to have a similar precedent for Bitcoin.
+
 While previous soft-forks have generally been released by Core, I have no
 qualms with leading by example for how future soft-fork development should be.
+And if Core wants to merge CTV and do a release with compatible parameters,
+they are welcome to, without such a release being driven by the project
+maintainers directly, but rather to maintain compatibility with the will of the
+community.
 
-And so, _Alea Iacta Est_.
+Thus, _Alea Iacta Est_.
 
 
 
@@ -460,7 +471,9 @@ And so, _Alea Iacta Est_.
 I believe the community's next steps are:
 
 1. Evaluate the software proposed above and find any bugs (claim 5.5 BTC Bounties?)
-1. Discuss vociferously through the next few months if BIP-119 should be activated or not
+1. Discuss vociferously through the next few months if BIP-119 should be
+   activated or not (that means you should e.g. post publicly if you/your org endorses
+   this particular path, cover it in your news org, etc).
 1. Before the end of July, Miners should signal if the speedy trial should succeed
 1. Before November, if Speedy Trial passes, then all users should ensure they
    upgrade to validate CTV
