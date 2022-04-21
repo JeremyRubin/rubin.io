@@ -8,6 +8,20 @@ date: 2022-04-17
 hashtags: [Bitcoin, Covenants, Sapio]
 ---
 
+
+_Warning: this post assumes a great deal of context on CTV is already
+understood by the reader.  If you are not familiar, you may wish to start with
+[utxos.org](https://utxos.org), [the advent
+calendar](https://rubin.io/advent21), and the [BIP-119
+text](https://github.com/bitcoin/bips/blob/master/bip-0119.mediawiki) and
+[reference implementation](https://github.com/bitcoin/bitcoin/pull/21702), as
+those may provide much needed context about what CTV is and why a next step is
+being discussed. If you only have a little time, minimally I would advise these
+two from the advent calendar as the minimum required context: [Contracting
+Primitives and Upgrades to
+Bitcoin](https://rubin.io/bitcoin/2021/12/05/advent-8/) and [RoadMap or Load o'
+Crap?](https://rubin.io/bitcoin/2021/12/24/advent-27/)._
+
 This post starts with a conclusion:
 
 Within a week from today, you'll find software builds for a CTV Bitcoin Client
