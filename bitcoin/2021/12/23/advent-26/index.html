@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+  <title> The History and Future of Sapio &middot; Jeremy Rubin </title>
+  <link href="https://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/poole.css">
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/css/hyde.css">
+  <link rel="stylesheet" href="/public/font-awesome-4.5.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+                                 <link rel="shortcut icon" href="/public/favicon.ico">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+
+  
+  <link type="application/atom+xml" rel="alternate" href="http://rubin.io/feed.xml" title="Jeremy Rubin" />
+
+
+  <!-- GA -->
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-40376251-1', 'auto');
+    ga('send', 'pageview');
+</script>
+
+  
+  <link rel="me" href="https://twitter.com/JeremyRubin" >
+  <meta name="twitter:dnt" content="on">
+			   <script>window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
+
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+
+  return t;
+}(document, "script", "twitter-wjs"));</script>
+
+</head>
+
+    <body>
+        <div class="sidebar">
+    <h3 style="text-align: center;"> <a href="/"> Jeremy Rubin </a> </h3>
+    <div class="container">
+        <div class="sidebar-about">
+
+            <div class="sidebar-about-info"> 
+                <a href="/public/pdfs/resume.pdf"><i class="fa fa-file-text-o" title=Resume></i></a>
+                <a href=""><i class="fa fa-github" title=Github></i></a>
+                <a href="https://twitter.com/JeremyRubin"><i class="fa fa-twitter" title=Twitter></i></a>
+            </div>
+            <div class="sidebar-about-info hide-large">
+                <a class="" href="/">Home</a>
+                <a class="" href="/blog/">Blog</a>
+                <a class="" href="/talks/">Talks</a> 
+                <a class="" href="/projects/">Projects</a>
+                <a class="" href="/archive/">Site Index</a>
+            </div>
+        </div>
+
+
+
+
+        <nav class="sidebar-nav hide-small">
+            <a class="sidebar-nav-item" href="/">Home</a>
+            <a class="sidebar-nav-item" href="/blog/">Blog</a>
+            <a class="sidebar-nav-item" href="/talks/">Talks</a> 
+            <a class="sidebar-nav-item" href="/projects/">Projects</a>
+            <a class="sidebar-nav-item" href="/archive/">Site Index</a>
+        </nav>
+    </div>
+</div>
+
+
+
+        <div class="content container" style="padding-bottom:0;">
+            <div class="post">
+    <h1 class="post-title">The History and Future of Sapio</h1>
+    <h3>Day 26: Rubin's Bitcoin Advent Calendar</h3>
+    
+
+<a class="twitter-share-button"
+data-size="large"
+href="https://twitter.com/intent/tweet?text=The+History+and+Future+of+Sapio&hashtags=Bitcoin,
+AdventCalendar,
+Covenants,
+Sapio
+"> Tweet</a>
+
+
+
+    <div>
+        <span class="post-date">23 Dec 2021
+        </span>
+    </div>
+    <p><em>Welcome to day 26 of my Bitcoin Advent Calendar. You can see an index of all
+the posts <a href="/advent21">here</a> or subscribe at
+<a href="https://judica.org/join">judica.org/join</a> to get new posts in your inbox</em></p>
+
+<p>Sapio began as little more than a slide in presentations I would give on what
+BIP-119 could be with the support of a programming environment.</p>
+
+<p>While my conceptions of what could be built with CTV were about on-par with
+where they are today, the tools available were very clunky. You can see
+one of the original diagrams from the C++ Code below (<a href="https://github.com/JeremyRubin/bitcoin/blob/8f297449ff296533d7dd0ac44b62cb3cc33d1b83/src/wallet/rpcwallet.cpp#L1339">code here</a>).</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/*
+    *                   [      vault_to_vault n  ]
+    *                     |a                   |b
+    *                    (0)                  (1)
+    *                    /\                   /\
+    * wait + maturity   /  \                 /  \ wait + step_period    (attached)
+    * [   hot_to_hot   ]   /  [vault_to_cold]    [vault_to_vault n - 1]
+    *                     /                         |           |
+    *        [hot_to_cold]                         (0)         (1)
+    *                                               .           .
+    *                                               .           .
+    *                                                           .
+    *                                                     wait + step_period * n   (attached)
+    *                                                   [vault_to_vault 0]
+    *                                                      |
+    *                                                     (0)
+    *                                                     */</span>
+</code></pre></div></div>
+
+<style>
+code {
+    font-size: 0.75em !important;
+}
+</style>
+
+<p>When I presented it on February 1st, 2020 at the CTV workshop, one of the last
+Bitcoin events before the pandemic began<sup id="fnref:mit" role="doc-noteref"><a href="#fn:mit" class="footnote" rel="footnote">1</a></sup>, I knew I had to present a more
+concrete vision on how smart contracts could be built, rather than spit-and-glue
+C++.</p>
+
+<p>And so I included slide inspired by the hand rolled smart contracts I was making
+in C++ about how the technique could be generalized.</p>
+
+<p><img src="/public/img/bitcoin/advent/sapio-future/sapio-idea.svg" alt="" />
+<em>a slide at the feb. 2020 CTV workshop.</em></p>
+
+<blockquote>
+  <p>This is a research project I am interested in pursuing. We have a few
+scripting languages. We have Dan here who wrote Ivy. There’s also Balzac and
+Solidity. It’s poorly named, but it actually has some really interesting ideas
+that aren’t in other scripting languages for bitcoin. There’s some notion of
+participants with private state they are storing, and has some notion of
+interactivity. I also threw up there BlueSpec which is like a VHDL competitor
+that is pretty neat. If you think about it, there’s a software layer for
+controlling vaults but there’s also a hardware layer- so how can we describe
+transactional hardware? You wind up with similar controls as a BlueSpec-like
+language where you are creating plumbing and a description of how things are
+moving rather than something that has imperative state.</p>
+
+  <p>As an example, one of the properties with OP_CHECKTEMPLATEVERIFY that is cool is
+the narrow window of a standard OP_CHECKTEMPLATEVERIFY script is that you have
+this composability property where for a given model that goes to arbitrary
+address outputs, you can just throw another one inside it. As the outputs of
+that annuinity, you can put undo send as the outputs of that annunity, and you
+can tag on more and more programs into that if you want. On this slide is a
+templately description of a language, which helps if someone else given the same
+program description can verify that the hash is the same for the given inputs.
+Instead of sending you a million branches, you can generate them yourselves.</p>
+
+  <p>Q: Is there code for your metascript thing?</p>
+
+  <p>A: No. It’s just an idea I’ve been toying with. I got relatively close to
+metascript just writing in C++ just writing with C++ templates. Then I got ready
+to kill myself doing that because writing templates.</p>
+</blockquote>
+
+<p>I’d discussed similar slides at earlier events, usually included it as an
+example of something <em>someone else</em> could build while I kept pluggin’ away
+working on Bitcoin Core. Eventually I realized that me claiming that CTV could
+be used to do these things and CTV demonstrably doing these things was an
+obstacle… I needed to make the prototype.</p>
+
+<p>So I set off hacking together a prototype… I spent an afternoon or two mucking
+around in C++ only to realize that wasn’t going to happen, and then I switched
+to python. Python was a great choice, and after quite a bit of time pluggin
+away, I had something that actually worked.</p>
+
+<p>There was a moment of magic where I connected it to the Sapio Studio (which
+actually existed long before Sapio as just a visualizer for a set of
+transactions) to load a contract written in python and…  it worked. Really
+well. It felt incredible. I began talking more about what Sapio could do,
+thinking through some of the problems and solutions. I  even gave a talk in the
+metaverse with Udi where I dropped my virtual laser pointer on the ground for a
+minute and couldn’t pick it back up.</p>
+
+<p><img src="/public/img/bitcoin/advent/sapio-future/reckless.png" alt="" />
+<em>there were more people sitting further back I swear…</em></p>
+
+<p>At a certain point I decided to start working on cleaning up Sapio by using
+Python’s gradual typing and trying to convert to using Miniscript instead of my
+custom-made Sapio script fragment builder. I was neck deep in type refactors and
+then I had a deep realization:</p>
+
+<h2 id="python-fucking-sucks">Python FUCKING SUCKS</h2>
+
+<p>I was incredibly greatful for the rapid iterating that python allowed me, but I
+realized at this point that it was going to be nearly impossible to make Sapio
+actually good and not just a toy working in python.  What had started as a proof
+of concept for someone to do “for real” had gotten good enough conceptually but
+was bursting at the seams and was not going to ever yield something production grade.</p>
+
+<p>So I did a reset.</p>
+
+<p>I started building Sapio in Rust, re-implementing (but much more cleanly) the
+paradigms that I had previously developed, relying on well tested and type
+rust-bitcoin libraries instead of janky test-framework python code from Bitcoin
+Core.</p>
+
+<p>And one day – almost like Deja Vu – I plugged the Sapio Rust served in place
+of the Python one for the Sapio Studio and everything Just Worked™.</p>
+
+<p>Since then, Sapio has only matured and gotten better and better with each
+passing month.  I’ve added tons of new features, improved the underlying
+architecture, made the ABIs more well defined, built stronger intergrations with
+the GUI, and more. Today, Sapio is actually usable on mainnet (if you’re an
+expert at least), and I’ve used to do congestion control payments and art
+projects.</p>
+
+<p>Sapio has helped me cut through the content for this Advent Calendar like a
+swiss army knife.  It’s actually becoming a pretty decent tool!</p>
+
+<h1 id="whats-next">What’s Next</h1>
+
+<p>Sapio needs to get to the next level. There are many major areas of work in the
+pipeline. You might think of this as “Sapio is so incomplete it’s not ready”.
+I think of it more as Sapio is just getting started:</p>
+
+<h4 id="upgrade-to-taproot">Upgrade to Taproot</h4>
+
+<p>Support for Taproot in rust-bitcoin and rust-miniscript is coming! Once that
+lands, I need to rebase (and maybe upstream?) some Sapio features, and then
+update the compiler to always use Taproot outputs!</p>
+
+<h4 id="improve-sapio-ctv-emulators-with-taproot-if-ctv-seems-to-be-slow">Improve Sapio CTV Emulators with Taproot (if ctv seems to be slow)</h4>
+
+<p>Once taproot lands, the multi-sig federated oracle designs can be set up to do a
+MuSig Schnorr signature instead of just a bare multi-sig, allowing wider federations.</p>
+
+<p>This engineering work only really matters if CTV seems unlikely, but could
+be useful to have anyways for future purposes &amp; extensions to Sapio.</p>
+
+<h4 id="build-out-some-full-featured-applications-backed-by-sapio">Build out some “full featured” applications backed by Sapio</h4>
+
+<p>Right now Sapio works for making little Applets, but there is no “end to end”
+software (e.g., vaults) made in Sapio.</p>
+
+<p>This requires work on both the Sapio Studio front and potentially on a website
+for things like Sapio NFTs.</p>
+
+<p>This will push the boundaries on integrating Sapio into real applications.</p>
+
+<p>One particular feature that would be great is ‘auto-signing’ on valid state
+transitions proposed at a certain continuation point. For example, if we have an
+NFT we want to dutch auction, we should be able to have a sapio module running
+that is happy to spit out the relevant transactions with a nice API.</p>
+
+<h4 id="more-advanced-programming-of-transactions">More advanced programming of transactions</h4>
+
+<p>Currently the Sapio transaction builder from within Sapio branches is a bit
+limited in what it can express.</p>
+
+<p>Augmenting it with the ability to more fully describe partially signed bitcoin
+transactions (PSBTs), e.g., when used in the <code class="language-plaintext highlighter-rouge">continuation</code> context would
+advance the state of the art.</p>
+
+<h5 id="key-management">Key Management</h5>
+<p>Relatedly, it would be really useful if you could tell Sapio how to access a
+signing module and have sapio use that external key to generate the appropriate
+signatures for the state transitions.</p>
+
+<h4 id="better-sapio-cli--server-that-can-keep-wasm-modules-loaded-in-memory-aiding-performance">Better sapio-cli / server that can keep WASM modules loaded in memory, aiding performance</h4>
+
+<p>Right now every time a module is used the entire thing has to reload which is
+super slow.</p>
+
+<p>It should be possible to have a single server instances that manages a cache of
+all modules, greatly boosting performance, especially for recursive cross-module
+calling contracts.</p>
+<h4 id="client-side-verification-caching-across-module-boundaries">Client Side Verification Caching Across Module Boundaries</h4>
+
+<p>For things like NFTs that we saw, we have to always re-compile the <em>entire</em>
+history of the NFT to do state transitions. However, many of these state
+transitions are just doing the exact same thing every time, re-verifying from
+genesis. We should be able to cache the compilations at well defined boundaries.</p>
+
+<h4 id="better-formal-analysis-tools--type-system-on-top-of-sapio">Better formal analysis tools / type system on top of Sapio</h4>
+<p>Currently Sapio has the ability to define various interfaces for composing Sapio contracts cleanly.</p>
+
+<p>But we don’t have a great way of proving what we want a contract to do v.s. what it does.</p>
+
+<p>This work will start as being able to express more properties about a module in
+it’s “manifest”, and will culminate in being able to check the validity of compositions
+of contracts based on them.</p>
+
+<p>If anyones looking to do a PhD thesis on Sapio, this is prolly it.</p>
+
+<h4 id="more-module-types">More Module Types</h4>
+
+<p>Right now all WASM modules are for generating a ‘Compiled’ contract from a JSON.</p>
+
+<p>I would love to add defined module types to cover all the standard components like:</p>
+
+<ul>
+  <li>Miniscript Fragments</li>
+  <li>Then Functions</li>
+  <li>Continuation Functions</li>
+  <li>Transaction Template Generators</li>
+  <li>Trait Verifiers</li>
+</ul>
+
+<p>and more.</p>
+
+<h4 id="more-emulator-types">More Emulator Types</h4>
+
+<p>Sapio works <em>today</em> with CTV <code class="language-plaintext highlighter-rouge">then</code> functions because the functionality can be
+emulated by a federation of signers.</p>
+
+<p>Figuring out how to cleanly extend the signing server paradigm to a number of
+different types of Covenant proposal (e.g. APO, TLUV, CAT) or other opcodes
+could add a lot of value for making Sapio the defacto platform and proving
+ground for upgrades to Bitcoin.</p>
+
+<h4 id="unifying-then-and-continuation">Unifying Then and Continuation</h4>
+
+<p>Then and Continuation really are the same thing conceptually, it would be</p>
+
+<h4 id="standard-library-of-useful-applications--plugins">Standard Library of useful applications / Plugins</h4>
+
+<p>Title says it all. There should be more off the shelf things to use!</p>
+
+<h4 id="wallet-stack-for-sapio-contracts">Wallet Stack for Sapio Contracts</h4>
+
+<p>The Sapio Studio is rapidly imporving as a system for engaging with Sapio
+contracts, but it’s lacking in the management and storage of all of a user’s
+contracts. We can, and will, do a better job with this.</p>
+
+<p>This includes being able to make watchtower-like functionality for Sapio. It’s
+coming, but will likely require a lot of new features to the language spec to
+express if this then that monitoring conditions. And with features comes
+complexity.</p>
+
+<p>You can see hints to this in the slide earlier, being able to react to e.g.
+confirmation or mempool events.</p>
+
+<p>This also includes dramatic improvements needed to the GUI so that users
+can understand much more deeply what contracts are doing.</p>
+
+<h4 id="binary-releases">Binary Releases</h4>
+
+<p>Right now Sapio is just DIY to build and run it yourself, but we really ought to
+work towards stable binary releases to quickstart users.</p>
+
+<h4 id="visual-programming-for-building-sapio-contracts">Visual Programming for Building Sapio Contracts</h4>
+
+<p>When composing together Sapio modules, I would <em>really</em> like for it to be kind
+ of labview like interface for adding data or other modules, where you can
+ “typecheck” that the wires (module names) are composing into slots they work.
+ If that sounded like gibberish, I just mean that I want to be able to plug in a
+ module hash for a NFT Sale contract into my NFT contract and have the UX give
+ me real time feedback if I should be able to do that.</p>
+
+<h4 id="sapio-package-manager--deterministic-builds--signers">Sapio Package Manager / Deterministic Builds / Signers</h4>
+
+<p>As more modules become commonly used (e.g., like NFTs) we want to ensure all
+ users can build an exact copy themselves (Deterministic Builds) or that they
+ can find a build signed by a number of respected code signers (Signers). While
+ we can use Cargo / crates.io for the package management of our actual rust code,
+ we need something to distribute the sapio wasm blobs nicely!</p>
+
+<h4 id="testing">Testing</h4>
+
+<p>Writing tests for Sapio contracts is hard as heck. We need some bold ideas on
+ what sorts of properties would be useful to test for. Fortunately, a lot of
+ properties we care about (like not wasting money) can be checked by the sapio
+ library to be safe, but we still want to be able to ensure we never lose a
+ users funds out of Sapio.</p>
+
+<p>#### Getting CTV Locked in</p>
+
+<p>Duh!</p>
+
+<hr />
+
+<p>If I get even a tenth of this completed 2022 will be a good year for Sapio.</p>
+
+<p>But I plan to get it all done.</p>
+
+<p>Perhaps with your support – if you’re an engineer or funder interested
+ in helping propel this, please reach out!</p>
+
+<p>p.s. safe holiday travels!</p>
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:mit" role="doc-endnote">
+      <p>That honor I think goes to the MIT Bitcoin Expo. <a href="#fnref:mit" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+    <div>
+    <h3>
+        <span style="vertical-align: text-top;">
+    
+
+<a class="twitter-share-button"
+data-size="large"
+href="https://twitter.com/intent/tweet?text=The+History+and+Future+of+Sapio&hashtags=Bitcoin,
+AdventCalendar,
+Covenants,
+Sapio
+"> Tweet</a>
+
+
+
+        </span>
+        <span style="vertical-align: super;">
+to continue the conversation...
+        </span>
+    </h3>
+
+    </div>
+</div>
+
+<aside class="related">
+  <h3>You might also enjoy...</h3>
+  <ul class="related-posts">
+    
+      <li>
+        <a href="/bitcoin/2022/04/17/next-steps-bip119/">
+          7 Theses on a next step for BIP-119
+          <small><time datetime="2022-04-17T00:00:00+00:00">17 Apr 2022</time></small>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/bitcoin/2021/12/11/advent-14/">
+          Payment Channels in a CTV+Sapio World
+          <small><time datetime="2021-12-11T00:00:00+00:00">11 Dec 2021</time></small>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/bitcoin/2021/12/24/advent-27/">
+          RoadMap or Load o' Crap?
+          <small><time datetime="2021-12-24T00:00:00+00:00">24 Dec 2021</time></small>
+        </a>
+      </li>
+    
+  </ul>
+</aside>
+
+        </div>
+        <div class="content container" style="padding-bottom:0;padding-top:0;bottom:0px;">
+            <div class="posts" style="height:14pt;margin-bottom:0;">
+                <div class="post">
+                    <p style="text-align:center;font-size:12pt;">&copy; 2011-2021 Jeremy Rubin. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

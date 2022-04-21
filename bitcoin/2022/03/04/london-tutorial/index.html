@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+  <title> London Advancing Bitcoin Tutorial &middot; Jeremy Rubin </title>
+  <link href="https://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/poole.css">
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/css/hyde.css">
+  <link rel="stylesheet" href="/public/font-awesome-4.5.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+                                 <link rel="shortcut icon" href="/public/favicon.ico">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+
+  
+  <link type="application/atom+xml" rel="alternate" href="http://rubin.io/feed.xml" title="Jeremy Rubin" />
+
+
+  <!-- GA -->
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-40376251-1', 'auto');
+    ga('send', 'pageview');
+</script>
+
+  
+  <link rel="me" href="https://twitter.com/JeremyRubin" >
+  <meta name="twitter:dnt" content="on">
+			   <script>window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
+
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+
+  return t;
+}(document, "script", "twitter-wjs"));</script>
+
+</head>
+
+    <body>
+        <div class="sidebar">
+    <h3 style="text-align: center;"> <a href="/"> Jeremy Rubin </a> </h3>
+    <div class="container">
+        <div class="sidebar-about">
+
+            <div class="sidebar-about-info"> 
+                <a href="/public/pdfs/resume.pdf"><i class="fa fa-file-text-o" title=Resume></i></a>
+                <a href=""><i class="fa fa-github" title=Github></i></a>
+                <a href="https://twitter.com/JeremyRubin"><i class="fa fa-twitter" title=Twitter></i></a>
+            </div>
+            <div class="sidebar-about-info hide-large">
+                <a class="" href="/">Home</a>
+                <a class="" href="/blog/">Blog</a>
+                <a class="" href="/talks/">Talks</a> 
+                <a class="" href="/projects/">Projects</a>
+                <a class="" href="/archive/">Site Index</a>
+            </div>
+        </div>
+
+
+
+
+        <nav class="sidebar-nav hide-small">
+            <a class="sidebar-nav-item" href="/">Home</a>
+            <a class="sidebar-nav-item" href="/blog/">Blog</a>
+            <a class="sidebar-nav-item" href="/talks/">Talks</a> 
+            <a class="sidebar-nav-item" href="/projects/">Projects</a>
+            <a class="sidebar-nav-item" href="/archive/">Site Index</a>
+        </nav>
+    </div>
+</div>
+
+
+
+        <div class="content container" style="padding-bottom:0;">
+            <div class="post">
+    <h1 class="post-title">London Advancing Bitcoin Tutorial</h1>
+    <h3>Content for Following Along!</h3>
+    
+
+<a class="twitter-share-button"
+data-size="large"
+href="https://twitter.com/intent/tweet?text=London+Advancing+Bitcoin+Tutorial&hashtags=Bitcoin,
+Covenants,
+Sapio
+"> Tweet</a>
+
+
+
+    <div>
+        <span class="post-date">04 Mar 2022
+        </span>
+    </div>
+    <p>Other people have followed this tutorial with some success:</p>
+
+<p>https://gnusha.org/ctv-bip-review/2022-02-22.log</p>
+
+<p>If you’re having a problem, see above log where people have had issues. Common problems include:</p>
+
+<ol>
+  <li>Not building latest sapio binary</li>
+  <li>Not having the correct clang version (&gt;=12)</li>
+  <li>brew installing clang somewhere else (try /opt/homebrew, but also /usr/local/Cellar)</li>
+  <li>xargs not liking something (working to debug it, you can open the JSONs with vi and do by hand some of the steps).</li>
+</ol>
+
+<hr />
+
+<ol>
+  <li>Install JQ (json manipulating tool) if you don’t have it / other things
+needed to run a bitcoin node.</li>
+  <li>Set up a signet node.</li>
+</ol>
+
+<p>Build this branch https://github.com/JeremyRubin/bitcoin/tree/checktemplateverify-signet-23.0-alpha</p>
+
+<p>You’ll likely want settings like this in
+   your bitcoin.conf too:</p>
+<div class="language-toml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nn">[signet]</span>
+<span class="c"># generate this yourself                                                                                                                    rpcauth=generateme:fromtherpcauth.pyfile     </span>
+<span class="py">txindex</span><span class="p">=</span><span class="mi">1</span>
+<span class="py">signetchallenge</span><span class="p">=</span><span class="mf">512102946e8</span><span class="err">ba</span><span class="mi">8</span><span class="err">eca</span><span class="mf">597194e7</span><span class="err">ed</span><span class="mi">90377</span><span class="err">d</span><span class="mi">9</span><span class="err">bbebc</span><span class="mi">5</span><span class="err">d</span><span class="mi">17</span><span class="err">a</span><span class="mi">9609</span><span class="err">ab</span><span class="mf">3e35</span><span class="err">e</span><span class="mi">706612</span><span class="err">ee</span><span class="mi">882759351</span><span class="err">ae</span> 
+<span class="err">rpcport=</span><span class="mi">18332</span>
+<span class="py">rpcworkqueue</span><span class="p">=</span><span class="mi">1000</span>
+<span class="py">fallbackfee</span><span class="p">=</span><span class="mf">0.0002</span>
+</code></pre></div></div>
+
+<p>Get coins https://faucet.ctvsignet.com/ / DM me</p>
+
+<ol>
+  <li>
+    <p>Follow the install instructions on
+https://learn.sapio-lang.org/ch01-01-installation.html You can skip the the
+sapio-studio part / pod part and just do the Local Quickstart up until
+“Instantiate a contract from the plugin”. You’ll also want to run cargo
+build –release from the root directory to build the sapio-cli.</p>
+  </li>
+  <li>Open up the site https://rjsf-team.github.io/react-jsonschema-form/</li>
+  <li>Run sapio-cli contract api –file
+plugin-example/target/wasm32-unknown-unknown/debug/sapio_wasm_plugin_example.wasm</li>
+  <li>Copy the resulting JSON into the RJSF site</li>
+  <li>Fill out the form as you wish. You should see a JSON like
+    <div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"context"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+ </span><span class="nl">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w">
+ </span><span class="nl">"network"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Signet"</span><span class="p">,</span><span class="w">
+ </span><span class="nl">"effects"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+   </span><span class="nl">"effects"</span><span class="p">:</span><span class="w"> </span><span class="p">{}</span><span class="w">
+ </span><span class="p">}</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"arguments"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+ </span><span class="nl">"TreePay"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+   </span><span class="nl">"fee_sats_per_tx"</span><span class="p">:</span><span class="w"> </span><span class="mi">1000</span><span class="p">,</span><span class="w">
+   </span><span class="nl">"participants"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+     </span><span class="p">{</span><span class="w">
+       </span><span class="nl">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"tb1pwqchwp3zur2ewuqsvg0mcl34pmcyxzqn9x8vn0p5a4hzckmujqpqp2dlma"</span><span class="p">,</span><span class="w">
+       </span><span class="nl">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
+     </span><span class="p">},</span><span class="w">
+     </span><span class="p">{</span><span class="w">
+       </span><span class="nl">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"tb1pwqchwp3zur2ewuqsvg0mcl34pmcyxzqn9x8vn0p5a4hzckmujqpqp2dlma"</span><span class="p">,</span><span class="w">
+       </span><span class="nl">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
+     </span><span class="p">}</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="nl">"radix"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="w">
+ </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>    </div>
+    <p>You may have to delete some extra fields (that site is a little buggy).</p>
+  </li>
+</ol>
+
+<p>Optionally, just modify the JSON above directly.</p>
+
+<ol>
+  <li>Copy the JSON and paste it into a file ARGS.json</li>
+  <li>Find your sapio-cli config file (mine is at
+~/.config/sapio-cli/config.json). Modify it to look like (enter your rpcauth
+credentials):
+    <div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"main"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"testnet"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"signet"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+ </span><span class="nl">"active"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+ </span><span class="nl">"api_node"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+   </span><span class="nl">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://0.0.0.0:18332"</span><span class="p">,</span><span class="w">
+   </span><span class="nl">"auth"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+     </span><span class="nl">"UserPass"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+       </span><span class="s2">"YOUR RPC NAME"</span><span class="p">,</span><span class="w">
+       </span><span class="s2">"YOUR PASSWORD HERE"</span><span class="w">
+     </span><span class="p">]</span><span class="w">
+   </span><span class="p">}</span><span class="w">
+ </span><span class="p">},</span><span class="w">
+ </span><span class="nl">"emulator_nodes"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+   </span><span class="nl">"enabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+   </span><span class="nl">"emulators"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+   </span><span class="nl">"threshold"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
+ </span><span class="p">},</span><span class="w">
+ </span><span class="nl">"plugin_map"</span><span class="p">:</span><span class="w"> </span><span class="p">{}</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"regtest"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>    </div>
+  </li>
+  <li>Create a contract template:
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cat </span>ARGS.json| ./target/release/sapio-cli contract create  <span class="nt">--file</span> plugin-example/target/wasm32-unknown-unknown/debug/sapio_wasm_plugin_example.wasm  | jq <span class="o">&gt;</span> UNBOUND.json
+</code></pre></div>    </div>
+  </li>
+  <li>Get a proposed funding &amp; binding of the template to that utxo:</li>
+</ol>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cat </span>UNBOUND.json| ./target/release/sapio-cli contract <span class="nb">bind</span> | jq <span class="o">&gt;</span> BOUND.json
+</code></pre></div></div>
+<ol>
+  <li>Finalize the funding tx:</li>
+</ol>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cat </span>BOUND.json | jq <span class="s2">".program[</span><span class="se">\"</span><span class="s2">funding</span><span class="se">\"</span><span class="s2">].txs[0].linked_psbt.psbt"</span> | xargs <span class="nb">echo</span> | xargs <span class="nt">-I</span>% ./bitcoin-cli <span class="nt">-signet</span> utxoupdatepsbt % |  xargs <span class="nt">-I</span>% ./bitcoin-cli <span class="nt">-signet</span> walletprocesspsbt % | jq <span class="s2">".psbt"</span> | xargs <span class="nt">-I</span>% ./bitcoin-cli <span class="nt">-signet</span> finalizepsbt % | jq <span class="s2">".hex"</span>
+</code></pre></div></div>
+
+<ol>
+  <li>Review the hex transaction/make sure you want this contract… and then
+send to network:
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./bitcoin-cli -signet sendrawtransaction 020000000001015e69106b2eb00d668d945101ed3c0102cf35aba738ee6520fc2603bd60a872ea0000000000feffffff02e8c5eb0b000000002200203d00d88fd664cbfaf8a1296d3f717625595d2980976bbf4feeb
+10ab090180ccdcb3faefd020000002251208f7e5e50ce7f65debe036a90641a7e4d719d65d621426fd6589e5ec1c5969e200140a348a8711cb389bdb3cc0b1050961e588bb42cb5eb429dd0a415b7b9c712748fa4d5d
+fe2bb9c4dc48b31a7e3d1a66d9104bbb5936698f8ef8a92ac27a650663500000000
+</code></pre></div>    </div>
+  </li>
+  <li>Send the other transactions:</li>
+</ol>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cat BOUND.json| jq .program | jq ".[].txs[0].linked_psbt.psbt" | xargs -I% ./target/release/sapio-cli psbt finalize --psbt %  | xargs -I% ./bitcoin-cli -signet sendrawtransaction %
+</code></pre></div></div>
+
+<p>Now what?</p>
+
+<ul>
+  <li>Maybe load up the Sapio Studio and try it through the GUI?</li>
+  <li>Modify the congestion control tree code and recompile it?</li>
+  <li>How big of a tree can you make (I did about 6000 last night)?</li>
+  <li>Try out other contracts?</li>
+</ul>
+
+    <div>
+    <h3>
+        <span style="vertical-align: text-top;">
+    
+
+<a class="twitter-share-button"
+data-size="large"
+href="https://twitter.com/intent/tweet?text=London+Advancing+Bitcoin+Tutorial&hashtags=Bitcoin,
+Covenants,
+Sapio
+"> Tweet</a>
+
+
+
+        </span>
+        <span style="vertical-align: super;">
+to continue the conversation...
+        </span>
+    </h3>
+
+    </div>
+</div>
+
+<aside class="related">
+  <h3>You might also enjoy...</h3>
+  <ul class="related-posts">
+    
+      <li>
+        <a href="/bitcoin/2021/12/11/advent-14/">
+          Payment Channels in a CTV+Sapio World
+          <small><time datetime="2021-12-11T00:00:00+00:00">11 Dec 2021</time></small>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/bitcoin/2022/03/22/sapio-studio-btc-dev-mtg-6/">
+          Sapio Studio Tutorial for CTV Meeting
+          <small><time datetime="2022-03-22T00:00:00+00:00">22 Mar 2022</time></small>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/bitcoin/2022/04/17/next-steps-bip119/">
+          7 Theses on a next step for BIP-119
+          <small><time datetime="2022-04-17T00:00:00+00:00">17 Apr 2022</time></small>
+        </a>
+      </li>
+    
+  </ul>
+</aside>
+
+        </div>
+        <div class="content container" style="padding-bottom:0;padding-top:0;bottom:0px;">
+            <div class="posts" style="height:14pt;margin-bottom:0;">
+                <div class="post">
+                    <p style="text-align:center;font-size:12pt;">&copy; 2011-2021 Jeremy Rubin. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

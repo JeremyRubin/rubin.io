@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+  <title> CheckSigFromStack for 5 Byte Values &middot; Jeremy Rubin </title>
+  <link href="https://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/poole.css">
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/css/hyde.css">
+  <link rel="stylesheet" href="/public/font-awesome-4.5.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+                                 <link rel="shortcut icon" href="/public/favicon.ico">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+
+  
+  <link type="application/atom+xml" rel="alternate" href="http://rubin.io/feed.xml" title="Jeremy Rubin" />
+
+
+  <!-- GA -->
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-40376251-1', 'auto');
+    ga('send', 'pageview');
+</script>
+
+  
+  <link rel="me" href="https://twitter.com/JeremyRubin" >
+  <meta name="twitter:dnt" content="on">
+			   <script>window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
+
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+
+  return t;
+}(document, "script", "twitter-wjs"));</script>
+
+</head>
+
+    <body>
+        <div class="sidebar">
+    <h3 style="text-align: center;"> <a href="/"> Jeremy Rubin </a> </h3>
+    <div class="container">
+        <div class="sidebar-about">
+
+            <div class="sidebar-about-info"> 
+                <a href="/public/pdfs/resume.pdf"><i class="fa fa-file-text-o" title=Resume></i></a>
+                <a href=""><i class="fa fa-github" title=Github></i></a>
+                <a href="https://twitter.com/JeremyRubin"><i class="fa fa-twitter" title=Twitter></i></a>
+            </div>
+            <div class="sidebar-about-info hide-large">
+                <a class="" href="/">Home</a>
+                <a class="" href="/blog/">Blog</a>
+                <a class="" href="/talks/">Talks</a> 
+                <a class="" href="/projects/">Projects</a>
+                <a class="" href="/archive/">Site Index</a>
+            </div>
+        </div>
+
+
+
+
+        <nav class="sidebar-nav hide-small">
+            <a class="sidebar-nav-item" href="/">Home</a>
+            <a class="sidebar-nav-item" href="/blog/">Blog</a>
+            <a class="sidebar-nav-item" href="/talks/">Talks</a> 
+            <a class="sidebar-nav-item" href="/projects/">Projects</a>
+            <a class="sidebar-nav-item" href="/archive/">Site Index</a>
+        </nav>
+    </div>
+</div>
+
+
+
+        <div class="content container" style="padding-bottom:0;">
+            <div class="post">
+    <h1 class="post-title">CheckSigFromStack for 5 Byte Values</h1>
+    
+    
+
+<a class="twitter-share-button"
+data-size="large"
+href="https://twitter.com/intent/tweet?text=CheckSigFromStack+for+5+Byte+Values&hashtags="> Tweet</a>
+
+
+
+    <div>
+        <span class="post-date">02 Jul 2021
+        </span>
+    </div>
+    <p>I recently published <a href="https://rubin.io/blog/2021/07/02/covenants/">a blog post</a>
+about covenants on Bitcoin.</p>
+
+<p>Readers were quick to point out I hadn’t
+fully explained myself on a claim I made that you can do a form of
+CheckSigFromStack in Bitcoin today.</p>
+
+<p>So I thought it would be worthwhile to fully describe the technique – for the
+archives.</p>
+
+<p>There are two insights in this post:</p>
+
+<ol>
+  <li>to use a bitwise expansion of the number</li>
+  <li>to use a lamport signature</li>
+</ol>
+
+<p>Let’s look at the code in python and then translate to bitcoin script:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">add_bit</span><span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="n">preimage</span><span class="p">,</span> <span class="n">image_0</span><span class="p">,</span> <span class="n">image_1</span><span class="p">):</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">sha256</span><span class="p">(</span><span class="n">preimage</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">s</span> <span class="o">==</span> <span class="n">image_1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">idx</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">s</span> <span class="o">==</span> <span class="n">image_0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">0</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="bp">False</span>
+
+<span class="k">def</span> <span class="nf">get_signed_number</span><span class="p">(</span><span class="n">witnesses</span> <span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Hash</span><span class="p">],</span> <span class="n">keys</span> <span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Hash</span><span class="p">,</span> <span class="n">Hash</span><span class="p">]]):</span>
+    <span class="n">acc</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="n">preimage</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">witnesses</span><span class="p">):</span>
+        <span class="n">acc</span> <span class="o">+=</span> <span class="n">add_bit</span><span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="n">preimage</span><span class="p">,</span> <span class="n">keys</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">keys</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">x</span>
+</code></pre></div></div>
+
+<p>So what’s going on here? The signer generates a key which is a list of pairs of
+hash images to create the script.</p>
+
+<p>To sign, the signer provides a witness of a list of preimages that match one or the other.</p>
+
+<p>During validation, the network adds up a weighted value per preimage and checks
+that there are no left out values.</p>
+
+<p>Let’s imagine a concrete use case: I want a third party to post-hoc sign a sequence lock. This is 16 bits.
+I can form the following script:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;pk&gt; checksigverify
+0
+SWAP sha256 DUP &lt;H(K_0_1)&gt; EQUAL IF DROP &lt;1&gt; ADD ELSE &lt;H(K_0_0)&gt; EQUALVERIFY ENDIF
+SWAP sha256 DUP &lt;H(K_1_1)&gt; EQUAL IF DROP &lt;1&lt;&lt;1&gt; ADD ELSE &lt;H(K_1_0)&gt; EQUALVERIFY ENDIF
+SWAP sha256 DUP &lt;H(K_2_1)&gt; EQUAL IF DROP &lt;1&lt;&lt;2&gt; ADD ELSE &lt;H(K_2_0)&gt; EQUALVERIFY ENDIF
+SWAP sha256 DUP &lt;H(K_3_1)&gt; EQUAL IF DROP &lt;1&lt;&lt;3&gt; ADD ELSE &lt;H(K_3_0)&gt; EQUALVERIFY ENDIF
+SWAP sha256 DUP &lt;H(K_4_1)&gt; EQUAL IF DROP &lt;1&lt;&lt;4&gt; ADD ELSE &lt;H(K_4_0)&gt; EQUALVERIFY ENDIF
+SWAP sha256 DUP &lt;H(K_5_1)&gt; EQUAL IF DROP &lt;1&lt;&lt;5&gt; ADD ELSE &lt;H(K_5_0)&gt; EQUALVERIFY ENDIF
+SWAP sha256 DUP &lt;H(K_6_1)&gt; EQUAL IF DROP &lt;1&lt;&lt;6&gt; ADD ELSE &lt;H(K_6_0)&gt; EQUALVERIFY ENDIF
+SWAP sha256 DUP &lt;H(K_7_1)&gt; EQUAL IF DROP &lt;1&lt;&lt;7&gt; ADD ELSE &lt;H(K_7_0)&gt; EQUALVERIFY ENDIF
+SWAP sha256 DUP &lt;H(K_8_1)&gt; EQUAL IF DROP &lt;1&lt;&lt;8&gt; ADD ELSE &lt;H(K_8_0)&gt; EQUALVERIFY ENDIF
+SWAP sha256 DUP &lt;H(K_9_1)&gt; EQUAL IF DROP &lt;1&lt;&lt;9&gt; ADD ELSE &lt;H(K_9_0)&gt; EQUALVERIFY ENDIF
+SWAP sha256 DUP &lt;H(K_10_1)&gt; EQUAL IF DROP &lt;1&lt;&lt;10&gt; ADD ELSE &lt;H(K_10_0)&gt; EQUALVERIFY ENDIF
+SWAP sha256 DUP &lt;H(K_11_1)&gt; EQUAL IF DROP &lt;1&lt;&lt;11&gt; ADD ELSE &lt;H(K_11_0)&gt; EQUALVERIFY ENDIF
+SWAP sha256 DUP &lt;H(K_12_1)&gt; EQUAL IF DROP &lt;1&lt;&lt;12&gt; ADD ELSE &lt;H(K_12_0)&gt; EQUALVERIFY ENDIF
+SWAP sha256 DUP &lt;H(K_13_1)&gt; EQUAL IF DROP &lt;1&lt;&lt;13&gt; ADD ELSE &lt;H(K_13_0)&gt; EQUALVERIFY ENDIF
+SWAP sha256 DUP &lt;H(K_14_1)&gt; EQUAL IF DROP &lt;1&lt;&lt;14&gt; ADD ELSE &lt;H(K_14_0)&gt; EQUALVERIFY ENDIF
+SWAP sha256 DUP &lt;H(K_15_1)&gt; EQUAL IF DROP &lt;1&lt;&lt;15&gt; ADD ELSE &lt;H(K_15_0)&gt; EQUALVERIFY ENDIF
+CHECKSEQUENCEVERIFY
+</code></pre></div></div>
+
+<p>In order to sign a 16 bit value V, the owner of K simply puts on the stack the
+binary representation of V indexed into the K. E.g., to sign <code class="language-plaintext highlighter-rouge">53593</code>, first
+expand to binary <code class="language-plaintext highlighter-rouge">0b1101000101011001</code>, then put the appropriate K values on the
+stack.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>K_15_1
+K_14_1
+K_13_0
+K_12_1
+K_11_0
+K_10_0
+K_9_0
+K_8_1
+K_7_0
+K_6_1
+K_5_0
+K_4_1
+K_3_1
+K_2_0
+K_1_0
+K_0_1
+&lt;sig&gt;
+</code></pre></div></div>
+
+<p>This technique is kind of bulky! It’s around 80x16 = 1280 length for the
+gadget, and 528 bytes for the witnesses. So it is <em>doable</em>, if not a bit
+expensive. There might be some more efficient scripts for this – would a
+trinary representation be more efficient?</p>
+
+<p>The values that can be signed can be range limited either post-hoc (using
+OP_WITHIN) or internally as was done with the 16 bit value circuit where it’s
+impossible to do more than 16 bits.</p>
+
+<p>Keys <em>can</em> be reused across scripts, but signatures may only be constructed one
+time because a third party could take two signed messages and construct an
+unintended value (e.g., if you sign both 4 and 2 then a third party could
+construct 6).</p>
+
+<p>There are certain applications where this could be used for an effect – for
+example, an oracle might have a bonding contract whereby posessing any K_i_0
+and K_i_1 allows the burning of funds.</p>
+
+    <div>
+    <h3>
+        <span style="vertical-align: text-top;">
+    
+
+<a class="twitter-share-button"
+data-size="large"
+href="https://twitter.com/intent/tweet?text=CheckSigFromStack+for+5+Byte+Values&hashtags="> Tweet</a>
+
+
+
+        </span>
+        <span style="vertical-align: super;">
+to continue the conversation...
+        </span>
+    </h3>
+
+    </div>
+</div>
+
+<aside class="related">
+  <h3>You might also enjoy...</h3>
+  <ul class="related-posts">
+    
+      <li>
+        <a href="/blog/2021/07/02/covenants/">
+          Templates, Eltoo, and Covenants, Oh My!
+          <small><time datetime="2021-07-02T00:00:00+00:00">02 Jul 2021</time></small>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/bitcoin/2021/12/11/advent-14/">
+          Payment Channels in a CTV+Sapio World
+          <small><time datetime="2021-12-11T00:00:00+00:00">11 Dec 2021</time></small>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/bitcoin/2021/12/05/advent-8/">
+          Contracting Primitives and Upgrades to Bitcoin
+          <small><time datetime="2021-12-05T00:00:00+00:00">05 Dec 2021</time></small>
+        </a>
+      </li>
+    
+  </ul>
+</aside>
+
+        </div>
+        <div class="content container" style="padding-bottom:0;padding-top:0;bottom:0px;">
+            <div class="posts" style="height:14pt;margin-bottom:0;">
+                <div class="post">
+                    <p style="text-align:center;font-size:12pt;">&copy; 2011-2021 Jeremy Rubin. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

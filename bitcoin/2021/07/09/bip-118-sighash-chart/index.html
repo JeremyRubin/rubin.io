@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+  <title> BIP-118 What Gets Hashed Chart &middot; Jeremy Rubin </title>
+  <link href="https://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/poole.css">
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/css/hyde.css">
+  <link rel="stylesheet" href="/public/font-awesome-4.5.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+                                 <link rel="shortcut icon" href="/public/favicon.ico">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+
+  
+  <link type="application/atom+xml" rel="alternate" href="http://rubin.io/feed.xml" title="Jeremy Rubin" />
+
+
+  <!-- GA -->
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-40376251-1', 'auto');
+    ga('send', 'pageview');
+</script>
+
+  
+  <link rel="me" href="https://twitter.com/JeremyRubin" >
+  <meta name="twitter:dnt" content="on">
+			   <script>window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
+
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+
+  return t;
+}(document, "script", "twitter-wjs"));</script>
+
+</head>
+
+    <body>
+        <div class="sidebar">
+    <h3 style="text-align: center;"> <a href="/"> Jeremy Rubin </a> </h3>
+    <div class="container">
+        <div class="sidebar-about">
+
+            <div class="sidebar-about-info"> 
+                <a href="/public/pdfs/resume.pdf"><i class="fa fa-file-text-o" title=Resume></i></a>
+                <a href=""><i class="fa fa-github" title=Github></i></a>
+                <a href="https://twitter.com/JeremyRubin"><i class="fa fa-twitter" title=Twitter></i></a>
+            </div>
+            <div class="sidebar-about-info hide-large">
+                <a class="" href="/">Home</a>
+                <a class="" href="/blog/">Blog</a>
+                <a class="" href="/talks/">Talks</a> 
+                <a class="" href="/projects/">Projects</a>
+                <a class="" href="/archive/">Site Index</a>
+            </div>
+        </div>
+
+
+
+
+        <nav class="sidebar-nav hide-small">
+            <a class="sidebar-nav-item" href="/">Home</a>
+            <a class="sidebar-nav-item" href="/blog/">Blog</a>
+            <a class="sidebar-nav-item" href="/talks/">Talks</a> 
+            <a class="sidebar-nav-item" href="/projects/">Projects</a>
+            <a class="sidebar-nav-item" href="/archive/">Site Index</a>
+        </nav>
+    </div>
+</div>
+
+
+
+        <div class="content container" style="padding-bottom:0;">
+            <div class="post">
+    <h1 class="post-title">BIP-118 What Gets Hashed Chart</h1>
+    
+    
+
+<a class="twitter-share-button"
+data-size="large"
+href="https://twitter.com/intent/tweet?text=BIP-118+What+Gets+Hashed+Chart&hashtags=ANYPREVOUT,
+BIP118,
+Bitcoin
+"> Tweet</a>
+
+
+
+    <div>
+        <span class="post-date">09 Jul 2021
+        </span>
+    </div>
+    <p>As a part of my ongoing review of BIP-118 I put together a
+<a href="https://docs.google.com/spreadsheets/d/1KeWJ_cly9zoRX5_h70RTniRT2m8_iaVceK_aF6obWeM">chart</a>
+of what gets hashed under the current proposal.</p>
+
+<p><a href="https://docs.google.com/spreadsheets/d/1KeWJ_cly9zoRX5_h70RTniRT2m8_iaVceK_aF6obWeM"><img src="/public/img/bip-118.png" alt="BIP-118 Chart" /></a></p>
+
+<p>Not tightly checked to be free of errors, but I figured such a chart would be
+helpful for folks evaluating BIP-118.</p>
+
+<p>Perhaps the BIPs (generally, incl 34x) could be updated to present the
+information in such a chart – at least for me it’s much clearer than following
+a bunch of conditional logic (maybe if there’s ever desire for some consensus
+refactoring this could be a table in the code replacing the cond logic).
+A few highlighted nuances:</p>
+
+<ul>
+  <li>input index is never signed (i previously thought one mode signed it). Key reuse under <code class="language-plaintext highlighter-rouge">APOAS | Default</code> and <code class="language-plaintext highlighter-rouge">APOAS | All</code> is a bit extra unsafe given susceptibility to the “half-spend” problem. This limits usability of APO for covenants a-la CTV because you can’t stop someone from adding inputs to your contract nor can you prevent half-spend problems when reusing addresses.</li>
+  <li>APO signs the Amounts, APOAS never does.</li>
+  <li>APO signs both the SPK and the Tapleaf hash, meaning that APO binds itself to the entire script rather than just it’s fragment. There’s no setting which is “just this fragment”</li>
+  <li>APO’s signature binds it to a specific script fragment <em>within</em> a taproot key, but not a specific script path</li>
+  <li>the flag “default” is not really a flag at all – when default is used (as a or’d byte) there are different results than when default is inferred (by absence of a byte) (this is maybe a bitcoin core specific quirk).</li>
+  <li>There are 16 different possible modes total, so all combinations of flags mean <em>something</em> (advisable or not as with <code class="language-plaintext highlighter-rouge">ACP | None</code>)</li>
+  <li><code class="language-plaintext highlighter-rouge">*| Default</code> and <code class="language-plaintext highlighter-rouge">*| All</code> overlap, so there’s an opportunity to either reserve or assign 4 additional sighash modes if desired. These could cover some of the gaps above, or be saved for future purposes rather than be wasted now. Another point of interest is – not to rock the boat – but because BIP-118 is defining a new key type we could do away with the notion that sighash flags are “flags” and convert to an enum (e.g., numbered 0-256 for whatever combination of fields each would incur) and give each signature type a sensible name, rather than thinking of things as a combo of flags (e.g., <code class="language-plaintext highlighter-rouge">APOAS</code> is not some intersection of what <code class="language-plaintext highlighter-rouge">APO</code> and <code class="language-plaintext highlighter-rouge">ACP</code> do independently).</li>
+</ul>
+
+
+    <div>
+    <h3>
+        <span style="vertical-align: text-top;">
+    
+
+<a class="twitter-share-button"
+data-size="large"
+href="https://twitter.com/intent/tweet?text=BIP-118+What+Gets+Hashed+Chart&hashtags=ANYPREVOUT,
+BIP118,
+Bitcoin
+"> Tweet</a>
+
+
+
+        </span>
+        <span style="vertical-align: super;">
+to continue the conversation...
+        </span>
+    </h3>
+
+    </div>
+</div>
+
+<aside class="related">
+  <h3>You might also enjoy...</h3>
+  <ul class="related-posts">
+    
+      <li>
+        <a href="/blog/2021/07/02/covenants/">
+          Templates, Eltoo, and Covenants, Oh My!
+          <small><time datetime="2021-07-02T00:00:00+00:00">02 Jul 2021</time></small>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/bitcoin/2021/12/05/advent-8/">
+          Contracting Primitives and Upgrades to Bitcoin
+          <small><time datetime="2021-12-05T00:00:00+00:00">05 Dec 2021</time></small>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/bitcoin/2022/04/17/next-steps-bip119/">
+          7 Theses on a next step for BIP-119
+          <small><time datetime="2022-04-17T00:00:00+00:00">17 Apr 2022</time></small>
+        </a>
+      </li>
+    
+  </ul>
+</aside>
+
+        </div>
+        <div class="content container" style="padding-bottom:0;padding-top:0;bottom:0px;">
+            <div class="posts" style="height:14pt;margin-bottom:0;">
+                <div class="post">
+                    <p style="text-align:center;font-size:12pt;">&copy; 2011-2021 Jeremy Rubin. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
