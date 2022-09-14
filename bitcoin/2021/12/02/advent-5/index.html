@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+  <title> Pillars of Bitcoin: Privacy &middot; Jeremy Rubin </title>
+  <link href="https://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/poole.css">
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/css/hyde.css">
+  <link rel="stylesheet" href="/public/font-awesome-4.5.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+                                 <link rel="shortcut icon" href="/public/favicon.ico">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+
+  
+  <link type="application/atom+xml" rel="alternate" href="http://rubin.io/feed.xml" title="Jeremy Rubin" />
+
+
+  <!-- GA -->
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-40376251-1', 'auto');
+    ga('send', 'pageview');
+</script>
+
+  
+  <link rel="me" href="https://twitter.com/JeremyRubin" >
+  <meta name="twitter:dnt" content="on">
+			   <script>window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
+
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+
+  return t;
+}(document, "script", "twitter-wjs"));</script>
+
+</head>
+
+    <body>
+        <div class="sidebar">
+    <h3 style="text-align: center;"> <a href="/"> Jeremy Rubin </a> </h3>
+    <div class="container">
+        <div class="sidebar-about">
+
+            <div class="sidebar-about-info"> 
+                <a href="/public/pdfs/resume.pdf"><i class="fa fa-file-text-o" title=Resume></i></a>
+                <a href=""><i class="fa fa-github" title=Github></i></a>
+                <a href="https://twitter.com/JeremyRubin"><i class="fa fa-twitter" title=Twitter></i></a>
+            </div>
+            <div class="sidebar-about-info hide-large">
+                <a class="" href="/">Home</a>
+                <a class="" href="/blog/">Blog</a>
+                <a class="" href="/talks/">Talks</a> 
+                <a class="" href="/projects/">Projects</a>
+                <a class="" href="/archive/">Site Index</a>
+            </div>
+        </div>
+
+
+
+
+        <nav class="sidebar-nav hide-small">
+            <a class="sidebar-nav-item" href="/">Home</a>
+            <a class="sidebar-nav-item" href="/blog/">Blog</a>
+            <a class="sidebar-nav-item" href="/talks/">Talks</a> 
+            <a class="sidebar-nav-item" href="/projects/">Projects</a>
+            <a class="sidebar-nav-item" href="/archive/">Site Index</a>
+        </nav>
+    </div>
+</div>
+
+
+
+        <div class="content container" style="padding-bottom:0;">
+            <div class="post">
+    <h1 class="post-title">Pillars of Bitcoin: Privacy</h1>
+    <h3>Day 5: Rubin's Bitcoin Advent Calendar</h3>
+    
+
+<a class="twitter-share-button"
+data-size="large"
+href="https://twitter.com/intent/tweet?text=Pillars+of+Bitcoin%3A+Privacy&hashtags=Bitcoin,
+AdventCalendar
+"> Tweet</a>
+
+
+
+    <div>
+        <span class="post-date">02 Dec 2021
+        </span>
+    </div>
+    <p><em>Welcome to day 5 of my Bitcoin Advent Calendar. You can see an index of all
+the posts <a href="/advent21">here</a> or subscribe at
+<a href="https://judica.org/join">judica.org/join</a> to get new posts in your inbox</em></p>
+
+<p>Privacy is foundational to Bitcoin. Fundamentally, we care about censorship
+resistance so folks can’t stop you from doing activity they can tell you’re
+doing… but what if they couldn’t tell you were doing anything at all? The more
+private a system is, the better it is at ensuring that all participants are free
+to do as they wish.</p>
+
+<p>Unfortunately, privacy is one of the most difficult things to achieve in the
+universe. For every action there is an equal and opposite reaction; if one wants
+to make an action, how can one ensure the reaction is not observable? And if one
+masks the reaction, how can one hide the masking?</p>
+
+<p>Privacy exists in a delicate position in our society. America is hands down the
+leader in rights to privacy of any society, but citizens still face a barrage of
+assaults against their privacy. Privacy from the government also differs from
+privacy from corporations, and the corporations often times can be in cahoots
+with the government. Some regulatory regimes (e.g., the EU) claim to be “better
+on privacy” than America, but have overall a weaker sense of individual rights
+than in America (so they may be better at the privilege of privacy, but not at
+the right to it).</p>
+
+<p>Why is privacy so delicate? In part, because unlike speech there’s no explicit
+enumerated right to privacy<sup id="fnref:centric" role="doc-noteref"><a href="#fn:centric" class="footnote" rel="footnote">1</a></sup>. Privacy is an unenumerated right under
+the American constitution. What this means is that legally we do believe it to
+be a right because it seems to be implied by other constitutional protections
+that could not exist without it (e.g., the right to not be searched without due
+process).  Because there’s not explicit protection of privacy, it’s a constant
+battle to determine what constitutes an violation of privacy. For example, if
+your house is extra hot because you’re growing pot in it (or hint hint Bitcoin
+mining), can police use thermal cameras to detect it and then establish probable
+cause to get a warrant and raid your house? See Kyllo v. United States, that’s
+an illegal search baby! However it’s possible that this line would erode over
+time as the expectation of privacy changes – if everyone had thermal camera
+sunglasses and could see your pot growing plain as day, maybe it’d be
+unreasonable to think
+you’re private!</p>
+
+<p>Cryptographic research has yielded amazing tools for creating provable privacy
+for digital actions. For example, it’s possible to send a digital message in a
+manner such that only the intended recipient can read it. And as long as your
+spying adversary isn’t standing over either of your shoulders looking at your
+screen (or more realistically, running a scanning program on all your data like
+the one Apple said they might be doing earlier this year), the only people who
+will know the contents of the message are you and the recipient.</p>
+
+<h3 id="the-government-kinda-sorta-hates-this-stuff">The government kinda sorta hates this stuff!</h3>
+
+<p>Because the bad guys can use it! But, because America is super free privacy
+loving country, citizens still have a basically unlimited protected right to use
+whatever privacy technology they want. Many politicians have mentioned wanting
+backdoors into software, but none have truly succeeded to introduce much truly
+limiting. Not to mention you can’t make math illegal, which is all that
+cryptography is. Alphabet soup agencies resort to trying to insert backdoors,
+but these are still subject to public review and the information revealed could
+only really be used legally for big “national security issues” like against a
+group with a pre-existing warrant, but the general collection of information
+would be illegal under the expectation of privacy right. At least in theory –
+Snowden showed us that mass data collection
+<em>does</em> still happen… But cryptography gets better, and open-source supply chain
+devices become better, so inserting backdoors in the code becomes harder and
+harder.</p>
+
+<p>So great, probably solved for Bitcoin, right? Just Crypto It. Not quite. While
+systems like ZCash do exist that make transactions much more private, they take
+up more space, so they decrease the availability of block space… however,
+perhaps with better privacy, there’s less ability to discriminate against
+different transaction sources, so less decentralization is needed to guarantee
+censorship resistance.</p>
+
+<p>This points to another conflict, which arises with privacy: auditability v.s.
+transparency v.s. Deniability.</p>
+
+<p>An auditable system means that anyone can verify the history of all transactions
+and check for validity transparently. Many bitcoiners have a preference for
+“elementary school math”, where validating the transaction record requires very
+basic math in the code, and not much else. However, if you go to a fully
+encrypted form, you might no longer be able to easily check important rules like
+the amount of coins not being increased through a crypto backdoor. This type of
+auditability where you could “do it by hand on a calculator” we’ll call
+transparency, since you can see everything! If it were encrypted, it would be
+opaquely auditable. You could tell it’s valid, but not the specific transfers
+that happened. Maybe no one person is going to look through all the data, but
+across all humanity someone is bound to audit at least the transactions they’re
+involved in.</p>
+
+<p>Deniability stands in contrast to either of these properties. If, say, a
+government agency comes to you and says “hey, we know you controlled key X,
+please show us all transactions that X was involved in”, a deniable system would
+allow you to produce any answer, making such a query useless. However, if a
+system was strongly deniable like that, it would be very hard to audit because
+the audit could potentially turn up differing results. So Bitcoin transactions
+aren’t particularly deniable by default.</p>
+
+<p>One of the drawbacks of Bitcoin’s auditability is that the auditability is
+<em>forever</em>. So if you have a lapse of privacy, all your old information can be
+checked. So let’s say you bought a coffee in 2021, and in 2055 the government
+decides all coffee drinkers are going to go to jail to pay for their drug use
+sins, then your old cafe might be able to reveal you as a customer. Bitcoin
+never forgets.</p>
+
+<h2 id="its-my-data-and-i-want-it-private-now">It’s My Data and I want it Private Now</h2>
+<p>Therefore it’s an urgent priority to make Bitcoin as private as possible as soon
+as possible in order to keep users safe now and forever, or else the fundamental
+usability of the system is at risk. However, compromising on auditability or
+decentralization would be unpopular, so it’s not as simple as adding ZCash and
+increasing block space.</p>
+
+<p>There are a lot of different pathways Bitcoin can take to increase privacy. For
+example, the lightning network can mask and make many payments ephemeral, as
+well as adding deniability if one continually signs false histories of revoked
+txns.  Sidechains can add all sorts of privacy primitives, if they want. And
+on-chain techniques like swaps or joins can be used to make the base privacy
+better as well.</p>
+
+<p>In future posts we’ll explore how covenants can have a role in improving
+privacy!</p>
+
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:centric" role="doc-endnote">
+      <p>This post is a bit America centric… generally speaking, America has the strongest set of protections of citizen (and non-citizen) rights of any country, so we use the American system as a meter-stick in this post. That privacy doesn’t exist as an enumerated right in the country which most strongly protects individual rights, as noted early, implies it’s only really worse in other countries. <a href="#fnref:centric" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+    <div>
+    <h3>
+        <span style="vertical-align: text-top;">
+    
+
+<a class="twitter-share-button"
+data-size="large"
+href="https://twitter.com/intent/tweet?text=Pillars+of+Bitcoin%3A+Privacy&hashtags=Bitcoin,
+AdventCalendar
+"> Tweet</a>
+
+
+
+        </span>
+        <span style="vertical-align: super;">
+to continue the conversation...
+        </span>
+    </h3>
+
+    </div>
+</div>
+
+<aside class="related">
+  <h3>You might also enjoy...</h3>
+  <ul class="related-posts">
+    
+      <li>
+        <a href="/bitcoin/2021/12/11/advent-14/">
+          Payment Channels in a CTV+Sapio World
+          <small><time datetime="2021-12-11T00:00:00+00:00">11 Dec 2021</time></small>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/bitcoin/2022/04/17/next-steps-bip119/">
+          7 Theses on a next step for BIP-119
+          <small><time datetime="2022-04-17T00:00:00+00:00">17 Apr 2022</time></small>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/bitcoin/2021/12/24/advent-27/">
+          RoadMap or Load o' Crap?
+          <small><time datetime="2021-12-24T00:00:00+00:00">24 Dec 2021</time></small>
+        </a>
+      </li>
+    
+  </ul>
+</aside>
+
+        </div>
+        <div class="content container" style="padding-bottom:0;padding-top:0;bottom:0px;">
+            <div class="posts" style="height:14pt;margin-bottom:0;">
+                <div class="post">
+                    <p style="text-align:center;font-size:12pt;">&copy; 2011-2021 Jeremy Rubin. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

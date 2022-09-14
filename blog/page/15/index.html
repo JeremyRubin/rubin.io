@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+  <title> Blog (page 15) &middot; Jeremy Rubin </title>
+  <link href="https://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/poole.css">
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/css/hyde.css">
+  <link rel="stylesheet" href="/public/font-awesome-4.5.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+                                 <link rel="shortcut icon" href="/public/favicon.ico">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+
+  
+  <link type="application/atom+xml" rel="alternate" href="http://rubin.io/feed.xml" title="Jeremy Rubin" />
+
+
+  <!-- GA -->
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-40376251-1', 'auto');
+    ga('send', 'pageview');
+</script>
+
+  
+  <link rel="me" href="https://twitter.com/JeremyRubin" >
+  <meta name="twitter:dnt" content="on">
+			   <script>window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
+
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+
+  return t;
+}(document, "script", "twitter-wjs"));</script>
+
+</head>
+
+    <body>
+        <div class="sidebar">
+    <h3 style="text-align: center;"> <a href="/"> Jeremy Rubin </a> </h3>
+    <div class="container">
+        <div class="sidebar-about">
+
+            <div class="sidebar-about-info"> 
+                <a href="/public/pdfs/resume.pdf"><i class="fa fa-file-text-o" title=Resume></i></a>
+                <a href=""><i class="fa fa-github" title=Github></i></a>
+                <a href="https://twitter.com/JeremyRubin"><i class="fa fa-twitter" title=Twitter></i></a>
+            </div>
+            <div class="sidebar-about-info hide-large">
+                <a class="" href="/">Home</a>
+                <a class="" href="/blog/">Blog</a>
+                <a class="" href="/talks/">Talks</a> 
+                <a class="" href="/projects/">Projects</a>
+                <a class="" href="/archive/">Site Index</a>
+            </div>
+        </div>
+
+
+
+
+        <nav class="sidebar-nav hide-small">
+            <a class="sidebar-nav-item" href="/">Home</a>
+            <a class="sidebar-nav-item" href="/blog/">Blog</a>
+            <a class="sidebar-nav-item" href="/talks/">Talks</a> 
+            <a class="sidebar-nav-item" href="/projects/">Projects</a>
+            <a class="sidebar-nav-item" href="/archive/">Site Index</a>
+        </nav>
+    </div>
+</div>
+
+
+
+        <div class="content container" style="padding-bottom:0;">
+            <div class="page">
+    
+    
+    <h1>
+  Jeremy Rubin's Blog
+</h1>
+
+Here you'll find an assorted mix of content from yours truly. I post about a lot
+of things, but primarily <a href="/bitcoin/">Bitcoin</a>.
+
+<p>
+categories: <a href="/bitcoin/">Bitcoin</a>, <a href="/shenzhen/">Shenzhen Journey</a>.
+</p>
+<div class="posts">
+  
+<hr>
+  <div class="post">
+    <h2 class="post-title">
+        <a href="/shenzhen/2015/06/13/sz-adventure-6/">
+        Intro to Bootcamp Project
+      </a>
+  </h2>
+  <h4>Shenzhen Adventure Day 6, 7</h4>
+
+
+    <span class="post-date">13 Jun 2015</span>
+
+    <p>Friday and Saturday were free form days, we just worked on our projects for the most part.</p>
+
+<p>Our projects are basically to doing a small customization to the Orchard platform, which the instructors designed. In a nutshell:</p>
+<blockquote>Orchard is a low-power, multi-band radio-connected embedded computing solution. In other words, it's an IoT platform.
+
+Orchard is open source hardware and software.
+
+Orchard is also a supply chain solution. Derivatives of Orchard are meant to be prototyped easily and brought to volume manufacturing with less effort than typical. Unlike breadboard solutions like Arduino, Orchard is targeted toward prototyping through board spins. This is possible thanks to China's low-cost prototyping infrastructure. The effort to prototype is higher than a breadboard, but the on-ramp to scale production once you've got your design finished is also less steep.</blockquote>
+
+<p>Orchard is really cool, you can read more about it <a href="http://www.kosagi.com/w/index.php?title=Orchard_Main_Page">here</a>.</p>
+
+<p>My customization is adding a sensor chip called an APDS 9960. It’s a hell of a sensor: it can do ambient light, proximity, and gesture sensing baked into a tiny tiny package and communicates over I2C.</p>
+
+<p><img src="https://shenzhenadventure.files.wordpress.com/2015/06/apds9960.png" alt="" class="center-image" /></p>
+
+<p>Originally I was going to try to do a radio astronomy antenna on the board, so that you could chuck out a bunch of orchard boards in a field and make a radio telescope, but getting the RF engineering correct was going to be too difficult for the scope of the course and my background in said materials.</p>
+
+  </div>
+<hr>
+  
+<hr>
+  <div class="post">
+    <h2 class="post-title">
+        <a href="/shenzhen/2015/06/11/sz-adventure-5/">
+        Learning the Ropes
+      </a>
+  </h2>
+  <h4>Shenzhen Adventure Day 5</h4>
+
+
+    <span class="post-date">11 Jun 2015</span>
+
+    <p>Today we were again mostly in-house.</p>
+
+<p>We kicked off the day with a lecture on how to use Altium (pcb design software)
+by Bunnie.  Afterwards, we got lunch at this super awesome Thai restaurant
+right by our office (they have very filling lunch specials for 45 RMB / 7.25
+USD). I was going to go to another restaurant, but it started to pour (seems to
+rain most days so far around noon).</p>
+
+<p>After lunch, it was mostly just working time. Artem and I decided to go to Seg,
+the super large electronics market to get keyboards and mice so that we can
+easily use Altium. We got super side tracked in segbuy and ended up walking
+around for hours, but it was good because we also found inspiration in the
+millions of parts available there.</p>
+
+<p>One funny thing I learned is that if you’re looking for a single item, and the
+manufacturer is selling high quantity, saying you want a sample is a great way
+to get one at a low cost, but it feels somewhat dishonest. Then again, Seg
+doesn’t feel quite honest either…</p>
+
+<p>After burning far to much time visitng all 10 floors of Seg twice, we headed
+back to the office, did some work thinking about our designs, and then headed
+to dinner. Saquib and I decided to go to the restaurant we were going to go to
+earlier – it’s a vegetarian restaurant so we were pretty excited to be able to
+order anything off the menu! The place was a little bit dingy, but the food was
+pretty great and not too expensive – 52 RMB / 8.4 USD comfortably fed us both
+– usually vegetarian restaurants are pricey because of low demand. Was pumped
+to finally be able to eat the famous ma po tofu! After dinner we went to Gong
+Cha, a tea chain. Their teas are awesome, I had a kumquat limeade drink with
+pearls and jelly that was super refreshing. Desipite being cheap already, they
+had a buy one get one half off thing going so we got 2 large drinks for 22 RMB
+/ 3.5 USD.</p>
+
+<p>I also learned that the word “chisu” I’ve been using for vegetarian sounds a
+lot like “chizou” which means stall. That explains why everytime I ask for
+vegetarian food they show me the bathroom. Could have been worse! I think the
+right word is “su-shi”.</p>
+
+  </div>
+<hr>
+  
+<hr>
+  <div class="post">
+    <h2 class="post-title">
+        <a href="/shenzhen/2015/06/10/sz-adventure-4.7/">
+        Toy Prototyping Factory Tour
+      </a>
+  </h2>
+  <h4>Shenzhen Adventure Day 4</h4>
+
+
+    <span class="post-date">10 Jun 2015</span>
+
+    <p>We visited a toy studio for a to-be-unnamed toy company (hence, no photos).
+This place was really cool. Basically, big brands (and not just for toys,
+clothes, electronics, etc) spec out a thing they want at a very high level,
+such as “make me a toy that looks like a turtle”. They then send it to a
+prototyping studio who makes a turtle toy prototype and sends it back for
+feedback. So the brands essentially monitor markets and tell the protypers what
+to build to meet it.</p>
+
+
+  </div>
+<hr>
+  
+<hr>
+  <div class="post">
+    <h2 class="post-title">
+        <a href="/shenzhen/2015/06/10/sz-adventure-4.6/">
+        Assembly Line Factory Tour
+      </a>
+  </h2>
+  <h4>Shenzhen Adventure Day 4</h4>
+
+
+    <span class="post-date">10 Jun 2015</span>
+
+    <p>At the AQS plant we also got to see the final assembly of a printer. This was
+really awesome. Printers are super complicated builds so they basically have to
+be done by hand. Essentially what happens is they have stations with a couple
+of tasks on them. A person performs the task, scans a barcode on the item, then
+passes the cart to the next person. There were 100-200 stations for this
+printer. The barcodes let them make sure each printer has had all steps and
+also lets a control center monitor to make sure that they are on point for
+meeting the quota for that day and hour. What’s cool is that each station has
+an instruction booklet which sets the task. The entire line is essentially a
+very long pipeline, so they have to carfully balance the pipeline to prevent
+bottlenecks and keep throughput high. It takes multiple revisions to get it
+right. Apparently setting up such a line, from end to end, is 3-6 months. Each
+printer is also fully tested.</p>
+
+<p><img src="https://www.dropbox.com/s/h6z1g7u1eqbzhgh/IMG_0053.JPG?raw=1" alt="" class="center-image" /></p>
+
+<p><img src="https://www.dropbox.com/s/vi28mwp1lxy8buv/IMG_0055.JPG?raw=1" alt="" class="center-image" /></p>
+
+
+  </div>
+<hr>
+  
+<hr>
+  <div class="post">
+    <h2 class="post-title">
+        <a href="/shenzhen/2015/06/10/sz-adventure-4.5/">
+        Automated Board Population/SMT Factory Tour
+      </a>
+  </h2>
+  <h4>Shenzhen Adventure Day 4</h4>
+
+
+    <span class="post-date">10 Jun 2015</span>
+
+    <p>We got to go to AQS to see one of their board population/smt lines. This was fucking awesome.</p>
+
+<ul>
+  <li>Solder Paste Machine</li>
+</ul>
+
+<p><img src="https://www.dropbox.com/s/uz87gw1hfqhuwjx/IMG_0040.JPG?raw=1" alt="" class="center-image" /></p>
+
+<ul>
+  <li>SMT Machine</li>
+</ul>
+
+<p><img src="https://www.dropbox.com/s/hlv509ncoejegyr/IMG_0043.JPG?raw=1" alt="" class="center-image" /></p>
+
+<ul>
+  <li>
+    <p>Pick and Place</p>
+  </li>
+  <li>
+    <p>Inspection</p>
+  </li>
+</ul>
+
+<p><img src="https://www.dropbox.com/s/rlg40ytvnwzhjyf/IMG_0046.JPG?raw=1" alt="" class="center-image" /></p>
+
+<p><img src="https://www.dropbox.com/s/09yxcxwh99cnuy9/screen.gif?raw=1" alt="" class="center-image" /></p>
+
+<ul>
+  <li>Touch up</li>
+</ul>
+
+<p><img src="https://www.dropbox.com/s/2op0w8yqc2ral4j/IMG_0047.JPG?raw=1" alt="" class="center-image" /></p>
+
+<ul>
+  <li>Solder machine ( a pool of solder grazes the board)</li>
+</ul>
+
+<p><img src="https://www.dropbox.com/s/9nrt7zu5jbqkvdh/IMG_0049.JPG?raw=1" alt="" class="center-image" /></p>
+
+
+  </div>
+<hr>
+  
+</div>
+
+<div class="pagination">
+  
+    <a class="pagination-item newer" href="/blog/page/14/">Newer</a>
+  
+  
+  <a class="pagination-item older" href="/blog/page/16/">Older</a>
+  
+</div>
+
+</div>
+
+        </div>
+        <div class="content container" style="padding-bottom:0;padding-top:0;bottom:0px;">
+            <div class="posts" style="height:14pt;margin-bottom:0;">
+                <div class="post">
+                    <p style="text-align:center;font-size:12pt;">&copy; 2011-2021 Jeremy Rubin. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

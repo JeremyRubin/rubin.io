@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+  <title> RoadMap or Load o' Crap? &middot; Jeremy Rubin </title>
+  <link href="https://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/poole.css">
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/css/hyde.css">
+  <link rel="stylesheet" href="/public/font-awesome-4.5.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+                                 <link rel="shortcut icon" href="/public/favicon.ico">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+
+  
+  <link type="application/atom+xml" rel="alternate" href="http://rubin.io/feed.xml" title="Jeremy Rubin" />
+
+
+  <!-- GA -->
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-40376251-1', 'auto');
+    ga('send', 'pageview');
+</script>
+
+  
+  <link rel="me" href="https://twitter.com/JeremyRubin" >
+  <meta name="twitter:dnt" content="on">
+			   <script>window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
+
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+
+  return t;
+}(document, "script", "twitter-wjs"));</script>
+
+</head>
+
+    <body>
+        <div class="sidebar">
+    <h3 style="text-align: center;"> <a href="/"> Jeremy Rubin </a> </h3>
+    <div class="container">
+        <div class="sidebar-about">
+
+            <div class="sidebar-about-info"> 
+                <a href="/public/pdfs/resume.pdf"><i class="fa fa-file-text-o" title=Resume></i></a>
+                <a href=""><i class="fa fa-github" title=Github></i></a>
+                <a href="https://twitter.com/JeremyRubin"><i class="fa fa-twitter" title=Twitter></i></a>
+            </div>
+            <div class="sidebar-about-info hide-large">
+                <a class="" href="/">Home</a>
+                <a class="" href="/blog/">Blog</a>
+                <a class="" href="/talks/">Talks</a> 
+                <a class="" href="/projects/">Projects</a>
+                <a class="" href="/archive/">Site Index</a>
+            </div>
+        </div>
+
+
+
+
+        <nav class="sidebar-nav hide-small">
+            <a class="sidebar-nav-item" href="/">Home</a>
+            <a class="sidebar-nav-item" href="/blog/">Blog</a>
+            <a class="sidebar-nav-item" href="/talks/">Talks</a> 
+            <a class="sidebar-nav-item" href="/projects/">Projects</a>
+            <a class="sidebar-nav-item" href="/archive/">Site Index</a>
+        </nav>
+    </div>
+</div>
+
+
+
+        <div class="content container" style="padding-bottom:0;">
+            <div class="post">
+    <h1 class="post-title">RoadMap or Load o' Crap?</h1>
+    <h3>Day 27: Rubin's Bitcoin Advent Calendar</h3>
+    
+
+<a class="twitter-share-button"
+data-size="large"
+href="https://twitter.com/intent/tweet?text=RoadMap+or+Load+o%27+Crap%3F&hashtags=Bitcoin,
+AdventCalendar,
+Covenants,
+Sapio
+"> Tweet</a>
+
+
+
+    <div>
+        <span class="post-date">24 Dec 2021
+        </span>
+    </div>
+    <p><em>Welcome to day 27 of my Bitcoin Advent Calendar. You can see an index of all
+the posts <a href="/advent21">here</a> or subscribe at
+<a href="https://judica.org/join">judica.org/join</a> to get new posts in your inbox</em></p>
+
+<p>I know, I know.</p>
+
+<p>God forbid, a roadmap. People hate roadmaps. As I’ve noted
+<a href="/blog/2021/07/02/covenants/">before</a>:</p>
+
+<blockquote>
+  <p><strong>Bitcoin Eschews Roadmaps and Agendas.</strong>
+I provide this maxim to make clear that this document is by no means an official
+roadmap, narrative, or prioritization. However, it is my own assessment of what
+the current most pragmatic approach to upgrading Bitcoin is, based on my
+understanding of the state of outstanding proposals and their interactions.</p>
+
+  <p>My priorities in producing this are to open a discussion on potential new
+features, risk minimization, and pragmatic design for Bitcoin.</p>
+</blockquote>
+
+<p>If you didn’t click, I definitely recommend reading <a href="/blog/2021/07/02/covenants/">the quoted
+post</a> in conjunction with this one. As well as, if
+you’re a first time visitor to the Advent Calendar, the preceding 26 posts.</p>
+
+<hr />
+
+<p>In contrast to my prior post, this roadmap is going to be less about full
+justifications and unbiased weightings and tallyings of sentiments and more just
+me spitting out a timeline we could introduce changes on. It’s not a final
+answer, and in no way authoritative, but it’s a launch point for a discussion
+that has to happen in some way at some point in order to advance a soft-fork.</p>
+
+<p><em>Consider this as being posted for the sake of public review. If you disagree
+with this, let me know why! But please no attacks just for the act of discussing
+the topic of soft-fork activation<sup id="fnref:ordo" role="doc-noteref"><a href="#fn:ordo" class="footnote" rel="footnote">1</a></sup>.</em></p>
+
+<p>So buckle up here’s how we could make Bitcoin kick ass in 2022 and beyond:</p>
+
+<h1 id="2022-the-year-of-the-covenant">2022: The Year of the Covenant</h1>
+
+<h2 id="bip-119-timeline">BIP-119 Timeline</h2>
+<p>CheckTemplateVerify is getting close to ready to go. There are numerous
+<a href="https://utxos.org/signals">supporters (listed on utxos.org)</a>, few detractors,
+and a bumper crop of amazing use cases (did you read the calendar?) waiting for
+us on the other side of CTV activation. The major critiques are that we might want
+something that does ‘more’ than CTV itself, or to include it in a bundle of
+things.</p>
+
+<p>My take: we’re not Gordon Gecko. Greed is <em>Not</em> Good. CTV represents a clean, well
+contained, unproblematic upgrade that’s going to deliver hella functionality in
+service of scaling, decentralization, self custody, and privacy. Let’s secure
+the bag for Bitcoin users everywhere and make it happen. We can always do more,
+later, informed by what extensions we need for rapidly maturing tools like
+Sapio. CTV is also technically specified and implemented sufficiently – a view
+I’ve confirmed with a couple other devs – that it is able to be considered for
+release.</p>
+
+<h3 id="what-would-have-to-happen-to-release-ctv">What would have to happen to release CTV?</h3>
+
+<ol>
+  <li>More signalers would need to be on
+<a href="https://utxos.org/signals">utxos.org/signals</a> or other platforms to demonstrate
+interest and demand for CTV, ideally explaining which use cases are important to
+them and why. Every voice counts for consensus. There is no list long enough to
+capture what it would mean to have consensus, so there is not some threshold
+that implies a ‘go ahead’, but N+1 is clearly better than N.</li>
+  <li>More “regular contributors” would need to spend time reviewing the code and BIP to
+assure themselves of correctness and safety.  Nothing can move forward with out,
+no matter the count of casual contributors. Many regular contributors don’t want
+to ‘get political’ and look at forks. Fortunately, while all consensus changes
+are complex, CTV is a very tiny and easy to review change in comparison with
+SegWit or Taproot (more similar to CheckLockTimeVerify – a couple hundred lines
+of consensus code, a couple hundred lines of non consenus code, and a couple
+thousand lines of tests, no cryptographic primitives). <strong>NOTE:</strong> This is a big
+if!  Every contributor has the right to review, and ACK or provide a reasoned
+NACK.  Even if everyone else is excited about something doesn’t mean there isn’t
+space for new thought-through dissent. At the end of the article, I discuss
+some concrete next steps to ensure more developer review occurs.</li>
+  <li>We would need to merge the implementation. This is simple, but enough ACKs have to
+come in and rebases on other subsequent changes to get it in. This can
+happen ahead of ‘full consensus’ since there are no deployment parameters,
+but aids in increasing the testing priority of CTV.</li>
+  <li>We would need to get a majority of miners/pools primed to accept the upgrade.</li>
+  <li>Major alternative implementation maintainers (e.g., BTCD, Knots) should show
+willingness to implement or accept patches for the new rules (although it’s a
+soft-fork, this is good to do).</li>
+  <li>We would need to decide on release parameters for the implementation.</li>
+  <li>We would need to merge and release a client with release parameters</li>
+  <li>The client would needs to lock-in by a supermajority of miners signalling.</li>
+  <li>Then, and only then, would CTV be fully available.</li>
+</ol>
+
+<h3 id="whats-the-maximally-aggressiveoptimistic-timeline">What’s the Maximally Aggressive/Optimistic Timeline?</h3>
+
+<ol>
+  <li>Soft Signals / Developer Review: 2-3 months required to get ACKs on the
+implementation, assuming no major changes required.</li>
+  <li>Merge: Instant, just whenever there are ACKs against the implementation being
+safe and matching BIP. Usually, enough ACKs for a PR is 2 regular contributors,
+the comitter, and a maintainer, but for consensus changes there is no threshold
+at which Bitcoin considers a change sufficiently peer reviewed. A consensus
+change should see higher quality reviews, as well as external consensus that the
+change is desired.</li>
+  <li>Getting miners primed to signal: ~20% of pools are on
+<a href="https://utxos.org/signals">utxos.org/signals</a>, more should be coming on board
+soon. Don’t expect this to take additional time if in conjunction with Developer
+review.</li>
+  <li>Debating Timelines: ~1 month to agree on a release timeline</li>
+  <li>Preparing a release: ~1 month to do release candidates and testing.</li>
+  <li>Speedy Trial: 3 months of signalling, 3 months of waiting for lock-in to active.</li>
+</ol>
+
+<h3 id="overall-it-could-look-like-this">Overall, it could look like this:</h3>
+
+<p>On March 15th developers reach agreement on merging BIP-119’s implementation.
+On April 15th, agreement is reached on release parameters for signalling from ~
+June 1st to ~September 1st. The activation height would be November 10th.  A client
+is prepared, and tested, and released. No issues are found. The miners signal at
+some point in the 3 month window above the threshold. CTV locks-in. Developers
+can prep wallet software for deeper integration. CTV activates before
+Thanksgiving, avoiding the “dire straits” of
+thanksgiving-hanukkah-christmas-chinese-new-year-valentines-day season.</p>
+
+<p><em>but that’s basically identical to Taproot’s timeline?</em></p>
+
+<p>Exactly. If we act on this timeline starting in early January 2022, it is
+possible to meet an almost identical timeline for CTV as Taproot.</p>
+
+<p>Part of why it works is that the next major release is scheduled for 2022-04-01.
+Soft forks are usually released as a minor patch on top of a few recent major
+releases. So CTV could be:</p>
+
+<ol>
+  <li>Code included in 23.0 for CTV, no activation parameters</li>
+  <li>Activation parameters in 23.1, and backported to 22.x, 21.x, and (really this is up to maintainers how far to backport!).</li>
+  <li>23.1 released before June 1st, 2022.</li>
+</ol>
+
+<p><strong>What could go wrong?</strong></p>
+
+<ol>
+  <li><strong>Concern:</strong> There could be  a small tweak to CTV that makes it marginally
+better, and it’s worth adding some extra review time as a result.<br />
+<strong>Rebuttal:</strong><br />
+<em>CTV is highly design specific, so it’s unlikely there could be a change needed,
+but not impossible. Changes would be unlikely to be large, though, e.g. perhaps
+comitting to the same fields in a different order. Taproot saw some small
+changes about a month before being merged.</em></li>
+  <li><strong>Concern:</strong> Release process has a delay due to an issue uncovered in non-CTV code.<br />
+<strong>Rebuttal:</strong><br />
+<em>Soft fork releases are usually a minor patch onto an existing version, so it’s
+unlikely that there would be a new bug, but the release would still be planned
+and could resume as soon as patched. Speedy Trial’s ‘delayed activation’ also
+helps with providing more time for (non-consensus) bug fixes in the client
+between lock-in and activation.</em></li>
+  <li><strong>Concern:</strong> Release process has a delay due to an issue uncovered in CTV’s code.<br />
+<strong>Rebuttal:</strong><br />
+<em>If the issue is a bug, it would merit more strict scrutiny on the code and
+tests (which are pretty comprehensive currently) as to how they could be passing
+with an issue like that. Once patched and reviewed, it’s still possible to merge
+and release. However, the issue could also be a conceptual bug (e.g., here’s how
+to do recursive covenants with CTV), which would certainly delay (and I’d be the
+first to say it!) continuing with CTV at the present time. The former issue is
+likely more likely than the latter, and that risk is defrayed by thorough code
+review and testing.</em></li>
+  <li><strong>Concern:</strong> There’s not enough developer consensus conceptually.<br />
+<strong>Rebuttal:</strong><br />
+<em>There are many developers supporting on
+<a href="https://utxos.org/signals">utxos.org/signals</a>. I’ve also made an effort to
+reach out to a variety of developers who are not on the site to seek out
+dissent, and I do not think there are any current safety concerns, which is
+positive for developers who might not Ack but don’t have a ‘this is a grave
+mistake’ Nack up their sleeves. Again, there’s no well defined threshold for
+what is “enough”.</em></li>
+  <li><strong>Concern:</strong> Miners don’t want CTV and don’t signal for it.<br />
+<strong>Rebuttal:</strong><br />
+_20% of the hash pools already say they do want it, and more should be joining
+that list soon™. Should that not happen, there could be a UASF effort to ensure
+the activation of BIP-119 if users want CTV strongly enough. _</li>
+  <li><strong>Concern:</strong> Disagreement on Activation mechanism.<br />
+<strong>Rebuttal:</strong><br />
+<em>Taproot’s Speedy Trial (ST) worked very well. Big Success. No need to mess with
+the recipe. UASF-clienters know how to make the mods to the activation logic for
+whatever they want as a competing client. But perhaps that’s not a comfortable
+status quo, so this is certainly one to watch. I’ve made my own remarks on what
+order of operations I think ST/UASF/etc should go in
+<a href="https://lists.linuxfoundation.org/pipermail/bitcoin-dev/2021-April/018833.html%5C">here</a>,
+but there’s not consensus on this topic. Notably, there is some dissent from
+reusing ST at all. While important, activation logic is a secondary (but still
+critical) concern to the decision to accept the current specification and
+implementation of CTV in the first place, and discussion on that can proceed
+in parallel to progress on consensus on the implementation.</em></li>
+</ol>
+
+<h2 id="and-then-what">And Then What?</h2>
+
+<p>After the release of CTV Soft Fork Client, what goes next?</p>
+
+<ol>
+  <li>Jeremy takes a vacation for a month.</li>
+  <li>Sapio continues to improve dramatically, as detailed in the last post.</li>
+  <li>Work begins on new Opcodes.</li>
+  <li>More fun applications get built on CTV/Sapio (for examples, review the entire series of
+<a href="/advent21">the Advent Calendar</a>, but a few of my favorites are <a href="/bitcoin/2021/12/10/advent-13/">Payment
+Pools</a>,
+<a href="/bitcoin/2021/12/07/advent-10/">Vaults</a>, and <a href="/bitcoin/2021/12/17/advent-20/">Bonded
+Oracles</a>).</li>
+  <li>Non-Interactive Lightning Channel BOLT drops.</li>
+  <li>Payment Pool spec drops with LN integration.</li>
+  <li>(Privacy + Scale)++</li>
+</ol>
+
+<h2 id="new-opcodes-you-say">New Opcodes you say?</h2>
+
+<p>Yep, new opcodes. As soon as CTV is merged, there are some new features that
+could be tooled into BIPs without much controversy, given their simplicity:</p>
+
+<ol>
+  <li>New Math Opcodes</li>
+  <li>OP_AMOUNT</li>
+  <li>OP_CSFS</li>
+</ol>
+
+<p>These are “universally agreed on” bits of functionality that have very little
+wiggle room in how they might be specified. Therefore their implementation,
+testing, and release is mostly mechanical. This makes them good bets for a
+concrete timeline because they’re a rote-development task with few research
+dependencies and easily agreed on design.</p>
+
+<p>With hard work, these could be reviewed and tested in time for Speedy Trial
+signalling in June 2023 (+1 year), with realllllly hard work 6 months earlier
+(but there are conflicting priorities for developer’s time – e.g., building
+stuff with/for CTV and Taproot – that make that super unlikely).</p>
+
+<h3 id="what-about-anyprevout">What about Anyprevout</h3>
+
+<p>Anyprevout is 1000000% not ruled out here for advancing to the consensus stage
+in 2022. There are a couple things happening on Anyprevout that make me suspect
+it might be more primed towards early-mid 2024 best case.</p>
+
+<ol>
+  <li>Taproot upgraded channels taking some steam away from Eltoo with AJ’s
+proposal to do state compaction via PTLCs.</li>
+  <li>Disagreement over no justice transactions in the community for high value
+channels.</li>
+  <li>Open research on specific Eltoo protocol implementation / need for other
+tools (like SIGHASH_BUNDLE).</li>
+  <li>Lack of an open PR and test suite for it.</li>
+  <li>CSFS + CTV permitting a version of Eltoo.</li>
+</ol>
+
+<p>All of these reasons point to it being highly unlikely APO could be finished on
+the timeline presented for CTV, but also that given a desire to see a working LN
+client (ensuring the protocol is sound end-to-end without modifications) leads
+to additional engineering complexity.</p>
+
+<p>I’ve heard on the rumour vine some excellent engineers might start working on an
+Eltoo implementation, I believe that work to be of tremendous value to gain
+consensus on deploying anyprevout.</p>
+
+<p>Given that a couple years seems like the best case for a set of upgrades around
+APO to deliver Eltoo, if we have the ability to deliver CTV now, it is a good
+asymmetric bet for delivering utility to Bitcoin’s users.</p>
+
+<p>Suppose I’m wrong, and Anyprevout really could get done in 2022. Shouldn’t it
+be ‘next’ and CTV can wait?</p>
+
+<p>The notion that any soft-fork is “next” for consideration and blocks any other
+from being considered is somewhat contrary to the support for parallel
+soft-forks with distinct version bits used for signalling. The possibility of
+deploying soft forks on independent bits means things can be ultimately
+“proposed” whenever they’re mature enough to enter the “final stage” and the
+timing fits with Bitcoin’s general release schedule. The chief counterarguments
+to this are twofold: One, review resources are finite and we can’t even think
+about \(&gt;1\) thing at a time; Two, it’s bad if the protocol is simultaneously
+deploying \(N\) upgrades and any of them might fail, leading to \(2^N\)
+potential protocol states. It’s actually the other way around: if things can
+proceed in parallel we can get more review, because developers won’t feel that
+reviewing others work has the potential to slow down their own, and we’ll be
+more certain that the upgrades we release are strongly desired by the community
+(i.e., will end in a UASF if not activated due to miner apathy).</p>
+
+<h3 id="what-about-tapleafupdateverify">What about TapLeafUpdateVerify</h3>
+
+<p>If I had to estimate, I’d say TLUV needs another year or so of people ‘stewing’
+on the possibilities and design before it could move forward. It would then
+probably need at least a year of tinkering to get a well-accepted
+implementation, and then a year for release process. So let’s say best case it
+could be a 2024 thing, more likely 2025 given Anyprevout is seen as higher
+priority for the engineering work.</p>
+
+<h3 id="what-about-inherited-ids-iids">What about Inherited IDs (IIDs)?</h3>
+
+<p>They didn’t make the cut in the earlier piece since they’re a bit more abstract,
+but I’d posit that IIDs could also approach a 2024 timeline were the developer
+of the idea to spend a heckin’ big amount of time on advocacy for the concept in
+2022, and present a clean implementation of the concept (&amp; demonstration of
+overheads) by 2023. This is complicated by the issue that he would have to also
+solve issues with requiring a new index, such as helping assist assumeutxo
+compatibility, write reindexing logic from genesis (or somehow exclude old
+coins?), and also work on utreexo compatibility. Those all seem tractable,
+but very hard to do for someone who is not a full-time long-time contributor
+to the project, but I’m a believer that the job could be done given the quality
+of the insights in the IIDs paper.</p>
+
+<h2 id="parallel-developments">Parallel Developments?</h2>
+
+<p>In parallel to the above, there are some things that I think are <em>very cool</em>
+that should remain under development, but don’t have a clear path to inclusion
+presently.</p>
+
+<p>The first is <a href="https://lists.linuxfoundation.org/pipermail/bitcoin-dev/2020-September/018168.html">Transaction Sponsorship</a>, which could substantially 
+simplify many protocols on top of Bitcoin, especially things like Eltoo and CTV
+stuff. We can’t predict that too well because it will depend on what developers
+end up running up against with current best practices around CPFP/RBF, but
+I suspect it might become popular if a small group of developers prioritizes
+such an approach as a unified front. Since it’s technically simple, it wouldn’t
+take much time to implement, but because there’s very little consensus for
+it right now it’s not fit for inclusion in a roadmap.</p>
+
+<p>The next is <a href="https://blog.blockstream.com/en-simplicity-github/">Simplicity</a>. Simplicity could completely change how Bitcoin
+scripting works and is super duper exciting. I guess it’s going out on Elements
+sometime soon? However, it’s stupidly complicated for most devs to fully
+understand (although it is called simplicity…), so it would take a fair
+amount of time (read: years) before the implementation could be sufficiently
+independently reviewed by the intersection of qualified Bitcoin and Programming
+Language theory reviewers. The interesting thing about Simplicity with respect
+to this roadmap is that because it’s so general, as soon as it seems like
+Simplicity would be on Bitcoin within ~1.5 years, it’s likely all other
+scripting soft fork developers would “stop” development<sup id="fnref:note" role="doc-noteref"><a href="#fn:note" class="footnote" rel="footnote">2</a></sup> and focus on
+deployment as Simplicity Jets.</p>
+
+<hr />
+
+<h1 id="concrete-next-steps">Concrete Next Steps</h1>
+<p>Should this plan not seem feasible to the near unanimity of the community for us
+the deliver on (e.g., with +2-3 months of the suggested timeline), I don’t think
+there is another good opportunity to enact on an activation of CTV and the best
+course of action would be to delay +1 year. There could be a UASF for it, since
+there is strong user demand for CTV, but I wouldn’t personally lead the charge
+on that beyond ensuring that the BIP-119 code remains up-to-date and is
+implemented correctly.</p>
+
+<p>Assuming someone doesn’t make a bold argument that gives me or the aggregate
+current supporters of CTV pause, I plan to begin holding a fortnightly CTV
+review session to iron out any details, additional testing, code review, and
+activation plans. I would also like to help a third party host a <a href="https://bitcoincore.reviews">review
+club</a>, although the focus of Review Club is more
+educational for the reviewers as opposed to for the purpose of formally
+reviewing the code for merge.</p>
+
+<hr />
+
+<p>You’ve now reached the end of Rubin’s Bitcoin Advent Calendar, 2021! Congrats.
+<code class="language-plaintext highlighter-rouge">wc -w $(ls | grep advent)</code> tells me that means you read 50,773 words total of
+me rambling on about covenants. That’s PhD thesis length! I really hope you
+found something to enjoy.</p>
+
+<p>A special thanks to all who helped review this post in particular and provided
+feedback in ensuring I’ve done an OK job capturing the complexity of gaining
+consensus. To the extent that I haven’t succeeded in representing your
+perspectives here, I take sole responsibility for the inadequacy. Your
+constructive feedback on how to improve is welcomed. A further special thanks to
+Ryan Gentry who encouraged me to produce the series in the first place, and to
+Sarah Satoshi for her support as I battled my way through this task.</p>
+
+<p>As for me, I’m off to sip some Eggnog and eat some holiday cookies! I’ll take a
+little bit of a break, and be back in the New Year following up on next steps
+and dropping fresh content for y’all as always.</p>
+
+<p>Merry Christmas and Happy New Years,</p>
+
+<p>Jeremy</p>
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:ordo" role="doc-endnote">
+      <p>You do you though. It’d really hurt my feelings if you called me a Smelly Weasel attacking Bitcoin. <a href="#fnref:ordo" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:note" role="doc-endnote">
+      <p>Transaction Sponsorship cannot be done, as far as I understand, as a part of Simplicty. Things like that would progress independently. <a href="#fnref:note" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+    <div>
+    <h3>
+        <span style="vertical-align: text-top;">
+    
+
+<a class="twitter-share-button"
+data-size="large"
+href="https://twitter.com/intent/tweet?text=RoadMap+or+Load+o%27+Crap%3F&hashtags=Bitcoin,
+AdventCalendar,
+Covenants,
+Sapio
+"> Tweet</a>
+
+
+
+        </span>
+        <span style="vertical-align: super;">
+to continue the conversation...
+        </span>
+    </h3>
+
+    </div>
+</div>
+
+<aside class="related">
+  <h3>You might also enjoy...</h3>
+  <ul class="related-posts">
+    
+      <li>
+        <a href="/bitcoin/2022/04/17/next-steps-bip119/">
+          7 Theses on a next step for BIP-119
+          <small><time datetime="2022-04-17T00:00:00+00:00">17 Apr 2022</time></small>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/blog/2021/07/02/covenants/">
+          Templates, Eltoo, and Covenants, Oh My!
+          <small><time datetime="2021-07-02T00:00:00+00:00">02 Jul 2021</time></small>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/bitcoin/2021/12/11/advent-14/">
+          Payment Channels in a CTV+Sapio World
+          <small><time datetime="2021-12-11T00:00:00+00:00">11 Dec 2021</time></small>
+        </a>
+      </li>
+    
+  </ul>
+</aside>
+
+        </div>
+        <div class="content container" style="padding-bottom:0;padding-top:0;bottom:0px;">
+            <div class="posts" style="height:14pt;margin-bottom:0;">
+                <div class="post">
+                    <p style="text-align:center;font-size:12pt;">&copy; 2011-2021 Jeremy Rubin. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
