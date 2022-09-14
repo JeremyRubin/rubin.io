@@ -7,10 +7,11 @@ date: 2022-09-14
 hashtags: [Bitcoin]
 ---
 
-This post draws heavily from Zmnscpxj's fantastic post showing how to
-make drivechains with recursive covenants. In this post, I will show
-similar tricks that can accomplish something similar using ANYPREVOUT
-with a one time trusted setup ceremony.
+This post draws heavily from [Zmnscpxj's fantastic
+post](https://lists.linuxfoundation.org/pipermail/bitcoin-dev/2022-February/019976.html)
+showing how to make drivechains with recursive covenants. In this post, I will
+show similar tricks that can accomplish something similar using ANYPREVOUT with
+a one time trusted setup ceremony.
 
 This post presents general techniques that could be applied to many
 different types of covenant.
