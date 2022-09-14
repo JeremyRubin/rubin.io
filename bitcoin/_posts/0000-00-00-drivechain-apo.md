@@ -2,7 +2,7 @@
 comments: True
 disqusId: 65a34534ce63ddf62d5037f22efab2e8c3dbfc93
 layout: post
-title: "Spookchains: Implementing Drivechains with Trusted Setup & APO"
+title: "Spookchains: Drivechain Analog with Trusted Setup & APO"
 date: 2022-09-14
 hashtags: [Bitcoin]
 ---
