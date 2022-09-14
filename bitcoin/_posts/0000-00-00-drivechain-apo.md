@@ -18,6 +18,8 @@ different types of covenant.
 _note: I originally wrote this around May 5th, 2022, and shared it with a
 limited audience_
 
+![Spooky Chains](/public/img/bitcoin/spookchain.png)
+
 # Peano Counters
 
 The first component we need to build is a Peano counter graph. Instead
