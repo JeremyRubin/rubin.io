@@ -11,4 +11,4 @@ enable them requires the Bitcoin community to agree upon upgrades such as CTV,
 CAT, CSFS, and more.  This paper serves to demonstrate at a high level how
 covenants could be introduced to Bitcoin without a soft fork using Functional
 Encryption and Zero Knowledge Proofs.
-[Read the full paper.](https://rubin.io/public/pdfs/FED_UP_COVENANTS.pdf)
+[Read the full paper.](/public/pdfs/fedcov.pdf)
