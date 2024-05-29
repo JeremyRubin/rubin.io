@@ -1,0 +1,1998 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+  <title> Blog (page 3) &middot; Jeremy Rubin </title>
+  <link href="https://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/poole.css">
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/css/hyde.css">
+  <link rel="stylesheet" href="/public/font-awesome-4.5.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+                                 <link rel="shortcut icon" href="/public/favicon.ico">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+
+  
+  <link type="application/atom+xml" rel="alternate" href="http://rubin.io/feed.xml" title="Jeremy Rubin" />
+
+
+  <!-- GA -->
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-40376251-1', 'auto');
+    ga('send', 'pageview');
+</script>
+
+  
+  <link rel="me" href="https://twitter.com/JeremyRubin" >
+  <meta name="twitter:dnt" content="on">
+			   <script>window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
+
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+
+  return t;
+}(document, "script", "twitter-wjs"));</script>
+
+</head>
+
+    <body>
+        <div class="sidebar">
+    <h3 style="text-align: center;"> <a href="/"> Jeremy Rubin </a> </h3>
+    <div class="container">
+        <div class="sidebar-about">
+
+            <div class="sidebar-about-info"> 
+                <a href="/public/pdfs/resume.pdf"><i class="fa fa-file-text-o" title=Resume></i></a>
+                <a href=""><i class="fa fa-github" title=Github></i></a>
+                <a href="https://twitter.com/JeremyRubin"><i class="fa fa-twitter" title=Twitter></i></a>
+            </div>
+            <div class="sidebar-about-info hide-large">
+                <a class="" href="/">Home</a>
+                <a class="" href="/blog/">Blog</a>
+                <a class="" href="/talks/">Talks</a> 
+                <a class="" href="/projects/">Projects</a>
+                <a class="" href="/archive/">Site Index</a>
+            </div>
+        </div>
+
+
+
+
+        <nav class="sidebar-nav hide-small">
+            <a class="sidebar-nav-item" href="/">Home</a>
+            <a class="sidebar-nav-item" href="/blog/">Blog</a>
+            <a class="sidebar-nav-item" href="/talks/">Talks</a> 
+            <a class="sidebar-nav-item" href="/projects/">Projects</a>
+            <a class="sidebar-nav-item" href="/archive/">Site Index</a>
+        </nav>
+    </div>
+</div>
+
+
+
+        <div class="content container" style="padding-bottom:0;">
+            <div class="page">
+    
+    
+    <h1>
+  Jeremy Rubin's Blog
+</h1>
+
+Here you'll find an assorted mix of content from yours truly. I post about a lot
+of things, but primarily <a href="/bitcoin/">Bitcoin</a>.
+
+<p>
+categories: <a href="/bitcoin/">Bitcoin</a>, <a href="/shenzhen/">Shenzhen Journey</a>.
+</p>
+<div class="posts">
+  
+<hr>
+  <div class="post">
+    <h2 class="post-title">
+        <a href="/bitcoin/2021/12/19/advent-22/">
+        NFTs Part Two: Auctions, Royalties, Mints, Generative, Game Items
+      </a>
+  </h2>
+  <h4>Day 22: Rubin's Bitcoin Advent Calendar</h4>
+
+
+    <span class="post-date">19 Dec 2021</span>
+
+    <p><em>Welcome to day 22 of my Bitcoin Advent Calendar. You can see an index of all
+the posts <a href="/advent21">here</a> or subscribe at
+<a href="https://judica.org/join">judica.org/join</a> to get new posts in your inbox</em></p>
+
+<p>I promised you a few things a few days ago:</p>
+
+<ol>
+  <li>We’d see how to do royalties in a sale</li>
+  <li>We’d see how to do a Dutch auction</li>
+  <li>We’d see how to do batch mints</li>
+  <li>We’d see how to make generative art</li>
+</ol>
+
+<p>and one thing I didn’t</p>
+
+<ol>
+  <li>In game items</li>
+</ol>
+
+<p>Let’d get it done, son.</p>
+
+<hr />
+
+<h2 id="royalties-and-dutch-auction">Royalties and Dutch Auction:</h2>
+
+<p>A Dutch Auction is a theoretically beautiful form on an auction that is great for sellers.</p>
+
+<p>The way it works is that if you want to sell a piece, you start selling it at
+price that you think no one could buy it for, and then slowly lower the price.</p>
+
+<p>For example, suppose I have a car that the blue book value is $10,000 for.  I
+start by offerring it at $15,000k, and then drop it by $10 per second until
+someone buys it. After about 10 minutes, the price will be $9,000, so a pretty
+good deal. But before that, the price will be all prices between $9k and $15k.
+So if a buyer thinks the car is actually a pretty good deal at $11k, and a great
+deal at $10.5k, they would want to bid (assuming lots of bidders) at $11k lest
+someone else buy it first.</p>
+
+<p>Thus Dutch Auctions are very favorable to sellers, so natually, sellers like them.</p>
+
+<p>Let’s patch our <a href="/bitcoin/2021/12/16/advent-19/">earlier NFT System</a> to support
+Dutch Auctions! While we’re at it let’s toss in royalties too!</p>
+
+<p>First, we need to clean up a couple things about our NFT Definitions. These are
+sorta trivial changes – really if I had planned better I’d have included them
+from the get-go.</p>
+
+<p>To our Minting trait we’re going to add a few fields:</p>
+
+<ol>
+  <li>A key for the creator</li>
+  <li>A ‘royalty’ percent (0 to disable)</li>
+</ol>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">/// # Trait for a Mintable NFT</span>
+<span class="nd">#[derive(Serialize,</span> <span class="nd">JsonSchema,</span> <span class="nd">Deserialize,</span> <span class="nd">Clone)]</span>
+<span class="k">pub</span> <span class="k">struct</span> <span class="n">Mint_NFT_Trait_Version_0_1_0</span> <span class="p">{</span>
+    <span class="c">/// # Creator Key</span>
+    <span class="k">pub</span> <span class="n">creator</span><span class="p">:</span> <span class="nn">bitcoin</span><span class="p">::</span><span class="n">PublicKey</span><span class="p">,</span>
+    <span class="c">/// # Initial Owner</span>
+    <span class="c">/// The key that will own this NFT</span>
+    <span class="k">pub</span> <span class="n">owner</span><span class="p">:</span> <span class="nn">bitcoin</span><span class="p">::</span><span class="n">PublicKey</span><span class="p">,</span>
+    <span class="c">/// # Locator</span>
+    <span class="c">/// A piece of information that will instruct us where the NFT can be</span>
+    <span class="c">/// downloaded -- e.g. an IPFs Hash</span>
+    <span class="k">pub</span> <span class="n">locator</span><span class="p">:</span> <span class="nb">String</span><span class="p">,</span>
+    <span class="c">/// # Minting Module</span>
+    <span class="c">/// If a specific sub-module is to be used / known -- when in doubt, should</span>
+    <span class="c">/// be None.</span>
+    <span class="k">pub</span> <span class="n">minting_module</span><span class="p">:</span> <span class="nb">Option</span><span class="o">&lt;</span><span class="n">SapioHostAPI</span><span class="o">&lt;</span><span class="n">Mint_NFT_Trait_Version_0_1_0</span><span class="o">&gt;&gt;</span><span class="p">,</span>
+    <span class="c">/// how much royalty, should be paid, as a percent</span>
+    <span class="k">pub</span> <span class="n">royalty</span><span class="p">:</span> <span class="nb">f64</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Next, we’re going to add to our Sale trait a start time (e.g. blockheight).</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">/// # NFT Sale Trait</span>
+<span class="c">/// A trait for coordinating a sale of an NFT</span>
+<span class="nd">#[derive(Serialize,</span> <span class="nd">JsonSchema,</span> <span class="nd">Deserialize,</span> <span class="nd">Clone)]</span>
+<span class="k">pub</span> <span class="k">struct</span> <span class="n">NFT_Sale_Trait_Version_0_1_0</span> <span class="p">{</span>
+    <span class="c">/// # Owner</span>
+    <span class="c">/// The key that will own this NFT</span>
+    <span class="k">pub</span> <span class="n">sell_to</span><span class="p">:</span> <span class="nn">bitcoin</span><span class="p">::</span><span class="n">PublicKey</span><span class="p">,</span>
+    <span class="c">/// # Price</span>
+    <span class="c">/// The price in Sats</span>
+    <span class="k">pub</span> <span class="n">price</span><span class="p">:</span> <span class="n">AmountU64</span><span class="p">,</span>
+    <span class="c">/// # NFT</span>
+    <span class="c">/// The NFT's Current Info</span>
+    <span class="k">pub</span> <span class="n">data</span><span class="p">:</span> <span class="n">Mint_NFT_Trait_Version_0_1_0</span><span class="p">,</span>
+    <span class="c">/// # Sale Time</span>
+    <span class="c">/// When the sale should be possible after</span>
+    <span class="k">pub</span> <span class="n">sale_time</span><span class="p">:</span> <span class="n">AbsHeight</span><span class="p">,</span>
+    <span class="c">/// # Extra Information</span>
+    <span class="c">/// Extra information required by this contract, if any.</span>
+    <span class="c">/// Must be Optional for consumer or typechecking will fail.</span>
+    <span class="c">/// Usually None unless you know better!</span>
+    <span class="k">pub</span> <span class="n">extra</span><span class="p">:</span> <span class="nb">Option</span><span class="o">&lt;</span><span class="n">Value</span><span class="o">&gt;</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>These fields could have gone into the extra data, but since it was probably a
+mistake to not have them from the get-go we’ll allow it this time without increasing
+our version numbers (nothings been released yet!).</p>
+
+<p>Next, we’ll go ahead and create a new plugin module for our Dutch auction.</p>
+
+<p>First we define some data that we have to have for a Dutch auction:</p>
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">/// # Dutch Auction Data</span>
+<span class="c">/// Additional information required to initiate a dutch auction</span>
+<span class="nd">#[derive(JsonSchema,</span> <span class="nd">Serialize,</span> <span class="nd">Deserialize)]</span>
+<span class="k">struct</span> <span class="n">DutchAuctionData</span> <span class="p">{</span>
+    <span class="c">/// How often should we decreate the price, in blocks</span>
+    <span class="n">period</span><span class="p">:</span> <span class="nb">u16</span><span class="p">,</span>
+    <span class="c">/// what price should we start at?</span>
+    <span class="n">start_price</span><span class="p">:</span> <span class="n">AmountU64</span><span class="p">,</span>
+    <span class="c">/// what price should we stop at?</span>
+    <span class="n">min_price</span><span class="p">:</span> <span class="n">AmountU64</span><span class="p">,</span>
+    <span class="c">/// how many price decreases should we do?</span>
+    <span class="n">updates</span><span class="p">:</span> <span class="nb">u64</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Then we define how to translate that into a schedule of sale prices:</p>
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">impl</span> <span class="n">DutchAuctionData</span> <span class="p">{</span>
+    <span class="c">/// # Create a Schedule for Sale</span>
+    <span class="c">/// computes, based on a start time, the list of heights and prices</span>
+    <span class="k">fn</span> <span class="nf">create_schedule</span><span class="p">(</span>
+        <span class="o">&amp;</span><span class="k">self</span><span class="p">,</span>
+        <span class="n">start_height</span><span class="p">:</span> <span class="n">AbsHeight</span><span class="p">,</span>
+    <span class="p">)</span> <span class="k">-&gt;</span> <span class="n">Result</span><span class="o">&lt;</span><span class="nb">Vec</span><span class="o">&lt;</span><span class="p">(</span><span class="n">AbsHeight</span><span class="p">,</span> <span class="n">AmountU64</span><span class="p">)</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">CompilationError</span><span class="o">&gt;</span> <span class="p">{</span>
+        <span class="k">let</span> <span class="k">mut</span> <span class="n">start</span><span class="p">:</span> <span class="n">Amount</span> <span class="o">=</span> <span class="k">self</span><span class="py">.start_price</span><span class="nf">.into</span><span class="p">();</span>
+        <span class="k">let</span> <span class="n">stop</span><span class="p">:</span> <span class="n">Amount</span> <span class="o">=</span> <span class="k">self</span><span class="py">.min_price</span><span class="nf">.into</span><span class="p">();</span>
+        <span class="k">let</span> <span class="n">inc</span> <span class="o">=</span> <span class="p">(</span><span class="n">start</span> <span class="o">-</span> <span class="n">stop</span><span class="p">)</span> <span class="o">/</span> <span class="k">self</span><span class="py">.updates</span><span class="p">;</span>
+        <span class="k">let</span> <span class="k">mut</span> <span class="n">h</span><span class="p">:</span> <span class="nb">u32</span> <span class="o">=</span> <span class="n">start_height</span><span class="nf">.get</span><span class="p">();</span>
+        <span class="k">let</span> <span class="k">mut</span> <span class="n">sched</span> <span class="o">=</span> <span class="nd">vec!</span><span class="p">[(</span><span class="n">start_height</span><span class="p">,</span> <span class="k">self</span><span class="py">.start_price</span><span class="p">)];</span>
+        <span class="k">for</span> <span class="mi">_</span> <span class="n">in</span> <span class="mi">1</span><span class="o">..</span><span class="k">self</span><span class="py">.updates</span> <span class="p">{</span>
+            <span class="n">h</span> <span class="o">+=</span> <span class="k">self</span><span class="py">.period</span> <span class="k">as</span> <span class="nb">u32</span><span class="p">;</span>
+            <span class="n">start</span> <span class="o">-=</span> <span class="n">inc</span><span class="p">;</span>
+            <span class="n">sched</span><span class="nf">.push</span><span class="p">((</span><span class="nn">AbsHeight</span><span class="p">::</span><span class="nf">try_from</span><span class="p">(</span><span class="n">h</span><span class="p">)</span><span class="o">?</span><span class="p">,</span> <span class="n">start</span><span class="nf">.into</span><span class="p">()));</span>
+        <span class="p">}</span>
+        <span class="nf">Ok</span><span class="p">(</span><span class="n">sched</span><span class="p">)</span>
+    <span class="p">}</span>
+
+</code></pre></div></div>
+<p>Finally, we want to be able to derive this data with some default choices
+in case a user wants to not select specific parameters. Hope you liked what we pick!</p>
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="c">/// derives a default auction where the price drops every 6</span>
+    <span class="c">/// blocks (1 time per hour), from 10x to 1x the sale price specified,</span>
+    <span class="c">/// spanning a month of blocks.</span>
+    <span class="k">fn</span> <span class="nf">derive_default</span><span class="p">(</span><span class="n">main</span><span class="p">:</span> <span class="o">&amp;</span><span class="n">NFT_Sale_Trait_Version_0_1_0</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="n">Self</span> <span class="p">{</span>
+        <span class="n">DutchAuctionData</span> <span class="p">{</span>
+            <span class="c">// every 6 blocks</span>
+            <span class="n">period</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
+            <span class="n">start_price</span><span class="p">:</span> <span class="p">(</span><span class="nn">Amount</span><span class="p">::</span><span class="nf">from</span><span class="p">(</span><span class="n">main</span><span class="py">.price</span><span class="p">)</span> <span class="o">*</span> <span class="mi">10u64</span><span class="p">)</span><span class="nf">.into</span><span class="p">(),</span>
+            <span class="n">min_price</span><span class="p">:</span> <span class="n">main</span><span class="py">.price</span><span class="p">,</span>
+            <span class="c">// 144 blocks/day</span>
+            <span class="n">updates</span><span class="p">:</span> <span class="mi">144</span> <span class="o">*</span> <span class="mi">30</span> <span class="o">/</span> <span class="mi">6</span><span class="p">,</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>With the parameters for a Dutch Auction out of the way, now we can implement the
+contract logic. First, the boring stuff:</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">#[derive(JsonSchema,</span> <span class="nd">Serialize,</span> <span class="nd">Deserialize)]</span>
+<span class="k">pub</span> <span class="k">struct</span> <span class="n">NFTDutchAuction</span> <span class="p">{</span>
+    <span class="c">/// This data can be specified directly, or default derived from main</span>
+    <span class="n">extra</span><span class="p">:</span> <span class="n">DutchAuctionData</span><span class="p">,</span>
+    <span class="c">/// The main trait data</span>
+    <span class="n">main</span><span class="p">:</span> <span class="n">NFT_Sale_Trait_Version_0_1_0</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c">/// # Versions Trait Wrapper</span>
+<span class="nd">#[derive(Serialize,</span> <span class="nd">Deserialize,</span> <span class="nd">JsonSchema)]</span>
+<span class="k">enum</span> <span class="n">Versions</span> <span class="p">{</span>
+    <span class="c">/// Use the Actual Trait API</span>
+    <span class="nf">NFT_Sale_Trait_Version_0_1_0</span><span class="p">(</span><span class="n">NFT_Sale_Trait_Version_0_1_0</span><span class="p">),</span>
+    <span class="c">/// Directly Specify the Data</span>
+    <span class="nf">Exact</span><span class="p">(</span><span class="n">DutchAuctionData</span><span class="p">,</span> <span class="n">NFT_Sale_Trait_Version_0_1_0</span><span class="p">),</span>
+<span class="p">}</span>
+<span class="k">impl</span> <span class="n">Contract</span> <span class="k">for</span> <span class="n">NFTDutchAuction</span> <span class="p">{</span>
+    <span class="nd">declare!</span> <span class="p">{</span><span class="n">updatable</span><span class="o">&lt;</span><span class="p">()</span><span class="o">&gt;</span><span class="p">,</span> <span class="nn">Self</span><span class="p">::</span><span class="n">transfer</span><span class="p">}</span>
+<span class="p">}</span>
+<span class="k">fn</span> <span class="n">default_coerce</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">_</span><span class="p">:</span> <span class="n">T</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="n">Result</span><span class="o">&lt;</span><span class="p">(),</span> <span class="n">CompilationError</span><span class="o">&gt;</span> <span class="p">{</span>
+    <span class="nf">Ok</span><span class="p">(())</span>
+<span class="p">}</span>
+
+<span class="k">impl</span> <span class="n">TryFrom</span><span class="o">&lt;</span><span class="n">Versions</span><span class="o">&gt;</span> <span class="k">for</span> <span class="n">NFTDutchAuction</span> <span class="p">{</span>
+    <span class="k">type</span> <span class="n">Error</span> <span class="o">=</span> <span class="n">CompilationError</span><span class="p">;</span>
+    <span class="k">fn</span> <span class="nf">try_from</span><span class="p">(</span><span class="n">v</span><span class="p">:</span> <span class="n">Versions</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="n">Result</span><span class="o">&lt;</span><span class="n">NFTDutchAuction</span><span class="p">,</span> <span class="nn">Self</span><span class="p">::</span><span class="n">Error</span><span class="o">&gt;</span> <span class="p">{</span>
+        <span class="nf">Ok</span><span class="p">(</span><span class="k">match</span> <span class="n">v</span> <span class="p">{</span>
+            <span class="nn">Versions</span><span class="p">::</span><span class="nf">NFT_Sale_Trait_Version_0_1_0</span><span class="p">(</span><span class="n">main</span><span class="p">)</span> <span class="k">=&gt;</span> <span class="p">{</span>
+                <span class="c">// attempt to get the data from the JSON:</span>
+                <span class="c">// - if extra data, must deserialize</span>
+                <span class="c">//   - return any errors?</span>
+                <span class="c">// - if no extra data, derive.</span>
+                <span class="k">let</span> <span class="n">extra</span> <span class="o">=</span> <span class="n">main</span>
+                    <span class="py">.extra</span>
+                    <span class="nf">.clone</span><span class="p">()</span>
+                    <span class="nf">.map</span><span class="p">(</span><span class="nn">serde_json</span><span class="p">::</span><span class="n">from_value</span><span class="p">)</span>
+                    <span class="nf">.transpose</span><span class="p">()</span>
+                    <span class="nf">.map_err</span><span class="p">(|</span><span class="mi">_</span><span class="p">|</span> <span class="nn">CompilationError</span><span class="p">::</span><span class="n">TerminateCompilation</span><span class="p">)</span><span class="o">?</span>
+                    <span class="nf">.unwrap_or_else</span><span class="p">(||</span> <span class="nn">DutchAuctionData</span><span class="p">::</span><span class="nf">derive_default</span><span class="p">(</span><span class="o">&amp;</span><span class="n">main</span><span class="p">));</span>
+                <span class="n">NFTDutchAuction</span> <span class="p">{</span> <span class="n">main</span><span class="p">,</span> <span class="n">extra</span> <span class="p">}</span>
+            <span class="p">}</span>
+            <span class="nn">Versions</span><span class="p">::</span><span class="nf">Exact</span><span class="p">(</span><span class="n">extra</span><span class="p">,</span> <span class="n">main</span><span class="p">)</span> <span class="k">=&gt;</span> <span class="p">{</span>
+                <span class="k">if</span> <span class="n">extra</span><span class="py">.start_price</span> <span class="o">&lt;</span> <span class="n">extra</span><span class="py">.min_price</span> <span class="p">||</span> <span class="n">extra</span><span class="py">.period</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">||</span> <span class="n">extra</span><span class="py">.updates</span> <span class="o">==</span> <span class="mi">0</span><span class="p">{</span>
+                    <span class="c">// Nonsense</span>
+                    <span class="k">return</span> <span class="nf">Err</span><span class="p">(</span><span class="nn">CompilationError</span><span class="p">::</span><span class="n">TerminateCompilation</span><span class="p">);</span>
+                <span class="p">}</span>
+                <span class="n">NFTDutchAuction</span> <span class="p">{</span> <span class="n">main</span><span class="p">,</span> <span class="n">extra</span> <span class="p">},</span>
+            <span class="p">}</span>
+        <span class="p">})</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="nd">REGISTER!</span><span class="p">[[</span><span class="n">NFTDutchAuction</span><span class="p">,</span> <span class="n">Versions</span><span class="p">],</span> <span class="s">"logo.png"</span><span class="p">];</span>
+</code></pre></div></div>
+
+<p>Now, the fun part! Implementing it. This is basically the same as our NFTs from
+the other day, but we just do sales along the schedule we generated:</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">impl</span> <span class="n">NFTDutchAuction</span> <span class="p">{</span>
+    <span class="c">/// # signed</span>
+    <span class="c">/// sales must be signed by the current owner</span>
+    <span class="nd">#[guard]</span>
+    <span class="k">fn</span> <span class="nf">signed</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nn">Clause</span><span class="p">::</span><span class="nf">Key</span><span class="p">(</span><span class="k">self</span><span class="py">.main.data.owner</span><span class="nf">.clone</span><span class="p">())</span>
+    <span class="p">}</span>
+    <span class="c">/// # transfer</span>
+    <span class="c">/// transfer exchanges the NFT for cold hard Bitcoinz</span>
+    <span class="nd">#[continuation(guarded_by</span> <span class="nd">=</span> <span class="s">"[Self::signed]"</span><span class="nd">,</span> <span class="nd">web_api,</span> <span class="nd">coerce_args</span> <span class="nd">=</span> <span class="s">"default_coerce"</span><span class="nd">)]</span>
+    <span class="k">fn</span> <span class="nf">transfer</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">base_ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">,</span> <span class="n">u</span><span class="p">:</span> <span class="p">())</span> <span class="p">{</span>
+        <span class="k">let</span> <span class="k">mut</span> <span class="n">ret</span> <span class="o">=</span> <span class="nd">vec!</span><span class="p">[];</span>
+        <span class="k">let</span> <span class="n">schedule</span> <span class="o">=</span> <span class="k">self</span><span class="py">.extra</span><span class="nf">.create_schedule</span><span class="p">(</span><span class="k">self</span><span class="py">.main.sale_time</span><span class="p">)</span><span class="o">?</span><span class="p">;</span>
+        <span class="k">let</span> <span class="k">mut</span> <span class="n">base_ctx</span> <span class="o">=</span> <span class="n">base_ctx</span><span class="p">;</span>
+        <span class="c">// the main difference is we iterate over the schedule here</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">nth</span><span class="p">,</span> <span class="n">sched</span><span class="p">)</span> <span class="n">in</span> <span class="n">schedule</span><span class="nf">.iter</span><span class="p">()</span><span class="nf">.enumerate</span><span class="p">()</span> <span class="p">{</span>
+            <span class="k">let</span> <span class="n">ctx</span> <span class="o">=</span> <span class="n">base_ctx</span><span class="nf">.derive_num</span><span class="p">(</span><span class="n">nth</span> <span class="k">as</span> <span class="nb">u64</span><span class="p">)</span><span class="o">?</span><span class="p">;</span>
+            <span class="k">let</span> <span class="n">amt</span> <span class="o">=</span> <span class="n">ctx</span><span class="nf">.funds</span><span class="p">();</span>
+            <span class="c">// first, let's get the module that should be used to 're-mint' this NFT</span>
+            <span class="c">// to the new owner</span>
+            <span class="k">let</span> <span class="n">key</span> <span class="o">=</span> <span class="k">self</span>
+                <span class="py">.main</span>
+                <span class="py">.data</span>
+                <span class="py">.minting_module</span>
+                <span class="nf">.clone</span><span class="p">()</span>
+                <span class="nf">.ok_or</span><span class="p">(</span><span class="nn">CompilationError</span><span class="p">::</span><span class="n">TerminateCompilation</span><span class="p">)</span><span class="o">?</span>
+                <span class="py">.key</span><span class="p">;</span>
+            <span class="c">// let's make a copy of the old nft metadata..</span>
+            <span class="k">let</span> <span class="k">mut</span> <span class="n">mint_data</span> <span class="o">=</span> <span class="k">self</span><span class="py">.main.data</span><span class="nf">.clone</span><span class="p">();</span>
+            <span class="c">// and change the owner to the buyer</span>
+            <span class="n">mint_data</span><span class="py">.owner</span> <span class="o">=</span> <span class="k">self</span><span class="py">.main.sell_to</span><span class="p">;</span>
+            <span class="c">// let's now compile a new 'mint' of the NFT</span>
+            <span class="k">let</span> <span class="n">new_nft_contract</span> <span class="o">=</span> <span class="nf">Ok</span><span class="p">(</span><span class="n">CreateArgs</span> <span class="p">{</span>
+                <span class="n">context</span><span class="p">:</span> <span class="n">ContextualArguments</span> <span class="p">{</span>
+                    <span class="n">amount</span><span class="p">:</span> <span class="n">ctx</span><span class="nf">.funds</span><span class="p">(),</span>
+                    <span class="n">network</span><span class="p">:</span> <span class="n">ctx</span><span class="py">.network</span><span class="p">,</span>
+                    <span class="n">effects</span><span class="p">:</span> <span class="k">unsafe</span> <span class="p">{</span> <span class="n">ctx</span><span class="nf">.get_effects_internal</span><span class="p">()</span> <span class="p">}</span><span class="nf">.as_ref</span><span class="p">()</span><span class="nf">.clone</span><span class="p">(),</span>
+                <span class="p">},</span>
+                <span class="n">arguments</span><span class="p">:</span> <span class="nn">mint_impl</span><span class="p">::</span><span class="nn">Versions</span><span class="p">::</span><span class="nf">Mint_NFT_Trait_Version_0_1_0</span><span class="p">(</span><span class="n">mint_data</span><span class="p">),</span>
+            <span class="p">})</span>
+            <span class="nf">.and_then</span><span class="p">(</span><span class="nn">serde_json</span><span class="p">::</span><span class="n">to_value</span><span class="p">)</span>
+            <span class="nf">.map</span><span class="p">(|</span><span class="n">args</span><span class="p">|</span> <span class="nf">create_contract_by_key</span><span class="p">(</span><span class="o">&amp;</span><span class="n">key</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="nn">Amount</span><span class="p">::</span><span class="nf">from_sat</span><span class="p">(</span><span class="mi">0</span><span class="p">)))</span>
+            <span class="nf">.map_err</span><span class="p">(|</span><span class="mi">_</span><span class="p">|</span> <span class="nn">CompilationError</span><span class="p">::</span><span class="n">TerminateCompilation</span><span class="p">)</span><span class="o">?</span>
+            <span class="nf">.ok_or</span><span class="p">(</span><span class="nn">CompilationError</span><span class="p">::</span><span class="n">TerminateCompilation</span><span class="p">)</span><span class="o">?</span><span class="p">;</span>
+            <span class="c">// Now for the magic:</span>
+            <span class="c">// This is a transaction that creates at output 0 the new nft for the</span>
+            <span class="c">// person, and must add another input that pays sufficiently to pay the</span>
+            <span class="c">// prior owner an amount.</span>
+
+            <span class="c">// todo: we also could use cut-through here once implemented</span>
+            <span class="c">// todo: change seem problematic here? with a bit of work, we could handle it</span>
+            <span class="c">// cleanly if the buyer identifys an output they are spending before requesting</span>
+            <span class="c">// a purchase.</span>
+            <span class="k">let</span> <span class="n">price</span><span class="p">:</span> <span class="n">Amount</span> <span class="o">=</span> <span class="n">sched</span><span class="na">.1</span><span class="nf">.into</span><span class="p">();</span>
+            <span class="n">ret</span><span class="nf">.push</span><span class="p">(</span><span class="nf">Ok</span><span class="p">(</span><span class="n">ctx</span>
+                <span class="nf">.template</span><span class="p">()</span>
+                <span class="nf">.add_output</span><span class="p">(</span><span class="n">amt</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">new_nft_contract</span><span class="p">,</span> <span class="nb">None</span><span class="p">)</span><span class="o">?</span>
+                <span class="nf">.add_amount</span><span class="p">(</span><span class="n">price</span><span class="p">)</span>
+                <span class="nf">.add_sequence</span><span class="p">()</span>
+                <span class="c">// Pay Sale to Seller</span>
+                <span class="nf">.add_output</span><span class="p">(</span>
+                    <span class="nn">Amount</span><span class="p">::</span><span class="nf">from_btc</span><span class="p">(</span><span class="n">price</span><span class="nf">.as_btc</span><span class="p">()</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="k">self</span><span class="py">.main.data.royalty</span><span class="p">))</span><span class="o">?</span><span class="p">,</span>
+                    <span class="o">&amp;</span><span class="k">self</span><span class="py">.main.data.owner</span><span class="p">,</span>
+                    <span class="nb">None</span><span class="p">,</span>
+                <span class="p">)</span><span class="o">?</span>
+                <span class="c">// Pay Royalty to Creator</span>
+                <span class="nf">.add_output</span><span class="p">(</span>
+                    <span class="nn">Amount</span><span class="p">::</span><span class="nf">from_btc</span><span class="p">(</span><span class="n">price</span><span class="nf">.as_btc</span><span class="p">()</span> <span class="k">as</span> <span class="nb">f64</span> <span class="o">*</span> <span class="k">self</span><span class="py">.main.data.royalty</span><span class="p">)</span><span class="o">?</span><span class="p">,</span>
+                    <span class="o">&amp;</span><span class="k">self</span><span class="py">.main.data.creator</span><span class="p">,</span>
+                    <span class="nb">None</span><span class="p">,</span>
+                <span class="p">)</span><span class="o">?</span>
+                <span class="c">// only active at the set time</span>
+                <span class="nf">.set_lock_time</span><span class="p">(</span><span class="n">sched</span><span class="na">.0</span><span class="nf">.into</span><span class="p">())</span><span class="o">?</span>
+                <span class="nf">.into</span><span class="p">()))</span>
+        <span class="p">}</span>
+        <span class="nf">Ok</span><span class="p">(</span><span class="nn">Box</span><span class="p">::</span><span class="nf">new</span><span class="p">(</span><span class="n">ret</span><span class="nf">.into_iter</span><span class="p">()))</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>What’s interesting is that this contract is technically just a helper on-top of
+our earlier Sale definition. Granted, we really ought to have had the royalty
+and timelock before, but we could emulate a dutch auction by just calling the
+regular Sale contract n times with different locktimes and prices. So we didn’t
+really have to implement a standalone system for this. However, for more
+advanced or bespoke things (like sales that also mint an NFT comemorating the
+Sale itself) we’d want a bespoke module. Plus, the module makes it simple to
+ensure that the type of auction and rate of change in price is well understood.</p>
+
+<p>If desired, the <code class="language-plaintext highlighter-rouge">DutchAuctionData</code> could also have different sorts of logic for
+different price curves (e.g. Geometric, Linear, S-Curve, Custom).</p>
+
+<p>Fun!</p>
+
+<h3 id="abstract-client-verifier-auction">Abstract Client Verifier Auction</h3>
+
+<p>After an auction closes, in order for them to be able to prove to a future party
+it was made correctly, they would need to run the identical Sapio code and
+generate all possible execution price transactions.</p>
+
+<p>This is not just computationally annoying, it’s also not very “lightweight”.
+And it can lead to bugs like some bozo writing a contract which does not
+do what it says it does (and pays no royalties).</p>
+
+<p>An Abstract Client Verifier Auction could be set up as a postcondition on the 
+transactions generated by a Sale that they all be able to be re-generated by a 
+specialized template builder that just checks basic properties like “was a
+royalty paid”.</p>
+
+<p>We won’t go into detail on this here, but you could imagine patching <code class="language-plaintext highlighter-rouge">Sell</code> as follows:</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">/// # Sell Instructions</span>
+<span class="nd">#[derive(Serialize,</span> <span class="nd">Deserialize,</span> <span class="nd">JsonSchema)]</span>
+<span class="k">pub</span> <span class="k">enum</span> <span class="n">Sell</span> <span class="p">{</span>
+    <span class="c">/// # Hold</span>
+    <span class="c">/// Don't transfer this NFT</span>
+    <span class="n">Hold</span><span class="p">,</span>
+    <span class="c">/// # MakeSale</span>
+    <span class="c">/// Transfer this NFT</span>
+    <span class="n">MakeSale</span> <span class="p">{</span>
+        <span class="c">/// # Which Sale Contract to use?</span>
+        <span class="c">/// Specify a hash/name for a contract to generate the sale with.</span>
+        <span class="n">which_sale</span><span class="p">:</span> <span class="n">SapioHostAPI</span><span class="o">&lt;</span><span class="n">NFT_Sale_Trait_Version_0_1_0</span><span class="o">&gt;</span><span class="p">,</span>
+        <span class="c">/// # The information needed to create the sale</span>
+        <span class="n">sale_info</span><span class="p">:</span> <span class="n">NFT_Sale_Trait_Version_0_1_0</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="n">VerifySale</span> <span class="p">{</span>
+        <span class="n">txn</span><span class="p">:</span> <span class="nn">Bitcoin</span><span class="p">::</span><span class="n">Transaction</span> 
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>and the NFT can verify that the Sale transaction was valid according to it’s
+choice of rule (or maybe even an artist selected Verifier module).</p>
+
+<p>This might not be a huge deal / worth doing given that the Cross-Module-Call
+results for client-side validation are cacheable.</p>
+
+<h2 id="batch-mints">Batch Mints</h2>
+
+<p>Batch mints are important because they allow an artist to fairly and easily
+distribute their art. It’s really important for batch mints that the artist be
+able to disseminate a single Output + Contract info and sign it per collection.
+Even if the artist/their server has to be online to sell the work, users
+should be able to unambiguously see who got which art.</p>
+
+<p>Conceptually speaking – no code for now – Batch Mints can be done several
+ways. It really depends what the artist wants:</p>
+
+<h3 id="single-transaction">Single Transaction</h3>
+<p>Do a single transaction whereby every minted NFT has an output.</p>
+
+<ul>
+  <li>Simple!</li>
+  <li>Big all at once cost bourne by artist</li>
+  <li>No enforced “minting order”</li>
+</ul>
+
+<h3 id="annuity-of-nfts">Annuity of NFTs</h3>
+
+<p>Embed the mint contract into an Annuity where the successful auction of the ith NFT starts
+the auction of the ith+1.</p>
+
+<ul>
+  <li>Cheaper for the artist</li>
+  <li>Requires the server be online</li>
+  <li>Serial issuance piece i+1 can’t be bought till i is (buyers may clear i to get to i+1)</li>
+</ul>
+
+<h3 id="congestion-control-tree-of-nfts">Congestion Control Tree of NFTs</h3>
+
+<ul>
+  <li>Cheaper for the artist</li>
+  <li>Auctions can proceed independently for every piece</li>
+  <li>Server is required.</li>
+</ul>
+
+<h2 id="generative-art">Generative Art:</h2>
+
+<p>This concept is actually… pretty simple!</p>
+
+<p>If you want to automatic generative art, essentially all you need to do is give
+your NFT Contract (or your NFT Minting contract) some piece of state and a
+function to convert the metadata description of the NFT + a pointer to the
+transaction’s location and then you can generate a random seed for generating
+that piece via your generate_art function.</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="n">MyNFT</span><span class="p">;</span>
+
+<span class="k">impl</span> <span class="n">MyNFT</span> <span class="p">{</span>
+    <span class="k">fn</span> <span class="nf">generate_art</span><span class="p">(</span><span class="o">&amp;</span><span class="k">self</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">BlockHash</span><span class="p">,</span> <span class="n">offset</span><span class="p">:</span> <span class="nb">u64</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="nb">String</span> <span class="p">{</span>
+        <span class="cm">/*
+            Make your artz here
+        */</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>This can be fun for things like creating the entropy for input to e.g. a machine
+learning model.</p>
+
+<h2 id="bonus-updatable-nfts">Bonus: Updatable NFTs</h2>
+
+<p>Imagine you have a rare sword NFT for a videogame.</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="n">Sword</span> <span class="p">{</span>
+    <span class="n">sharpness</span><span class="p">:</span> <span class="nb">u64</span><span class="p">,</span>
+    <span class="n">kills</span><span class="p">:</span> <span class="nb">u64</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Every 10 kills you -1 sharpness, and every time you sharpen it you get +100 sharpness.</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">impl</span> <span class="n">Sword</span> <span class="p">{</span>
+    <span class="nd">#[continuation</span> <span class="nd">=</span> <span class="s">"[Self::signed]"</span><span class="nd">]</span>
+    <span class="k">fn</span> <span class="nf">sharpen</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">,</span> <span class="n">times</span><span class="p">:</span> <span class="nb">u64</span><span class="p">)</span> <span class="p">{</span>
+        <span class="cm">/*
+            Pay 1000 sats to the game dev  per time sharpened
+        */</span>
+    <span class="p">}</span>
+    <span class="nd">#[continuation</span> <span class="nd">=</span> <span class="s">"[Self::signed]"</span><span class="nd">]</span>
+    <span class="k">fn</span> <span class="nf">register_kills</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">,</span> <span class="n">headcount</span><span class="p">:</span> <span class="nb">u64</span><span class="p">)</span> <span class="p">{</span>
+        <span class="cm">/*
+            update the metadata with a commitment to v
+        */</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>These state transitions would be verified by anyone playing the game with you, using Bitcoin as the Database.</p>
+
+<h4 id="bbbbbuttt-on-chain-load">bbbbbuttt on-chain load</h4>
+
+<p>Not to sweat – simply build in to the continuation logic the ability to load in
+an attestation chain (<a href="/bitcoin/2021/12/17/advent-20/">remember those?</a>) of
+lightning invoices of you paying the game developer over LN.</p>
+
+<p>The attestation chain means that cheating would be duly punishable by loss of
+bonds. You can also log things like ‘kills’ by publishing your game record through
+the attestation chain with a signature from the other player you killed.</p>
+
+<p>Any time you move or sell your NFT you can checkpoint into the metadata a copy
+of the attestation chain “sealing” those actions.  One tweak we can make to the
+attestation chains is to require a regular “heartbeat” attestation from players
+as well as a freeze attestation.  This helps ensure that players buying an NFT
+that they have all the latest state of the item loaded and other players can
+check that there’s nothing missing.</p>
+
+<p><em>galaxy brain: what if you bake into your NFT an attestation chain spec and the
+thing you lose for lying is the item itself? And then you can do a special
+HTLC-like contract whereby you have to prove you didn’t cheat for 2 weeks before
+getting the payment from your counterparty, else they get a refund.</em></p>
+
+<hr />
+
+<p>Overall I hope this post has opened your mind up wildly about the possibilities with Bitcoin NFTs…</p>
+
+<p>I apologize I didn’t have more code ready and the post is late, but writing these posts is hard and
+I’ve been focusing on the end of the series too :)</p>
+
+
+  </div>
+<hr>
+  
+<hr>
+  <div class="post">
+    <h2 class="post-title">
+        <a href="/bitcoin/2021/12/18/advent-21/">
+        Packaging Sapio Applications
+      </a>
+  </h2>
+  <h4>Day 21: Rubin's Bitcoin Advent Calendar</h4>
+
+
+    <span class="post-date">18 Dec 2021</span>
+
+    <p><em>Welcome to day 21 of my Bitcoin Advent Calendar. You can see an index of all
+the posts <a href="/advent21">here</a> or subscribe at
+<a href="https://judica.org/join">judica.org/join</a> to get new posts in your inbox</em></p>
+
+<p>Today’s a bit of a cheat day for me – not really “new” content, but mostly
+stuff re-packaged<sup id="fnref:pun" role="doc-noteref"><a href="#fn:pun" class="footnote" rel="footnote">1</a></sup> from <a href="https://learn.sapio-lang.org">learn.sapio-lang.org</a>.</p>
+
+<p>But it belongs in the series, and is it really plagarism if I wrote it myself?</p>
+
+<hr />
+
+<p>So you’ve written a Sapio contract and you’re ready to get it out into the
+world.</p>
+
+<p>How should you release it? How should you use it?</p>
+
+<p>Today’s post covers various ways to deploy and use Sapio contracts.</p>
+
+<h4 id="note-on-open-sourcing">Note on Open Sourcing:</h4>
+<blockquote>
+  <p>In general, it is important to make the code available in an open source way,
+so others can integrate and use your contracts. Rust’s <a href="https://crates.io">crates</a>
+system provides a natural place to publish for the time being, although
+in the future we may build a Sapio specific package manager as smart contracts
+have some unique differences.</p>
+</blockquote>
+
+<h1 id="packaging-contracts-via-wasm">Packaging Contracts via WASM</h1>
+
+<p>WASM is “WebAssembly”, or a standard for producing bytecode objects that can
+be run on any platform. As the name suggests, it was originally designed for
+use in web browsers as a compiler target for any language to produce code to
+run safely from untrusted sources.</p>
+
+<p>So what’s it doing in Sapio?</p>
+
+<p>WASM is designed to be cross platform and deterministic, which makes it a great
+target for smart contracts that we want to be able to be reproduced locally. The
+determinism also enables our update system. It also makes it <em>relatively</em> safe
+to run smart contracts provided by untrusted parties as the security of the WASM
+sandbox prevents bad code from harming or infecting our system.</p>
+
+<p>Sapio Contract objects can be built into  WASM binaries very easily. The code required is basically:</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">/// MyContract must support Deserialize and JsonSchema</span>
+<span class="nd">#[derive(Deserialize,</span> <span class="nd">JsonSchema)]</span>
+<span class="k">struct</span> <span class="n">MyContract</span><span class="p">;</span>
+<span class="k">impl</span> <span class="n">Contract</span> <span class="k">for</span> <span class="n">MyContract</span><span class="p">{</span><span class="err">\</span><span class="o">*...*</span><span class="err">\</span><span class="p">};</span>
+<span class="c">/// binds to the plugin interface -- only one REGISTER macro permitted per project</span>
+<span class="nd">REGISTER!</span><span class="p">[</span><span class="n">MyContract</span><span class="p">];</span>
+</code></pre></div></div>
+
+<p>See <a href="https://github.com/sapio-lang/sapio/tree/master/plugin-example">the example</a> for more details.
+The best way to make a new plugin is just to copy that directory and update the <code class="language-plaintext highlighter-rouge">Cargo.toml</code> with a new name.</p>
+
+<p>These compiled objects require a special environment to be interacted with.
+That environment is provided by the Sapio CLI as a standalone binary. It is also
+possible to use the interface provided by the <code class="language-plaintext highlighter-rouge">sapio-wasm-plugin</code> crate to load
+a plugin from any rust codebase programmatically. Lastly, one could create
+similar bindings for another platform as long as a WASM interpreter is
+available.</p>
+
+<h2 id="cross-module-calls-cmc">Cross Module Calls (CMC)</h2>
+
+<p>The WASM Plugin Handle architecture permits one WASM plugin to call into
+another. This is incredibly powerful. What this enables one to do is to
+package Sapio contracts that are generic and can call one another either by
+hash (with effective subresource integrity) or by a nickname (providing easy
+user customizability).</p>
+
+<p>For example, suppose I was writing a standard contract component <code class="language-plaintext highlighter-rouge">C</code> which I
+publish. Then later, I develop a contract <code class="language-plaintext highlighter-rouge">B</code> which is designed to work with
+<code class="language-plaintext highlighter-rouge">C</code>. Rather than having to depend on <code class="language-plaintext highlighter-rouge">C</code>’s source code (which I may not want to
+do for various reasons – for example <code class="language-plaintext highlighter-rouge">C</code> could be a standard), I could simply
+hard code <code class="language-plaintext highlighter-rouge">C</code>’s hash into <code class="language-plaintext highlighter-rouge">B</code> and call <code class="language-plaintext highlighter-rouge">create_contract_by_key(key: &amp;[u8; 32],
+args: Value, amt: Amount)</code> to get the desired code. The plugin management system
+automatically searches for a contract plugin with that hash, and tries to call
+it with the provided JSON arguments. Using <code class="language-plaintext highlighter-rouge">create_contract(key:&amp;str,
+args:Value: amt:Amount)</code>, a nickname can be provided in which case the
+appropriate plugin is resolved by the environment. Lastly, it’s possible to use
+<code class="language-plaintext highlighter-rouge">lookup_this_module_name()</code> to resolve the currently executing modules hash for
+recursive calls. Recursive CMC calls can be helpful when you want to either
+make a contract generic, or you want a clean JSON argument interface between 
+units. It’s also possible for a contract to detect if a generic argument 
+would result in a recursive CMC and cut-through it locally.</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="n">C</span><span class="p">;</span>
+<span class="k">const</span> <span class="n">DEPENDS_ON_MODULE</span> <span class="p">:</span> <span class="p">[</span><span class="nb">u8</span><span class="p">;</span> <span class="mi">32</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">;</span><span class="mi">32</span><span class="p">];</span>
+<span class="k">impl</span> <span class="n">Contract</span> <span class="k">for</span> <span class="n">C</span> <span class="p">{</span>
+    <span class="nd">#[then]</span>
+    <span class="k">fn</span> <span class="nf">demo</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">let</span> <span class="n">amt</span> <span class="o">=</span> <span class="n">ctx</span><span class="nf">.funds</span><span class="p">()</span><span class="o">/</span><span class="mi">2</span><span class="p">;</span>
+        <span class="n">ctx</span><span class="nf">.template</span><span class="p">()</span>
+            <span class="nf">.add_output</span><span class="p">(</span><span class="n">amt</span><span class="p">,</span> <span class="o">&amp;</span><span class="nf">create_contract</span><span class="p">(</span><span class="s">"users_cold_storage"</span><span class="p">,</span> <span class="cm">/**/</span><span class="p">,</span> <span class="n">amt</span><span class="p">),</span> <span class="nb">None</span><span class="p">)</span><span class="o">?</span>
+            <span class="nf">.add_output</span><span class="p">(</span><span class="n">amt</span><span class="p">,</span> <span class="o">&amp;</span><span class="nf">create_contract_by_key</span><span class="p">(</span><span class="o">&amp;</span><span class="n">DEPENDS_ON_MODULE</span><span class="p">,</span> <span class="cm">/**/</span><span class="p">,</span> <span class="n">amt</span><span class="p">),</span> <span class="nb">None</span><span class="p">)</span><span class="o">?</span>
+            <span class="nf">.add_output</span><span class="p">(</span><span class="n">amt</span><span class="p">,</span> <span class="o">&amp;</span><span class="nf">create_contract_by_key</span><span class="p">(</span><span class="o">&amp;</span><span class="nf">lookup_this_module_name</span><span class="p">()</span><span class="nf">.unwrap</span><span class="p">(),</span> <span class="cm">/**/</span><span class="p">,</span> <span class="n">amt</span><span class="p">),</span> <span class="nb">None</span><span class="p">)</span><span class="o">?</span>
+            <span class="nf">.into</span><span class="p">()</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<h3 id="typed-calls">Typed Calls</h3>
+<p>Using JSONSchemas, plugins have a basic type system that enables run-time
+ checking for compatibility. Plugins can guarantee they implement particular
+ interfaces faithfully. These interfaces currently only support protecting the
+ call, but make no assurances about the returned value or potential errors from
+ the callee’s implementation of the trait.</p>
+
+<p>For example, suppose I want to be able to specify a provided module must
+statisfy a calling convention for batching. I define the trait
+<code class="language-plaintext highlighter-rouge">BatchingTraitVersion0_1_1</code> as follows:</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">/// A payment to a specific address</span>
+<span class="nd">#[derive(JsonSchema,</span> <span class="nd">Serialize,</span> <span class="nd">Deserialize,</span> <span class="nd">Clone)]</span>
+<span class="k">pub</span> <span class="k">struct</span> <span class="n">Payment</span> <span class="p">{</span>
+    <span class="c">/// The amount to send in sats</span>
+    <span class="k">pub</span> <span class="n">amount</span><span class="p">:</span> <span class="n">AmountU64</span><span class="p">,</span>
+    <span class="c">/// # Address</span>
+    <span class="c">/// The Address to send to</span>
+    <span class="k">pub</span> <span class="n">address</span><span class="p">:</span> <span class="n">Address</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="nd">#[derive(Serialize,</span> <span class="nd">JsonSchema,</span> <span class="nd">Deserialize,</span> <span class="nd">Clone)]</span>
+<span class="k">pub</span> <span class="k">struct</span> <span class="n">BatchingTraitVersion0_1_1</span> <span class="p">{</span>
+    <span class="k">pub</span> <span class="n">payments</span><span class="p">:</span> <span class="nb">Vec</span><span class="o">&lt;</span><span class="n">Payment</span><span class="o">&gt;</span><span class="p">,</span>
+    <span class="k">pub</span> <span class="n">feerate_per_byte</span><span class="p">:</span> <span class="n">AmountU64</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>I can then turn this into a SapioJSONTrait by implementing the trait and
+providing an “example” function.</p>
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">impl</span> <span class="n">SapioJSONTrait</span> <span class="k">for</span> <span class="n">BatchingTraitVersion0_1_1</span> <span class="p">{</span>
+    <span class="c">/// required to implement</span>
+    <span class="k">fn</span> <span class="nf">get_example_for_api_checking</span><span class="p">()</span> <span class="k">-&gt;</span> <span class="n">Value</span> <span class="p">{</span>
+        <span class="nd">#[derive(Serialize)]</span>
+        <span class="k">enum</span> <span class="n">Versions</span> <span class="p">{</span>
+            <span class="nf">BatchingTraitVersion0_1_1</span><span class="p">(</span><span class="n">BatchingTraitVersion0_1_1</span><span class="p">),</span>
+        <span class="p">}</span>
+        <span class="nn">serde_json</span><span class="p">::</span><span class="nf">to_value</span><span class="p">(</span><span class="nn">Versions</span><span class="p">::</span><span class="nf">BatchingTraitVersion0_1_1</span><span class="p">(</span>
+            <span class="n">BatchingTraitVersion0_1_1</span> <span class="p">{</span>
+                <span class="n">payments</span><span class="p">:</span> <span class="nd">vec!</span><span class="p">[],</span>
+                <span class="n">feerate_per_byte</span><span class="p">:</span> <span class="nn">Amount</span><span class="p">::</span><span class="nf">from_sat</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="nf">.into</span><span class="p">(),</span>
+            <span class="p">},</span>
+        <span class="p">))</span>
+        <span class="nf">.unwrap</span><span class="p">()</span>
+    <span class="p">}</span>
+
+    <span class="c">/// optionally, this method may be overridden directly for more advanced type checking.</span>
+    <span class="k">fn</span> <span class="nf">check_trait_implemented</span><span class="p">(</span><span class="n">api</span><span class="p">:</span> <span class="o">&amp;</span><span class="n">dyn</span> <span class="n">SapioAPIHandle</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="nb">bool</span> <span class="p">{</span>
+        <span class="nn">Self</span><span class="p">::</span><span class="nf">check_trait_implemented_inner</span><span class="p">(</span><span class="n">api</span><span class="p">)</span><span class="nf">.is_ok</span><span class="p">()</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>If a contract module can receive the example, then it is considered to have
+implemented the API. We can implement the receivers for a module as follows:</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="n">MockContract</span><span class="p">;</span>
+<span class="c">/// # Different Calling Conventions to create a Treepay</span>
+<span class="nd">#[derive(Serialize,</span> <span class="nd">Deserialize,</span> <span class="nd">JsonSchema)]</span>
+<span class="k">enum</span> <span class="n">Versions</span> <span class="p">{</span>
+    <span class="c">/// # Base</span>
+    <span class="nf">Base</span><span class="p">(</span><span class="n">MockContract</span><span class="p">),</span>
+    <span class="c">/// # Batching Trait API</span>
+    <span class="nf">BatchingTraitVersion0_1_1</span><span class="p">(</span><span class="n">BatchingTraitVersion0_1_1</span><span class="p">),</span>
+<span class="p">}</span>
+<span class="k">impl</span> <span class="n">From</span><span class="o">&lt;</span><span class="n">BatchingTraitVersion0_1_1</span><span class="o">&gt;</span> <span class="k">for</span> <span class="n">MockContract</span> <span class="p">{</span>
+    <span class="k">fn</span> <span class="nf">from</span><span class="p">(</span><span class="n">args</span><span class="p">:</span> <span class="n">BatchingTraitVersion0_1_1</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="n">Self</span> <span class="p">{</span>
+        <span class="n">MockContract</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="k">impl</span> <span class="n">From</span><span class="o">&lt;</span><span class="n">Versions</span><span class="o">&gt;</span> <span class="k">for</span> <span class="n">TreePay</span> <span class="p">{</span>
+    <span class="k">fn</span> <span class="nf">from</span><span class="p">(</span><span class="n">v</span><span class="p">:</span> <span class="n">Versions</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="n">TreePay</span> <span class="p">{</span>
+        <span class="k">match</span> <span class="n">v</span> <span class="p">{</span>
+            <span class="nn">Versions</span><span class="p">::</span><span class="nf">Base</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">=&gt;</span> <span class="n">v</span><span class="p">,</span>
+            <span class="nn">Versions</span><span class="p">::</span><span class="nf">BatchingTraitVersion0_1_1</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">=&gt;</span> <span class="n">v</span><span class="nf">.into</span><span class="p">(),</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="nd">REGISTER!</span><span class="p">[[</span><span class="n">MockContract</span><span class="p">,</span> <span class="n">Versions</span><span class="p">],</span> <span class="s">"logo.png"</span><span class="p">];</span>
+</code></pre></div></div>
+
+<p>Now <code class="language-plaintext highlighter-rouge">MockContract</code> can be called via the <code class="language-plaintext highlighter-rouge">BatchingTraitVersion0_1_1</code> trait
+interface.</p>
+
+<p>Another module in the future need only have a field
+<code class="language-plaintext highlighter-rouge">SapioHostAPI&lt;BatchingTraitVersion0_1_1&gt;</code>. This type verifies at deserialize
+time that the provided name or hash key implements the required interface(s).</p>
+
+<h3 id="future-work-on-cross-module-calls">Future Work on Cross Module Calls</h3>
+
+<ul>
+  <li><strong>Gitian Packaging:</strong> Using a gitian signed packaging distribution system
+would enable a user to set up a web-of-trust setting for their sapio compiler
+and enable fetching of sub-resources by hash if they’ve been signed by the
+appropriate parties.</li>
+  <li><strong>NameSpace Registration:</strong> A system to allow people to register names
+unambiguously would aid in ensuring no conflicts. For now, we can handle
+this using a centralized repo.</li>
+  <li><strong>Remote CMC:</strong> In some cases, we may want to make a call to a remote
+server that will call a given module for us. This might be desirable if the
+server holds sensitive material that we shouldn’t have.</li>
+  <li><strong>Polymorphic CMC:</strong> currently, CMC’s only return the <code class="language-plaintext highlighter-rouge">Compiled</code> type. Perhaps
+future <code class="language-plaintext highlighter-rouge">CMC</code> support can return arbitrary types, allowing other types of
+functionality to be packaged. For example, it would be great if a <code class="language-plaintext highlighter-rouge">guard</code> clause
+could be generated just from a separate WASM module.</li>
+</ul>
+
+<h1 id="what-if-i-dont-want-wasm">What if I don’t <em>want</em> WASM?</h1>
+
+<p>Well, ngmi. JK. Kinda.</p>
+
+<p>You <em>do</em> really want WASM. You very much want your contracts to be
+deterministically compiled.  If they are not, then a lot of things are not
+guaranteed to work correctly and you might lose funds.</p>
+
+<p>We’re very focused on run-in WASM and not focused on other things.</p>
+
+<p>That said, Sapio is just a Rust library, so you can embed your contracts
+into an application directly, e.g., for an embedded signing device.</p>
+
+<p>If you do this it is paramount that you carefully audit and check that you are
+able to get consistent deterministic results out, or that you do not need to be
+able to deterministically recompile (this is true in many cases!) and can save
+the compilation result.</p>
+
+<p>Another technique you can use is to build a bigger application around a contract
+and then compile <em>that</em> to a WASM blob. Also works fine if you’re careful not
+to accidentally add some entropy.</p>
+
+<hr />
+
+<p>That’s all folks. In sum: Sapio is using WASM, you can choose to not use it at
+your own peril.</p>
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:pun" role="doc-endnote">
+      <p>pun certainly intended. <a href="#fnref:pun" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+  </div>
+<hr>
+  
+<hr>
+  <div class="post">
+    <h2 class="post-title">
+        <a href="/bitcoin/2021/12/17/advent-20/">
+        Oracles, Bonds, and Attestation Chains
+      </a>
+  </h2>
+  <h4>Day 20: Rubin's Bitcoin Advent Calendar</h4>
+
+
+    <span class="post-date">17 Dec 2021</span>
+
+    <p><em>Welcome to day 20 of my Bitcoin Advent Calendar. You can see an index of all
+the posts <a href="/advent21">here</a> or subscribe at
+<a href="https://judica.org/join">judica.org/join</a> to get new posts in your inbox</em></p>
+
+<p>Today’s post is going to be a bit lighter weight than yesterday’s. We’ll cover
+some high level concepts around oracles and then look at some Sapio.</p>
+
+<p>The genesis of this line of inquiry was a conversation with Robin Linus that led to
+a pretty cool <a href="https://coins.github.io/stakechains.pdf">whitepaper</a>, so definitely
+read that if you find this post compelling.</p>
+
+<hr />
+
+<h1 id="oracles">Oracles</h1>
+
+<p>Oracles are cool! The most basic form of an useful bitcoin oracle is just a
+signing key that signs transactions or reveals information that it “should”
+according to some rule.</p>
+
+<p>Protocols for oracles like discrete log contract oracles produce more generic
+“key material reveals”, that are more similar to releasing information that
+allows counterparties to decrypt the relevant signature.</p>
+
+<p>One of the problems with oracles is that they can equivocate, that is, sign
+multiple conflicting statements.  It would be nice if we could esnure that they
+would be consistent, no?</p>
+
+<h1 id="bonded-oracles">Bonded Oracles</h1>
+
+<p>In order to make the oracles consistent, what we can do is set up our oracles
+such that if the oracle ever signs two statements they reveal their private key
+to the world. The common way that this is done is via <em>nonce reuse</em>, which is
+essentially a way that you can extract a private key from a signature on
+messages m1 and m2 using the same nonce r1.</p>
+
+<p>While revealing a key might be punishment enough, we can do one better. We can
+require that if a nonce is leaked, meaning some statement was equivocated, then
+a some bitcoin protected by that key can be ‘stolen’ by anyone.</p>
+
+<p>But this form is a little problematic, for a few reasons. Reason one is that the
+oracle could cancel their bond and take it back while there are still contracts
+settling with their data that they then equivocate on.</p>
+
+<p>The other issue is that the funds in the punishment could be claimed by anyone,
+including a miner or the oracle themselves, and especially if oracles are also miners!</p>
+
+<p>To fix the first issue, we need to lock up the fund for e.g. 2 weeks and only
+use the oracle for the first week to permit 1 week gap in closing. This creates a 
+new issue that bonds are always expiring, but maybe that’s OK.</p>
+
+<p>To fix the second issue, we need a way of restricting where the funds go to definitely
+be out of reach of any bad guys, e.g. burned.</p>
+
+<h2 id="ctv-fixes-this">CTV Fixes This.</h2>
+
+<p>If you had checktemplateverify, you could stipulate that a
+bonded oracle must initiate a bond redemption on chain, at which point anyone
+can challenge it if they know the key and they are guaranteed sufficient time
+to post a challenge.</p>
+
+<p>The second fix is that CTV can stipulate that the funds <em>must</em> be burned by
+sending to an OP_RETURN, not released to miners (which would be problematic if a
+miner was also an oracle).</p>
+
+<p>Now our oracle is ready to sign all sorts of stuff, and we can make sure that
+for a given Nonce we never sign two conflicting statements.</p>
+
+<h1 id="dlcs">DLCs?</h1>
+
+<p>We can now use this type of oracle for a DLC protocol. We just create the contract
+and then we sign+reveal using our staking key whatever messages are required. Any cheating,
+and anyone who detects it can burn our money.</p>
+
+<h1 id="attestation-chains">Attestation Chains</h1>
+
+<p>One of the other cools things we can do with our Bonded oracle is to sign a chain of
+attestations.</p>
+
+<p>For example, we could sign message 1, and then sign message 2, and then sign message 3.</p>
+
+<p>We can turn this into a “blockchain” of sorts if when we sign m2 we include a
+hash of m1, and when we sign m3 we include a hash of m3.</p>
+
+<p>But we can go a step further. If we’re careful, we can set it up so that
+‘branching’ on any message in the chain (by equivocating/producing a conflicting
+statement) leaks the key of the bonded oracle with a trick I (think?) I came up
+with. Here’s roughly how it works:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>message 1: INIT with PK K, nonce R1 for m2, 1 BTC at risk in output X
+message 2: SIGN with K, R1 H(m1), nonce R2 for m3
+message 3: SIGN with K, R2 H(m1), nonce R3 for m4
+</code></pre></div></div>
+
+<p>If the oracle were to ever branch, it would look like this:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>message 1: INIT with PK K, nonce R1, 1 BTC at risk in output X
+message 2: SIGN with K, R1 H(m1), nonce R2
+message 3: SIGN with K, R2 H(m2), nonce R3
+message 3': SIGN with K, R2 H(m3), nonce R3'
+</code></pre></div></div>
+
+<p>The leak would be able to extract K’s secret key via the reuse of R2.</p>
+
+<p>While it might seem that you could ‘get away with it’, because we verify at each
+step that the last used nonce was from the prior step it cannot be forged. The
+commitment to <code class="language-plaintext highlighter-rouge">H(mi)</code> also makes it more difficult for an invalid signature to
+float around since from just the top you can know what all the other states
+should be.</p>
+
+<h2 id="proof-of-stake">Proof of Stake?</h2>
+
+<p>Essentially we’ve built a system for proof-of-stake on Bitcoin. Imagine you have
+100BTC locked up in these contracts across 127 instances, and you want to run
+some system based on it.</p>
+
+<p>You can just download the message signed at state Mn and see what the majority
+of signers voted for that slot.</p>
+
+<p>Any signer who cheats gets their funds burned, and you’d learn to exclude them
+from consensus.</p>
+
+<p>If you do need to have a ‘rollback’, you can do it by engineering your protocol
+to allow new updates to the chain of signatures to produce a rollback.</p>
+
+<h3 id="partial-slashing">Partial Slashing</h3>
+<p>You can even implement partial slashing. Suppose you have 10 coins in a contract under
+key K1. If a cheat is detected, it authorizes a txn which burns 2 and puts the
+remaining 8 into key K2. The next round of slashing could put 6.4 under K3.</p>
+
+<h1 id="alternatives-to-burning">Alternatives to Burning</h1>
+
+<p>Burning sats is sad. What if instead of a burn, coins went into an annuity that
+would be claimable 100 years from now? That way, no economic agents around today
+can plan to cheat and capture the value of it, but the burned coins can serve a
+real function. While this is slightly less secure than a full burn, it’s also
+more secure since it creates an incentive to continue to build the chain.</p>
+
+<p>Or donate to a well known chairty address/developer fund :p</p>
+
+<hr />
+
+<h1 id="implementing-a-staked-signer">Implementing a Staked Signer</h1>
+
+<p>To begin, we’ll define some ‘type tags’. This is a technique in rust where we
+define empty structs that let us build a little state machine in the type
+system. You can read more on the technique
+<a href="https://learn.sapio-lang.org/ch08-01-state-machines.html">here</a>.</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">/// # Operational State</span>
+<span class="c">/// State where stakes should be recognized for voting</span>
+<span class="nd">#[derive(JsonSchema,</span> <span class="nd">Deserialize)]</span>
+<span class="k">pub</span> <span class="k">struct</span> <span class="n">Operational</span><span class="p">;</span>
+<span class="c">/// # Closing State</span>
+<span class="c">/// State where stakes are closing and waiting evidence of misbehavior</span>
+<span class="nd">#[derive(JsonSchema,</span> <span class="nd">Deserialize)]</span>
+<span class="k">struct</span> <span class="n">Closing</span><span class="p">;</span>
+<span class="c">/// # Staking States (Operational, Closing)</span>
+<span class="c">/// enum trait for states</span>
+<span class="k">pub</span> <span class="k">trait</span> <span class="n">StakingState</span> <span class="p">{}</span>
+<span class="k">impl</span> <span class="n">StakingState</span> <span class="k">for</span> <span class="n">Operational</span> <span class="p">{}</span>
+<span class="k">impl</span> <span class="n">StakingState</span> <span class="k">for</span> <span class="n">Closing</span> <span class="p">{}</span>
+</code></pre></div></div>
+
+<p>Next, we’ll define an interface that an implementation of a Staked Signer should
+implement:</p>
+
+<p>By default something that is declared is given a default not-present implementation.</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">/// Functional Interface for Staking Contracts</span>
+<span class="k">pub</span> <span class="k">trait</span> <span class="n">StakerInterface</span>
+<span class="k">where</span>
+    <span class="n">Self</span><span class="p">:</span> <span class="n">Sized</span><span class="p">,</span>
+<span class="p">{</span>
+    <span class="nd">decl_guard!</span><span class="p">(</span>
+        <span class="c">/// The key used to sign messages</span>
+        <span class="n">staking_key</span>
+    <span class="p">);</span>
+    <span class="nd">decl_guard!</span><span class="p">(</span>
+        <span class="c">/// the clause to begin a close process</span>
+        <span class="n">begin_redeem_key</span>
+    <span class="p">);</span>
+    <span class="nd">decl_guard!</span><span class="p">(</span>
+        <span class="c">/// the clause to finish a close process</span>
+        <span class="n">finish_redeem_key</span>
+    <span class="p">);</span>
+    <span class="nd">decl_then!</span><span class="p">(</span>
+        <span class="c">/// The transition from Operational to Closing</span>
+        <span class="n">begin_redeem</span>
+    <span class="p">);</span>
+
+    <span class="c">/// Why would anyone ever cheat!!</span>
+    <span class="nd">#[then(guarded_by</span> <span class="nd">=</span> <span class="s">"[Self::staking_key]"</span><span class="nd">)]</span>
+    <span class="k">fn</span> <span class="nf">cheated</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="nn">sapio</span><span class="p">::</span><span class="n">Context</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">let</span> <span class="n">f</span> <span class="o">=</span> <span class="n">ctx</span><span class="nf">.funds</span><span class="p">();</span>
+        <span class="n">ctx</span><span class="nf">.template</span><span class="p">()</span>
+            <span class="c">// commit to metadata here for convenience, but really could be anywhere!</span>
+            <span class="c">// exercise for reader: what if we plugged in another instance of StakerInterface</span>
+            <span class="c">// that:</span>
+            <span class="c">// 1. switches to a new, unburned key</span>
+            <span class="c">// 2. pays 80% to the new StakerInterface</span>
+            <span class="c">// 3. pays 20% to an annuity that pays miners over e.g. 1000 blocks</span>
+            <span class="c">//    at some point in the far future.</span>
+            <span class="nf">.add_output</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="o">&amp;</span><span class="nn">Compiled</span><span class="p">::</span><span class="nf">from_op_return</span><span class="p">(</span><span class="o">&amp;</span><span class="k">self</span><span class="py">.data</span><span class="nf">.as_inner</span><span class="p">()[</span><span class="o">..</span><span class="p">])</span><span class="o">?</span><span class="p">,</span> <span class="nb">None</span><span class="p">)</span><span class="o">?</span>
+            <span class="nf">.into</span><span class="p">()</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c">/// We can delcare the Contract impl for all valid Staker&lt;T&gt;</span>
+<span class="k">impl</span><span class="o">&lt;</span><span class="n">T</span><span class="p">:</span> <span class="nv">'static</span> <span class="o">+</span> <span class="n">StakingState</span><span class="o">&gt;</span> <span class="n">Contract</span> <span class="k">for</span> <span class="n">Staker</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span>
+<span class="k">where</span>
+    <span class="n">Staker</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">:</span> <span class="n">StakerInterface</span><span class="p">,</span>
+    <span class="n">T</span><span class="p">:</span> <span class="n">StakingState</span><span class="p">,</span>
+<span class="p">{</span>
+    <span class="nd">declare!</span> <span class="p">{</span><span class="n">then</span><span class="p">,</span> <span class="nn">Self</span><span class="p">::</span><span class="n">begin_redeem</span><span class="p">,</span> <span class="nn">Self</span><span class="p">::</span><span class="n">cheated</span><span class="p">}</span>
+    <span class="nd">declare!</span> <span class="p">{</span><span class="n">finish</span><span class="p">,</span> <span class="nn">Self</span><span class="p">::</span><span class="n">finish_redeem_key</span><span class="p">}</span>
+    <span class="nd">declare!</span> <span class="p">{</span><span class="n">non</span> <span class="n">updatable</span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Next, we’ll define the data required for our staker:</p>
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">/// # Staker: A Bonded Signing Contract</span>
+<span class="c">/// Staker is a contract that proceeds from Operational -&gt; Closing</span>
+<span class="c">/// During it's lifetime, many things can be signed with signing_key,</span>
+<span class="c">/// but should the key ever leak (e.g., via nonce reuse) the bonded</span>
+<span class="c">/// funds can be burned.</span>
+<span class="c">///</span>
+<span class="c">/// Burning is important v.s. miner fee because otherwise the staker</span>
+<span class="c">/// can bribe (or be a miner themselves) to cheat.</span>
+<span class="nd">#[derive(JsonSchema,</span> <span class="nd">Deserialize)]</span>
+<span class="k">pub</span> <span class="k">struct</span> <span class="n">Staker</span><span class="o">&lt;</span><span class="n">T</span><span class="p">:</span> <span class="n">StakingState</span><span class="o">&gt;</span> <span class="p">{</span>
+    <span class="c">/// # Timeout</span>
+    <span class="c">/// How long to wait for evidence after closing</span>
+    <span class="n">timeout</span><span class="p">:</span> <span class="n">AnyRelTimeLock</span><span class="p">,</span>
+    <span class="c">/// # Signing Key</span>
+    <span class="c">/// The key that if leaked can burn funds</span>
+    <span class="n">signing_key</span><span class="p">:</span> <span class="n">PublicKey</span><span class="p">,</span>
+    <span class="c">/// # Redemption Key</span>
+    <span class="c">/// The key that will be used to control &amp; return the redeemed funds</span>
+    <span class="n">redeeming_key</span><span class="p">:</span> <span class="n">PublicKey</span><span class="p">,</span>
+    <span class="c">/// # Data</span>
+    <span class="c">/// Arbitrary hash of metadata that is needed to start the attestation chain</span>
+    <span class="n">data</span><span class="p">:</span> <span class="nn">sha256</span><span class="p">::</span><span class="n">Hash</span><span class="p">,</span>
+    <span class="c">/// current contract state.</span>
+    <span class="nd">#[serde(skip,</span> <span class="nd">default)]</span>
+    <span class="n">state</span><span class="p">:</span> <span class="n">PhantomData</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Next, we’ll define the StakerInterface when our channel is operational. At this phase,
+funds can either be burnt or the redeeming key can start the process of withdrawing.</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">impl</span> <span class="n">StakerInterface</span> <span class="k">for</span> <span class="n">Staker</span><span class="o">&lt;</span><span class="n">Operational</span><span class="o">&gt;</span> <span class="p">{</span>
+    <span class="c">/// redeeming key</span>
+    <span class="nd">#[guard]</span>
+    <span class="k">fn</span> <span class="nf">begin_redeem_key</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="mi">_</span><span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nn">Clause</span><span class="p">::</span><span class="nf">Key</span><span class="p">(</span><span class="k">self</span><span class="py">.redeeming_key</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="c">/// begin redemption process</span>
+    <span class="nd">#[then(guarded_by</span> <span class="nd">=</span> <span class="s">"[Self::begin_redeem_key]"</span><span class="nd">)]</span>
+    <span class="k">fn</span> <span class="nf">begin_redeem</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="nn">sapio</span><span class="p">::</span><span class="n">Context</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">let</span> <span class="n">f</span> <span class="o">=</span> <span class="n">ctx</span><span class="nf">.funds</span><span class="p">();</span>
+        <span class="n">ctx</span><span class="nf">.template</span><span class="p">()</span>
+            <span class="nf">.add_output</span><span class="p">(</span>
+                <span class="n">f</span><span class="p">,</span>
+                <span class="o">&amp;</span><span class="nn">Staker</span><span class="p">::</span><span class="o">&lt;</span><span class="n">Closing</span><span class="o">&gt;</span> <span class="p">{</span>
+                    <span class="n">state</span><span class="p">:</span> <span class="nn">Default</span><span class="p">::</span><span class="nf">default</span><span class="p">(),</span>
+                    <span class="n">timeout</span><span class="p">:</span> <span class="k">self</span><span class="py">.timeout</span><span class="p">,</span>
+                    <span class="n">signing_key</span><span class="p">:</span> <span class="k">self</span><span class="py">.signing_key</span><span class="p">,</span>
+                    <span class="n">redeeming_key</span><span class="p">:</span> <span class="k">self</span><span class="py">.redeeming_key</span><span class="p">,</span>
+                <span class="p">},</span>
+                <span class="nb">None</span><span class="p">,</span>
+            <span class="p">)</span><span class="o">?</span>
+            <span class="nf">.into</span><span class="p">()</span>
+    <span class="p">}</span>
+    <span class="c">/// staking key</span>
+    <span class="nd">#[guard]</span>
+    <span class="k">fn</span> <span class="nf">staking_key</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="mi">_</span><span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nn">Clause</span><span class="p">::</span><span class="nf">Key</span><span class="p">(</span><span class="k">self</span><span class="py">.signing_key</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Lastly, for closing we should not be able to “loop” back into Closing or
+Operational, so we do not implement the <code class="language-plaintext highlighter-rouge">begin_redeem</code> logic.</p>
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">impl</span> <span class="n">StakerInterface</span> <span class="k">for</span> <span class="n">Staker</span><span class="o">&lt;</span><span class="n">Closing</span><span class="o">&gt;</span> <span class="p">{</span>
+    <span class="nd">#[guard]</span>
+    <span class="k">fn</span> <span class="nf">finish_redeem_key</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="mi">_</span><span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nn">Clause</span><span class="p">::</span><span class="nf">And</span><span class="p">(</span><span class="nd">vec!</span><span class="p">[</span><span class="nn">Clause</span><span class="p">::</span><span class="nf">Key</span><span class="p">(</span><span class="k">self</span><span class="py">.redeeming_key</span><span class="p">),</span> <span class="k">self</span><span class="py">.timeout</span><span class="nf">.into</span><span class="p">()])</span>
+    <span class="p">}</span>
+    <span class="nd">#[guard]</span>
+    <span class="k">fn</span> <span class="nf">staking_key</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="mi">_</span><span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nn">Clause</span><span class="p">::</span><span class="nf">Key</span><span class="p">(</span><span class="k">self</span><span class="py">.signing_key</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="attestation-chain">Attestation Chain</h2>
+
+<p>In order to start the attestation chain, the <code class="language-plaintext highlighter-rouge">data</code> field should be the hash of something like:</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="n">AttestationStart</span> <span class="p">{</span>
+    <span class="c">/// # Nonce</span>
+    <span class="c">/// a nonce element</span>
+    <span class="n">first_nonce</span><span class="p">:</span> <span class="p">[</span><span class="mi">0u8</span><span class="p">;</span> <span class="mi">32</span><span class="p">],</span>
+    <span class="c">/// # Key</span>
+    <span class="c">/// the key to sign with (for convenience, should match the StakedSigner's</span>
+    <span class="c">/// staking key)</span>
+    <span class="n">key</span><span class="p">:</span> <span class="n">PublicKey</span><span class="p">,</span>
+    <span class="c">/// # Purpose</span>
+    <span class="c">/// useful to have some sort of description (machine readable) of what this attestor</span>
+    <span class="c">/// is signing for</span>
+    <span class="n">purpose</span><span class="p">:</span> <span class="nb">Vec</span><span class="o">&lt;</span><span class="nb">u8</span><span class="o">&gt;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>To start using the attestation chain, we build a linked list of <code class="language-plaintext highlighter-rouge">Attest</code>
+signatures as described below:</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">enum</span> <span class="nb">Either</span><span class="o">&lt;</span><span class="n">T</span><span class="p">,</span> <span class="n">U</span><span class="o">&gt;</span> <span class="p">{</span>
+    <span class="nf">Left</span><span class="p">(</span><span class="n">T</span><span class="p">),</span>
+    <span class="nf">Right</span><span class="p">(</span><span class="n">U</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="k">struct</span> <span class="n">Attest</span> <span class="p">{</span>
+    <span class="c">/// # Signature</span>
+    <span class="c">/// the signature over the below data fields</span>
+    <span class="n">sig</span><span class="p">:</span> <span class="n">Signature</span><span class="p">,</span>
+    <span class="c">/// # Message</span>
+    <span class="c">/// whatever info the protocol expects to be signed</span>
+    <span class="n">message</span><span class="p">:</span> <span class="nb">Vec</span><span class="o">&lt;</span><span class="nb">u8</span><span class="o">&gt;</span><span class="p">,</span>
+    <span class="c">/// # Nonce</span>
+    <span class="c">/// a nonce element</span>
+    <span class="n">next_nonce</span><span class="p">:</span> <span class="p">[</span><span class="mi">0u8</span><span class="p">;</span> <span class="mi">32</span><span class="p">],</span>
+    <span class="c">/// # Height</span>
+    <span class="c">/// what # signature is this</span>
+    <span class="n">height</span><span class="p">:</span> <span class="nb">u64</span><span class="p">,</span>
+    <span class="c">/// # Previous Attestation</span>
+    <span class="c">/// the last attestation. we either keep a hash or the actual value</span>
+    <span class="n">prev</span><span class="p">:</span> <span class="nb">Either</span><span class="o">&lt;</span><span class="n">Hash</span><span class="p">,</span> <span class="nb">Either</span><span class="o">&lt;</span><span class="nb">Box</span><span class="o">&lt;</span><span class="n">Attest</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">AttestationStart</span><span class="o">&gt;&gt;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>It would be possible – but perhaps overkill – to instead encode this structure
+as a Sapio contract with <code class="language-plaintext highlighter-rouge">continuation</code> branches. I’ll leave that as an exercise
+for the reader for now!</p>
+
+<h1 id="galaxy-brain-time">Galaxy Brain Time</h1>
+
+<p>What if we used this staked signer to coordinate a decentralized mining pool
+where the stakers sign off on work shares they have seen…</p>
+
+<h1 id="thats-all-folks">That’s All Folks!</h1>
+
+  </div>
+<hr>
+  
+<hr>
+  <div class="post">
+    <h2 class="post-title">
+        <a href="/bitcoin/2021/12/16/advent-19/">
+        Part One: Implementing NFTs in Sapio
+      </a>
+  </h2>
+  <h4>Day 19: Rubin's Bitcoin Advent Calendar</h4>
+
+
+    <span class="post-date">16 Dec 2021</span>
+
+    <p><em>Welcome to day 19 of my Bitcoin Advent Calendar. You can see an index of all
+the posts <a href="/advent21">here</a> or subscribe at
+<a href="https://judica.org/join">judica.org/join</a> to get new posts in your inbox</em></p>
+
+<p>For today’s post we’re going to build out some Sapio NFT protocols that are
+client-side verifiable. Today we’ll focus on code, tomorrow we’ll do more
+discussion and showing how they work. I was sick last night (minor burrito
+oriented food poisoning suspected) and so I got behind, hence this post being up
+late.</p>
+
+<p>As usual, the disclaimer that as I’ve been behind… so we’re less focused today
+on correctness and more focused on giving you the shape of the idea. In other
+words, I’m almost positive it won’t work properly, but it <em>can</em> compile! And the
+general flow looks correct.</p>
+
+<p>There’s also a couple new concepts I want to adopt as I’ve been working on this,
+so those are things that will have to happen as I refine this idea to be
+production grade.</p>
+
+<hr />
+
+<p>Before we start, let’s get an eagle-eye view of the ‘system’ we’re going to be
+building, because it represents multiple modules and logical components.</p>
+
+<p>By the end, we’ll have 5 separate things:</p>
+
+<ol>
+  <li>An Abstract NFT Interface</li>
+  <li>An Abstract Sellable Interface</li>
+  <li>An Abstract Sale Interface</li>
+  <li>A Concrete Sellable NFT (Simple NFT)</li>
+  <li>A Concrete Sale Interface (Simple NFT Sale)</li>
+</ol>
+
+<p><img src="/public/img/bitcoin/advent/nft-diagram.jpg" alt="" /></p>
+
+<p>In words:</p>
+
+<p>Simple NFT implements both <code class="language-plaintext highlighter-rouge">NFT</code> and <code class="language-plaintext highlighter-rouge">Sellable</code>, and has a <code class="language-plaintext highlighter-rouge">sell</code> function that
+can be called with any Sale module.</p>
+
+<p>Simple NFT Sale implements <code class="language-plaintext highlighter-rouge">Sale</code>, and can be used with the <code class="language-plaintext highlighter-rouge">sell</code> of anything
+that implements <code class="language-plaintext highlighter-rouge">Sellable</code> and <code class="language-plaintext highlighter-rouge">NFT</code>.</p>
+
+<p>We can make other implementations of <code class="language-plaintext highlighter-rouge">Sale</code> and <code class="language-plaintext highlighter-rouge">NFT</code> and they should be
+compatible.</p>
+
+<h2 id="hows-it-going-to-work">How’s it going to ‘work’?</h2>
+
+<p>Essentially how this is going to work do is</p>
+
+<ol>
+  <li>An artist mint an NFT.</li>
+  <li>The artist can sell it to anyone whose bids the artist accepts</li>
+</ol>
+
+<p>Normally, in Ethereum NFTs, you could do something for step 2:</p>
+<ul>
+  <li>The artist signs “anyone can buy at this price”</li>
+</ul>
+
+<p>with Bitcoin NFTs, it’s a little different. The artist has to run a server that
+accepts bids above the owner’s current price threshold and returns signed
+under-funded transaction that would pay the owner the asking price.
+Alternatively, the bidder can send an open-bid that the owner can fill
+immediately.</p>
+
+<p>Because Sapio is super-duper cool, we can make abstract interfaces for this
+stuff so that NFTs can have lots of neat features like enforcing royalties,
+dutch auction prices, batch minting, generative art minting, and more. We’ll see
+a bit more tomorrow.</p>
+
+<p>Client validation is central to this story. A lot of the rules are <em>not</em>
+enforced by the Bitcoin blockchain. They are, however, enforced by requiring
+that the ‘auditor’ be able to re-reach the same identical contract state by
+re-compiling the entire contract from the start. I.e., as long as you generate
+all your state transitions through Sapio, you can verify that an NFT is
+‘authentic’.  Of course, anyone can ‘burn’ an NFT if they want by sending e.g.
+to an unknown key.  Client side validation just posits that sending to an
+unknown key is ‘on the same level’ of error as corrupting an NFT by doing state
+transitions without having the corresponding ‘witness’ of sapio effects to
+generate the transfer.</p>
+
+<p>Please re-read this section after you get throught the code (I’ll remind you).</p>
+<hr />
+
+<h1 id="declaring-an-nft-minting-interface">Declaring an NFT Minting Interface</h1>
+
+<p>First we are going to declare the basic information for a NFT.</p>
+
+<p>Every NFT should have a owner (PublicKey) and a locator (some url, IPFS hash,
+etc).</p>
+
+<p>NFTs also should track which Sapio module was used to mint them, to ensure
+compatibility going forward. If it’s not known, modules can try to fill it in
+and guess (e.g., a good gues is “this module”).</p>
+
+<p>Let’s put that to code:</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">/// # Trait for a Mintable NFT</span>
+<span class="nd">#[derive(Serialize,</span> <span class="nd">JsonSchema,</span> <span class="nd">Deserialize,</span> <span class="nd">Clone)]</span>
+<span class="k">pub</span> <span class="k">struct</span> <span class="n">Mint_NFT_Trait_Version_0_1_0</span> <span class="p">{</span>
+    <span class="c">/// # Initial Owner</span>
+    <span class="c">/// The key that will own this NFT</span>
+    <span class="k">pub</span> <span class="n">owner</span><span class="p">:</span> <span class="nn">bitcoin</span><span class="p">::</span><span class="n">PublicKey</span><span class="p">,</span>
+    <span class="c">/// # Locator</span>
+    <span class="c">/// A piece of information that will instruct us where the NFT can be</span>
+    <span class="c">/// downloaded -- e.g. an IPFs Hash</span>
+    <span class="k">pub</span> <span class="n">locator</span><span class="p">:</span> <span class="nb">String</span><span class="p">,</span>
+    <span class="c">/// # Minting Module</span>
+    <span class="c">/// If a specific sub-module is to be used / known -- when in doubt, should</span>
+    <span class="c">/// be None.</span>
+    <span class="k">pub</span> <span class="n">minting_module</span><span class="p">:</span> <span class="nb">Option</span><span class="o">&lt;</span><span class="n">SapioHostAPI</span><span class="o">&lt;</span><span class="n">Mint_NFT_Trait_Version_0_1_0</span><span class="o">&gt;&gt;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c">/// Boilerplate for the Mint trait</span>
+<span class="k">pub</span> <span class="k">mod</span> <span class="n">mint_impl</span> <span class="p">{</span>
+    <span class="k">use</span> <span class="nn">super</span><span class="p">::</span><span class="o">*</span><span class="p">;</span>
+    <span class="nd">#[derive(Serialize,</span> <span class="nd">Deserialize,</span> <span class="nd">JsonSchema)]</span>
+    <span class="k">pub</span> <span class="k">enum</span> <span class="n">Versions</span> <span class="p">{</span>
+        <span class="nf">Mint_NFT_Trait_Version_0_1_0</span><span class="p">(</span><span class="n">Mint_NFT_Trait_Version_0_1_0</span><span class="p">),</span>
+    <span class="p">}</span>
+    <span class="c">/// we must provide an example!</span>
+    <span class="k">impl</span> <span class="n">SapioJSONTrait</span> <span class="k">for</span> <span class="n">Mint_NFT_Trait_Version_0_1_0</span> <span class="p">{</span>
+        <span class="k">fn</span> <span class="nf">get_example_for_api_checking</span><span class="p">()</span> <span class="k">-&gt;</span> <span class="n">Value</span> <span class="p">{</span>
+            <span class="k">let</span> <span class="n">key</span> <span class="o">=</span> <span class="s">"02996fe4ed5943b281ca8cac92b2d0761f36cc735820579da355b737fb94b828fa"</span><span class="p">;</span>
+            <span class="k">let</span> <span class="n">ipfs_hash</span> <span class="o">=</span> <span class="s">"bafkreig7r2tdlwqxzlwnd7aqhkkvzjqv53oyrkfnhksijkvmc6k57uqk6a"</span><span class="p">;</span>
+            <span class="nn">serde_json</span><span class="p">::</span><span class="nf">to_value</span><span class="p">(</span><span class="nn">mint_impl</span><span class="p">::</span><span class="nn">Versions</span><span class="p">::</span><span class="nf">Mint_NFT_Trait_Version_0_1_0</span><span class="p">(</span>
+                <span class="n">Mint_NFT_Trait_Version_0_1_0</span> <span class="p">{</span>
+                    <span class="n">owner</span><span class="p">:</span> <span class="nn">bitcoin</span><span class="p">::</span><span class="nn">PublicKey</span><span class="p">::</span><span class="nf">from_str</span><span class="p">(</span><span class="n">key</span><span class="p">)</span><span class="nf">.unwrap</span><span class="p">(),</span>
+                    <span class="n">locator</span><span class="p">:</span> <span class="n">ipfs_hash</span><span class="nf">.into</span><span class="p">(),</span>
+                    <span class="n">minting_module</span><span class="p">:</span> <span class="nb">None</span><span class="p">,</span>
+                <span class="p">},</span>
+            <span class="p">))</span>
+            <span class="nf">.unwrap</span><span class="p">()</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Shaweeeeet! We have an NFT Minting Interface!</p>
+
+<p>But you can’t actually use it to Mint yet, since we lack an Implementation.</p>
+
+<p>Before we implement it…</p>
+<h1 id="what-are-nfts-good-for-selling-sales-interface">What are NFTs Good For? Selling! (Sales Interface)</h1>
+
+<p>If you have an NFT, you probably will want to sell it in the future. Let’s
+declare a sales interface.</p>
+
+<p>To sell an NFT we need to know:</p>
+
+<ol>
+  <li>Who currently owns it</li>
+  <li>Who is buying it</li>
+  <li>What they are paying for it</li>
+  <li>Maybe some extra stuff</li>
+</ol>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="c">/// # NFT Sale Trait</span>
+<span class="c">/// A trait for coordinating a sale of an NFT</span>
+<span class="nd">#[derive(Serialize,</span> <span class="nd">JsonSchema,</span> <span class="nd">Deserialize,</span> <span class="nd">Clone)]</span>
+<span class="k">pub</span> <span class="k">struct</span> <span class="n">NFT_Sale_Trait_Version_0_1_0</span> <span class="p">{</span>
+    <span class="c">/// # Owner</span>
+    <span class="c">/// The key that will own this NFT</span>
+    <span class="k">pub</span> <span class="n">sell_to</span><span class="p">:</span> <span class="nn">bitcoin</span><span class="p">::</span><span class="n">PublicKey</span><span class="p">,</span>
+    <span class="c">/// # Price</span>
+    <span class="c">/// The price in Sats</span>
+    <span class="k">pub</span> <span class="n">price</span><span class="p">:</span> <span class="n">AmountU64</span><span class="p">,</span>
+    <span class="c">/// # NFT</span>
+    <span class="c">/// The NFT's Current Info</span>
+    <span class="k">pub</span> <span class="n">data</span><span class="p">:</span> <span class="n">Mint_NFT_Trait_Version_0_1_0</span><span class="p">,</span>
+    <span class="c">/// # Extra Information</span>
+    <span class="c">/// Extra information required by this contract, if any.</span>
+    <span class="c">/// Must be Optional for consumer or typechecking will fail.</span>
+    <span class="c">/// Usually None unless you know better!</span>
+    <span class="k">pub</span> <span class="n">extra</span><span class="p">:</span> <span class="nb">Option</span><span class="o">&lt;</span><span class="n">Value</span><span class="o">&gt;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c">/// Boilerplate for the Sale trait</span>
+<span class="k">pub</span> <span class="k">mod</span> <span class="n">sale_impl</span> <span class="p">{</span>
+    <span class="k">use</span> <span class="nn">super</span><span class="p">::</span><span class="o">*</span><span class="p">;</span>
+    <span class="nd">#[derive(Serialize,</span> <span class="nd">Deserialize,</span> <span class="nd">JsonSchema)]</span>
+    <span class="k">pub</span> <span class="k">enum</span> <span class="n">Versions</span> <span class="p">{</span>
+        <span class="c">/// # Batching Trait API</span>
+        <span class="nf">NFT_Sale_Trait_Version_0_1_0</span><span class="p">(</span><span class="n">NFT_Sale_Trait_Version_0_1_0</span><span class="p">),</span>
+    <span class="p">}</span>
+    <span class="k">impl</span> <span class="n">SapioJSONTrait</span> <span class="k">for</span> <span class="n">NFT_Sale_Trait_Version_0_1_0</span> <span class="p">{</span>
+        <span class="k">fn</span> <span class="nf">get_example_for_api_checking</span><span class="p">()</span> <span class="k">-&gt;</span> <span class="n">Value</span> <span class="p">{</span>
+            <span class="k">let</span> <span class="n">key</span> <span class="o">=</span> <span class="s">"02996fe4ed5943b281ca8cac92b2d0761f36cc735820579da355b737fb94b828fa"</span><span class="p">;</span>
+            <span class="k">let</span> <span class="n">ipfs_hash</span> <span class="o">=</span> <span class="s">"bafkreig7r2tdlwqxzlwnd7aqhkkvzjqv53oyrkfnhksijkvmc6k57uqk6a"</span><span class="p">;</span>
+            <span class="nn">serde_json</span><span class="p">::</span><span class="nf">to_value</span><span class="p">(</span><span class="nn">sale_impl</span><span class="p">::</span><span class="nn">Versions</span><span class="p">::</span><span class="nf">NFT_Sale_Trait_Version_0_1_0</span><span class="p">(</span>
+                <span class="n">NFT_Sale_Trait_Version_0_1_0</span> <span class="p">{</span>
+                    <span class="n">sell_to</span><span class="p">:</span> <span class="nn">bitcoin</span><span class="p">::</span><span class="nn">PublicKey</span><span class="p">::</span><span class="nf">from_str</span><span class="p">(</span><span class="n">key</span><span class="p">)</span><span class="nf">.unwrap</span><span class="p">(),</span>
+                    <span class="n">price</span><span class="p">:</span> <span class="nn">Amount</span><span class="p">::</span><span class="nf">from_sat</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="nf">.into</span><span class="p">(),</span>
+                    <span class="n">data</span><span class="p">:</span> <span class="n">Mint_NFT_Trait_Version_0_1_0</span> <span class="p">{</span>
+                        <span class="n">owner</span><span class="p">:</span> <span class="nn">bitcoin</span><span class="p">::</span><span class="nn">PublicKey</span><span class="p">::</span><span class="nf">from_str</span><span class="p">(</span><span class="n">key</span><span class="p">)</span><span class="nf">.unwrap</span><span class="p">(),</span>
+                        <span class="n">locator</span><span class="p">:</span> <span class="n">ipfs_hash</span><span class="nf">.into</span><span class="p">(),</span>
+                        <span class="n">minting_module</span><span class="p">:</span> <span class="nb">None</span><span class="p">,</span>
+                    <span class="p">},</span>
+                    <span class="n">extra</span><span class="p">:</span> <span class="nb">None</span><span class="p">,</span>
+                <span class="p">},</span>
+            <span class="p">))</span>
+            <span class="nf">.unwrap</span><span class="p">()</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+<p>That’s the interface for the contract that <em>sells</em> the NFTs. We also need an
+interface for NFTs that want to initiate a sale.</p>
+
+<p>To do that, we need to know:</p>
+
+<ol>
+  <li>What kind of sale we are doing</li>
+  <li>The data for that sale</li>
+</ol>
+
+<p>This is really just expressing that we need to bind a NFT Sale Implementation to
+our contract. We can express the sale interface as follows.</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+
+<span class="c">/// # Sellable NFT Function</span>
+<span class="c">/// If a NFT should be sellable, it should have this trait implemented.</span>
+<span class="k">pub</span> <span class="k">trait</span> <span class="n">SellableNFT</span><span class="p">:</span> <span class="n">Contract</span> <span class="p">{</span>
+    <span class="nd">decl_continuation!</span> <span class="p">{</span><span class="o">&lt;</span><span class="n">web</span><span class="o">=</span><span class="p">{}</span><span class="o">&gt;</span> <span class="n">sell</span><span class="o">&lt;</span><span class="n">Sell</span><span class="o">&gt;</span><span class="p">}</span>
+<span class="p">}</span>
+<span class="c">/// # Sell Instructions</span>
+<span class="nd">#[derive(Serialize,</span> <span class="nd">Deserialize,</span> <span class="nd">JsonSchema)]</span>
+<span class="k">pub</span> <span class="k">enum</span> <span class="n">Sell</span> <span class="p">{</span>
+    <span class="c">/// # Hold</span>
+    <span class="c">/// Don't transfer this NFT</span>
+    <span class="n">Hold</span><span class="p">,</span>
+    <span class="c">/// # MakeSale</span>
+    <span class="c">/// Transfer this NFT</span>
+    <span class="n">MakeSale</span> <span class="p">{</span>
+        <span class="c">/// # Which Sale Contract to use?</span>
+        <span class="c">/// Specify a hash/name for a contract to generate the sale with.</span>
+        <span class="n">which_sale</span><span class="p">:</span> <span class="n">SapioHostAPI</span><span class="o">&lt;</span><span class="n">NFT_Sale_Trait_Version_0_1_0</span><span class="o">&gt;</span><span class="p">,</span>
+        <span class="c">/// # The information needed to create the sale</span>
+        <span class="n">sale_info</span><span class="p">:</span> <span class="n">NFT_Sale_Trait_Version_0_1_0</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">}</span>
+<span class="k">impl</span> <span class="n">Default</span> <span class="k">for</span> <span class="n">Sell</span> <span class="p">{</span>
+    <span class="k">fn</span> <span class="nf">default</span><span class="p">()</span> <span class="k">-&gt;</span> <span class="n">Sell</span> <span class="p">{</span>
+        <span class="nn">Sell</span><span class="p">::</span><span class="n">Hold</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="k">impl</span> <span class="n">StatefulArgumentsTrait</span> <span class="k">for</span> <span class="n">Sell</span> <span class="p">{}</span>
+</code></pre></div></div>
+
+<h1 id="getting-concrete-making-an-nft">Getting Concrete: Making an NFT</h1>
+
+<p>Let’s create a really simple NFT now that implements these interfaces.</p>
+
+<p>There’s a bit of boilerplate, so we’ll go section-by-section.</p>
+
+<p>First, let’s declare the SimpleNFT</p>
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">/// # SimpleNFT</span>
+<span class="c">/// A really simple NFT... not much too it!</span>
+<span class="nd">#[derive(JsonSchema,</span> <span class="nd">Serialize,</span> <span class="nd">Deserialize)]</span>
+<span class="k">pub</span> <span class="k">struct</span> <span class="n">SimpleNFT</span> <span class="p">{</span>
+    <span class="c">/// The minting data, and nothing else.</span>
+    <span class="n">data</span><span class="p">:</span> <span class="n">Mint_NFT_Trait_Version_0_1_0</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c">/// # The SimpleNFT Contract</span>
+<span class="k">impl</span> <span class="n">Contract</span> <span class="k">for</span> <span class="n">SimpleNFT</span> <span class="p">{</span>
+    <span class="c">// NFTs... only good for selling?</span>
+    <span class="nd">declare!</span> <span class="p">{</span><span class="n">updatable</span><span class="o">&lt;</span><span class="n">Sell</span><span class="o">&gt;</span><span class="p">,</span> <span class="nn">Self</span><span class="p">::</span><span class="n">sell</span><span class="p">}</span>
+    <span class="c">// embeds metadata</span>
+    <span class="nd">declare!</span> <span class="p">{</span><span class="n">then</span><span class="p">,</span> <span class="nn">Self</span><span class="p">::</span><span class="n">metadata_txns</span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>First, let’s implement the logic for selling the NFT… You remember our old
+friend the Sales interface?</p>
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">impl</span> <span class="n">SimpleNFT</span> <span class="p">{</span>
+    <span class="c">/// # signed</span>
+    <span class="c">/// Get the current owners signature.</span>
+    <span class="nd">#[guard]</span>
+    <span class="k">fn</span> <span class="nf">signed</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nn">Clause</span><span class="p">::</span><span class="nf">Key</span><span class="p">(</span><span class="k">self</span><span class="py">.data.owner</span><span class="nf">.clone</span><span class="p">())</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="k">fn</span> <span class="nf">default_coerce</span><span class="p">(</span><span class="n">k</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">SimpleNFT</span> <span class="k">as</span> <span class="n">Contract</span><span class="o">&gt;</span><span class="p">::</span><span class="n">StatefulArguments</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="n">Result</span><span class="o">&lt;</span><span class="n">Sell</span><span class="p">,</span> <span class="n">CompilationError</span><span class="o">&gt;</span> <span class="p">{</span>
+    <span class="nf">Ok</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="k">impl</span> <span class="n">SellableNFT</span> <span class="k">for</span> <span class="n">SimpleNFT</span> <span class="p">{</span>
+    <span class="nd">#[continuation(guarded_by</span> <span class="nd">=</span> <span class="s">"[Self::signed]"</span><span class="nd">,</span> <span class="nd">web_api,</span> <span class="nd">coerce_args</span> <span class="nd">=</span> <span class="s">"default_coerce"</span><span class="nd">)]</span>
+    <span class="k">fn</span> <span class="nf">sell</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">,</span> <span class="n">sale</span><span class="p">:</span> <span class="n">Sell</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="k">let</span> <span class="nn">Sell</span><span class="p">::</span><span class="n">MakeSale</span> <span class="p">{</span>
+            <span class="n">sale_info</span><span class="p">,</span>
+            <span class="n">which_sale</span><span class="p">,</span>
+        <span class="p">}</span> <span class="o">=</span> <span class="n">sale</span>
+        <span class="p">{</span>
+            <span class="c">// if we're selling...</span>
+            <span class="k">if</span> <span class="n">sale_info</span><span class="py">.data.owner</span> <span class="o">!=</span> <span class="k">self</span><span class="py">.data.owner</span> <span class="p">{</span>
+                <span class="c">// Hmmm... metadata mismatch! the current owner does not</span>
+                <span class="c">// matched the sale's claimed owner.</span>
+                <span class="k">return</span> <span class="nf">Err</span><span class="p">(</span><span class="nn">CompilationError</span><span class="p">::</span><span class="n">TerminateCompilation</span><span class="p">);</span>
+            <span class="p">}</span>
+            <span class="c">// create a contract from the sale API passed in</span>
+            <span class="k">let</span> <span class="n">compiled</span> <span class="o">=</span> <span class="nf">Ok</span><span class="p">(</span><span class="n">CreateArgs</span> <span class="p">{</span>
+                <span class="n">context</span><span class="p">:</span> <span class="n">ContextualArguments</span> <span class="p">{</span>
+                    <span class="n">amount</span><span class="p">:</span> <span class="n">ctx</span><span class="nf">.funds</span><span class="p">(),</span>
+                    <span class="n">network</span><span class="p">:</span> <span class="n">ctx</span><span class="py">.network</span><span class="p">,</span>
+                    <span class="n">effects</span><span class="p">:</span> <span class="k">unsafe</span> <span class="p">{</span> <span class="n">ctx</span><span class="nf">.get_effects_internal</span><span class="p">()</span> <span class="p">}</span><span class="nf">.as_ref</span><span class="p">()</span><span class="nf">.clone</span><span class="p">(),</span>
+                <span class="p">},</span>
+                <span class="n">arguments</span><span class="p">:</span> <span class="nn">sale_impl</span><span class="p">::</span><span class="nn">Versions</span><span class="p">::</span><span class="nf">NFT_Sale_Trait_Version_0_1_0</span><span class="p">(</span><span class="n">sale_info</span><span class="nf">.clone</span><span class="p">()),</span>
+            <span class="p">})</span>
+            <span class="nf">.map</span><span class="p">(</span><span class="nn">serde_json</span><span class="p">::</span><span class="n">to_value</span><span class="p">)</span>
+            <span class="c">// use the sale API we passed in</span>
+            <span class="nf">.map</span><span class="p">(|</span><span class="n">args</span><span class="p">|</span> <span class="nf">create_contract_by_key</span><span class="p">(</span><span class="o">&amp;</span><span class="n">which_sale</span><span class="py">.key</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="nn">Amount</span><span class="p">::</span><span class="nf">from_sat</span><span class="p">(</span><span class="mi">0</span><span class="p">)))</span>
+            <span class="c">// handle errors...</span>
+            <span class="nf">.map_err</span><span class="p">(|</span><span class="mi">_</span><span class="p">|</span> <span class="nn">CompilationError</span><span class="p">::</span><span class="n">TerminateCompilation</span><span class="p">)</span><span class="o">?</span>
+            <span class="nf">.ok_or</span><span class="p">(</span><span class="nn">CompilationError</span><span class="p">::</span><span class="n">TerminateCompilation</span><span class="p">)</span><span class="o">?</span><span class="p">;</span>
+            <span class="c">// send to this sale!</span>
+            <span class="k">let</span> <span class="k">mut</span> <span class="n">builder</span> <span class="o">=</span> <span class="n">ctx</span><span class="nf">.template</span><span class="p">();</span>
+            <span class="c">// todo: we need to cut-through the compiled contract address, but this</span>
+            <span class="c">// upgrade to Sapio semantics will come Soon™.</span>
+            <span class="n">builder</span> <span class="o">=</span> <span class="n">builder</span><span class="nf">.add_output</span><span class="p">(</span><span class="n">compiled</span><span class="py">.amount_range</span><span class="nf">.max</span><span class="p">(),</span> <span class="o">&amp;</span><span class="n">compiled</span><span class="p">,</span> <span class="nb">None</span><span class="p">)</span><span class="o">?</span><span class="p">;</span>
+            <span class="n">builder</span><span class="nf">.into</span><span class="p">()</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="c">/// Don't do anything if we're holding!</span>
+            <span class="nf">empty</span><span class="p">()</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Next, let’s implement the metadata logic. There are a million ways to do metadata,
+so feel free to ‘skip’ this section and just let your mind wander on interesting 
+things you could do here…</p>
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">impl</span> <span class="n">SimpleNFT</span> <span class="p">{</span>
+    <span class="c">/// # unspendable</span>
+    <span class="c">/// what? This is just a sneaky way of making a provably unspendable branch</span>
+    <span class="c">/// (since the preimage of [0u8; 32] hash can never be found). We use that to</span>
+    <span class="c">/// help us embed metadata inside of our contract...</span>
+    <span class="nd">#[guard]</span>
+    <span class="k">fn</span> <span class="nf">unspendable</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nn">Clause</span><span class="p">::</span><span class="nf">Sha256</span><span class="p">(</span><span class="nn">sha256</span><span class="p">::</span><span class="nn">Hash</span><span class="p">::</span><span class="nf">from_inner</span><span class="p">([</span><span class="mi">0u8</span><span class="p">;</span> <span class="mi">32</span><span class="p">]))</span>
+    <span class="p">}</span>
+    <span class="c">/// # Metadata TXNs</span>
+    <span class="c">/// This metadata TXN is provably unspendable because it is guarded</span>
+    <span class="c">/// by `Self::unspendable`. Neat!</span>
+    <span class="c">/// Here, we simple embed a OP_RETURN.</span>
+    <span class="c">/// But you could imagine tracking (&amp; client side validating)</span>
+    <span class="c">/// an entire tree of transactions based on state transitions with these</span>
+    <span class="c">/// transactions... in a future post, we'll see more!</span>
+    <span class="nd">#[then(guarded_by</span> <span class="nd">=</span> <span class="s">"[Self::unspendable]"</span><span class="nd">)]</span>
+    <span class="k">fn</span> <span class="nf">metadata_txns</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">ctx</span><span class="nf">.template</span><span class="p">()</span>
+            <span class="nf">.add_output</span><span class="p">(</span>
+                <span class="nn">Amount</span><span class="p">::</span><span class="n">ZERO</span><span class="p">,</span>
+                <span class="o">&amp;</span><span class="nn">Compiled</span><span class="p">::</span><span class="nf">from_op_return</span><span class="p">(</span>
+                    <span class="o">&amp;</span><span class="nn">sha256</span><span class="p">::</span><span class="nn">Hash</span><span class="p">::</span><span class="nf">hash</span><span class="p">(</span><span class="o">&amp;</span><span class="k">self</span><span class="py">.data.locator</span><span class="nf">.as_bytes</span><span class="p">())</span><span class="nf">.as_inner</span><span class="p">()[</span><span class="o">..</span><span class="p">],</span>
+                <span class="p">)</span><span class="o">?</span><span class="p">,</span>
+                <span class="nb">None</span><span class="p">,</span>
+            <span class="p">)</span><span class="o">?</span>
+            <span class="c">// note: what if we also comitted to the hash of the wasm module</span>
+            <span class="c">// compiling this contract?</span>
+            <span class="nf">.into</span><span class="p">()</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Lastly, some icky boilerplate stuff:</p>
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">#[derive(Serialize,</span> <span class="nd">Deserialize,</span> <span class="nd">JsonSchema)]</span>
+<span class="k">enum</span> <span class="n">Versions</span> <span class="p">{</span>
+    <span class="nf">Mint_NFT_Trait_Version_0_1_0</span><span class="p">(</span><span class="n">Mint_NFT_Trait_Version_0_1_0</span><span class="p">),</span>
+<span class="p">}</span>
+
+<span class="k">impl</span> <span class="n">TryFrom</span><span class="o">&lt;</span><span class="n">Versions</span><span class="o">&gt;</span> <span class="k">for</span> <span class="n">SimpleNFT</span> <span class="p">{</span>
+    <span class="k">type</span> <span class="n">Error</span> <span class="o">=</span> <span class="n">CompilationError</span><span class="p">;</span>
+    <span class="k">fn</span> <span class="nf">try_from</span><span class="p">(</span><span class="n">v</span><span class="p">:</span> <span class="n">Versions</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="n">Result</span><span class="o">&lt;</span><span class="n">Self</span><span class="p">,</span> <span class="nn">Self</span><span class="p">::</span><span class="n">Error</span><span class="o">&gt;</span> <span class="p">{</span>
+        <span class="k">let</span> <span class="nn">Versions</span><span class="p">::</span><span class="nf">Mint_NFT_Trait_Version_0_1_0</span><span class="p">(</span><span class="k">mut</span> <span class="n">data</span><span class="p">)</span> <span class="o">=</span> <span class="n">v</span><span class="p">;</span>
+        <span class="k">let</span> <span class="n">this</span> <span class="o">=</span> <span class="nn">LookupFrom</span><span class="p">::</span><span class="n">This</span>
+            <span class="nf">.try_into</span><span class="p">()</span>
+            <span class="nf">.map_err</span><span class="p">(|</span><span class="mi">_</span><span class="p">|</span> <span class="nn">CompilationError</span><span class="p">::</span><span class="n">TerminateCompilation</span><span class="p">)</span><span class="o">?</span><span class="p">;</span>
+        <span class="k">match</span> <span class="n">data</span><span class="py">.minting_module</span> <span class="p">{</span>
+            <span class="c">// if no module is provided, it must be this module!</span>
+            <span class="nb">None</span> <span class="k">=&gt;</span> <span class="p">{</span>
+                <span class="n">data</span><span class="py">.minting_module</span> <span class="o">=</span> <span class="nf">Some</span><span class="p">(</span><span class="n">this</span><span class="p">);</span>
+                <span class="nf">Ok</span><span class="p">(</span><span class="n">SimpleNFT</span> <span class="p">{</span> <span class="n">data</span> <span class="p">})</span>
+            <span class="p">}</span>
+            <span class="c">// if a module is provided, we have no idea what to do...</span>
+            <span class="c">// unless the module is this module itself!</span>
+            <span class="nf">Some</span><span class="p">(</span><span class="k">ref</span> <span class="n">module</span><span class="p">)</span> <span class="k">if</span> <span class="n">module</span><span class="py">.key</span> <span class="o">==</span> <span class="n">this</span><span class="py">.key</span> <span class="k">=&gt;</span> <span class="nf">Ok</span><span class="p">(</span><span class="n">SimpleNFT</span> <span class="p">{</span> <span class="n">data</span> <span class="p">}),</span>
+            <span class="mi">_</span> <span class="k">=&gt;</span> <span class="nf">Err</span><span class="p">(</span><span class="nn">CompilationError</span><span class="p">::</span><span class="n">TerminateCompilation</span><span class="p">),</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="nd">REGISTER!</span><span class="p">[[</span><span class="n">SimpleNFT</span><span class="p">,</span> <span class="n">Versions</span><span class="p">],</span> <span class="s">"logo.png"</span><span class="p">];</span>
+</code></pre></div></div>
+
+<p>Right on! Now we have made a NFT Implementation. We can Mint one, but wait.</p>
+
+<p>How do we sell it?</p>
+
+<h1 id="we-need-a-nft-sale-implementation">We need a NFT Sale Implementation</h1>
+
+<p>So let’s do it. In today’s post, we’ll implement the most boring lame ass Sale…</p>
+
+<p>Tomorrow we’ll do more fun stuff, I swear.</p>
+
+<p>First, let’s get our boring declarations out of the way:</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="c">/// # Simple NFT Sale</span>
+<span class="c">/// A Sale which simply transfers the NFT for a fixed price.</span>
+<span class="nd">#[derive(JsonSchema,</span> <span class="nd">Serialize,</span> <span class="nd">Deserialize)]</span>
+<span class="k">pub</span> <span class="k">struct</span> <span class="nf">SimpleNFTSale</span><span class="p">(</span><span class="n">NFT_Sale_Trait_Version_0_1_0</span><span class="p">);</span>
+
+<span class="c">/// # Versions Trait Wrapper</span>
+<span class="nd">#[derive(Serialize,</span> <span class="nd">Deserialize,</span> <span class="nd">JsonSchema)]</span>
+<span class="k">enum</span> <span class="n">Versions</span> <span class="p">{</span>
+    <span class="c">/// # Batching Trait API</span>
+    <span class="nf">NFT_Sale_Trait_Version_0_1_0</span><span class="p">(</span><span class="n">NFT_Sale_Trait_Version_0_1_0</span><span class="p">),</span>
+<span class="p">}</span>
+<span class="k">impl</span> <span class="n">Contract</span> <span class="k">for</span> <span class="n">SimpleNFTSale</span> <span class="p">{</span>
+    <span class="nd">declare!</span> <span class="p">{</span><span class="n">updatable</span><span class="o">&lt;</span><span class="p">()</span><span class="o">&gt;</span><span class="p">,</span> <span class="nn">Self</span><span class="p">::</span><span class="n">transfer</span><span class="p">}</span>
+<span class="p">}</span>
+<span class="k">fn</span> <span class="n">default_coerce</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">_</span><span class="p">:</span> <span class="n">T</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="n">Result</span><span class="o">&lt;</span><span class="p">(),</span> <span class="n">CompilationError</span><span class="o">&gt;</span> <span class="p">{</span>
+    <span class="nf">Ok</span><span class="p">(())</span>
+<span class="p">}</span>
+<span class="k">impl</span> <span class="n">From</span><span class="o">&lt;</span><span class="n">Versions</span><span class="o">&gt;</span> <span class="k">for</span> <span class="n">SimpleNFTSale</span> <span class="p">{</span>
+    <span class="k">fn</span> <span class="nf">from</span><span class="p">(</span><span class="n">v</span><span class="p">:</span> <span class="n">Versions</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="n">SimpleNFTSale</span> <span class="p">{</span>
+        <span class="k">let</span> <span class="nn">Versions</span><span class="p">::</span><span class="nf">NFT_Sale_Trait_Version_0_1_0</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">=</span> <span class="n">v</span><span class="p">;</span>
+        <span class="nf">SimpleNFTSale</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="nd">REGISTER!</span><span class="p">[[</span><span class="n">SimpleNFTSale</span><span class="p">,</span> <span class="n">Versions</span><span class="p">],</span> <span class="s">"logo.png"</span><span class="p">];</span>
+</code></pre></div></div>
+
+<p>Now, onto the logic of a sale!</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+
+<span class="k">impl</span> <span class="n">SimpleNFTSale</span> <span class="p">{</span>
+    <span class="c">/// # signed</span>
+    <span class="c">/// sales must be signed by the current owner</span>
+    <span class="nd">#[guard]</span>
+    <span class="k">fn</span> <span class="nf">signed</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nn">Clause</span><span class="p">::</span><span class="nf">Key</span><span class="p">(</span><span class="k">self</span><span class="na">.0</span><span class="py">.data.owner</span><span class="nf">.clone</span><span class="p">())</span>
+    <span class="p">}</span>
+    <span class="c">/// # transfer</span>
+    <span class="c">/// transfer exchanges the NFT for cold hard Bitcoinz</span>
+    <span class="nd">#[continuation(guarded_by</span> <span class="nd">=</span> <span class="s">"[Self::signed]"</span><span class="nd">,</span> <span class="nd">web_api,</span> <span class="nd">coerce_args</span> <span class="nd">=</span> <span class="s">"default_coerce"</span><span class="nd">)]</span>
+    <span class="k">fn</span> <span class="nf">transfer</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">,</span> <span class="n">u</span><span class="p">:</span> <span class="p">())</span> <span class="p">{</span>
+        <span class="k">let</span> <span class="n">amt</span> <span class="o">=</span> <span class="n">ctx</span><span class="nf">.funds</span><span class="p">();</span>
+        <span class="c">// first, let's get the module that should be used to 're-mint' this NFT</span>
+        <span class="c">// to the new owner</span>
+        <span class="k">let</span> <span class="n">key</span> <span class="o">=</span> <span class="k">self</span>
+            <span class="na">.0</span>
+            <span class="py">.data</span>
+            <span class="py">.minting_module</span>
+            <span class="nf">.clone</span><span class="p">()</span>
+            <span class="nf">.ok_or</span><span class="p">(</span><span class="nn">CompilationError</span><span class="p">::</span><span class="n">TerminateCompilation</span><span class="p">)</span><span class="o">?</span>
+            <span class="py">.key</span><span class="p">;</span>
+        <span class="c">// let's make a copy of the old nft metadata..</span>
+        <span class="k">let</span> <span class="k">mut</span> <span class="n">mint_data</span> <span class="o">=</span> <span class="k">self</span><span class="na">.0</span><span class="py">.data</span><span class="nf">.clone</span><span class="p">();</span>
+        <span class="c">// and change the owner to the buyer</span>
+        <span class="n">mint_data</span><span class="py">.owner</span> <span class="o">=</span> <span class="k">self</span><span class="na">.0</span><span class="py">.sell_to</span><span class="p">;</span>
+        <span class="c">// let's now compile a new 'mint' of the NFT</span>
+        <span class="k">let</span> <span class="n">new_nft_contract</span> <span class="o">=</span> <span class="nf">Ok</span><span class="p">(</span><span class="n">CreateArgs</span> <span class="p">{</span>
+            <span class="n">context</span><span class="p">:</span> <span class="n">ContextualArguments</span> <span class="p">{</span>
+                <span class="n">amount</span><span class="p">:</span> <span class="n">ctx</span><span class="nf">.funds</span><span class="p">(),</span>
+                <span class="n">network</span><span class="p">:</span> <span class="n">ctx</span><span class="py">.network</span><span class="p">,</span>
+                <span class="n">effects</span><span class="p">:</span> <span class="k">unsafe</span> <span class="p">{</span> <span class="n">ctx</span><span class="nf">.get_effects_internal</span><span class="p">()</span> <span class="p">}</span><span class="nf">.as_ref</span><span class="p">()</span><span class="nf">.clone</span><span class="p">(),</span>
+            <span class="p">},</span>
+            <span class="n">arguments</span><span class="p">:</span> <span class="nn">mint_impl</span><span class="p">::</span><span class="nn">Versions</span><span class="p">::</span><span class="nf">Mint_NFT_Trait_Version_0_1_0</span><span class="p">(</span><span class="n">mint_data</span><span class="p">),</span>
+        <span class="p">})</span>
+        <span class="nf">.and_then</span><span class="p">(</span><span class="nn">serde_json</span><span class="p">::</span><span class="n">to_value</span><span class="p">)</span>
+        <span class="nf">.map</span><span class="p">(|</span><span class="n">args</span><span class="p">|</span> <span class="nf">create_contract_by_key</span><span class="p">(</span><span class="o">&amp;</span><span class="n">key</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="nn">Amount</span><span class="p">::</span><span class="nf">from_sat</span><span class="p">(</span><span class="mi">0</span><span class="p">)))</span>
+        <span class="nf">.map_err</span><span class="p">(|</span><span class="mi">_</span><span class="p">|</span> <span class="nn">CompilationError</span><span class="p">::</span><span class="n">TerminateCompilation</span><span class="p">)</span><span class="o">?</span>
+        <span class="nf">.ok_or</span><span class="p">(</span><span class="nn">CompilationError</span><span class="p">::</span><span class="n">TerminateCompilation</span><span class="p">)</span><span class="o">?</span><span class="p">;</span>
+        <span class="c">// Now for the magic:</span>
+        <span class="c">// This is a transaction that creates at output 0 the new nft for the</span>
+        <span class="c">// person, and must add another input that pays sufficiently to pay the</span>
+        <span class="c">// prior owner an amount.</span>
+
+        <span class="c">// todo: we also could use cut-through here once implemented</span>
+        <span class="c">// todo: change seem problematic here? with a bit of work, we could handle it</span>
+        <span class="c">// cleanly if the buyer identifys an output they are spending before requesting</span>
+        <span class="c">// a purchase.</span>
+        <span class="n">ctx</span><span class="nf">.template</span><span class="p">()</span>
+            <span class="nf">.add_output</span><span class="p">(</span><span class="n">amt</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">new_nft_contract</span><span class="p">,</span> <span class="nb">None</span><span class="p">)</span><span class="o">?</span>
+            <span class="nf">.add_amount</span><span class="p">(</span><span class="k">self</span><span class="na">.0</span><span class="py">.price</span><span class="nf">.into</span><span class="p">())</span>
+            <span class="nf">.add_sequence</span><span class="p">()</span>
+            <span class="nf">.add_output</span><span class="p">(</span><span class="k">self</span><span class="na">.0</span><span class="py">.price</span><span class="nf">.into</span><span class="p">(),</span> <span class="o">&amp;</span><span class="k">self</span><span class="na">.0</span><span class="py">.data.owner</span><span class="p">,</span> <span class="nb">None</span><span class="p">)</span><span class="o">?</span>
+            <span class="c">// note: what would happen if we had another output that </span>
+            <span class="c">// had a percentage-of-sale royalty to some creator's key?</span>
+            <span class="nf">.into</span><span class="p">()</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+
+</code></pre></div></div>
+
+<p>And that’s it! Makes sense, right? I hope…</p>
+
+<h2 id="but-if-not">But if not</h2>
+
+<p>Re read the part before the code again! Maybe it will be more clear now :)</p>
+
+  </div>
+<hr>
+  
+<hr>
+  <div class="post">
+    <h2 class="post-title">
+        <a href="/bitcoin/2021/12/15/advent-18/">
+        Sapio Studio Payment Pool Walkthrough
+      </a>
+  </h2>
+  <h4>Day 18: Rubin's Bitcoin Advent Calendar</h4>
+
+
+    <span class="post-date">15 Dec 2021</span>
+
+    <p><em>Welcome to day 18 of my Bitcoin Advent Calendar. You can see an index of all
+the posts <a href="/advent21">here</a> or subscribe at
+<a href="https://judica.org/join">judica.org/join</a> to get new posts in your inbox</em></p>
+
+<p>Today’s post will be a pretty different format that usual, it’s basically going
+to be a pictorial walk through of the <a href="https://github.com/sapio-lang/sapio-studio">Sapio
+Studio</a>, the frontend tool for Sapio
+projects. As an example, we’ll go through a Payment Pool contract to familiarize
+ourselves.</p>
+
+<p>I wanted to put this post here, before we get into some more applications,
+because I want you to start thinking past “cool one-off concepts we can
+implement” and to start thinking about reusable components we can build and ship
+into a common Bitcoin Smart Contract software (Sapio Studio or its successors).</p>
+
+<hr />
+
+<p>At it’s core, Sapio Studio is just a wallet frontend to Bitcoin Core.
+<img src="/public/img/bitcoin/advent/studio/000000.png" alt="" /></p>
+
+<p>You can make a transaction, just like normal…</p>
+
+<p><img src="/public/img/bitcoin/advent/studio/000001.png" alt="" /></p>
+
+<p>And see it show up in the pending transactions…
+<img src="/public/img/bitcoin/advent/studio/000002.png" alt="" /></p>
+
+<p>And even mine some regtest blocks.
+<img src="/public/img/bitcoin/advent/studio/000003.png" alt="" /></p>
+
+<p>But where Sapio Studio is different is that there is also the ability to create
+contracts.
+<img src="/public/img/bitcoin/advent/studio/000004.png" alt="" />
+Before we can do that, we need to load a WASM Plugin with a compiled contract.
+<img src="/public/img/bitcoin/advent/studio/000006.png" alt="" />
+Let’s load the Payment Pool module. You can see the code for it
+<a href="https://github.com/sapio-lang/sapio/blob/b98db9637777a808835b4593ae1063230735fc8a/plugin-example/hanukkiah/src/plugin.rs">here</a>.
+<img src="/public/img/bitcoin/advent/studio/000007.png" alt="" />
+And now we can see we have a module!
+<img src="/public/img/bitcoin/advent/studio/000008.png" alt="" />
+Let’s load a few more so it doesn’t look lonely.
+<img src="/public/img/bitcoin/advent/studio/000009.png" alt="" />
+Now let’s check out the Payment Pool module.
+<img src="/public/img/bitcoin/advent/studio/000010.png" alt="" />
+Now let’s check out another one – we can see they each have different types of
+arguments, auto-generated from the code.
+<img src="/public/img/bitcoin/advent/studio/000011.png" alt="" /></p>
+
+<p>Let’s fill out the form with 10 keys to make a Payment Pool controlled by 10
+people, and then submit it.
+<img src="/public/img/bitcoin/advent/studio/000012.png" alt="" />
+What’s that??? It’s a small bug I am fixing :/.  Not to worry…
+<img src="/public/img/bitcoin/advent/studio/000013.png" alt="" />
+Just click repair layout.
+<img src="/public/img/bitcoin/advent/studio/000014.png" alt="" />
+And the presentation resets. I’ll fix it soon, but it can be useful if there’s a
+glitch to reset it.</p>
+
+<p>Now we can see the basic structure of the Payment Pool, and how it splits up.
+<img src="/public/img/bitcoin/advent/studio/000015.png" alt="" />
+Let’s get a closer look…
+<img src="/public/img/bitcoin/advent/studio/000016.png" alt="" />
+Let’s zoom out (not helpful!)…
+<img src="/public/img/bitcoin/advent/studio/000017.png" alt="" />
+Let’s zoom back in. Note how the transactions are square boxes and the outputs
+are rounded rectangles. Blue lines connect transactions to their outputs. Purple lines
+connect outputs to their (potential) spends.
+<img src="/public/img/bitcoin/advent/studio/000016.png" alt="" />
+If we click on a transaction we can learn more about it.
+<img src="/public/img/bitcoin/advent/studio/000018.png" alt="" />
+We even have some actions that we can take, like sending it to the network. 
+<img src="/public/img/bitcoin/advent/studio/000019.png" alt="" />
+Let’s try it….
+<img src="/public/img/bitcoin/advent/studio/000020.png" alt="" />
+Oops! We need to sign it first…
+<img src="/public/img/bitcoin/advent/studio/000021.png" alt="" />
+And then we can send it.
+<img src="/public/img/bitcoin/advent/studio/000022.png" alt="" />
+What other buttons do we have? What’s this do?
+<img src="/public/img/bitcoin/advent/studio/000023.png" alt="" />
+It teleports us to the output we are creating!
+<img src="/public/img/bitcoin/advent/studio/000024.png" alt="" />
+Notice how the output is marked “Updatable”, and there is also a “DO_TX”
+button (corresponding to the DO_TX in the Payment Pool). Let’s click that…
+<img src="/public/img/bitcoin/advent/studio/000025.png" alt="" />
+Ooooh. It prompts us with a form to do the transaction!
+<img src="/public/img/bitcoin/advent/studio/000026.png" alt="" />
+Ok, let’s fill this sucker out…
+<img src="/public/img/bitcoin/advent/studio/000027.png" alt="" />
+Click submit, then recompile (separate actions in case we want to make multiple “moves” before recompiling).
+<img src="/public/img/bitcoin/advent/studio/000028.png" alt="" />
+I really need to fix this bug…
+<img src="/public/img/bitcoin/advent/studio/000029.png" alt="" />
+Voila!</p>
+
+<p>As you can see, the original graph is intact and we’ve augmented onto it the new state transition.
+<img src="/public/img/bitcoin/advent/studio/000030.png" alt="" />
+The new part has our 0.1 BTC Spend + the re-creation of the Payment Pool with less funds.
+<img src="/public/img/bitcoin/advent/studio/000031.png" alt="" />
+Ok, let’s go nuts and do another state transition off-of the first one? This time more payouts!
+<img src="/public/img/bitcoin/advent/studio/000032.png" alt="" />
+Submit…</p>
+
+<p><img src="/public/img/bitcoin/advent/studio/000033.png" alt="" />
+And Recompile<sup id="fnref:bug" role="doc-noteref"><a href="#fn:bug" class="footnote" rel="footnote">1</a></sup>…</p>
+
+<p><img src="/public/img/bitcoin/advent/studio/000034.png" alt="" />
+I skipped showing you the bug this time.</p>
+
+<p>Now you can see <em>two</em> state transitions! And because we used more payouts than one, we can see some congestion control<sup id="fnref:bug2" role="doc-noteref"><a href="#fn:bug2" class="footnote" rel="footnote">2</a></sup> at work.</p>
+
+<p><img src="/public/img/bitcoin/advent/studio/000035.png" alt="" /></p>
+
+<p>It works! It all really, really works!</p>
+
+<hr />
+
+<p>One more thing I <em>can’t</em> show you with this contract is the timing simulator.</p>
+
+<p>This lets you load up a contract (like our Hanukkiah below) and…
+<img src="/public/img/bitcoin/advent/studio/000042.png" alt="" />
+Simulate the passing of time (or blocks).
+<img src="/public/img/bitcoin/advent/studio/000041.png" alt="" />
+Pretty cool!
+<img src="/public/img/bitcoin/advent/studio/000040.png" alt="" /></p>
+
+<p>There are also some settings you can configure for display settings, the node,
+and for sapio-cli. The first time you run Sapio, you’ll need to get some of
+these things configured correctly or else it will be broken. Currently, if you
+look  <a href="https://github.com/JeremyRubin/sapio-pod/blob/master/runner.sh">here</a> you
+can find a template for a script to get everything up and running for a first
+shot at it, otherwise you’ll have to do it by hand, or just change your
+<code class="language-plaintext highlighter-rouge">preferences.json</code> to be similar to mine in the note<sup id="fnref:config" role="doc-noteref"><a href="#fn:config" class="footnote" rel="footnote">3</a></sup>.</p>
+
+<p><img src="/public/img/bitcoin/advent/studio/000036.png" alt="" />
+<img src="/public/img/bitcoin/advent/studio/000037.png" alt="" />
+<img src="/public/img/bitcoin/advent/studio/000038.png" alt="" />
+<img src="/public/img/bitcoin/advent/studio/000039.png" alt="" /></p>
+
+<h3 id="before-you-ask">before you ask…</h3>
+<h1 id="of-course-there-is-dark-mode">OF COURSE THERE IS DARK MODE</h1>
+<p><em>configured by your local system theme preference</em>
+<img src="/public/img/bitcoin/advent/studio/dark.png" alt="" /></p>
+
+<hr />
+
+<p>I hope you enjoyed this! There’s <em>a metric fuckload</em> of work still to do to make
+Sapio Studio &amp; Sapio anywhere near production grade, but I hope this has helped
+elucidate how powerful and cool the Sapio approach is, and has inspired you to
+build something and try it out! I’d also be really eager for feedback on what
+features should be here/are missing.</p>
+
+<p>Lastly, if you’re just <strong>excited</strong> about this, it’s definitely a project
+that could use more experienced react/electron/bitcoin contributors, either
+yourself or if you’re interested in sponsoring :).</p>
+
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:bug" role="doc-endnote">
+      <p>it was here I noticed a small mistake that I named the updates “First Update” instead of “FirstUpdate” so I had to poke in the JSON and fix it in the interest of time… TODO for me to make invalid inputs invalid! <a href="#fnref:bug" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:bug2" role="doc-endnote">
+      <p>I used the wrong, wonky version of the TreePay by mistake and was too lazy to fix it, my bad :p it should look more tree-y. I’ll fix the actual code in the repo at some point. <a href="#fnref:bug2" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:config" role="doc-endnote">
+
+      <p>My config file, if it helps you :)</p>
+      <div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"sapio"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"binary"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/Users/jr/sapio/target/release/sapio-cli"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"oracle-local-enabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"oracle-remote-enabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"oracle-remote-oracles-list"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+            </span><span class="s2">"0.0.0.0:8010 tpubD6NzVbkrYhZ4Y78NbTJtGWzt9a4eeoFJ1phmTVxZNSAiVkVWW5GYixSobuXTQtzFDcSWPoXhtiDUu4n6sChuNKVXZ9UL4LvxnU1WG4Y7pxV"</span><span class="w">
+        </span><span class="p">],</span><span class="w">
+        </span><span class="nl">"oracle-remote-threshold"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"plugin_map"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">],</span><span class="w">
+        </span><span class="nl">"configsource"</span><span class="p">:</span><span class="w"> </span><span class="s2">"here"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"oracle-seed-file"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/Users/jr/sapio/SEED"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"oracle-netinterface"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.0.0.0:8010"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"display"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"sats-bound"</span><span class="p">:</span><span class="w"> </span><span class="s2">"9999999"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"animate-flow"</span><span class="p">:</span><span class="w"> </span><span class="mi">1594</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"poll-node-freq"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"bitcoin-config"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"rpcuser"</span><span class="p">:</span><span class="w"> </span><span class="s2">"jeremy"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"rpcpassword"</span><span class="p">:</span><span class="w"> </span><span class="s2">"hunter2"</span><span class="w">
+        </span><span class="nl">"rpcport"</span><span class="p">:</span><span class="w"> </span><span class="s2">"18443"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"rpchost"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.0.0.0"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"network"</span><span class="p">:</span><span class="w"> </span><span class="s2">"regtest"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>      </div>
+      <p><a href="#fnref:config" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+  </div>
+<hr>
+  
+</div>
+
+<div class="pagination">
+  
+    <a class="pagination-item newer" href="/blog/page/2/">Newer</a>
+  
+  
+  <a class="pagination-item older" href="/blog/page/4/">Older</a>
+  
+</div>
+
+</div>
+
+        </div>
+        <div class="content container" style="padding-bottom:0;padding-top:0;bottom:0px;">
+            <div class="posts" style="height:14pt;margin-bottom:0;">
+                <div class="post">
+                    <p style="text-align:center;font-size:12pt;">&copy; 2011-2021 Jeremy Rubin. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
