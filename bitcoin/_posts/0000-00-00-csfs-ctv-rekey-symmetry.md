@@ -28,7 +28,7 @@ and without the need for concatenation or other explicit multi-commitments.
 
 * `APO`: `SIGHASH_ANYPREVOUT` as defined in [BIP118](https://github.com/bitcoin/bips/blob/master/bip-0118.mediawiki)
 * `IKEY`: `OP_INTERNALKEY` as defined in [BIP349](https://github.com/bitcoin/bips/blob/master/bip-0349.md)
-* `CSFS`: `OP_CHECKSIGFROMSTACK` as soon-to-be defined in [BIP348](https://github.com/bitcoin/bips/pull/1535)
+* `CSFS`: `OP_CHECKSIGFROMSTACK` as defined in [BIP348](https://github.com/bitcoin/bips/pull/1535)
 * `S`: `500,000,000` the lock time threshold [defined in bitcoin](https://github.com/bitcoin/bitcoin/blob/master/src/script/script.h#L47)
 
 
@@ -101,7 +101,7 @@ from reconstructing the scripts and updating the channel state.
 
 One obvious solution would be to combine the update hash and the settlement
 hash, but since bitcoin lacks a concatenation operator, we cannot do that.
-Recently [@4moonsettler](x.com/4moonsettler) proposed
+Recently [@4moonsettler](https://x.com/4moonsettler) proposed
 [`OP_PAIRCOMMIT`](https://github.com/bitcoin/bips/pull/1699) as an alternative
 for this purpose.
 
