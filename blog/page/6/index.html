@@ -1,0 +1,1234 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+  <title> Blog (page 6) &middot; Jeremy Rubin </title>
+  <link href="https://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/poole.css">
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/css/hyde.css">
+  <link rel="stylesheet" href="/public/font-awesome-4.5.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+                                 <link rel="shortcut icon" href="/public/favicon.ico">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+
+  
+  <link type="application/atom+xml" rel="alternate" href="http://rubin.io/feed.xml" title="Jeremy Rubin" />
+
+
+  <!-- GA -->
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-40376251-1', 'auto');
+    ga('send', 'pageview');
+</script>
+
+  
+  <link rel="me" href="https://twitter.com/JeremyRubin" >
+  <meta name="twitter:dnt" content="on">
+			   <script>window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
+
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+
+  return t;
+}(document, "script", "twitter-wjs"));</script>
+
+</head>
+
+    <body>
+        <div class="sidebar">
+    <h3 style="text-align: center;"> <a href="/"> Jeremy Rubin </a> </h3>
+    <div class="container">
+        <div class="sidebar-about">
+
+            <div class="sidebar-about-info"> 
+                <a href="/public/pdfs/resume.pdf"><i class="fa fa-file-text-o" title=Resume></i></a>
+                <a href=""><i class="fa fa-github" title=Github></i></a>
+                <a href="https://twitter.com/JeremyRubin"><i class="fa fa-twitter" title=Twitter></i></a>
+            </div>
+            <div class="sidebar-about-info hide-large">
+                <a class="" href="/">Home</a>
+                <a class="" href="/blog/">Blog</a>
+                <a class="" href="/talks/">Talks</a> 
+                <a class="" href="/projects/">Projects</a>
+                <a class="" href="/archive/">Site Index</a>
+            </div>
+        </div>
+
+
+
+
+        <nav class="sidebar-nav hide-small">
+            <a class="sidebar-nav-item" href="/">Home</a>
+            <a class="sidebar-nav-item" href="/blog/">Blog</a>
+            <a class="sidebar-nav-item" href="/talks/">Talks</a> 
+            <a class="sidebar-nav-item" href="/projects/">Projects</a>
+            <a class="sidebar-nav-item" href="/archive/">Site Index</a>
+        </nav>
+    </div>
+</div>
+
+
+
+        <div class="content container" style="padding-bottom:0;">
+            <div class="page">
+    
+    
+    <h1>
+  Jeremy Rubin's Blog
+</h1>
+
+Here you'll find an assorted mix of content from yours truly. I post about a lot
+of things, but primarily <a href="/bitcoin/">Bitcoin</a>.
+
+<p>
+categories: <a href="/bitcoin/">Bitcoin</a>, <a href="/shenzhen/">Shenzhen Journey</a>.
+</p>
+<div class="posts">
+  
+<hr>
+  <div class="post">
+    <h2 class="post-title">
+        <a href="/bitcoin/2021/12/06/advent-9/">
+        Sapio Primer
+      </a>
+  </h2>
+  <h4>Day 9: Rubin's Bitcoin Advent Calendar</h4>
+
+
+    <span class="post-date">06 Dec 2021</span>
+
+    <p><em>Welcome to day 9 of my Bitcoin Advent Calendar. You can see an index of all
+the posts <a href="/advent21">here</a> or subscribe at
+<a href="https://judica.org/join">judica.org/join</a> to get new posts in your inbox</em></p>
+
+<p>We’re through the basics sections of the Advent calendar ow! Time for some more…
+specific content on the bleeding edge!</p>
+
+<p>This post is your introduction to the world of
+<a href="https://learn.sapio-lang.org">Sapio</a>. Sapio is the programming framework I’ve
+been developing for Bitcoin Smart Contracts. There’s a <em>ton</em> of material on <a href="https://learn.sapio-lang.org">the
+website</a>, so this post is going to be a bit
+high-level and then you should jump into the docs after to learn more.</p>
+
+<h2 id="what-the-heck-is-sapio">What the heck is Sapio?</h2>
+
+<p>Sapio is a tool that helps you design and use Bitcoin smart contracts based on
+covenants (like CTV) as well as manage potentially recursive state transitions
+at terminal states.</p>
+
+<p>That’s a mouthful and a half… let’s break it down with a very basic vault
+deposit example.</p>
+
+<p>Suppose I have 10 bitcoin sitting in my normal wallet.  I want to deposit it to
+an exchange. I go to my exchange and request an address to deposit to. The
+exchange wants their coins to be in a special cold storage whereby any move from
+cold storage has to “mature” for 10 days since it was claimed before it’s
+spendable as a hot-spend, otherwise it stays in cold.  The hot wallet has logic
+such that any unused funds after it transacts, goes back into the cold-storage
+contract. We saw a contract like this in the  <a href="/bitcoin/2021/12/04/advent-7/">day
+7</a> post.</p>
+
+<p>The exchange can use Sapio to generate an address that expects 10 coins and
+encodes this cold-to-hot logic without requiring the cold keys be online! Better
+than that, I don’t even have to contact the exchange for the address. The
+exchange can distribute a codesigned Sapio WASM applet that runs on my own
+machine locally. I download the applet into my Sapio Studio GUI and that
+generates the exchange deposit UX form for the contract that I (or my wallet)
+automatically fills out and then generates a proper address/spending
+transaction.</p>
+
+<p>Upon receipt of the deposit information, (which can in certain circumstances be
+completely on-chain in the txn, so no need for a separate communication
+channel), the exchange can us the WASM to generate an identical deposit program
+to verify the user isn’t cheating somehow. <strong>Bada-bing-bada-boom!</strong></p>
+
+<p>We’ll see in close detail examples like this coming in the following posts, but
+to sum up, Sapio helped us with the following:</p>
+
+<ol>
+  <li>Authoring a Smart Contract Application for a cold storage deposit solution</li>
+  <li>Distributing it as a deterministic executable with a GUI User using it to make a
+deposit</li>
+  <li>Receiving funds as a depositee directly into a smart contract</li>
+  <li>Generating withdrawal transactions out of the vault</li>
+  <li>Putting the remaining funds back into the cold storage</li>
+</ol>
+
+<p>This is not a hypothetical, all of these components exist and are usable today!
+Where there is an asterisk is that BIP-119 CTV does not yet exist, and so for
+apps like this the exchange would have to run some kind of <a href="https://learn.sapio-lang.org/ch05-01-ctv-emulator.html">signing
+server</a> you connect to.
+This works, but is a worse trust model.  For some applications, you don’t need
+CTV if you can get all of a contract’s parties to run their own oracles.
+Therefore you can still accomplish a lot without a worse trust model with what’s
+there today!</p>
+<hr />
+
+<p>Over the remaining posts we’ll go into great detail on different applications
+built in Sapio, but for now you can <a href="https://learn.sapio-lang.org">skim through
+learn.sapio-lang.org</a> to get started playing
+around with your own designs.</p>
+
+  </div>
+<hr>
+  
+<hr>
+  <div class="post">
+    <h2 class="post-title">
+        <a href="/bitcoin/2021/12/05/advent-8/">
+        Contracting Primitives and Upgrades to Bitcoin
+      </a>
+  </h2>
+  <h4>Day 8: Rubin's Bitcoin Advent Calendar</h4>
+
+
+    <span class="post-date">05 Dec 2021</span>
+
+    <p><em>Welcome to day 8 of my Bitcoin Advent Calendar. You can see an index of all
+the posts <a href="/advent21">here</a> or subscribe at
+<a href="https://judica.org/join">judica.org/join</a> to get new posts in your inbox</em></p>
+
+<p>In this post we’ll rapid fire roll through a bunch of different smart contract
+primitives, existing and proposed. For a more thorough reading, links will be
+provided.</p>
+
+<h3 id="bip-119-ctv-checktemplateverify">BIP-119 CTV CheckTemplateVerify</h3>
+
+<p>CTV is a general purpose smart contract opcode with full enumeration, no dynamic
+state, no recursion, and primarily works through validation.</p>
+
+<p>Essentially, CTV only lets you select a specific next transaction that can
+occur. Consensus just checks a transaction hash against a CTV hash.</p>
+
+<p>Although this seems to be limited functionality, it can be used with a template
+metaprogramming system such as <a href="learn.sapio-lang.org">Sapio</a> to create
+sophisticated programs.</p>
+
+<p>The limited functionality isn’t a bug, it’s a feature.  CTV was designed to be
+ quick and easy to garner technical consensus with the entire Bitcoin community
+ as a simple and safe covenant without some of the issues more sophisticated
+ covenant systems might have. However, since its launch there’s been more
+ interest developing for more flexible covenants, which may take much longer to
+ deploy and deliver meaningful benefits to users.</p>
+
+<p>CTV is also designed to work well with other opcodes that might be added (such
+as CSFS, OP_AMOUNT, and OP_CAT), so it does not become irrelevant should more
+features be added, it simply gets better.</p>
+
+<p>CTV is currently a decently reviewed BIP pending more support from the community
+for inclusion (see <a href="https://utxos.org/signals">social signals</a>).</p>
+
+<p>Disclosure: I’m the author/advocate of BIP-119.</p>
+
+<p>For more:</p>
+
+<ol>
+  <li><a href="https://bitcoinops.org/en/newsletters/2019/05/29/#proposed-transaction-output-commitments">Optech</a></li>
+  <li><a href="https://utxos.org">utxos.org</a></li>
+  <li><a href="https://rubin.io/blog/2021/07/02/covenants/">Templates, Eltoo, and Covenants, Oh My!</a></li>
+  <li><a href="https://medium.com/block-digest-mempool/my-worries-about-too-generalized-covenants-5eff33affbb6">Shinobi’s Covenant Concerns</a></li>
+</ol>
+
+<h3 id="bip-118-apo-anyprevout">BIP-118 APO AnyPrevout</h3>
+
+<p>AnyPrevout is a culmination of research for the Lightning Network (dating back
+to the original whitepaper) for creating a type of “rebindable” bitcoin
+transaction that dramatically simplifies the protocols for LN by getting rid of
+a lot of the complexities around storing state and closing channels
+unilaterally. AnyPrevout helps make Decker Channels possible (or, confusingly,
+sometimes called Eltoo not to be confused with L2).</p>
+
+<p>The basics of how Anyprevout works is that it changes what parts a signature
+signs to exclude the specifics of the coin being spent. This has some drawbacks
+in terms of changing current invariants true of signatures, but it is generally
+safe.</p>
+
+<p>APO can also be used to implement something similar to CTV, but there are
+sufficient differences between the two (including with respect to efficiency)
+such that the proposals aren’t competitive.</p>
+
+<p>APO is currently a decently reviewed BIP pending more support from the community
+for inclusion. The largest blocker for wider support is a concrete functional
+prototype of LN with Decker Channels, which would drive surety that APO has
+“product market fit”. Certain developers believe that additional proposals, like
+SIGHASH_BUNDLE, would be required to make it fully functional.</p>
+
+<ol>
+  <li><a href="https://rubin.io/bitcoin/2021/07/09/bip-118-sighash-chart/">My BIP-118 Review</a></li>
+  <li><a href="https://github.com/bitcoin/bips/blob/master/bip-0118.mediawiki">The BIP</a></li>
+  <li><a href="https://blockstream.com/eltoo.pdf">Eltoo/Decker Channels</a></li>
+  <li><a href="https://rubin.io/blog/2021/07/02/covenants/">Templates, Eltoo, and Covenants, Oh My!</a></li>
+</ol>
+
+<h3 id="tluv-tapleafupdateverify">TLUV TapLeafUpdateVerify</h3>
+
+<p>TLUV is a proposed general purpose smart contract opcode that is open ended, has
+dynamic local state, recursive, and is somewhat computational.</p>
+
+<p>Essentially, TLUV lets you modify a Taproot Output being spent by changing the
+toplevel key and script paths being spent. TLUV only can read and affect a
+single input/output pair; the other outputs are unaffected. The functionality of
+TLUV is very “specific” to the implementation details of Taproot, as it must
+correctly modify the data structures behind it. For Example, you could have a
+Taproot output with 10 coins and a script like:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[{</span><span class="nl">"amt"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"key"</span><span class="p">:</span><span class="w"> </span><span class="s2">"multi(A,B,C)"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"scripts"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"signed(A) with up to 2 coins"</span><span class="p">,</span><span class="w">
+              </span><span class="s2">"signed(B) with up to 5 coins"</span><span class="p">,</span><span class="w">
+              </span><span class="s2">"signed(C) with up to 3 coins"</span><span class="p">]</span><span class="w">
+ </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre></div></div>
+
+<p>and TLUV would enable you to transition to the following outputs:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[{</span><span class="nl">"amt"</span><span class="p">:</span><span class="w"> </span><span class="mi">9</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"key"</span><span class="p">:</span><span class="w"> </span><span class="s2">"multi(A,B,C)"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"scripts"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"signed(A) with up to 1 coins"</span><span class="p">,</span><span class="w">
+              </span><span class="s2">"signed(B) with up to 5 coins"</span><span class="p">,</span><span class="w">
+              </span><span class="s2">"signed(C) with up to 3 coins"</span><span class="p">]</span><span class="w">
+ </span><span class="p">},</span><span class="w">
+ </span><span class="p">{</span><span class="nl">"amt"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.25</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"someone paid by A"</span><span class="w">
+ </span><span class="p">},</span><span class="w">
+ </span><span class="p">{</span><span class="nl">"amt"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.75</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"someone else paid by A"</span><span class="w">
+ </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre></div></div>
+
+<p>or even a full exit:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[{</span><span class="nl">"amt"</span><span class="p">:</span><span class="w"> </span><span class="mi">9</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"key"</span><span class="p">:</span><span class="w"> </span><span class="s2">"multi(B,C)"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"scripts"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"signed(B) with up to 5 coins"</span><span class="p">,</span><span class="w">
+              </span><span class="s2">"signed(C) with up to 3 coins"</span><span class="p">]</span><span class="w">
+ </span><span class="p">},</span><span class="w">
+ </span><span class="p">{</span><span class="nl">"amt"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.25</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"someone paid by A"</span><span class="w">
+ </span><span class="p">},</span><span class="w">
+ </span><span class="p">{</span><span class="nl">"amt"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.75</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"someone else paid by A"</span><span class="w">
+ </span><span class="p">}</span><span class="w">
+ </span><span class="p">{</span><span class="nl">"amt"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"A's key (exiting funds)"</span><span class="w">
+ </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre></div></div>
+
+<p>There are some potential footguns around modifying the top level key, as it
+needs to be a valid Taproot key after tweaking.</p>
+
+<p>TLUV as designed requires some form of OP_AMOUNT to enable the
+recursive shared UTXO shown above.</p>
+
+<p>There is no current concrete proposal (e.g. BIP) for TLUV, it’s open ended
+research presently.</p>
+
+<ol>
+  <li><a href="https://bitcoinops.org/en/newsletters/2021/09/15/">Optech</a></li>
+  <li><a href="https://www.mail-archive.com/bitcoin-dev@lists.linuxfoundation.org/msg10437.html">Mailing List</a></li>
+  <li><a href="https://www.mail-archive.com/bitcoin-dev@lists.linuxfoundation.org/msg10442.html">My Mailing List Response</a></li>
+</ol>
+
+<h3 id="csfs-checksigfromstack">CSFS CheckSigFromStack</h3>
+
+<p>CheckSigFromStack, or CheckDataSig (note for experts: usually shorthand for the
+verification-only version as there’s little point to check that something wasn’t
+signed by someone) is an opcode which checks an arbitrary message was signed by
+a key. Normally, when a Bitcoin script checks a signature, the message <em>must be</em>
+a hash of the current transaction computed in accordance with the requested
+transaction hashing program.</p>
+
+<p>CSFS has a couple “basic” applications that could be useful. For example, one
+might write a program where either a key K signs a transaction normally, or it
+signs a key which then signs a transaction. This allows the holder of a coin to
+“delegate” the ownership of a coin to another key without moving the coin.</p>
+
+<p>CSFS already exists in Bitcoin in some sense: using Lamport Signatures it is
+currently possible to check a signature over 5 bytes of data. This is not
+terribly useful, but one could imagine certain uses for e.g. delegating to the
+specified signer the duration of a timelock.</p>
+
+<p>CSFS really shines when it is combined with other opcodes. For example, CSFS
+plus CTV can enable something similar to AnyPrevout and Eltoo. CSFS plus CAT
+enables fully generic covenants in segwit V0, but not in Taproot (without some
+sort of OP_TWEAK as well). This is best left to reading some additional
+materials on the subject, but imagine if I first check the transaction signature
+normally, and then I check it on the stack against the transaction itself pushed
+onto the stack, which I used CAT to assemble from pieces. This would let me run
+programmatic checks on all the components of a script).</p>
+
+<p>While there is not currently a proposal for CSFS, it’s not terribly
+controversial and the design would be relatively straightforward.</p>
+
+<ol>
+  <li><a href="https://lists.linuxfoundation.org/pipermail/bitcoin-dev/2021-July/019192.html">BIP Suggestions</a></li>
+  <li><a href="https://rubin.io/blog/2021/07/02/covenants/">Templates, Eltoo, and Covenants, Oh My!</a></li>
+  <li><a href="https://rubin.io/blog/2021/07/02/signing-5-bytes/">CSFS from Math (5 bytes)</a></li>
+</ol>
+
+<h3 id="op_amount">OP_AMOUNT</h3>
+
+<p>OP_AMOUNT was proposed in 2017 by Johnson Lau (the earliest citation I could dig
+up) through a scripting extension called PUSHTXDATA that allows arbitrary data
+to be pushed on the stack. As a standalone extensions, getting the amount
+spent/created on the stack (whether as a push opcode or an opcode with verify
+semantics) would allow for smart contracts to either limit the amount being
+spent or switch behavior based on the amount.</p>
+
+<p>For example, with TLUV a Taproot branch can have an individual balance that can
+be updated at the discretion of the branch holder. Suppose I had a script tree
+that said Alice has 1 bitcoin and Bob has 20 Bitcoin. When Alice is spending,
+the script would require that the corresponding output (e.g., input 0 output 0)
+be reduced by at most 1 Bitcoin, and the output should be updated to change
+Alice’s script to have 1-(spent amount) in the next instance.</p>
+
+<p>As another example, CTV could be used with an OP_AMOUNT to enable a ultra high
+security vault if the amount sent is greater than 1 Bitcoin and a lower security
+vault if it is less than 1 Bitcoin.</p>
+
+<p>There’s no current concrete proposal for OP_AMOUNT. Difficulties in adding it
+remain because Bitcoin Scripts deal in 32-bit math and amounts are 64-bit values
+(51 bits precisely).</p>
+
+<ol>
+  <li><a href="https://github.com/jl2012/bips/blob/vault/bip-0ZZZ.mediawiki">OP_PUSHTXDATA</a></li>
+  <li><a href="https://www.mail-archive.com/bitcoin-dev@lists.linuxfoundation.org/msg10438.html">OP_IN_OUT_AMOUNT</a></li>
+</ol>
+
+<h3 id="sighash_bundle">SIGHASH_BUNDLE</h3>
+
+<p>Sighash Bundle is a part of an effort to make “Sighash Flags” more general.
+Sighash Flags are a mini “programming language” to describe what parts of a
+transaction a signer wants to sign for a transaction. Bundles in particular
+allow a signer to select a range of inputs and outputs in a way that the bundle
+description can be rebound to allow some form of post-hoc aggregation of
+transactions.</p>
+
+<p>It’s primarily proposed to help make Decker Channels work with a sub-protocol
+called “layered commitments”. It’s possible for inclusion, but it has the same
+issue as AnyPrevout, we need to see an end-to-end implementation of LN using it
+to be sure that the technology is solving the problem it is designed to.</p>
+
+<p>There’s no concrete implementation proposed yet.</p>
+
+<ol>
+  <li><a href="https://lists.linuxfoundation.org/pipermail/bitcoin-dev/2018-April/015862.html">Mailing List Post</a></li>
+</ol>
+
+<h3 id="transaction-sponsors">Transaction Sponsors</h3>
+
+<p>Transaction Sponsors is another proposal by yours truly.</p>
+
+<p>The basic concept of Transaction Sponsors is to allow expressing logic that
+Transaction B should only be in a block if Transaction A is also in the block.
+In particular, the proposal says that a transaction with a 0 value output with
+script <code class="language-plaintext highlighter-rouge">OP_VER &lt;txids&gt;</code> would make the transaction valid only if the txids were
+also in the block.</p>
+
+<p>The ability to express such a dependency has implications for designing novel
+smart contracts based on these dependencies, but this is not the focus of the
+sponsors proposal with respect to mempool policy.</p>
+
+<p>Instead, the Sponsors proposal is to use the ability to express additional
+dependencies as a way of dynamically adding fees to transactions in the mempool
+without relying on CPFP or RBF. This primitive is particularly helpful for
+driving progress of smart contracts based on CTV or Decker Channels without
+requiring any sort of transaction malleability.</p>
+
+<p>There is currently an implementation and Draft BIP of Sponsors, but the BIP has
+not been advanced for inclusion yet.</p>
+
+<ol>
+  <li><a href="https://lists.linuxfoundation.org/pipermail/bitcoin-dev/2020-September/018168.html">Mailing List Post</a></li>
+  <li><a href="https://lists.linuxfoundation.org/pipermail/bitcoin-dev/2021-November/019614.html">Post about difficulties of paying fees</a></li>
+</ol>
+
+<h3 id="op_cat-or-shastream">OP_CAT (Or SHASTREAM)</h3>
+
+<p>OP_CAT is “deceptively simple”. All it enables is the ability to take an
+argument “hello “ and an argument “world” and join them together into “hello
+world”.</p>
+
+<p>CAT was originally a part of Bitcoin, but it had some implementation flaws and
+was removed by Satoshi in an emergency patch early on in Bitcoin’s history.</p>
+
+<p>Although it is simple, it turns out that the ability to join bytestrings
+together adds a remarkable variety of functionality to Bitcoin, including things
+like quantum proof signatures and covenants.  There are a couple different
+variants of CAT that would be possible and have different tradeoffs, but largely
+CAT and friends are not controversial in their design. What does make CAT
+controversial is that because it has the propensity to introduce so many
+surprising behaviors in Bitcoin, we might prefer to better understand the
+impacts of users being able to author such advanced smart contracts.</p>
+
+<ol>
+  <li><a href="https://rubin.io/blog/2021/07/06/quantum-bitcoin/">Quantum Proof Bitcoin</a></li>
+  <li><a href="https://medium.com/blockstream/cat-and-schnorr-tricks-i-faf1b59bd298">Poelstra CAT Blog I</a></li>
+  <li><a href="https://medium.com/blockstream/cat-and-schnorr-tricks-ii-2f6ede3d7bb5">Poelstra CAT Blog II</a></li>
+</ol>
+
+<h3 id="op_tweak--ecmul">OP_TWEAK / ECMUL</h3>
+
+<p>These two opcodes enable manipulating an elliptic curve point on the stack for
+use in a covenant or to compute a particular private key.</p>
+
+<p>There’s no concrete proposal for this pair, but the implementations are
+basically specified already by the requirements of the secp256k1 curve.</p>
+
+<h3 id="adaptor-signatures">Adaptor Signatures</h3>
+
+<p>Adaptor Signatures are a technique that can be used with Schnorr signature and
+do not require any additional forks to Bitcoin.</p>
+
+<p>The basics of an Adaptor signature is that a party (or group of parties) can
+create an object which either takes in a signature and reveals a secret or takes
+a secret and reveals a signature.</p>
+
+<p>These adaptors can be used in place of hash preimage locks for a variety of use
+cases.</p>
+
+<ol>
+  <li><a href="https://bitcoinops.org/en/topics/adaptor-signatures/">Optech</a></li>
+</ol>
+
+<h3 id="delegation--graftroot">Delegation / Graftroot</h3>
+
+<p>Delegation is a general concept whereby you can take a script and instead of
+signing a transaction, you sign another script that can then execute. For
+example, imagine if there is a coin that requires a signature of Alice and Bob
+to spend. Suppose Alice wants to go offline, but Bob might want to transact.
+Alice could sign a script requiring a signature from Carol that “substitutes”
+for Alice’s signature in the future.</p>
+
+<p>Delegation is currently possible in a somewhat roundabout way through
+coin-delegation. This is where the other script fragment must be represented by a UTXO.</p>
+
+<p>Graftroot is an extension to Taproot which would let the top-level key-path
+signers sign delegating scripts, but not other tapscript branches. There are
+also several confusingly named extensions and alternatives in the links below.</p>
+
+<p>Delegation could also be combined with Anyprevout so that delegation
+authorizations are bound to a specific coin or to a specific script. CSFS
+enables a basic kind of delegation as well. This would enable, with Graftroot, a
+version of Taproot where the trees are constructed interactively and do not have
+any lookup cost.</p>
+
+<p>Other than what’s presently possible, there are no concrete proposals for adding
+new delegation features to Bitcoin.</p>
+
+<ol>
+  <li><a href="https://lists.linuxfoundation.org/pipermail/bitcoin-dev/2021-March/018615.html">Coin Delegation</a></li>
+  <li><a href="https://lists.linuxfoundation.org/pipermail/bitcoin-dev/2018-February/015700.html">Graftroot</a></li>
+  <li><a href="https://gist.github.com/sipa/ca1502f8465d0d5032d9dd2465f32603">Entroot</a></li>
+  <li><a href="https://lists.linuxfoundation.org/pipermail/bitcoin-dev/2018-July/016249.html">G’Root (not graftroot)</a></li>
+</ol>
+
+<h3 id="bip-300-drivechains">BIP-300 DriveChains</h3>
+
+<p>Drive chains are a highly application specific type of recursive covenant that
+is designed to help sidechains operate by tracking sidechain deposits and
+withdrawals with an on-chain miner driven voting system.</p>
+
+<p>The sidechains would have the ability to run arbitrary smart contracts (at the
+choice of the sidechain operators). Miners the upvote, downvote, or abstain from
+voting on withdrawals through a special output type.</p>
+
+<p>One of the main downsides to this approach is that the BIP-300 proposal as
+written requires the addition of new global state databases, rather than local
+state contained within the covenant transaction itself.</p>
+
+<p>Overall Drivechains are relatively controversial among the community; with lots
+of interest from the community and also some outspoken critics because of the
+changes to Bitcoin’s incentive stability for consensus. It’s included here for
+completeness and by request of what topics to cover in today’s post.</p>
+
+<p>It’s the author’s opinion that while the concept of Drivechains is useful, the
+implementation of it does not need to be as transactions inside of the existing block
+space and instead could be tracked via a separate commitment (like Segwit). This could
+happen if Drivechains were implemented via a more generliazed covenant rather than
+application specific.</p>
+
+<ol>
+  <li><a href="https://github.com/bitcoin/bips/blob/master/bip-0300.mediawiki">BIP-300</a></li>
+  <li><a href="https://www.drivechain.info">Drivechains</a></li>
+</ol>
+
+<h3 id="elements-opcodes">Elements Opcodes</h3>
+
+<p>Elements is Blockstream’s Bitcoin fork for their Liquid Sidechain. Elements has
+planned to add a broad variety of opcodes that can help to accomplish a variety
+of tasks, including many of the above, in addition to their existing extensions.</p>
+
+<ol>
+  <li><a href="https://elementsproject.org/features/opcodes">Existing Opcodes</a></li>
+  <li><a href="https://github.com/ElementsProject/elements/blob/master/doc/tapscript_opcodes.md">Upgrade for Taproot</a></li>
+</ol>
+
+<hr />
+
+<p>Breathe! That was a lot! There’s still other stuff that’s floating around, but
+these are the top-of-mind primitives in my head for bringing more
+programmability to Bitcoin.</p>
+
+<p>Future posts will zero in on what’s possible with BIP-119 and Sapio and help
+make the case that it is a fantastic next step in Bitcoin’s Upgrade journey by
+showing (not telling) how one little limited opcode opens up an entire world of
+possibilities, as well as laying out a – dare I say – personal roadmap for the
+inclusion and development of other upgrades as a coherent narrative for Bitcoin.</p>
+
+  </div>
+<hr>
+  
+<hr>
+  <div class="post">
+    <h2 class="post-title">
+        <a href="/bitcoin/2021/12/04/advent-7/">
+        Review of Smart Contract Concepts for Bitcoin
+      </a>
+  </h2>
+  <h4>Day 7: Rubin's Bitcoin Advent Calendar</h4>
+
+
+    <span class="post-date">04 Dec 2021</span>
+
+    <p><em>Welcome to day 7 of my Bitcoin Advent Calendar. You can see an index of all
+the posts <a href="/advent21">here</a> or subscribe at
+<a href="https://judica.org/join">judica.org/join</a> to get new posts in your inbox</em></p>
+
+<p>In this post we’ll review a concepts for thinking about different types of smart
+contract capabilities and the implications of their availability.</p>
+
+<h2 id="recursive-vs-non-recursive">Recursive v.s. Non Recursive</h2>
+
+<p>Recursive is pretty much just a fancy way of saying “loops”. This is sometimes
+also called “Turing Complete”. That’s an even fancier way of saying loops. For
+example, imagine a bitcoin contract with the following logic:</p>
+
+<p>When Alice requests moving 1 coin to Bob by broadcasting a transaction with the
+request, Alice has 24 hours to completely cancel the transfer by broadcasting
+another transaction.</p>
+
+<p>This is a looping contract because after cancelling Alice can immediately
+re-request the transfer. An example of non-looping but similar logic would be:</p>
+
+<p>When Alice requests moving 1 coin to Bob,  Alice has 24 hours to cancel the
+transfer by sending the coins to Alice’s backup key.</p>
+
+<p>Here, the contract terminates after one canceled request by moving the coin
+elsewhere.  It’s possible to emulate recursive behavior a limited amount by
+“unrolling” a loop. For example:</p>
+
+<p>When Alice requests moving 1 coin to Bob,  Alice has 24 hours to cancel the
+transfer by sending the coins to (when Alice requests moving 1 coin to Bob, 
+Alice has 24 hours to cancel the transfer by sending the coins to Alice’s backup
+key).</p>
+
+<p>Here we substituted the backup key with a copy of the original logic. Now Alice
+can make 2 cancellable requests before sending the money to the backup. This
+looks recursive, and it can be expressed by a recursive meta-program. Meta
+program is just a fancy term for a program that makes programs. But when we put
+the contract into writing (e.g., an address on the chain), it has to be unrolled
+for the specific number of iterations we want possible.</p>
+
+<p>Unrolling is a very useful technique, and can be used in a broad variety of
+circumstances. For example, imagine we unroll a contract a million times and
+specify that transactions can only happen every 10 blocks. That covers like 200
+years of contract execution. However, unrolling has it’s limits. When choices
+(action A or B) are introduced, unrolling can be less effective since you have
+and exponential blowup (that means unrolling even like 32 steps might be too
+many). However, there are some tricks that can be employed by a clever and
+careful programmer to reduce this complexity through, for example, memoization.</p>
+
+<h2 id="fully-enumerated-vs-open-ended">Fully Enumerated v.s. Open Ended</h2>
+
+<p>Suppose I have a contract which is supposed to strike an American option<sup id="fnref:option" role="doc-noteref"><a href="#fn:option" class="footnote" rel="footnote">1</a></sup> and
+transfer a token. It might look like this:</p>
+
+<p>If Alice is paid 1 BTC by December 25th, 2021 Midnight, then transfer 100 tokens
+to Bob’s Control.</p>
+
+<p>A fully enumerated contract would be expressed as:</p>
+
+<p>If Alice is paid 1 BTC by December 25th, 2021 Midnight, then transfer 100 tokens
+to Bob’s Address B.</p>
+
+<p>Whereas an Open Ended contract would be expressed as:</p>
+
+<p>If Alice is paid 1 BTC by December 25th, 2021 Midnight, then transfer 100 tokens
+to the address Bob requested with the payment.</p>
+
+<p>The key difference being that in the fully enumerated case we must know the
+exact specifics of the contract and how it will execute, and in the open ended
+contract case there are bits and pieces we can dynamically specify.</p>
+
+<p>There are ways that a fully enumerated contract can emulate dynamic choice. For
+example:</p>
+
+<p>If Alice is paid 1 BTC by December 25th, 2021 Midnight, then transfer 100 tokens
+to one of Bob’s Address B1, B2, or B3 at Bob’s discretion.</p>
+
+<p>Now Bob can pick from one of three destinations in the future. However, these
+options must have been known in advance (a priori). With an open ended contract,
+the address could be generated after the fact (post hoc).</p>
+
+<p>This is a separate concept from recursive or non recursive. A contract that
+loops could loop through a set of fully enumerated states until reaching some
+terminal predetermined “exit” state (e.g., a plain address). The option contract
+described above is non-recursive, but can be open ended.</p>
+
+<h2 id="client-vs-consensus-validation">Client v.s. Consensus Validation</h2>
+
+<p>When you have a Bitcoin in an output, anyone who has run, say, Bitcoin Core can
+tell that it is valid by seeing it in the UTXO set. But what happens if you want
+to issue a token on top of Bitcoin with some set of unique rules? Bitcoin does
+not know anything about these tokens, and so it would be possible to make an
+invalid transaction (e.g., spending more value than you have). In order to
+ensure the token is valid and not corrupt, one must trace every prior
+transaction back to some “axiomatic” genesis transaction(s) minting the token.
+These traces can be cached, but by default Bitcoin software will not enforce
+that only valid transfers be made. We say that the token is Client validated
+while the Bitcoin is Consensus validated.</p>
+
+<p>Is one worse than the other? Not necessarily. While permitting invalid
+transactions in the chain seems bad, as long as the invalid transactions can be
+uniformly excluded by all who care about the token it is not much worse than the
+work you do to run a Bitcoin full node anyways. There does seem to be some value
+in the Bitcoin network preventing you from making invalid transactions, but the
+network doesn’t stop you from making bad transactions (e.g., you could send
+money to the wrong place).</p>
+
+<p>Client side validation can check all sorts of properties, not just tokens. For
+example, you could write a contract for an on-chain governed company and check
+transactions for valid state transitions amending the rules.</p>
+
+<p>The main drawback to client side validation comes when you want your contract to
+interoperate with Bitcoin values. While client side validation can burn tokens
+that are transferred invalidly, imagine an exchange contract that swaps Bitcoin
+for Token. If the exchange contract sends more Bitcoin than it should, the
+clients can tell that it was an invalid transaction but the Bitcoin is still
+gone. Thus Client validated contracts are best left to things that don’t hold
+Bitcoin. The exception to this rule is if the Client validated contracts admit a
+custodian, a special monitor or set of monitors that handle the contracts
+Bitcoin balances in e.g. a multisig. The monitors can client-side validate the
+contracts and sign off on any balance transfers. The drawback to this approach
+is trust, but in certain applications that we’ll see later the monitor could be
+all of the participants themselves, which makes the application of the rules
+trustless.</p>
+
+<h2 id="validation-vs-computation">Validation v.s. Computation</h2>
+
+<p>Validation and Computation are two sides of the same coin. A simple example to
+demonstrate:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Task</th>
+      <th>Input</th>
+      <th>Output</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Computation</td>
+      <td>Sort the numbers [4,5,1]</td>
+      <td>None</td>
+      <td>[1,4,5]</td>
+    </tr>
+    <tr>
+      <td>Validation</td>
+      <td>Check that [4,5,1] is sorted by indexes A</td>
+      <td>A = [2,0,1]</td>
+      <td>True</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Validation <em>is</em> a computation, but hopefully it’s easier to perform the
+validation computation than the computation itself.</p>
+
+<p>In a Bitcoin transaction we are always validating that the transaction was
+approved. A transaction in Bitcoin makes a clear precondition (the coins spent)
+and postcondition (the coins sent). Even in cases where we have to do a lot of
+computation to check the authorization, we still know the proposed outcome.</p>
+
+<p>Compare to an Ethereum transaction: We pass some input to a function, and the
+EVM verifies that our input was authorized (e.g., send 1 Eth to contract X with
+message “hello”). Then, the side effects of that action are computed dynamically
+by the EVM. For certain contracts, we might be able to predict what the side
+effect will be (e.g., a 1:1 token exchange like Eth to Wrapped Eth), but for
+other contracts (e.g., a floating exchange rate for Eth to Wrapped BTC) we will
+get an outcome that can’t be fully predicted. It is possible for contracts to
+choose to engineer themselves in a way to create more predictability, however in
+Ethereum this does not result in an Invalid transaction, it results in a valid
+transaction (that e.g. still costs gas) that has a result which is not taken.
+For example, a transaction which says “Buy 1 WBTC for 15 ETH” might fail to
+acquire WBTC since the price is now 16ETH, but the transaction would be valid
+that you tried to make the trade and failed. This is because Ethereum’s base
+layer is computational in nature with little validation: validation must be
+built on top.</p>
+
+<h3 id="sidenote-malleability">Sidenote: Malleability</h3>
+
+<p>For certain Bitcoin “covenant” transactions the validation/computation line can
+be thin. Transactions must always be transactions in a block, but it’s possible
+that in the future miners could receive “details” of a transaction and be
+responsible for generating the appropriate transaction themselves. For example,
+Blockstream released details on a <a href="https://medium.com/blockstream/simplicity-taproot-and-universal-sighashes-18be8647b3bd">noninteractive
+feebumping</a>
+transaction, whereby a miner can dynamically compute a transaction that pays
+them more fees the longer it takes to confirm.</p>
+
+<p>In the case of malleability like this, it’s not as simple as saying “don’t do
+it”, because miners have an incentive to extract the value if it is available.</p>
+
+<h2 id="dynamic-state">Dynamic State</h2>
+
+<p>Contracts can have different types of state. State is just a fancy term for
+information available to execution.</p>
+
+<p>Global state is information that is observable from anywhere. An example of this
+in Bitcoin is the UTXO Set: any transaction could spend any coin, and can “pull
+it into scope” by naming it’s Outpoint (whether or not the transaction is valid
+is another question). Another example of global state is the current block
+height, used for validating things like lock times. In Ethereum, there is a much
+expanded concept of Global state whereby contracts persist and allow read/write
+access from other contracts, and unlike Bitcoin’s UTXO set, observing a piece of
+information doesn’t destroy it like spending a coin does.</p>
+
+<p>Local State is information observable only within your own context. For example,
+a contract might hold balances for 3 different people, but the current values of
+those split balances is not something queryable by outside parties. This also
+includes implicit state, such as “the contract is currently pending an Action
+from Alice” that are not explicitly coded.</p>
+
+<p>Lastly, certain things are not State. An example of this is an authorizing
+signature, which is ephemeral data that is used in the transaction execution but
+does not have relevance for the continued execution of the contract and is not
+particularly observable (which signature we use shouldn’t matter).</p>
+
+<h2 id="general-vs-specific">General v.s. Specific</h2>
+
+<p>A General contract primitive is something that can be used across many different
+types of contract. A Specific contract implements well defined logic. In Bitcoin
+and Ethereum, the focus is on General contract primitives that can be used many
+ways. In some other ecosystems (e.g. NXT, Stellar), contract primitives have
+much more specific functionality.</p>
+
+<p>General/Specific ends up being more of a spectrum than a binary. Certain
+contract primitives might be very specific but find general use, similarly some
+general primitives might be more general than others.</p>
+
+<p>For example, the Lightning Network on Bitcoin has pursued a path of using
+general purpose extensions to Bitcoin so as not to “special case” payment
+channels. But is that worth it? Might Payment Channels be cheaper, easier to
+use, etc if we just designed built-in channels from the get-go? Perhaps yes, but
+then it might be harder to embed other things or incorporate new innovations
+into Lightning if it had to fit a single mold.</p>
+
+<hr />
+
+<p>This isn’t an exhaustive list of topics by any means, but it should be a good
+primer for thinking about upgrade proposals that people discuss in Bitcoin.
+You’ll find out more about that in… tomorrow’s post!.</p>
+
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:option" role="doc-endnote">
+      <p>An American option is the right to either purchase or compell a counterparty to buy an asset until a deadline. <a href="#fnref:option" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+  </div>
+<hr>
+  
+<hr>
+  <div class="post">
+    <h2 class="post-title">
+        <a href="/bitcoin/2021/12/03/advent-6/">
+        What's Smart about Smart Contracts: Bitcoin Maxi Edition
+      </a>
+  </h2>
+  <h4>Day 6: Rubin's Bitcoin Advent Calendar</h4>
+
+
+    <span class="post-date">03 Dec 2021</span>
+
+    <p><em>Welcome to day 6 of my Bitcoin Advent Calendar. You can see an index of all
+the posts <a href="/advent21">here</a> or subscribe at
+<a href="https://judica.org/join">judica.org/join</a> to get new posts in your inbox</em></p>
+
+<p>Now that we’ve established the four pillars of Privacy, Decentralization, Self
+Custody, and Scalability, let’s get into smart contracts. But first…</p>
+
+<h1 id="does-bitcoin-have-smart-contracts">DOES BITCOIN HAVE SMART CONTRACTS?</h1>
+
+<p>There is a lot of fuss around if bitcoin has or doesn’t have smart contracts,
+and this is usually people talking past one another. Bitcoin does have enough
+functionality to create certain smart contracts. But Bitcoin does not “have
+Smart Contracts” in the same way that, say, Ethereum “has” Smart Contracts.
+Sure, one can argue that because Ethereum is weaker in terms of its fulfillment
+of the four pillars, it doesn’t really have smart contracts either. But almost
+undeniably there is something happening in the Ethereum Ecosystem that isn’t
+happening for Bitcoin – yet.</p>
+
+<p>Often, Bitcoin Boosters will say that the types of things happening on Ethereum
+aren’t desirable at all and are just scams. Many of these Boosters then go on to
+promote projects of similar dubious nature… but that’s off topic for this post!
+While there are many projects that frankly suck, there are also many projects on
+Ethereum that are relevant to the interests of Bitcoiners! Examples of projects
+that advance Ethereum’s realization of these 4 pillars that would be difficult
+to build on Bitcoin include: Gnosis Safe for Custody; Tornado Cash for Privacy;
+Optimistic/Zero Knowledge Rollups for scalability; SmartPool for on-chain mining
+pool coordination. It’s claimed that any time something of value proves out in
+the other ecosystems, Bitcoin can easily just incorporate the highlights.</p>
+
+<p>My position is somewhat unique on this matter: Smart Contracts aren’t something
+you build on top of a layer with good decentralization, privacy, scalability,
+and self custody – Smart Contracts are a central part of what makes achieving
+those pillars possible! In other words, we need a Smart Contract ecosystem that
+enables broad innovation in order to make our four pillars robust. This is not
+the same as saying we need the Ethereum VM, but we do need something to be
+different than the status quo today to empower builders to create new tools on
+top of Bitcoin. This differs from a traditional Bitcoiner perspective which is
+more along the lines of once we improve our (insert generic property here); then
+we can consider figuring out how to add more smart contracts.</p>
+
+<h2 id="that-bar-sucks-its-too-crowded">That bar sucks it’s too crowded</h2>
+
+<p>Another reason sometimes given for not wanting smart contracts is that they’re
+too expensive and won’t scale.  While this is a valid concern, the story around
+fees is somewhat interesting. You may have seen people complain about high fees
+on other platforms and say therefore it sucks and should die. It’s a bit like saying
+a crowded bar is no good. Obviously, if people are at the bar it is good. That
+your enjoyment is less is solely because you’re antisocial. On other platforms,
+there are users paying exorbiant fees to do transactions… but would they be
+doing them if they weren’t getting commensurate value? Let’s have a look at some
+data from <a href="https://cryptofees.info">cryptofees</a><sup id="fnref:date" role="doc-noteref"><a href="#fn:date" class="footnote" rel="footnote">1</a></sup>.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>1 Day Fees</th>
+      <th>7 Day Avg. Fees</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Ethereum</td>
+      <td>$62,620,320.03</td>
+      <td>$55,285,528.00</td>
+    </tr>
+    <tr>
+      <td>Uniswap</td>
+      <td>$11,315,687.79</td>
+      <td>$10,507,247.12</td>
+    </tr>
+    <tr>
+      <td>Binance Smart Chain</td>
+      <td>$7,240,187.13</td>
+      <td>$7,525,565.73</td>
+    </tr>
+    <tr>
+      <td>Balancer</td>
+      <td>$1,572,934.46</td>
+      <td>$445,368.69</td>
+    </tr>
+    <tr>
+      <td>Aave</td>
+      <td>$1,465,761.04</td>
+      <td>$1,354,792.55</td>
+    </tr>
+    <tr>
+      <td>SushiSwap</td>
+      <td>$1,379,856.87</td>
+      <td>$1,664,071.03</td>
+    </tr>
+    <tr>
+      <td>Bitcoin</td>
+      <td>$1,160,676.57</td>
+      <td>$730,368.10</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Clearly a lot of folks are willing to pay for Ethereum and projects on top of
+it. Bitcoin is ultimately a business, and it relies on its customers paying fees
+to incentivize the production of blocks. More fees, more incentive to provide
+security for Bitcoin. It’s a little problematic, therefore, when users are
+getting more utility from (by virtue of how much they are spending) other chains
+than Bitcoin<sup id="fnref:gent" role="doc-noteref"><a href="#fn:gent" class="footnote" rel="footnote">2</a></sup>.</p>
+
+<p>Although we need to be careful to not hurt Bitcoin’s essential properties, it’s
+clear that smart contracts provide massive leverage for incentivizing users to
+do transactions to pay for block production, without which Bitcoin falls apart.</p>
+
+<h2 id="capitalist-or-communist">Capitalist or Communist?</h2>
+
+<p>The last point I’ll leave you with is perhaps a bit charged / “problematic”, but
+I think it’s a good one. Bitcoin is a bit like America. Ethereum is a bit like China.
+Provisionally, America is the Free Market Capitalism country and China is the
+State Controlled Communist Markets country. In practice, if you visit a market
+in China there <em>seems</em> to be a lot more capitalism than in the US. Tons and tons
+of small businesses, operating with (seemingly) little regulation. On the other
+hand, in San Francisco you can spend
+<a href="https://sf.eater.com/2021/4/22/22397615/matcha-n-more-ice-cream-store-200000-quits">$200k</a>
+trying to get permits for an Ice Cream shop and fail. On the flip side, in the states once you’re
+successful and operating it’s pretty darn hard for the government to substantial interfere.
+In China, your CEO might vanish for a few weeks like Jack Ma.</p>
+
+<p>Bitcoin is a bit like America. Building on it is incredibly hard, but if you
+figure it out and crack the code it’s supposed to work forever and devs bend
+backwards to ensure your use case won’t break.</p>
+
+<p>Ethereum is a bit like China. Building on it is incredibly easy – at first –
+but if what you’re doing violates the “social order” your thing will get rekt by
+king VB with EIPscallibur. Examples of this include the removal of refunds for
+clearing space which bricked a popular gas fee arbitrage token.</p>
+
+<p>Now, obviously this description is tinged with preference. I <em>love</em> America.
+Best country in the world (or, rather, terrible country, just better than all
+the other terrible countries). However, Bitcoin is not America and Ethereum is
+not China. There can be a middle road, and benefits from such an approach as
+well. Smart contracts seem to be really good at enabling permissionless
+innovation. Permissionless innovation is great for capitalism! Capitalism is
+great for improving utility of users and coordinating people. Wouldn’t it be
+nice if building on Bitcoin didn’t require getting proposals passed the
+developer “commitiburo” and  more innovators picked Bitcoin as the best chain to
+build new ideas on top of? Obivously we don’t want to sacrifice the other parts
+that make Bitcoin great, but we can still entertain the types of economic
+benefits we would see by enabling more permissionless innovation. Because
+ultimately, and perhaps tautologically…</p>
+
+<h2 id="the-best-platform-for-capitalism-wins">The best platform for capitalism wins</h2>
+
+<p>As described, Bitcoin has certain positive and negative properties. Ethereum
+too. At the end of the day, in aggregate, what “matters” is what participants
+choose to use and rely on through a free market selection process. That’s why
+despite <em>not</em> offfering the playground of Ethereum, Bitcoin has something that
+people value more: stability. However, stability and stagnation are two sides of
+the same coin. Stagnate for too long and competitors will eat your lunch.  And
+perhaps the stability that makes Bitcoin unique will eventually be convincingly
+present in other ecosystems, despite Bitcoin’s head start in that endeavor.</p>
+
+<p>Spooky Scary!</p>
+
+<hr />
+
+<p>In the coming posts we’ll review the concepts more in depth, the state of the
+art research for Bitcoin Smart Contracts, and get into some examples of useful
+Bitcoin contracts.</p>
+
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:date" role="doc-endnote">
+      <p>Snapshot from December 2nd 2021 <a href="#fnref:date" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:gent" role="doc-endnote">
+      <p>Shoutout <a href="https://pleb.fi/transcripts/2020/miami/ryang/">Ryan Gentry</a>. <a href="#fnref:gent" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+  </div>
+<hr>
+  
+<hr>
+  <div class="post">
+    <h2 class="post-title">
+        <a href="/bitcoin/2021/12/02/advent-5/">
+        Pillars of Bitcoin: Privacy
+      </a>
+  </h2>
+  <h4>Day 5: Rubin's Bitcoin Advent Calendar</h4>
+
+
+    <span class="post-date">02 Dec 2021</span>
+
+    <p><em>Welcome to day 5 of my Bitcoin Advent Calendar. You can see an index of all
+the posts <a href="/advent21">here</a> or subscribe at
+<a href="https://judica.org/join">judica.org/join</a> to get new posts in your inbox</em></p>
+
+<p>Privacy is foundational to Bitcoin. Fundamentally, we care about censorship
+resistance so folks can’t stop you from doing activity they can tell you’re
+doing… but what if they couldn’t tell you were doing anything at all? The more
+private a system is, the better it is at ensuring that all participants are free
+to do as they wish.</p>
+
+<p>Unfortunately, privacy is one of the most difficult things to achieve in the
+universe. For every action there is an equal and opposite reaction; if one wants
+to make an action, how can one ensure the reaction is not observable? And if one
+masks the reaction, how can one hide the masking?</p>
+
+<p>Privacy exists in a delicate position in our society. America is hands down the
+leader in rights to privacy of any society, but citizens still face a barrage of
+assaults against their privacy. Privacy from the government also differs from
+privacy from corporations, and the corporations often times can be in cahoots
+with the government. Some regulatory regimes (e.g., the EU) claim to be “better
+on privacy” than America, but have overall a weaker sense of individual rights
+than in America (so they may be better at the privilege of privacy, but not at
+the right to it).</p>
+
+<p>Why is privacy so delicate? In part, because unlike speech there’s no explicit
+enumerated right to privacy<sup id="fnref:centric" role="doc-noteref"><a href="#fn:centric" class="footnote" rel="footnote">1</a></sup>. Privacy is an unenumerated right under
+the American constitution. What this means is that legally we do believe it to
+be a right because it seems to be implied by other constitutional protections
+that could not exist without it (e.g., the right to not be searched without due
+process).  Because there’s not explicit protection of privacy, it’s a constant
+battle to determine what constitutes an violation of privacy. For example, if
+your house is extra hot because you’re growing pot in it (or hint hint Bitcoin
+mining), can police use thermal cameras to detect it and then establish probable
+cause to get a warrant and raid your house? See Kyllo v. United States, that’s
+an illegal search baby! However it’s possible that this line would erode over
+time as the expectation of privacy changes – if everyone had thermal camera
+sunglasses and could see your pot growing plain as day, maybe it’d be
+unreasonable to think
+you’re private!</p>
+
+<p>Cryptographic research has yielded amazing tools for creating provable privacy
+for digital actions. For example, it’s possible to send a digital message in a
+manner such that only the intended recipient can read it. And as long as your
+spying adversary isn’t standing over either of your shoulders looking at your
+screen (or more realistically, running a scanning program on all your data like
+the one Apple said they might be doing earlier this year), the only people who
+will know the contents of the message are you and the recipient.</p>
+
+<h3 id="the-government-kinda-sorta-hates-this-stuff">The government kinda sorta hates this stuff!</h3>
+
+<p>Because the bad guys can use it! But, because America is super free privacy
+loving country, citizens still have a basically unlimited protected right to use
+whatever privacy technology they want. Many politicians have mentioned wanting
+backdoors into software, but none have truly succeeded to introduce much truly
+limiting. Not to mention you can’t make math illegal, which is all that
+cryptography is. Alphabet soup agencies resort to trying to insert backdoors,
+but these are still subject to public review and the information revealed could
+only really be used legally for big “national security issues” like against a
+group with a pre-existing warrant, but the general collection of information
+would be illegal under the expectation of privacy right. At least in theory –
+Snowden showed us that mass data collection
+<em>does</em> still happen… But cryptography gets better, and open-source supply chain
+devices become better, so inserting backdoors in the code becomes harder and
+harder.</p>
+
+<p>So great, probably solved for Bitcoin, right? Just Crypto It. Not quite. While
+systems like ZCash do exist that make transactions much more private, they take
+up more space, so they decrease the availability of block space… however,
+perhaps with better privacy, there’s less ability to discriminate against
+different transaction sources, so less decentralization is needed to guarantee
+censorship resistance.</p>
+
+<p>This points to another conflict, which arises with privacy: auditability v.s.
+transparency v.s. Deniability.</p>
+
+<p>An auditable system means that anyone can verify the history of all transactions
+and check for validity transparently. Many bitcoiners have a preference for
+“elementary school math”, where validating the transaction record requires very
+basic math in the code, and not much else. However, if you go to a fully
+encrypted form, you might no longer be able to easily check important rules like
+the amount of coins not being increased through a crypto backdoor. This type of
+auditability where you could “do it by hand on a calculator” we’ll call
+transparency, since you can see everything! If it were encrypted, it would be
+opaquely auditable. You could tell it’s valid, but not the specific transfers
+that happened. Maybe no one person is going to look through all the data, but
+across all humanity someone is bound to audit at least the transactions they’re
+involved in.</p>
+
+<p>Deniability stands in contrast to either of these properties. If, say, a
+government agency comes to you and says “hey, we know you controlled key X,
+please show us all transactions that X was involved in”, a deniable system would
+allow you to produce any answer, making such a query useless. However, if a
+system was strongly deniable like that, it would be very hard to audit because
+the audit could potentially turn up differing results. So Bitcoin transactions
+aren’t particularly deniable by default.</p>
+
+<p>One of the drawbacks of Bitcoin’s auditability is that the auditability is
+<em>forever</em>. So if you have a lapse of privacy, all your old information can be
+checked. So let’s say you bought a coffee in 2021, and in 2055 the government
+decides all coffee drinkers are going to go to jail to pay for their drug use
+sins, then your old cafe might be able to reveal you as a customer. Bitcoin
+never forgets.</p>
+
+<h2 id="its-my-data-and-i-want-it-private-now">It’s My Data and I want it Private Now</h2>
+<p>Therefore it’s an urgent priority to make Bitcoin as private as possible as soon
+as possible in order to keep users safe now and forever, or else the fundamental
+usability of the system is at risk. However, compromising on auditability or
+decentralization would be unpopular, so it’s not as simple as adding ZCash and
+increasing block space.</p>
+
+<p>There are a lot of different pathways Bitcoin can take to increase privacy. For
+example, the lightning network can mask and make many payments ephemeral, as
+well as adding deniability if one continually signs false histories of revoked
+txns.  Sidechains can add all sorts of privacy primitives, if they want. And
+on-chain techniques like swaps or joins can be used to make the base privacy
+better as well.</p>
+
+<p>In future posts we’ll explore how covenants can have a role in improving
+privacy!</p>
+
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:centric" role="doc-endnote">
+      <p>This post is a bit America centric… generally speaking, America has the strongest set of protections of citizen (and non-citizen) rights of any country, so we use the American system as a meter-stick in this post. That privacy doesn’t exist as an enumerated right in the country which most strongly protects individual rights, as noted early, implies it’s only really worse in other countries. <a href="#fnref:centric" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+  </div>
+<hr>
+  
+</div>
+
+<div class="pagination">
+  
+    <a class="pagination-item newer" href="/blog/page/5/">Newer</a>
+  
+  
+  <a class="pagination-item older" href="/blog/page/7/">Older</a>
+  
+</div>
+
+</div>
+
+        </div>
+        <div class="content container" style="padding-bottom:0;padding-top:0;bottom:0px;">
+            <div class="posts" style="height:14pt;margin-bottom:0;">
+                <div class="post">
+                    <p style="text-align:center;font-size:12pt;">&copy; 2011-2021 Jeremy Rubin. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

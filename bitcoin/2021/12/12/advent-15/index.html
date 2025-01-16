@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+  <title> Decentralized Coordination Free Mining Pools &middot; Jeremy Rubin </title>
+  <link href="https://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/poole.css">
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/css/hyde.css">
+  <link rel="stylesheet" href="/public/font-awesome-4.5.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+                                 <link rel="shortcut icon" href="/public/favicon.ico">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+
+  
+  <link type="application/atom+xml" rel="alternate" href="http://rubin.io/feed.xml" title="Jeremy Rubin" />
+
+
+  <!-- GA -->
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-40376251-1', 'auto');
+    ga('send', 'pageview');
+</script>
+
+  
+  <link rel="me" href="https://twitter.com/JeremyRubin" >
+  <meta name="twitter:dnt" content="on">
+			   <script>window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
+
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+
+  return t;
+}(document, "script", "twitter-wjs"));</script>
+
+</head>
+
+    <body>
+        <div class="sidebar">
+    <h3 style="text-align: center;"> <a href="/"> Jeremy Rubin </a> </h3>
+    <div class="container">
+        <div class="sidebar-about">
+
+            <div class="sidebar-about-info"> 
+                <a href="/public/pdfs/resume.pdf"><i class="fa fa-file-text-o" title=Resume></i></a>
+                <a href=""><i class="fa fa-github" title=Github></i></a>
+                <a href="https://twitter.com/JeremyRubin"><i class="fa fa-twitter" title=Twitter></i></a>
+            </div>
+            <div class="sidebar-about-info hide-large">
+                <a class="" href="/">Home</a>
+                <a class="" href="/blog/">Blog</a>
+                <a class="" href="/talks/">Talks</a> 
+                <a class="" href="/projects/">Projects</a>
+                <a class="" href="/archive/">Site Index</a>
+            </div>
+        </div>
+
+
+
+
+        <nav class="sidebar-nav hide-small">
+            <a class="sidebar-nav-item" href="/">Home</a>
+            <a class="sidebar-nav-item" href="/blog/">Blog</a>
+            <a class="sidebar-nav-item" href="/talks/">Talks</a> 
+            <a class="sidebar-nav-item" href="/projects/">Projects</a>
+            <a class="sidebar-nav-item" href="/archive/">Site Index</a>
+        </nav>
+    </div>
+</div>
+
+
+
+        <div class="content container" style="padding-bottom:0;">
+            <div class="post">
+    <h1 class="post-title">Decentralized Coordination Free Mining Pools</h1>
+    <h3>Day 15: Rubin's Bitcoin Advent Calendar</h3>
+    
+
+<a class="twitter-share-button"
+data-size="large"
+href="https://twitter.com/intent/tweet?text=Decentralized+Coordination+Free+Mining+Pools&hashtags=Bitcoin,
+AdventCalendar,
+Covenants,
+Sapio,
+Mining
+"> Tweet</a>
+
+
+
+    <div>
+        <span class="post-date">12 Dec 2021
+        </span>
+    </div>
+    <p><em>Welcome to day 15 of my Bitcoin Advent Calendar. You can see an index of all
+the posts <a href="/advent21">here</a> or subscribe at
+<a href="https://judica.org/join">judica.org/join</a> to get new posts in your inbox</em></p>
+
+<h3 id="long-time-no-see-you-come-around-these-parts-often">Long time no see. You come around these parts often?</h3>
+
+<p>Let’s talk mining pools.</p>
+
+<p>First, let’s define some things. What is a pool? A pool is a way to take a
+strongly discontinuous income stream and turn it into a smoother income stream.</p>
+
+<p>For example, suppose you are a songwriter. You’re a dime a dozen, there are 1000
+songwriters. If you get song of the year, you get $1M Bonus. However, all the
+other songwriters are equally pretty good, it’s a crapshoot. So you and half the
+other songwriters agree to split the prize money whoever wins. Now, on average,
+every other year you get $2000, instead of once every thousand years. Since
+you’re only going to work about 50 years, your “expected” amount of winnings
+would be $50,000 if you worked alone. But expected winnings don’t buy bread. By
+pooling, your expected winnings are $2000 every other year for 50 years, so also
+$50,000. But you expect to actually have some spare cash laying around. However,
+if you got lucky and won the contest the year you wrote a hit, you’d end up way
+richer! but the odds are 1:20 of that ever happening in your life, so there
+aren’t that many rich songwriters (50 out of your 1000 peers…).</p>
+
+<p>Mining is basically the same as our songwriter contest, just instead of silver
+tongued lyrics, it’s noisy whirring bitcoin mining rigs. Many machines will
+never mine a block. Many miners (the people operating it) won’t either! However,
+by pooling their efforts together, they can turn a once-in-a-million-years
+chance into earning temperatureless immaterial bitcoin day in and day out.</p>
+
+<h2 id="who-pissed-in-your-pool">Who Pissed In your Pool?</h2>
+
+<p>The problem with pooling is that they take an extremely decentralized process
+and add a centralized coordination layer on top. This layer has numerous issues
+including but not limited to:</p>
+
+<ol>
+  <li>Weak Infrastructure: What happens if e.g. DNS goes down as it did recently?</li>
+  <li>KYC/AML requirements to split the rewards</li>
+  <li>Centralized “block policies”</li>
+  <li>Bloating chain space with miner payouts</li>
+  <li>Getting kicked out of their home country (happened in China recently)</li>
+  <li>Custodial hacking risk.</li>
+</ol>
+
+<p>People are working on a lot of these issues with upgrades like “Stratum V2”
+which aspire to give the pools less authority.</p>
+
+<p>In theory, mining pool operators should be against things that limit their
+business operations. However, we’re in a bit “later stage bitcoin mining”
+whereas pooling is seen more as a necessary evil, and most pools are anchored by
+big mining operations. And getting rid of pools would be great for Bitcoin,
+which would increase the value of folks holdings/mining rigs. So while it might
+seem irrational, it’s actually perfectly incentive compatible that mining pools
+operators consider mining pools to be something to make less of a centralization
+risk. Even if pools don’t exist in their current form, mining service providers
+can still make really good business offerring all kinds of support.  Forgive me
+if i’m speaking out of turn, pool ops!</p>
+
+<h2 id="making-mining-pools-better">Making Mining Pools Better</h2>
+
+<p>To make mining pools better, we can set some ambitious goals:</p>
+
+<ol>
+  <li>Funds should not be centrally custodied, ever, if at all.</li>
+  <li>No KYC/AML.</li>
+  <li>No “Extra network” software required.</li>
+  <li>No blockchain bloat.</li>
+  <li>No extra infrastructure.</li>
+  <li>The size of a viable pool should be smaller. Remember our singer – if you
+just pool with one other songwriter it doesn’t make your expected time till
+payout in your lifetime. So bigger the pools, more regular the payouts. We want
+the smallest possible “units of control” with the most regular payouts possible.</li>
+</ol>
+
+<h1 id="fuck--thats-a-huge-list-of-goals">Fuck.  That’s a huge list of goals.</h1>
+
+<p>But if you work with me here, you’ll see how we can nail every last one of them.
+And in doing so, we can clear up some major Privacy hurdles and Decentralization
+issues.</p>
+
+<hr />
+
+<h1 id="building-the-decentralized-coordination-free-mining-pool">Building the Decentralized Coordination Free Mining Pool</h1>
+<p>We’ll build this up step by step. We probably won’t look at any Sapio code
+today, but as a precursor I really must insist read the last couple posts first:</p>
+
+<ol>
+  <li><a href="/bitcoin/2021/12/09/advent-12/">Congestion Control</a></li>
+  <li><a href="/bitcoin/2021/12/10/advent-13/">Payment Pools</a></li>
+  <li><a href="/bitcoin/2021/12/11/advent-14/">Channels</a></li>
+</ol>
+
+<p>You read them, right?</p>
+
+<p>Right?</p>
+
+<p>Ok.</p>
+
+<p>The idea is actually really simple, but we’ll build it up piece by piece by piece.</p>
+
+<h2 id="part-1-window-functions-over-blocks">Part 1: Window Functions over Blocks.</h2>
+
+<p>A window function is a little program that operates over the last “N” things and
+computes something.</p>
+
+<p>E.g., a window function could operate over the last 5 hours and count how many
+carrots you ate. Or over the last 10 cars that pass you on the road.</p>
+
+<p>A window function of bitcoin blocks could operate over a number of different things.</p>
+
+<ul>
+  <li>The last 144 blocks</li>
+  <li>The last 24 hours of blocks</li>
+  <li>The last 100 blocks that meet some filter function (e.g, of size &gt; 500KB)</li>
+</ul>
+
+<p>A window function could compute lot of different things too:</p>
+
+<ul>
+  <li>The average time difference between blocks</li>
+  <li>The amount of fees paid in those blocks</li>
+  <li>A subset of the blocks that pass another filter.</li>
+</ul>
+
+<p>A last note: window functions need, for something like Bitcoin, a start height
+where we exclude things prior (e.g., last 100 blocks since block 500,000)</p>
+
+<h2 id="part-2-giving-presents-to-all-our-friends">Part 2: Giving presents to all our friends</h2>
+
+<p>Let’s do a window function over the last 100 Blocks and collect the 1st address
+in the output of the coinbase transaction.</p>
+
+<p>Now, in our block, instead of paying ourselves a reward, let’s divvy it up among
+the last 100 blocks and pay them out our entire block reward, split up.</p>
+
+<p>We’re so nice!</p>
+
+<h2 id="part-3-giving-presents-to-our-nice-friends-only">Part 3: Giving presents to our nice friends only</h2>
+
+<p>What if instead of paying everyone, we do a window function over the last 100
+blocks and filter for only blocks that followed the same rule that we are
+following (being nice). We take the addresses of each of them, and divvy up our
+award to them too like before.</p>
+
+<p>We’re so nice to only our nice friends!</p>
+
+<p>Now stop and think a minute. All the “nice” blocks in the last 100 didn’t get a
+reward directly, but they got paid by the future nice blocks handsomely.  Even
+though we don’t get any money from the block we mined, if our nice friends keep
+on mining then they’ll pay us too returning the favor.</p>
+
+<p>Re-read the above till it makes sense. This is the big idea. Now onto the “small”
+ideas.</p>
+
+<h2 id="part-4-deferring-payouts">Part 4: Deferring Payouts</h2>
+
+<p>This is all kinda nice, but now our blocks get really really big since we’re
+paying all our friends. Maybe we can be nice, but a little mean too and tell
+them to use their own block space to get their gift.</p>
+
+<p>So instead of paying them out directly, we round up all the nice block addresses
+like before and we toss it in a Congestion Control Tree.</p>
+
+<p>Now our friends do likewise too. Since the Congestion Control Module is
+deterministic, everyone can generate the same tree and both verify that our
+payout was received and generate the right transaction.</p>
+
+<p>Now this gift doesn’t take up any of our space!</p>
+
+<h2 id="part-5-compacting">Part 5: Compacting</h2>
+
+<p>But it still takes up space for someone, and that blows.</p>
+
+<p>So let’s do our pals a favor. Instead of just peeping the 1st address (which
+really could be anything) in the coinbase transaction, let’s use a good ole
+fashioned OP_RETURN (just some extra metadata) with a Taproot Public Key we want
+to use in it.</p>
+
+<p>Now let’s collect all the blocks that again follow the rule defined here, and
+take all their taproot keys.</p>
+
+<p>Now we gift them into a Payment Pool, instead of into just a Congestion Control
+tree with musig aggregated keys at every node.  It’s a minor difference – a
+Congestion Control tree doesn’t have a taproot key path – but that difference
+means the world.</p>
+
+<p>Now instead of having to expand to get everyone paid, they can use it like a
+Payment Pool!  And Pools from different runs can even do a many-to-one
+transaction where they merge balances.</p>
+
+<p>For example, imagine two pools:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>UTXO A from Block N: 1BTC Alice, 1BTC Carol, 1BTC Dave
+UTXO B Block N+1: 1BTC Alice, 1BTC Carol, 1BTC Bob
+</code></pre></div></div>
+
+<p>We can do a transaction as follows to merge the balances:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Spends:
+    UTXO A, B
+Creates:
+    UTXO C: 2BTC Alice, 2BTC Carol, 1BTC Dave, 1BTC Bob
+</code></pre></div></div>
+
+<p>Compared to doing the payments directly, fully expanding this creates only 4
+outputs instead of 6! It gets even better the more miners are involved.</p>
+
+<p>We could even merge many pools at the same time, and in the future, benefit from
+something like cross-input-signature aggregation to make it even cheaper and
+create even fewer outputs.</p>
+
+<h2 id="part-6-channels">Part 6: Channels</h2>
+
+<p>But wait, there’s more!</p>
+
+<p>We can even make the terminal leafs of the Payment Pool be channels instead of direct UTXOs.</p>
+
+<p>This has a few big benefits.</p>
+
+<ol>
+  <li>We don’t need to do any compaction as urgently, we can immediately route funds around.</li>
+  <li>We don’t need to necessarily wait 100 blocks to spend out of our coinbase since we can use the channel directly.</li>
+  <li>Instead of compaction, we can just “swap” payments around across channels.</li>
+</ol>
+
+<p><img src="/public/img/bitcoin/advent/dcfmp/aggpayments.svg" alt="channel balancing" />
+<em>How channel balancing might look.</em></p>
+
+<p>This should be opt-in (with a tag field to opt-in/out)  since if you didn’t want
+a channel it could be annoying to have the extra timeout delays, especially if you
+wanted e.g. to deposit directly to cold storage.</p>
+
+<h2 id="part-7-selecting-window-functions">Part 7: Selecting Window Functions</h2>
+
+<p>What’s the best window function?</p>
+
+<p>I got no freakin’ clue. We can window over time, blocks, fee amounts,
+participating blocks, non participating blocks, etc.</p>
+
+<p>Picking a good window function is an exercise in itself, and needs to be
+scrutinized for game theoretic attacks.</p>
+
+<h2 id="part-8-payout-functions">Part 8: Payout Functions</h2>
+
+<p>Earlier we showed the rewards as being just evenly split among the last blocks,
+but we could also reward people differently. E.g., we could reward miners who
+divided more reward to the other miners more (incentivize collecting more fees),
+or really anything deterministic that we can come up with.</p>
+
+<p>Again, I don’t know the answer here. It’s a big design space!</p>
+
+<h2 id="part-9-voting-on-parameters">Part 9: Voting on Parameters</h2>
+
+<p>One last idea: if we had some sort of parameter space for the window functions,
+we could perhaps vote on-chain for tweaking it. E.g., each miner could vote to
++1 or -1 from the window length.</p>
+
+<p>I don’t particularly think this is a good idea, because it brings in all sorts
+of weird attacks and incentives, but it is a cool case of on-chain governance so
+worth thinking more on.</p>
+
+<h2 id="part-10-end-of-transmission">Part 10: End of Transmission?</h2>
+
+<p>No more steps. Now we think a bit more about the implications of this.</p>
+
+<hr />
+
+<h2 id="solo-mining">Solo mining?</h2>
+
+<p>Well the bad news about this design is that we can’t really do solo mining.
+Remember, most miners probably will never mine a block. So they would never be
+able to enter the pool.</p>
+
+<p>We could mess around with including things like partial work shares (just a
+few!) into blocks, but I think the best bet is to instead to focus on
+micro-pools. Micro-pools would be small units of hashrate (say, 1%?) that are
+composed of lots of tiny miners.</p>
+
+<p>The tiny miners can all connect to each other and gossip around their work
+shares, use some sort of conesnsus algorithm, or use a pool operator. The blocks
+that they mine should use a taproot address/key which is a multisig of some
+portion of the workshares, that gets included in the top-level pool as a part of
+Payment Pool.</p>
+
+<p>So while we don’t quite make solo mining feasible, the larger the window we use
+the tinier the miners can be while getting better de-risking.</p>
+
+<h2 id="analysis">Analysis?</h2>
+
+<p>A little out of scope for here, but it should work conceptually!</p>
+
+<p>A while back I analyzed this kind of setup, <a href="https://utxos.org/uses/miningpools/">read more
+here</a>. Feel free to experiment
+with window and payout functions and report back!</p>
+
+<p><img src="/public/img/bitcoin/advent/dcfmp/bagpool.svg" alt="analysis of benefit to variance reduction" />
+<em>chart showing that the rewards are smoother over time</em></p>
+
+<h2 id="now-implement-it">Now Implement it!</h2>
+
+<p>Well we are <em>not</em> gonna do that here, since this is kinda a mangum opus of Sapio
+and it would be wayyyy too long. But it should be somewhat conceptually
+straightforward if you paid close attention to the “precursor” posts. And you
+can see some seeds of progress for an implementation on
+<a href="https://github.com/sapio-lang/sapio/blob/master/examples/dcf_mining_pool/src/main.rs">github</a>,
+although I’ve mostly been focused on simpler applications (e.g. the constituent
+components of payment pools and channels) for the time being… contributions welcome!</p>
+
+<hr />
+
+<p>TL;DR: Sapio + CTV makes pooled mining more decentralized and more private.</p>
+
+    <div>
+    <h3>
+        <span style="vertical-align: text-top;">
+    
+
+<a class="twitter-share-button"
+data-size="large"
+href="https://twitter.com/intent/tweet?text=Decentralized+Coordination+Free+Mining+Pools&hashtags=Bitcoin,
+AdventCalendar,
+Covenants,
+Sapio,
+Mining
+"> Tweet</a>
+
+
+
+        </span>
+        <span style="vertical-align: super;">
+to continue the conversation...
+        </span>
+    </h3>
+
+    </div>
+</div>
+
+<aside class="related">
+  <h3>You might also enjoy...</h3>
+  <ul class="related-posts">
+    
+      <li>
+        <a href="/bitcoin/2021/12/11/advent-14/">
+          Payment Channels in a CTV+Sapio World
+          <small><time datetime="2021-12-11T00:00:00+00:00">11 Dec 2021</time></small>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/bitcoin/2022/04/17/next-steps-bip119/">
+          7 Theses on a next step for BIP-119
+          <small><time datetime="2022-04-17T00:00:00+00:00">17 Apr 2022</time></small>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/bitcoin/2021/12/24/advent-27/">
+          RoadMap or Load o' Crap?
+          <small><time datetime="2021-12-24T00:00:00+00:00">24 Dec 2021</time></small>
+        </a>
+      </li>
+    
+  </ul>
+</aside>
+
+        </div>
+        <div class="content container" style="padding-bottom:0;padding-top:0;bottom:0px;">
+            <div class="posts" style="height:14pt;margin-bottom:0;">
+                <div class="post">
+                    <p style="text-align:center;font-size:12pt;">&copy; 2011-2021 Jeremy Rubin. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

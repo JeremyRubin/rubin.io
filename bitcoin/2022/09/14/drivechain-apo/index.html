@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+  <title> Spookchains: Drivechain Analog with Trusted Setup & APO &middot; Jeremy Rubin </title>
+  <link href="https://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/poole.css">
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/css/hyde.css">
+  <link rel="stylesheet" href="/public/font-awesome-4.5.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+                                 <link rel="shortcut icon" href="/public/favicon.ico">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+
+  
+  <link type="application/atom+xml" rel="alternate" href="http://rubin.io/feed.xml" title="Jeremy Rubin" />
+
+
+  <!-- GA -->
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-40376251-1', 'auto');
+    ga('send', 'pageview');
+</script>
+
+  
+  <link rel="me" href="https://twitter.com/JeremyRubin" >
+  <meta name="twitter:dnt" content="on">
+			   <script>window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
+
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+
+  return t;
+}(document, "script", "twitter-wjs"));</script>
+
+</head>
+
+    <body>
+        <div class="sidebar">
+    <h3 style="text-align: center;"> <a href="/"> Jeremy Rubin </a> </h3>
+    <div class="container">
+        <div class="sidebar-about">
+
+            <div class="sidebar-about-info"> 
+                <a href="/public/pdfs/resume.pdf"><i class="fa fa-file-text-o" title=Resume></i></a>
+                <a href=""><i class="fa fa-github" title=Github></i></a>
+                <a href="https://twitter.com/JeremyRubin"><i class="fa fa-twitter" title=Twitter></i></a>
+            </div>
+            <div class="sidebar-about-info hide-large">
+                <a class="" href="/">Home</a>
+                <a class="" href="/blog/">Blog</a>
+                <a class="" href="/talks/">Talks</a> 
+                <a class="" href="/projects/">Projects</a>
+                <a class="" href="/archive/">Site Index</a>
+            </div>
+        </div>
+
+
+
+
+        <nav class="sidebar-nav hide-small">
+            <a class="sidebar-nav-item" href="/">Home</a>
+            <a class="sidebar-nav-item" href="/blog/">Blog</a>
+            <a class="sidebar-nav-item" href="/talks/">Talks</a> 
+            <a class="sidebar-nav-item" href="/projects/">Projects</a>
+            <a class="sidebar-nav-item" href="/archive/">Site Index</a>
+        </nav>
+    </div>
+</div>
+
+
+
+        <div class="content container" style="padding-bottom:0;">
+            <div class="post">
+    <h1 class="post-title">Spookchains: Drivechain Analog with Trusted Setup & APO</h1>
+    
+    
+
+<a class="twitter-share-button"
+data-size="large"
+href="https://twitter.com/intent/tweet?text=Spookchains%3A+Drivechain+Analog+with+Trusted+Setup+%26+APO&hashtags=Bitcoin
+"> Tweet</a>
+
+
+
+    <div>
+        <span class="post-date">14 Sep 2022
+        </span>
+    </div>
+    <p>This post draws heavily from <a href="https://lists.linuxfoundation.org/pipermail/bitcoin-dev/2022-February/019976.html">Zmnscpxj’s fantastic
+post</a>
+showing how to make drivechains with recursive covenants. In this post, I will
+show similar tricks that can accomplish something similar using ANYPREVOUT with
+a one time trusted setup ceremony.</p>
+
+<p>This post presents general techniques that could be applied to many
+different types of covenant.</p>
+
+<p><em>note: I originally wrote this around May 5th, 2022, and shared it with a
+limited audience</em></p>
+
+<p><img src="/public/img/bitcoin/spookchain.png" alt="Spooky Chains" /></p>
+
+<h1 id="peano-counters">Peano Counters</h1>
+
+<p>The first component we need to build is a Peano counter graph. Instead
+of using sha-256, like in Zmnscpxj’s scheme, we will use a key and
+build a simple 1 to 5 counter that has inc / dec.</p>
+
+<p>Assume a key K1…K5, and a point NUMS which is e.g.
+HashToCurve(“Spookchains”).</p>
+
+<p>Generate scripts as follows:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;1 || K1&gt; CHECKSIG
+...
+&lt;1 || K5&gt; CHECKSIG
+</code></pre></div></div>
+
+<p>Now generate 2 signatures under Ki with flags <code class="language-plaintext highlighter-rouge">SIGHASH_SINGLE |
+SIGHASH_ANYONECANPAY | SIGHASH_ANYPREVOUT</code>.</p>
+
+<h2 id="rule-increment">Rule Increment</h2>
+<p>For each Ki, when <code class="language-plaintext highlighter-rouge">i &lt; 5</code>, create a signature that covers a
+transaction described as:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Amount: 1 satoshi
+Key: Tr(NUMS, {&lt;1 || K{i+1}&gt; CHECKSIG})
+</code></pre></div></div>
+
+<h2 id="rule-decrement">Rule Decrement</h2>
+<p>For each Ki, when <code class="language-plaintext highlighter-rouge">i &gt; 1</code> The second signature should cover:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Amount: 1 satoshi
+Key: Tr(NUMS, {&lt;1 || K{i-1}&gt; CHECKSIG})
+</code></pre></div></div>
+
+<p><em>Are these really Peano?</em> Sort of. While a traditional Peano numeral
+is defined as a structural type, e.g. <code class="language-plaintext highlighter-rouge">Succ(Succ(Zero))</code>, here we
+define them via a Inc / Dec transaction operator, and we have to
+explicitly bound these Peano numbers since we need a unique key per
+element. They’re at least spiritually similar.</p>
+
+<h2 id="instantiation">Instantiation</h2>
+<p>Publish a booklet of all the signatures for the Increment and
+Decrement rules.</p>
+
+<p>Honest parties should destroy the secret key sets <code class="language-plaintext highlighter-rouge">k</code>.</p>
+
+<p>To create a counter, simply spend to output C:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Amount: 1 satoshi
+Key: Tr(NUMS, {&lt;1 || K1&gt; CHECKSIG})
+</code></pre></div></div>
+
+<p>The signature from K1 can be bound to C to ‘transition’ it to (+1):</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Amount: 1 satoshi
+Key: Tr(NUMS, {&lt;1 || K2&gt; CHECKSIG})
+</code></pre></div></div>
+
+<p>Which can then transition to (+1):</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Amount: 1 satoshi
+Key: Tr(NUMS, {&lt;1 || K3&gt; CHECKSIG})
+</code></pre></div></div>
+
+<p>Which can then transition (-1) to:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Amount: 1 satoshi
+Key: Tr(NUMS, {&lt;1 || K2&gt; CHECKSIG})
+</code></pre></div></div>
+
+<p>This can repeat indefinitely.</p>
+
+<p>We can generalize this technique from <code class="language-plaintext highlighter-rouge">1...5</code> to <code class="language-plaintext highlighter-rouge">1...N</code>.</p>
+
+<h1 id="handling-arbitrary-deposits--withdrawals">Handling Arbitrary Deposits / Withdrawals</h1>
+
+<p>One issue with the design presented previously is that it does not
+handle arbitrary deposits well.</p>
+
+<p>One simple way to handle this is to instantiate the protocol for every
+amount you’d like to support.</p>
+
+<p>This is not particularly efficient and requires a lot of storage
+space.</p>
+
+<p>Alternatively, divide (using base 2 or another base) the deposit
+amount into a counter utxo per bit.</p>
+
+<p>For each bit, instead of creating outputs with 1 satoshi, create
+outputs with 2^i satoshis.</p>
+
+<p>Instead of using keys <code class="language-plaintext highlighter-rouge">K1...KN</code>, create keys <code class="language-plaintext highlighter-rouge">K^i_j</code>, where i
+represents the number of sats, and j represents the counter. Multiple
+keys are required per amount otherwise the signatures would be valid
+for burning funds.</p>
+
+<h2 id="splitting-and-joining">Splitting and Joining</h2>
+
+<p>For each <code class="language-plaintext highlighter-rouge">K^i_j</code>, it may also be desirable to allow splitting or
+joining.</p>
+
+<p>Splitting can be accomplished by pre-signing, for every <code class="language-plaintext highlighter-rouge">K^i_j</code>, where
+<code class="language-plaintext highlighter-rouge">i!=0</code>, with <code class="language-plaintext highlighter-rouge">SIGHASH_ALL | SIGHASH_ANYPREVOUT</code>:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Input: 2^i sats with key K^i_j
+Outputs: 
+    - 2^i-1 sats to key K^{i-1}_j
+    - 2^i-1 sats to key K^{i-1}_j
+</code></pre></div></div>
+
+<p>Joining can be accomplished by pre-signing, for every <code class="language-plaintext highlighter-rouge">K^i_j</code>, where
+<code class="language-plaintext highlighter-rouge">i!=MAX</code>, with <code class="language-plaintext highlighter-rouge">SIGHASH_ALL | SIGHASH_ANYPREVOUT</code>:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Inputs:
+    - 2^i sats with key K^i_j
+    - 2^i sats with key K^i_j
+Outputs: 
+    - 2^i+1 sats to key K^{i+1}_j
+</code></pre></div></div>
+
+<p>N.B.: Joining allows for third parties to deposit money in externally,
+that is not a part of the covenant.</p>
+
+<p>The splitting and joining behavior means that spookchain operators
+would be empowered to consolidate UTXOs to a smaller number, while
+allowing arbitrary deposits.</p>
+
+<h1 id="one-vote-per-block">One Vote Per Block</h1>
+
+<p>To enforce that only one vote per block mined is allowed, ensure that
+all signatures set the input sequence to 1 block. No CSV is required
+because nSequence is in the signatures already.</p>
+
+<h1 id="terminal-states--thresholds">Terminal States / Thresholds</h1>
+
+<p>When a counter reaches the Nth state, it represents a certain amount
+of accumulated work over a period where progress was agreed on for
+some outcome.</p>
+
+<p>There should be some viable state transition at this point.</p>
+
+<p>One solution would be to have the money at this point sent to an
+<code class="language-plaintext highlighter-rouge">OP_TRUE</code> output, which the miner incrementing that state is
+responsible for following the rules of the spookchain. Or, it could be
+specified to be some administrator key / federation for convenience,
+with a N block timeout that degrades it to fewer signers (eventually
+0) if the federation is dead to allow recovery.</p>
+
+<p>This would look like, from any <code class="language-plaintext highlighter-rouge">K^i_j</code>, a signature for a transaction
+putting it into an <code class="language-plaintext highlighter-rouge">OP_TRUE</code> and immediately spending it. Other
+spookchain miners would be expected to orphan that miner otherwise.</p>
+
+<h1 id="open-states--proposals">Open States / Proposals</h1>
+
+<p>From a state <code class="language-plaintext highlighter-rouge">K^i_1</code>, the transaction transitioning to <code class="language-plaintext highlighter-rouge">K^i_2</code> can be
+treated as ‘special’ and the <code class="language-plaintext highlighter-rouge">OP_RETURN</code> output type can be used to
+commit to, e.g., the outputs that must be created in when the Terminal
+State is reached. This clarifies the issue of “what is being voted
+on”.</p>
+
+<p>This method does not <em>lock in</em> at a consensus layer what Terminal
+State is being voted on.</p>
+
+<p>In certain circumstances, without violating the one-time-setup
+constraint, if a fixed list of withdrawer’s addresses is known in
+advance, the Open States could cover withdrawals to specific
+participants, which then must collect a certain number of votes from
+miners.  However, it seems impossible, without new primitives, for an
+arbitrary transaction proposal to be voted on.</p>
+
+<h1 id="setup-variants">Setup Variants</h1>
+
+<h2 id="xpubs">xpubs</h2>
+
+<p>Instead of using randomly generated keys for each state, define each
+to be an xpub and derive a path where it is k/i/j for each
+state/satoshi amount. This saves some data, and also requires less
+entropy.</p>
+
+<h3 id="trustless-data-commit">Trustless Data Commit:</h3>
+
+<p>commit to the hash of the entire program spec as a tweak to the xpub,
+so that someone can quickly verify if they have all the signatures you
+are expected to generate if honest.</p>
+
+<p>One way to do this is to convert a hash to a list of HD Child Numbers
+(9 of them) deterministically, and tweak the xpub by that. This is a
+convenient, yet inefficient, way to tweak an xpub because the child
+has a normal derivation path for signing devices.</p>
+
+<h2 id="single-party">Single Party</h2>
+
+<p>A single party pre-signs all the transactions for the spookchain, and
+then deletes their xpriv.</p>
+
+<p>You trust them to have deleted the key, and signed properly, but you
+do not trust whoever served you the spookchain blob to have given you
+all the state transitions because of the trustless data commitment.</p>
+
+<h2 id="musig-multi-party">MuSig Multi-Party</h2>
+
+<p>Define a MuSig among all participants in the setup ceremony, N-of-N.</p>
+
+<p>Now you simply trust that any one person in the one-time-setup was
+honest! Very good.</p>
+
+<h2 id="unaggregated-multi-party">Unaggregated Multi-Party</h2>
+
+<p>Allow for unaggregated multi-sig keys in the spec. This grows with
+O(signers), however, it means that a-la-carte you can aggregate setups
+from random participants who never interacted / performed setup
+ceremonies independently if they signed the same specs.</p>
+
+<p>Can also combine multiple MuSig Multi-Parties in this way.</p>
+
+<p>This is nice because MuSig inherently implies the parties colluded at
+one point to do a MuSig setup, whereas unaggregated multi-sig could be
+performed with no connectivity between parties.</p>
+
+<h2 id="soft-forking-away-trust">Soft Forking Away Trust</h2>
+
+<p>Suppose a spookchain becomes popular. You could configure your client
+to reject invalid state transitions, or restrict the spookchain keys
+to only sign with the known signatures. This soft fork would smoothly
+upgrade the trust assumption.</p>
+
+<h2 id="symmetry-of-state-transition-rules--dag-covenants">Symmetry of State Transition Rules &amp; DAG Covenants</h2>
+
+<p>We could have our increment state transitions be done via a trustless
+covenant, and our backwards state transitions be done via the setup.</p>
+
+<p>This would look something like the following for state i:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Tr(NUMS, {
+    `&lt;sig for state K_{i+1}&gt; &lt;1 || PK_nonsecret&gt; CHECKSIG`,
+    `&lt;1 || Ki&gt; CHECKSIG`
+})
+</code></pre></div></div>
+
+<p>The advantage of such an optimization is theoretically nice because it
+means that <em>only</em> the non-destructuring recursive part of the
+computation is subject to the one-time-setup trust assumption, which
+might be of use in various other protocols, where recursivity might
+only be unlocked e.g. after a timeout (but for spookchains it is used
+at each step).</p>
+
+<p>A compiler writer might perform this task by starting with an arbitrary
+abstract graph, and then removing edges selectively (a number of heuristics may
+make sense, e.g., to minimize reliance on one-time-setup or minimize costs)
+until the graph is a Directed Acyclic Graph, consisting of one or more
+components, compiling those with committed covenants, and then adding the
+removed edges back using the one-time-setup key materials.</p>
+
+<h1 id="commentary-on-trust-and-covenantiness">Commentary on Trust and Covenantiness</h1>
+
+<p>Is this a covenant? I would say “yes”. When I defined covenants in my
+<em>Calculus of Covenants</em> post, it was with a particular set of
+assumptions per covenant.</p>
+
+<p>Under that model, you could, e.g., call a 7-10 multi-sig with specific
+committed instructions as 4-10 honest (requires 4 signatories to be
+honest to do invalid state transition) and 4-10 killable (requires 4
+signatories to die to have no way of recovering).</p>
+
+<p>For emulations that are pre-signed, like the varieties used to emulate
+CTV, it is a different model because if your program is correct and
+you’ve pre-gotten the signatures for N-N it is 1-N honest (only 1
+party must be honest to prevent an invalid state transition) and
+unkillable (all parties can safely delete keys).</p>
+
+<p>I model these types of assumptions around liveness and honesty as
+different ‘complexity classes’ than one another.</p>
+
+<p>What I would point out is that with the counter model presented above,
+this is entirely a pre-signed 1-N honest and unkillable covenant that
+requires no liveness from signers. Further, with APO, new instances of
+the covenant do not require a new set of signers, the setup is truly
+one-time. Therefore this type of covenant exists in an even lower
+trust-complexity class than CTV emulation via presigneds, which
+requires a new federation to sign off on each contract instance.</p>
+
+<p>With that preface, let us analyze this covenant:</p>
+
+<p>1) A set of sets of transaction intents (a family), potentially
+recursive or co-recursive (e.g., the types of state transitions that
+can be generated).  These intents can also be represented by a
+language that generates the transactions, rather than the literal
+transactions themselves. We do the family rather than just sets at
+this level because to instantiate a covenant we must pick a member of
+the family to use.</p>
+
+<p>The set of sets of transaction intents is to increment / decrement to
+a successor or predecessor, or to halve into two instances or double
+value by adding funds. Each successor or predecessor is the same type
+of covenant, with the excetion of the first and last, which have some
+special rules.</p>
+
+<p>2) A verifier generator function that generates a function that
+accepts an intent that is any element of one member of the family of
+intents and a proof for it and rejects others.</p>
+
+<p>The verifier generator is the simple APO CHECKSIG script.</p>
+
+<p>3) A prover generator function that generates a function that takes an
+intent that is any element of one member of the family and some extra
+data and returns either a new prover function, a finished proof, or a
+rejection (if not a valid intent).</p>
+
+<p>The prover generator is the selection of the correct signature from a
+table for a given script.</p>
+
+<p>Run the prover generator with the private keys present <em>once</em> to
+initialize over all reachable states, and cache the signatures, then
+the keys may be deleted for future runs.</p>
+
+<p>4) A set of proofs that the Prover, Verifier, and a set of intents are
+“impedance matched”, that is, all statements the prover can prove and
+all statements the verifier can verify are one-to-one and onto (or
+something similar), and that this also is one-to-one and onto with one
+element of the intents (a set of transactions) and no other.</p>
+
+<p>At a given key state the only things that may happen are signed
+transactions, no other data is interpreted off of the stack. Therefore
+there is perfect impedance match.</p>
+
+<p>5) A set of assumptions under which the covenant is verified (e.g., a
+multi-sig covenant with at least 1-n honesty, a multisig covenant with
+any 3-n honesty required, Sha256 collision resistance, Discrete Log
+Hardness, a SGX module being correct).</p>
+
+<p>Uniquely, that during the setup phase at least one of the keys
+were faithfully deleted.</p>
+
+<p>The usual suspects for any bitcoin transaction are also assumed for
+security.</p>
+
+<p>6) Composability:</p>
+
+<p>The Terminal State can pay out into a pre-specified covenant if
+desired from any other family of covenants.</p>
+
+
+    <div>
+    <h3>
+        <span style="vertical-align: text-top;">
+    
+
+<a class="twitter-share-button"
+data-size="large"
+href="https://twitter.com/intent/tweet?text=Spookchains%3A+Drivechain+Analog+with+Trusted+Setup+%26+APO&hashtags=Bitcoin
+"> Tweet</a>
+
+
+
+        </span>
+        <span style="vertical-align: super;">
+to continue the conversation...
+        </span>
+    </h3>
+
+    </div>
+</div>
+
+<aside class="related">
+  <h3>You might also enjoy...</h3>
+  <ul class="related-posts">
+    
+      <li>
+        <a href="/blog/2021/07/02/covenants/">
+          Templates, Eltoo, and Covenants, Oh My!
+          <small><time datetime="2021-07-02T00:00:00+00:00">02 Jul 2021</time></small>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/bitcoin/2021/12/05/advent-8/">
+          Contracting Primitives and Upgrades to Bitcoin
+          <small><time datetime="2021-12-05T00:00:00+00:00">05 Dec 2021</time></small>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/bitcoin/2021/12/11/advent-14/">
+          Payment Channels in a CTV+Sapio World
+          <small><time datetime="2021-12-11T00:00:00+00:00">11 Dec 2021</time></small>
+        </a>
+      </li>
+    
+  </ul>
+</aside>
+
+        </div>
+        <div class="content container" style="padding-bottom:0;padding-top:0;bottom:0px;">
+            <div class="posts" style="height:14pt;margin-bottom:0;">
+                <div class="post">
+                    <p style="text-align:center;font-size:12pt;">&copy; 2011-2021 Jeremy Rubin. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

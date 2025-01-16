@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+  <title> Congestion Control &middot; Jeremy Rubin </title>
+  <link href="https://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/poole.css">
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/css/hyde.css">
+  <link rel="stylesheet" href="/public/font-awesome-4.5.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+                                 <link rel="shortcut icon" href="/public/favicon.ico">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+
+  
+  <link type="application/atom+xml" rel="alternate" href="http://rubin.io/feed.xml" title="Jeremy Rubin" />
+
+
+  <!-- GA -->
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-40376251-1', 'auto');
+    ga('send', 'pageview');
+</script>
+
+  
+  <link rel="me" href="https://twitter.com/JeremyRubin" >
+  <meta name="twitter:dnt" content="on">
+			   <script>window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
+
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+
+  return t;
+}(document, "script", "twitter-wjs"));</script>
+
+</head>
+
+    <body>
+        <div class="sidebar">
+    <h3 style="text-align: center;"> <a href="/"> Jeremy Rubin </a> </h3>
+    <div class="container">
+        <div class="sidebar-about">
+
+            <div class="sidebar-about-info"> 
+                <a href="/public/pdfs/resume.pdf"><i class="fa fa-file-text-o" title=Resume></i></a>
+                <a href=""><i class="fa fa-github" title=Github></i></a>
+                <a href="https://twitter.com/JeremyRubin"><i class="fa fa-twitter" title=Twitter></i></a>
+            </div>
+            <div class="sidebar-about-info hide-large">
+                <a class="" href="/">Home</a>
+                <a class="" href="/blog/">Blog</a>
+                <a class="" href="/talks/">Talks</a> 
+                <a class="" href="/projects/">Projects</a>
+                <a class="" href="/archive/">Site Index</a>
+            </div>
+        </div>
+
+
+
+
+        <nav class="sidebar-nav hide-small">
+            <a class="sidebar-nav-item" href="/">Home</a>
+            <a class="sidebar-nav-item" href="/blog/">Blog</a>
+            <a class="sidebar-nav-item" href="/talks/">Talks</a> 
+            <a class="sidebar-nav-item" href="/projects/">Projects</a>
+            <a class="sidebar-nav-item" href="/archive/">Site Index</a>
+        </nav>
+    </div>
+</div>
+
+
+
+        <div class="content container" style="padding-bottom:0;">
+            <div class="post">
+    <h1 class="post-title">Congestion Control</h1>
+    <h3>Day 12: Rubin's Bitcoin Advent Calendar</h3>
+    
+
+<a class="twitter-share-button"
+data-size="large"
+href="https://twitter.com/intent/tweet?text=Congestion+Control&hashtags=Bitcoin,
+AdventCalendar,
+Covenants,
+Sapio
+"> Tweet</a>
+
+
+
+    <div>
+        <span class="post-date">09 Dec 2021
+        </span>
+    </div>
+    <p><em>Welcome to day 12 of my Bitcoin Advent Calendar. You can see an index of all
+the posts <a href="/advent21">here</a> or subscribe at
+<a href="https://judica.org/join">judica.org/join</a> to get new posts in your inbox</em></p>
+
+<p>Congestion is an ugly word, eh? When I hear it my fake synthesia triggers green
+slime feeling, being stuck in traffic with broken AC, and ~the bread line~
+waiting for your order at a crowded restaurant when you’re super starving. All
+not good things.</p>
+
+<p>So Congestion Control sounds pretty sweet right? We can’t do anything about the
+demand itself, but maybe we can make the experience better. We can take a mucinex,
+drive in the HOV lane, and eat the emergency bar you keep in your bag.</p>
+
+<p>How might this be used in Bitcoin?</p>
+
+<ol>
+  <li>Exchange collects N addresses they need to pay some bitcoin</li>
+  <li>Exchange inputs into this contract</li>
+  <li>Exchanges gets a single-output transaction, which they broadcast with high fee to get quick confirmation.</li>
+  <li>Exchange distributes the redemption paths to all recipients (e.g. via mempool, email, etc).</li>
+  <li>Users verify that the funds are “locked in” with this contract.</li>
+  <li>Party</li>
+  <li>Over time, when users are willing to pay fees, they CPFP pay for their redemptions (worst case cost \(O(\log N)\))</li>
+</ol>
+
+<p>Throughout this post, we’ll show how to build the above logic in Sapio!</p>
+
+<hr />
+
+<p>Before we get into that…</p>
+
+<h1 id="talk-nerdy-to-me">Talk Nerdy To Me</h1>
+
+<p>Let’s define some core concepts… Don’t worry too much if these are a bit hard
+to get, it’s just useful context to have or think about.</p>
+
+<h3 id="latency">Latency</h3>
+
+<p>Latency is the time from some notion of “started” to “stopped”. In Bitcoin you could think of the latency from 0 confirmations on a transaction (in mempool) to 1 confirmation (in a block), which is minimally expected to be 10
+minutes for high fee transactions, but could be longer depending on the other transactions.</p>
+
+<h3 id="fairness">Fairness</h3>
+
+<p>Fairness is a measure of how “equitable” a distribution of goods or services is.
+For example, suppose I want to divide 10 cookies among 10 children.</p>
+
+<p>What if 1 child gets two cookies and the other 9 get 8/9ths of a cookie each? Or
+what if 1 child gets no cookie and the other 9 get 10/9ths of a cookie each? How
+fair is that?</p>
+
+<p>Mathematicians and computer scientists love to come up with different measures
+of fairness to be able to quantatatively compare these scenarios and their
+relative fairness.</p>
+
+<p>In Bitcoin we might think of different types of fairness: how long does your
+transaction spend in the mempool? How much fee did you pay?</p>
+
+<h3 id="throughput--capacity">Throughput &amp; Capacity</h3>
+<p>Let’s spend another moment on fairness. Perfectly fair would be:</p>
+
+<ol>
+  <li>All children get 1 cookie</li>
+  <li>All children get 1/10th of 1 cookie.</li>
+  <li>All children get 0 cookies.</li>
+</ol>
+
+<p>Clearly only one of these is particularly efficient.</p>
+
+<p>Thus, we don’t just want to measure fairness, we also want to measure the
+throughput against the capacity. The capacity is the maximum throughput, and the
+the throughput is essentially how many of those cookies get eaten (usually, over
+time). Now let’s look at our prior scenarios:</p>
+
+<ol>
+  <li>All children get 1 cookie: Perfect Throughput.</li>
+  <li>All children get 1/10th of 1 cookie: 1/10th Throughtput/Capacity.</li>
+  <li>All children get 0 cookies: 0 Throughput :(</li>
+</ol>
+
+<p>In this case it seems simple: why not just divide the cookies you big butt!</p>
+
+<p>Well sometimes it’s hard to coordinate the sharing of these resources. For
+example, think about if the cookies had to be given out in a buffet. The first
+person might just take two cookies, not aware there were other kids who wouldn’t
+get one!</p>
+
+<p>This maps well onto the Bitcoin network. A really rich group of people might do
+a bunch of relatively high fee transactions that are low importance to them and
+inadvertently price out lower fee transactions that are more important to the
+sender. It’s not malicious, just a consequence of having more money. So even
+though Bitcoin can achieve 1MB of base transaction data every 10 minutes, that
+capacity might get filled with a couple big consolidation transactions instead
+of many transfers.</p>
+
+<h3 id="burst--over-provisioning">Burst &amp; Over Provisioning</h3>
+
+<p>One issue that comes up in systems is that users show up randomly. How often
+have you been at a restaurant with no line, you order your food, and then as
+soon as you sit down the line has ten people in it? Lucky me, you think. <em>I
+showed up at the right time!</em>. But then ten minutes later the line is clear.</p>
+
+<p>Customers show up kind of randomly. And thus we see big bursts of activity.
+Typically, in order to accomodate the bursts a restaurant must over-provision
+it’s staff. They only make money when customers are there, and they need to
+serve them quickly. But in between bursts, staff might just be watching grass
+grow.</p>
+
+<p>The same is true for Bitcoin. Transactions show up somewhat unpredictably, so
+ideally Bitcoin would have ample space to accomodate any burst (this isn’t
+true).</p>
+
+<h3 id="littles-law">Little’s Law</h3>
+
+<p>Little’s law is a deceptively simple concept:</p>
+
+\[L = \lambda \times W\]
+
+<p>where \(L = \) length of the queue, \(\lambda = \) the arrival rate and
+\(W=\) the average time a customer spends in the system.</p>
+
+<p>What’s remarkable about it is that it makes almost no assumptions about the underlying process.</p>
+
+<p>This can be used to think about, e.g., a mempool.</p>
+
+<p>Suppose there are 10,000 transactions in the mempool, and based on historical
+data we see 57 txns a minute.</p>
+
+\[\frac{10,000 \texttt{ minutes}}{57 \texttt{ transactions per minute}} = 175 \texttt{ minutes}\]
+
+<p>Thus we can infer how long transactions will on average spend waiting in the
+mempool, without knowing what the bursts look like! Very cool.</p>
+
+<h2 id="im-just-showing-off">I’m just showing off</h2>
+
+<p>I didn’t really need to make you read that gobbledygook, but I think they are
+really useful concepts that anyone who wants to think about the impacts of
+congestion &amp; control techniques should keep in mind… Hopefully you learned
+something!</p>
+
+<hr />
+
+<h1 id="its-bitcoin-time">It’s Bitcoin Time</h1>
+
+<p>Well, what’s going on in Bitcoin land? When we make a transaction there are
+multiple different things going on.</p>
+
+<ol>
+  <li>We are spending coins</li>
+  <li>We are creating new coins</li>
+</ol>
+
+<p>Currently, those two steps occur simultaneously. Think of our cookies. Imagine
+if we let one kid get cookies at a time, and they also have to get their milk at
+the same time. Then we let the next kid go. It’s going to take</p>
+
+\[T_{milk} + T_{cookies}\]
+
+<p>To get everyone served. What if instead we said kids could get one and then the
+other, in separate lines.</p>
+
+<p>Now it will take something closer to \(\max(T_{milk}, T_{cookies})\).<sup id="fnref:simpl" role="doc-noteref"><a href="#fn:simpl" class="footnote" rel="footnote">1</a></sup>
+Whichever process is longer will dominate the time. (Probably milk).</p>
+
+<p>Now imagine that getting a cookie takes 1 second per child, and getting a milk
+takes 30 seconds. Everyone knows that you can have a cookie and have milk after.
+If children take a random amount of time – let’s say on average 3 minutes,
+sometimes more, sometimes less – to eat their cookies, then we can serve 10
+kids cookies in 10 seconds, making everyone happy, and then fill up the milks
+while everyone is enjoying a cookie. However, if we did the opposite – got
+milks and then got cookies, it would take much longer for all of the kids to
+get something and you’d see chaos.</p>
+
+<p>Back to Bitcoin. Spending coins and creating new coins is a bit like milk and
+cookies. We can make the spend correspond to distributing the cookies and
+setting up the milk line. And the creating of the new coin can be more akin to
+filling up milks whenever a kid wants it.</p>
+
+<p>What this means practically is that by unbundling spending from redeeming we can
+serve a much greater number of users that if they were one aggregate product
+because we are taking the “expensive part” and letting it happen later than the
+“cheap part”. And if we do this cleverly, the “setting up the milk line” in the
+splitting of the spend allows all receivers to know they will get their fair share later.</p>
+
+<p>This makes the system much higher throughput (unlimited confirmations of
+transfer), lower latency to confirmation (you an see when a spend will
+eventually pay you), but higher latency to coin creation in the best case,
+although potentially no different than the average case, and (potentially) worse
+overall throughput since we have some waste from coordinating the splitting.</p>
+
+<p>It also improves costs because we may be willing to pay a higher price for part
+one (since it generates the confirmation) than part two.</p>
+
+<h1 id="can-we-build-it">Can we build it?</h1>
+
+<p>Let’s start with a basic example of congestion control in Sapio.</p>
+
+<p>First we define a payment as just being an Amount and an Address.</p>
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">/// A payment to a specific address</span>
+<span class="k">pub</span> <span class="k">struct</span> <span class="n">Payment</span> <span class="p">{</span>
+    <span class="c">/// # Amount</span>
+    <span class="c">/// The amount to send in btc</span>
+    <span class="k">pub</span> <span class="n">amount</span><span class="p">:</span> <span class="n">AmountF64</span><span class="p">,</span>
+    <span class="c">/// # Address</span>
+    <span class="c">/// The Address to send to</span>
+    <span class="k">pub</span> <span class="n">address</span><span class="p">:</span> <span class="n">Address</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Next, we’ll define a helper called <code class="language-plaintext highlighter-rouge">PayThese</code>, which takes a list of contracts
+of some kind and pays them after an optional delay in a single transaction.</p>
+
+<p>You can think of this (back to our kids) as calling a group of kids at a time
+(e.g., table 1, then table 2) to get their cookies.</p>
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="n">PayThese</span> <span class="p">{</span>
+    <span class="n">contracts</span><span class="p">:</span> <span class="nb">Vec</span><span class="o">&lt;</span><span class="p">(</span><span class="n">Amount</span><span class="p">,</span> <span class="nb">Box</span><span class="o">&lt;</span><span class="n">dyn</span> <span class="n">Compilable</span><span class="o">&gt;</span><span class="p">)</span><span class="o">&gt;</span><span class="p">,</span>
+    <span class="n">fees</span><span class="p">:</span> <span class="n">Amount</span><span class="p">,</span>
+    <span class="n">delay</span><span class="p">:</span> <span class="nb">Option</span><span class="o">&lt;</span><span class="n">AnyRelTimeLock</span><span class="o">&gt;</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="k">impl</span> <span class="n">PayThese</span> <span class="p">{</span>
+    <span class="nd">#[then]</span>
+    <span class="k">fn</span> <span class="nf">expand</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">let</span> <span class="k">mut</span> <span class="n">bld</span> <span class="o">=</span> <span class="n">ctx</span><span class="nf">.template</span><span class="p">();</span>
+        <span class="c">// Add an output for each contract</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">amt</span><span class="p">,</span> <span class="n">ct</span><span class="p">)</span> <span class="n">in</span> <span class="k">self</span><span class="py">.contracts</span><span class="nf">.iter</span><span class="p">()</span> <span class="p">{</span>
+            <span class="n">bld</span> <span class="o">=</span> <span class="n">bld</span><span class="nf">.add_output</span><span class="p">(</span><span class="o">*</span><span class="n">amt</span><span class="p">,</span> <span class="n">ct</span><span class="nf">.as_ref</span><span class="p">(),</span> <span class="nb">None</span><span class="p">)</span><span class="o">?</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="c">// if there is a delay, add it</span>
+        <span class="k">if</span> <span class="k">let</span> <span class="nf">Some</span><span class="p">(</span><span class="n">delay</span><span class="p">)</span> <span class="o">=</span> <span class="k">self</span><span class="py">.delay</span> <span class="p">{</span>
+            <span class="n">bld</span> <span class="o">=</span> <span class="n">bld</span><span class="nf">.set_sequence</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">delay</span><span class="p">)</span><span class="o">?</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="c">// pay some fees</span>
+        <span class="n">bld</span><span class="nf">.add_fees</span><span class="p">(</span><span class="k">self</span><span class="py">.fees</span><span class="p">)</span><span class="o">?</span><span class="nf">.into</span><span class="p">()</span>
+    <span class="p">}</span>
+
+    <span class="k">fn</span> <span class="nf">total_to_pay</span><span class="p">(</span><span class="o">&amp;</span><span class="k">self</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="n">Amount</span> <span class="p">{</span>
+        <span class="k">let</span> <span class="k">mut</span> <span class="n">amt</span> <span class="o">=</span> <span class="k">self</span><span class="py">.fees</span><span class="p">;</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">_</span><span class="p">)</span> <span class="n">in</span> <span class="k">self</span><span class="py">.contracts</span><span class="nf">.iter</span><span class="p">()</span> <span class="p">{</span>
+            <span class="n">amt</span> <span class="o">+=</span> <span class="o">*</span><span class="n">x</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="n">amt</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="k">impl</span> <span class="n">Contract</span> <span class="k">for</span> <span class="n">PayThese</span> <span class="p">{</span>
+    <span class="nd">declare!</span> <span class="p">{</span><span class="n">then</span><span class="p">,</span> <span class="nn">Self</span><span class="p">::</span><span class="n">expand</span><span class="p">}</span>
+    <span class="nd">declare!</span> <span class="p">{</span><span class="n">non</span> <span class="n">updatable</span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Lastly, we’ll define the logic for congestion control. The basics of what is
+happening is we are going to define two transactions: One which pays from A -&gt;
+B, and then one which is guaranteed in B’s script to pay from B -&gt; {1…n}. This
+splits the confirmation txn from the larger payout txn.</p>
+
+<p>However, we’re going to be a little more clever than that. We’ll apply this principle
+recursively to create a tree.</p>
+
+<p>Essentially what we are going to do is to take our 10 kids and then divide them
+into groups of 2 (or whatever radix). E.g.: <code class="language-plaintext highlighter-rouge">{1,2,3,4,5,6,7,8,9,10}</code> would become
+<code class="language-plaintext highlighter-rouge">{ {1,2}, {3,4}, {5,6}, {7,8}, {9,10} }</code>. The magic happens when we recursively
+apply this idea, like below:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{1,2,3,4,5,6,7,8,9,10}
+{ {1,2}, {3,4}, {5,6}, {7,8}, {9,10} }
+{ { {1,2}, {3,4} }, { {5,6}, {7,8} }, {9,10} }
+{ { {1,2}, {3,4} }, { { { 5,6}, {7,8} }, {9,10} } }
+{ { { {1,2}, {3,4}}, { { {5,6}, {7,8} }, {9,10} } } }
+</code></pre></div></div>
+
+<p>The end result of this grouping is a single group! So now we could do a
+transaction to pay/give cookies to that one group, and then if we wanted 9 to
+get their cookie/sats We’d only have to publish:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>level 0 to: Address({ { { {1,2}, {3,4} }, { { {5,6}, {7,8} }, {9,10} } } })
+level 1 to: Address({ { {5,6}, {7,8} }, {9,10} } })
+level 2 to: Address({9,10})
+</code></pre></div></div>
+
+<p>Now let’s show that in code:</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">/// # Tree Payment Contract</span>
+<span class="c">/// This contract is used to help decongest bitcoin</span>
+<span class="c">//// while giving users full confirmation of transfer.</span>
+<span class="nd">#[derive(JsonSchema,</span> <span class="nd">Serialize,</span> <span class="nd">Deserialize)]</span>
+<span class="k">pub</span> <span class="k">struct</span> <span class="n">TreePay</span> <span class="p">{</span>
+    <span class="c">/// # Payments</span>
+    <span class="c">/// all of the payments needing to be sent</span>
+    <span class="k">pub</span> <span class="n">participants</span><span class="p">:</span> <span class="nb">Vec</span><span class="o">&lt;</span><span class="n">Payment</span><span class="o">&gt;</span><span class="p">,</span>
+    <span class="c">/// # Tree Branching Factor</span>
+    <span class="c">/// the radix of the tree to build.</span>
+    <span class="c">/// Optimal for users should be around 4 or</span>
+    <span class="c">/// 5 (with CTV, not emulators).</span>
+    <span class="k">pub</span> <span class="n">radix</span><span class="p">:</span> <span class="nb">usize</span><span class="p">,</span>
+    <span class="nd">#[serde(with</span> <span class="nd">=</span> <span class="s">"bitcoin::util::amount::serde::as_sat"</span><span class="nd">)]</span>
+    <span class="nd">#[schemars(with</span> <span class="nd">=</span> <span class="s">"u64"</span><span class="nd">)]</span>
+    <span class="c">/// # Fee Sats (per tx)</span>
+    <span class="c">/// The amount of fees per transaction to allocate.</span>
+    <span class="k">pub</span> <span class="n">fee_sats_per_tx</span><span class="p">:</span> <span class="nn">bitcoin</span><span class="p">::</span><span class="nn">util</span><span class="p">::</span><span class="nn">amount</span><span class="p">::</span><span class="n">Amount</span><span class="p">,</span>
+    <span class="c">/// # Relative Timelock Backpressure</span>
+    <span class="c">/// When enabled, exert backpressure by slowing down</span>
+    <span class="c">/// tree expansion node by node either by time or blocks</span>
+    <span class="k">pub</span> <span class="n">timelock_backpressure</span><span class="p">:</span> <span class="nb">Option</span><span class="o">&lt;</span><span class="n">AnyRelTimeLock</span><span class="o">&gt;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="k">impl</span> <span class="n">TreePay</span> <span class="p">{</span>
+    <span class="nd">#[then]</span>
+        <span class="k">fn</span> <span class="nf">expand</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="p">{</span>
+            <span class="c">// A queue of all the payments to be made initialized with</span>
+            <span class="c">// all the input payments</span>
+            <span class="k">let</span> <span class="k">mut</span> <span class="n">queue</span> <span class="o">=</span> <span class="k">self</span>
+                <span class="py">.participants</span>
+                <span class="nf">.iter</span><span class="p">()</span>
+                <span class="nf">.map</span><span class="p">(|</span><span class="n">payment</span><span class="p">|</span> <span class="p">{</span>
+                    <span class="c">// Convert the payments to an internal representation</span>
+                    <span class="k">let</span> <span class="k">mut</span> <span class="n">amt</span> <span class="o">=</span> <span class="nn">AmountRange</span><span class="p">::</span><span class="nf">new</span><span class="p">();</span>
+                    <span class="n">amt</span><span class="nf">.update_range</span><span class="p">(</span><span class="n">payment</span><span class="py">.amount</span><span class="p">);</span>
+                    <span class="k">let</span> <span class="n">b</span><span class="p">:</span> <span class="nb">Box</span><span class="o">&lt;</span><span class="n">dyn</span> <span class="n">Compilable</span><span class="o">&gt;</span> <span class="o">=</span>
+                        <span class="nn">Box</span><span class="p">::</span><span class="nf">new</span><span class="p">(</span><span class="nn">Compiled</span><span class="p">::</span><span class="nf">from_address</span><span class="p">(</span><span class="n">payment</span><span class="py">.address</span><span class="nf">.clone</span><span class="p">(),</span>
+                        <span class="nf">Some</span><span class="p">(</span><span class="n">amt</span><span class="p">)));</span>
+                    <span class="p">(</span><span class="n">payment</span><span class="py">.amount</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+                <span class="p">})</span>
+                <span class="py">.collect</span><span class="p">::</span><span class="o">&lt;</span><span class="n">VecDeque</span><span class="o">&lt;</span><span class="p">(</span><span class="n">Amount</span><span class="p">,</span> <span class="nb">Box</span><span class="o">&lt;</span><span class="n">dyn</span> <span class="n">Compilable</span><span class="o">&gt;</span><span class="p">)</span><span class="o">&gt;&gt;</span><span class="p">();</span>
+
+            <span class="k">loop</span> <span class="p">{</span>
+                <span class="c">// take out a group of size `radix` payments</span>
+                <span class="k">let</span> <span class="n">v</span><span class="p">:</span> <span class="nb">Vec</span><span class="o">&lt;</span><span class="mi">_</span><span class="o">&gt;</span> <span class="o">=</span> <span class="n">queue</span>
+                    <span class="nf">.drain</span><span class="p">(</span><span class="mi">0</span><span class="o">..</span><span class="nn">std</span><span class="p">::</span><span class="nn">cmp</span><span class="p">::</span><span class="nf">min</span><span class="p">(</span><span class="k">self</span><span class="py">.radix</span><span class="p">,</span> <span class="n">queue</span><span class="nf">.len</span><span class="p">()))</span>
+                    <span class="nf">.collect</span><span class="p">();</span>
+                <span class="k">if</span> <span class="n">queue</span><span class="nf">.len</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">{</span>
+                    <span class="c">// in this case, there's no more payments to make so bundle</span>
+                    <span class="c">// them up into a final transaction</span>
+                    <span class="k">let</span> <span class="k">mut</span> <span class="n">builder</span> <span class="o">=</span> <span class="n">ctx</span><span class="nf">.template</span><span class="p">();</span>
+                    <span class="k">for</span> <span class="n">pay</span> <span class="n">in</span> <span class="n">v</span><span class="nf">.iter</span><span class="p">()</span> <span class="p">{</span>
+                        <span class="n">builder</span> <span class="o">=</span> <span class="n">builder</span><span class="nf">.add_output</span><span class="p">(</span><span class="n">pay</span><span class="na">.0</span><span class="p">,</span> <span class="n">pay</span><span class="na">.1</span><span class="nf">.as_ref</span><span class="p">(),</span> <span class="nb">None</span><span class="p">)</span><span class="o">?</span><span class="p">;</span>
+                    <span class="p">}</span>
+                    <span class="k">if</span> <span class="k">let</span> <span class="nf">Some</span><span class="p">(</span><span class="n">timelock</span><span class="p">)</span> <span class="o">=</span> <span class="k">self</span><span class="py">.timelock_backpressure</span> <span class="p">{</span>
+                        <span class="n">builder</span> <span class="o">=</span> <span class="n">builder</span><span class="nf">.set_sequence</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">timelock</span><span class="p">)</span><span class="o">?</span><span class="p">;</span>
+                    <span class="p">}</span>
+                    <span class="n">builder</span> <span class="o">=</span> <span class="n">builder</span><span class="nf">.add_fees</span><span class="p">(</span><span class="k">self</span><span class="py">.fee_sats_per_tx</span><span class="p">)</span><span class="o">?</span><span class="p">;</span>
+                    <span class="k">return</span> <span class="n">builder</span><span class="nf">.into</span><span class="p">();</span>
+                <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                    <span class="c">// There are still more, so make this group and add it to</span>
+                    <span class="c">// the back of the queue</span>
+                    <span class="k">let</span> <span class="n">pay</span> <span class="o">=</span> <span class="nn">Box</span><span class="p">::</span><span class="nf">new</span><span class="p">(</span><span class="n">PayThese</span> <span class="p">{</span>
+                        <span class="n">contracts</span><span class="p">:</span> <span class="n">v</span><span class="p">,</span>
+                        <span class="n">fees</span><span class="p">:</span> <span class="k">self</span><span class="py">.fee_sats_per_tx</span><span class="p">,</span>
+                        <span class="n">delay</span><span class="p">:</span> <span class="k">self</span><span class="py">.timelock_backpressure</span><span class="p">,</span>
+                    <span class="p">});</span>
+                    <span class="n">queue</span><span class="nf">.push_back</span><span class="p">((</span><span class="n">pay</span><span class="nf">.total_to_pay</span><span class="p">(),</span> <span class="n">pay</span><span class="p">))</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="k">impl</span> <span class="n">Contract</span> <span class="k">for</span> <span class="n">TreePay</span> <span class="p">{</span>
+    <span class="nd">declare!</span> <span class="p">{</span><span class="n">then</span><span class="p">,</span> <span class="nn">Self</span><span class="p">::</span><span class="n">expand</span><span class="p">}</span>
+    <span class="nd">declare!</span> <span class="p">{</span><span class="n">non</span> <span class="n">updatable</span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>So now what does that look like when we send to it? Let’s do a TreePay with 14 recipients and radix 4:</p>
+
+<p><img src="/public/img/bitcoin/advent/tree_pay.png" alt="sapio studio view of treepay" /></p>
+
+<p>As you can see, the queuing puts some structure into a batched payment! This is
+(roughly) the exact same code as above generating these transactions. What this
+also means is given an output and a description of the arguments passed to the
+contract, anyone can re-generate the expansion transactions and verify that they
+can eventually receive their money! These payout proofs can also be delivered in
+a pruned form, but that’s just a bonus.</p>
+
+<p>Everyone gets their cookie (confirmation of transfer) immediately, and knows
+they can get their milk (spendability) later. A smart wallet could manage your
+liquidity over pedning redemptions, so you could passively expand outputs
+whenever fees are cheap.</p>
+
+<hr />
+
+<p>There are <strong>a lot</strong> of extensions to this basic design, and we’ll see two really
+exciting ones tomorrow and the next day!</p>
+
+<p>If you want to read more about the impact of congestion control on the network,
+I previously wrote two articles simulating the impact of congestion control on
+the network which you can read here:</p>
+
+<ul>
+  <li><a href="https://utxos.org/analysis/bip_simulation/">Congestion Simulation</a></li>
+  <li><a href="https://utxos.org/analysis/batching_sim/">Batching Simulation</a></li>
+</ul>
+
+<p>What’s great about this is that not only do we make a big benefit for anyone who
+wants to use it, we show in the Batching Simulation that even with the overheads
+of a TreePay, the incentive compatible behavior around exchange batching can
+actually help us use less block space overall.</p>
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:simpl" role="doc-endnote">
+      <p>Simplifying here – I know Amdahl’s Law… <a href="#fnref:simpl" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+    <div>
+    <h3>
+        <span style="vertical-align: text-top;">
+    
+
+<a class="twitter-share-button"
+data-size="large"
+href="https://twitter.com/intent/tweet?text=Congestion+Control&hashtags=Bitcoin,
+AdventCalendar,
+Covenants,
+Sapio
+"> Tweet</a>
+
+
+
+        </span>
+        <span style="vertical-align: super;">
+to continue the conversation...
+        </span>
+    </h3>
+
+    </div>
+</div>
+
+<aside class="related">
+  <h3>You might also enjoy...</h3>
+  <ul class="related-posts">
+    
+      <li>
+        <a href="/bitcoin/2021/12/11/advent-14/">
+          Payment Channels in a CTV+Sapio World
+          <small><time datetime="2021-12-11T00:00:00+00:00">11 Dec 2021</time></small>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/bitcoin/2022/04/17/next-steps-bip119/">
+          7 Theses on a next step for BIP-119
+          <small><time datetime="2022-04-17T00:00:00+00:00">17 Apr 2022</time></small>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/bitcoin/2021/12/20/advent-23/">
+          Derivatives and Options For Bitcoin
+          <small><time datetime="2021-12-20T00:00:00+00:00">20 Dec 2021</time></small>
+        </a>
+      </li>
+    
+  </ul>
+</aside>
+
+        </div>
+        <div class="content container" style="padding-bottom:0;padding-top:0;bottom:0px;">
+            <div class="posts" style="height:14pt;margin-bottom:0;">
+                <div class="post">
+                    <p style="text-align:center;font-size:12pt;">&copy; 2011-2021 Jeremy Rubin. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

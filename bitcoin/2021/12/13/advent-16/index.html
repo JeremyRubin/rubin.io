@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+  <title> Composability in Sapio Contracts &middot; Jeremy Rubin </title>
+  <link href="https://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/poole.css">
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/css/hyde.css">
+  <link rel="stylesheet" href="/public/font-awesome-4.5.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+                                 <link rel="shortcut icon" href="/public/favicon.ico">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+
+  
+  <link type="application/atom+xml" rel="alternate" href="http://rubin.io/feed.xml" title="Jeremy Rubin" />
+
+
+  <!-- GA -->
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-40376251-1', 'auto');
+    ga('send', 'pageview');
+</script>
+
+  
+  <link rel="me" href="https://twitter.com/JeremyRubin" >
+  <meta name="twitter:dnt" content="on">
+			   <script>window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
+
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+
+  return t;
+}(document, "script", "twitter-wjs"));</script>
+
+</head>
+
+    <body>
+        <div class="sidebar">
+    <h3 style="text-align: center;"> <a href="/"> Jeremy Rubin </a> </h3>
+    <div class="container">
+        <div class="sidebar-about">
+
+            <div class="sidebar-about-info"> 
+                <a href="/public/pdfs/resume.pdf"><i class="fa fa-file-text-o" title=Resume></i></a>
+                <a href=""><i class="fa fa-github" title=Github></i></a>
+                <a href="https://twitter.com/JeremyRubin"><i class="fa fa-twitter" title=Twitter></i></a>
+            </div>
+            <div class="sidebar-about-info hide-large">
+                <a class="" href="/">Home</a>
+                <a class="" href="/blog/">Blog</a>
+                <a class="" href="/talks/">Talks</a> 
+                <a class="" href="/projects/">Projects</a>
+                <a class="" href="/archive/">Site Index</a>
+            </div>
+        </div>
+
+
+
+
+        <nav class="sidebar-nav hide-small">
+            <a class="sidebar-nav-item" href="/">Home</a>
+            <a class="sidebar-nav-item" href="/blog/">Blog</a>
+            <a class="sidebar-nav-item" href="/talks/">Talks</a> 
+            <a class="sidebar-nav-item" href="/projects/">Projects</a>
+            <a class="sidebar-nav-item" href="/archive/">Site Index</a>
+        </nav>
+    </div>
+</div>
+
+
+
+        <div class="content container" style="padding-bottom:0;">
+            <div class="post">
+    <h1 class="post-title">Composability in Sapio Contracts</h1>
+    <h3>Day 16: Rubin's Bitcoin Advent Calendar</h3>
+    
+
+<a class="twitter-share-button"
+data-size="large"
+href="https://twitter.com/intent/tweet?text=Composability+in+Sapio+Contracts&hashtags=Bitcoin,
+AdventCalendar,
+Covenants,
+Sapio
+"> Tweet</a>
+
+
+
+    <div>
+        <span class="post-date">13 Dec 2021
+        </span>
+    </div>
+    <p><em>Welcome to day 16 of my Bitcoin Advent Calendar. You can see an index of all
+the posts <a href="/advent21">here</a> or subscribe at
+<a href="https://judica.org/join">judica.org/join</a> to get new posts in your inbox</em></p>
+
+<p>Who here has some ERC-20s or 721s<sup id="fnref:rock" role="doc-noteref"><a href="#fn:rock" class="footnote" rel="footnote">1</a></sup>? Anyone? No one? Whatever.</p>
+
+<p>The Punchline is that a lotta fuss goes into Ethereum smart contracts being
+Turing Complete but guess what? Neither ERC-20 nor 721 really have anything to
+do with being Turing Complete. What they do have to do with is having a
+tightly defined interface that can integrate into other applications nicely.</p>
+
+<p>This is great news for Bitcoin. It means that a lot of the cool stuff happening
+in eth-land isn’t really about Turing Completeness, it’s about just defining
+really kickass interfaces for the things we’re trying to do.</p>
+
+<p>In the last few posts, we already saw examples of composability. We took a bunch
+of concepts and were able to nest them inside of each other to make
+Decentralized Coordination Free Mining Pools.  But we can do a lot more with
+composability than just compose ideas togehter by hand. In this post I’ll give
+you a little sampler of different types of programmatic composability and interfaces,
+like the ERC-20 and 721.</p>
+
+<hr />
+
+<h2 id="address-composability">Address Composability</h2>
+
+<p>Because many Sapio contracts can be made completely noninteractively (with CTV
+or an Oracle you’ll trust to be online later), if you compile a Sapio contract
+and get an address you can just plug it in somewhere and it “composes” and you
+can link it later. We saw this earlier with the ability to make a channel
+address and send it to an exchange.</p>
+
+<p>However, for Sapio if you just do an Address it won’t necessarily have the
+understanding of what that address is for so you won’t get any of the Sapio
+“rich” features.</p>
+
+<h3 id="pre-compiled">Pre-Compiled</h3>
+
+<p>You can also take not just an address, but an entire (json-serialized?) Compiled
+object that would include all the relevant metadata.</p>
+
+<h2 id="rust-generic-types-composability">Rust Generic Types Composability</h2>
+
+<p>Well, if you’re a rust programmer this basically boils down to rust types rule!
+We’ll give a couple examples.</p>
+
+<p>The simplest example is just composing directly in a function:</p>
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">#[then]</span>
+<span class="k">fn</span> <span class="nf">some_function</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">ctx</span><span class="nf">.template</span><span class="p">()</span>
+        <span class="nf">.add_output</span><span class="p">(</span><span class="n">ctx</span><span class="nf">.funds</span><span class="p">(),</span> <span class="o">&amp;</span><span class="n">SomeOtherContract</span><span class="p">{</span><span class="cm">/**/</span><span class="p">},</span> <span class="nb">None</span><span class="p">)</span><span class="o">?</span>
+        <span class="nf">.into</span><span class="p">()</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>What if we want to pass any Contract as an argument for a Contract? Simple:</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="n">X</span> <span class="p">{</span>
+    <span class="n">a</span> <span class="p">:</span> <span class="nb">Box</span><span class="o">&lt;</span><span class="n">dyn</span> <span class="n">Contract</span><span class="o">&gt;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>What if we want to restrict it a little bit more? We can use a trait bound.
+Now only Y (or anything implementing GoodContract) can be plugged in.</p>
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">trait</span> <span class="n">GoodContract</span> <span class="p">:</span> <span class="n">Contract</span> <span class="p">{</span>
+    <span class="nd">decl_then!</span><span class="p">{</span><span class="n">some_thing</span><span class="p">}</span>
+<span class="p">}</span>
+<span class="k">struct</span> <span class="n">Y</span> <span class="p">{</span>
+<span class="p">}</span>
+<span class="k">impl</span> <span class="n">GoodContract</span> <span class="k">for</span> <span class="n">Y</span> <span class="p">{</span>
+    <span class="nd">#[then]</span>
+    <span class="k">fn</span> <span class="nf">some_thing</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nf">empty</span><span class="p">()</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="k">impl</span> <span class="n">Contract</span> <span class="k">for</span> <span class="n">Y</span> <span class="p">{</span>
+    <span class="nd">declare!</span><span class="p">{</span><span class="n">then</span><span class="p">,</span> <span class="nn">Self</span><span class="p">::</span><span class="n">some_thing</span><span class="p">}</span>
+<span class="p">}</span>
+<span class="k">struct</span> <span class="n">X</span><span class="o">&lt;</span><span class="n">T</span><span class="p">:</span> <span class="n">GoodContract</span><span class="o">&gt;</span> <span class="p">{</span>
+    <span class="n">a</span> <span class="p">:</span> <span class="nb">Box</span><span class="o">&lt;</span><span class="n">dyn</span> <span class="n">GoodContract</span><span class="o">&gt;</span><span class="p">,</span>
+    <span class="c">// note the inner type of a and b don't have to match</span>
+    <span class="n">b</span> <span class="p">:</span> <span class="nb">Box</span><span class="o">&lt;</span><span class="n">dyn</span> <span class="n">GoodContract</span><span class="o">&gt;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Boxing gives us some power to be Generic at runtime, but we can also do some
+more “compile time” logic. This can have some advantages, e.g., if we want to
+guarantee that types are the same.</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="n">X</span><span class="o">&lt;</span><span class="n">T</span> <span class="p">:</span> <span class="n">Contract</span><span class="p">,</span> <span class="n">U</span><span class="p">:</span> <span class="n">GoodContract</span><span class="o">&gt;</span> <span class="p">{</span>
+    <span class="n">a</span> <span class="p">:</span> <span class="n">T</span><span class="p">,</span> 
+    <span class="n">b</span> <span class="p">:</span> <span class="n">T</span>
+    <span class="c">// a more specific concrete type -- could be a T even</span>
+    <span class="n">c</span><span class="p">:</span> <span class="n">U</span><span class="p">,</span>
+    <span class="n">d</span><span class="p">:</span> <span class="n">U</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Sometimes it can be helpful to wrap things in functions, like we saw in the Vaults post.</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="n">X</span><span class="o">&lt;</span><span class="n">T</span><span class="p">:</span> <span class="n">Contract</span><span class="o">&gt;</span>
+    <span class="c">// This lets us stub in whatever we want for a function</span>
+    <span class="n">a</span> <span class="p">:</span> <span class="nb">Box</span><span class="o">&lt;</span><span class="nf">Fn</span><span class="p">(</span><span class="n">Self</span><span class="p">,</span> <span class="n">Context</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="n">TxTmplIt</span><span class="o">&gt;</span><span class="p">,</span>
+    <span class="c">// this lets us get back any contract</span>
+    <span class="n">b</span> <span class="p">:</span> <span class="nb">Box</span><span class="o">&lt;</span><span class="nf">Fn</span><span class="p">(</span><span class="n">Self</span><span class="p">,</span> <span class="n">Context</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="nb">Box</span><span class="o">&lt;</span><span class="n">dyn</span> <span class="n">Contract</span><span class="o">&gt;&gt;</span><span class="p">,</span>
+    <span class="c">// this lets us get back a specific contract</span>
+    <span class="n">c</span> <span class="p">:</span> <span class="nb">Box</span><span class="o">&lt;</span><span class="nf">Fn</span><span class="p">(</span><span class="n">Self</span><span class="p">,</span> <span class="n">Context</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="n">T</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Clearly there’s a lot to do with the rust type system and making components.</p>
+
+<p>It would even be possible to make certain types of ‘unchecked’ type traits,
+for example:</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">trait</span> <span class="n">Reusable</span> <span class="p">{}</span>
+<span class="k">struct</span> <span class="n">AlsoReusable</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="p">{</span>
+    <span class="n">a</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="c">// Only reusable if T Reusable</span>
+<span class="k">impl</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">Reusable</span> <span class="k">for</span> <span class="n">AlsoReusable</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="k">where</span> <span class="n">T</span><span class="p">:</span> <span class="n">Reusable</span> <span class="p">{}</span>
+</code></pre></div></div>
+
+<p>The <code class="language-plaintext highlighter-rouge">Reusable</code> tag could be used to tag contract components that would be “reuse
+safe”.  E.g., an HTLC or HTLC containing component would not be reuse safe since
+hashes could be revealed. While reusability isn’t “proven” – that’s up to the
+author to check – these types of traits can help us reason about the properties
+of compositions of programs more safely. Unfortunately, Rust lacks negative
+trait bounds (i.e., Not-Reusable), so you can’t reason about certain types of things.</p>
+
+<h3 id="inheritence">Inheritence</h3>
+<p>We don’t have a fantastic way to do inheritence in Sapio presently. But stay
+tuned!  For now, then best you get is that you can do traits (like
+<code class="language-plaintext highlighter-rouge">GoodContract</code>).</p>
+
+<h2 id="cross-module-composability--wasm">Cross Module Composability &amp; WASM</h2>
+
+<p>One of the goals of Sapio is to be able to create contract modules with a
+well-defined API Boundary that communicates with JSONs and is “typed” with
+JSONSchema. This means that the Sapio modules can be running anywhere (e.g., a
+remote server) and we can treat it like any other component.</p>
+
+<p>Another goal of Sapio is to make it possible to compile modules into standalone
+WASM modules. WASM stands for Web Assembly, it’s basically a small deterministic
+computer emulator program format so we can compile our programs and run them
+anywhere that the WASM interpreter is available.</p>
+
+<p>Combining these two goals, it’s possible for one Sapio program to dynamically
+load another as a WASM module. This means we can come up with a component,
+compile it, and then link to it later from somewhere else. For example, we could
+have a Payment Pool where we make each person’s leaf node a WASM module of their
+choice, that could be something like a Channel, a Vault, or anything that
+satisfies a “Payment Pool Payout Interface”.</p>
+
+<p>For example, suppose we wanted to a generic API for making a batched
+payment.</p>
+
+<h3 id="defining-the-interface">Defining the Interface</h3>
+<p>First, we define a payment that we want to batch.</p>
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">/// A payment to a specific address</span>
+<span class="k">pub</span> <span class="k">struct</span> <span class="n">Payment</span> <span class="p">{</span>
+    <span class="c">/// # Amount (btc)</span>
+    <span class="c">/// The amount to send</span>
+    <span class="k">pub</span> <span class="n">amount</span><span class="p">:</span> <span class="n">AmountF64</span><span class="p">,</span>
+    <span class="c">/// # Address</span>
+    <span class="c">/// The Address to send to</span>
+    <span class="k">pub</span> <span class="n">address</span><span class="p">:</span> <span class="nn">bitcoin</span><span class="p">::</span><span class="n">Address</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>Next, we define the full API that we want. <em>Naming and versioning is still a
+something we need to work on in the Sapio ecosystem, but for now it makes sense
+to be verbose and include a version.</em></p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">pub</span> <span class="k">struct</span> <span class="n">BatchingTraitVersion0_1_1</span> <span class="p">{</span>
+    <span class="k">pub</span> <span class="n">payments</span><span class="p">:</span> <span class="nb">Vec</span><span class="o">&lt;</span><span class="n">Payment</span><span class="o">&gt;</span><span class="p">,</span>
+    <span class="c">/// # Feerate (Bitcoin per byte)</span>
+    <span class="k">pub</span> <span class="n">feerate_per_byte</span><span class="p">:</span> <span class="n">AmountF64</span> 
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Lastly, to finish defining the API, we have to do something really gross looking
+in order to make it automatically checkable – this is essentially this is what the
+user defined <code class="language-plaintext highlighter-rouge">BatchingTraitVersion0_1_1</code> is going to verify modules are able to 
+understand. This is going to be improved in Sapio over time for better typechecking!</p>
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">impl</span> <span class="n">SapioJSONTrait</span> <span class="k">for</span> <span class="n">BatchingTraitVersion0_1_1</span> <span class="p">{</span>
+    <span class="k">fn</span> <span class="nf">get_example_for_api_checking</span><span class="p">()</span> <span class="k">-&gt;</span> <span class="n">Value</span> <span class="p">{</span>
+        <span class="nd">#[derive(Serialize)]</span>
+        <span class="k">enum</span> <span class="n">Versions</span> <span class="p">{</span>
+            <span class="nf">BatchingTraitVersion0_1_1</span><span class="p">(</span><span class="n">BatchingTraitVersion0_1_1</span><span class="p">),</span>
+        <span class="p">}</span>
+        <span class="nn">serde_json</span><span class="p">::</span><span class="nf">to_value</span><span class="p">(</span><span class="nn">Versions</span><span class="p">::</span><span class="nf">BatchingTraitVersion0_1_1</span><span class="p">(</span>
+            <span class="n">BatchingTraitVersion0_1_1</span> <span class="p">{</span>
+                <span class="n">payments</span><span class="p">:</span> <span class="nd">vec!</span><span class="p">[],</span>
+                <span class="n">feerate_per_byte</span><span class="p">:</span> <span class="nn">Amount</span><span class="p">::</span><span class="nf">from_sat</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="nf">.into</span><span class="p">(),</span>
+            <span class="p">},</span>
+        <span class="p">))</span>
+        <span class="nf">.unwrap</span><span class="p">()</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<h3 id="implementing-the-interface">Implementing the Interface</h3>
+
+<p>Let’s say that we want to make a contract like <code class="language-plaintext highlighter-rouge">TreePay</code> implement
+<code class="language-plaintext highlighter-rouge">BatchingTraitVersion0_1_1</code>. What do we need to do?</p>
+
+<p>First, let’s get the boring stuff out of the way, we need to make the <code class="language-plaintext highlighter-rouge">TreePay</code>
+module understand that it should support <code class="language-plaintext highlighter-rouge">BatchingTraitVersion0_1_1</code>.</p>
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">/// # Different Calling Conventions to create a Treepay</span>
+<span class="k">enum</span> <span class="n">Versions</span> <span class="p">{</span>
+    <span class="c">/// # Standard Tree Pay</span>
+    <span class="nf">TreePay</span><span class="p">(</span><span class="n">TreePay</span><span class="p">),</span>
+    <span class="c">/// # Batching Trait API</span>
+    <span class="nf">BatchingTraitVersion0_1_1</span><span class="p">(</span><span class="n">BatchingTraitVersion0_1_1</span><span class="p">),</span>
+<span class="p">}</span>
+
+<span class="nd">REGISTER!</span><span class="p">[[</span><span class="n">TreePay</span><span class="p">,</span> <span class="n">Versions</span><span class="p">],</span> <span class="s">"logo.png"</span><span class="p">];</span>
+</code></pre></div></div>
+
+<p>Next, we just need to define logic converting the data provided in
+<code class="language-plaintext highlighter-rouge">BatchingTraitVersion0_1_1</code> into a <code class="language-plaintext highlighter-rouge">TreePay</code>. Since <code class="language-plaintext highlighter-rouge">BatchingTraitVersion0_1_1</code> 
+is really basic, we need to pick values for the other fields.</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">impl</span> <span class="n">From</span><span class="o">&lt;</span><span class="n">BatchingTraitVersion0_1_1</span><span class="o">&gt;</span> <span class="k">for</span> <span class="n">TreePay</span> <span class="p">{</span>
+    <span class="k">fn</span> <span class="nf">from</span><span class="p">(</span><span class="n">args</span><span class="p">:</span> <span class="n">BatchingTraitVersion0_1_1</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="n">Self</span> <span class="p">{</span>
+        <span class="n">TreePay</span> <span class="p">{</span>
+            <span class="n">participants</span><span class="p">:</span> <span class="n">args</span><span class="py">.payments</span><span class="p">,</span>
+            <span class="n">radix</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+            <span class="c">// estimate fees to be 4 outputs and 1 input + change</span>
+            <span class="n">fee_sats_per_tx</span><span class="p">:</span> <span class="n">args</span><span class="py">.feerate_per_byte</span> <span class="o">*</span> <span class="p">((</span><span class="mi">4</span> <span class="o">*</span> <span class="mi">41</span><span class="p">)</span> <span class="o">+</span> <span class="mi">41</span> <span class="o">+</span> <span class="mi">10</span><span class="p">),</span>
+            <span class="n">timelock_backpressure</span><span class="p">:</span> <span class="nb">None</span><span class="p">,</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="k">impl</span> <span class="n">From</span><span class="o">&lt;</span><span class="n">Versions</span><span class="o">&gt;</span> <span class="k">for</span> <span class="n">TreePay</span> <span class="p">{</span>
+    <span class="k">fn</span> <span class="nf">from</span><span class="p">(</span><span class="n">v</span><span class="p">:</span> <span class="n">Versions</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="n">TreePay</span> <span class="p">{</span>
+        <span class="k">match</span> <span class="n">v</span> <span class="p">{</span>
+            <span class="nn">Versions</span><span class="p">::</span><span class="nf">TreePay</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">=&gt;</span> <span class="n">v</span><span class="p">,</span>
+            <span class="nn">Versions</span><span class="p">::</span><span class="nf">BatchingTraitVersion0_1_1</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">=&gt;</span> <span class="n">v</span><span class="nf">.into</span><span class="p">(),</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="using-the-interface">Using the Interface</h3>
+
+<p>To use this <code class="language-plaintext highlighter-rouge">BatchingTraitVersion0_1_1</code>, we can just define a struct as follows,
+and when we deserialize it will be automatically verified to have declared a
+fitting API.</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">pub</span> <span class="k">struct</span> <span class="n">RequiresABatch</span> <span class="p">{</span>
+    <span class="c">/// # Which Plugin to Use</span>
+    <span class="c">/// Specify which contract plugin to call out to.</span>
+    <span class="n">handle</span><span class="p">:</span> <span class="n">SapioHostAPI</span><span class="o">&lt;</span><span class="n">BatchingTraitVersion0_1_1</span><span class="o">&gt;</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The <code class="language-plaintext highlighter-rouge">SapioHostAPI</code> handle can be either a human readable name (like
+“user_preferences.batching” or “org.judica.modules.batchpay.latest”) and looked
+up locally, or it could be an exact hash of the specific module to use.</p>
+
+<p>We can then use the handle to resolve and compile against the third party module.
+Because the module lives in an entirely separate WASM execution context,
+we don’t need to worry about it corrupting our module or being able to access
+information we don’t provide it.</p>
+
+<h1 id="call-to-action">Call to Action</h1>
+
+<p><strong>ARE YOU A BIG BRAIN PROGRAMMING LANGUAGE PERSON?</strong></p>
+
+<p><strong>PLEASE <a href="https://judica.org/join">HELP ME</a> MAKE THIS SAPIO
+HAVE A COOL AND USEFUL TYPE SYSTEM I AM A SMALL BRAIN BOI AND THIS STUFF IS
+HARD AND I NEED FRENZ.</strong></p>
+
+<p><strong>EVEN THE KIND OF “FRENZ” THAT YOU HAVE TO PAY FOR <em>wink</em>.</strong></p>
+
+<p><strong><a href="https://judica.org/join">CLICK HERE</a></strong></p>
+
+<hr />
+
+<p>In the posts coming Soon™, we’ll see some more specific examples of contracts
+that make heavier use of having interfaces and all the cool shit we can get done.</p>
+
+<h1 id="thats-all-i-have-to-say-see-you-tomorrow">That’s all I have to say. See you tomorrow.</h1>
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:rock" role="doc-endnote">
+      <p>if you’ve been living under a big rock, ICO tokens and NFTs. <a href="#fnref:rock" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+    <div>
+    <h3>
+        <span style="vertical-align: text-top;">
+    
+
+<a class="twitter-share-button"
+data-size="large"
+href="https://twitter.com/intent/tweet?text=Composability+in+Sapio+Contracts&hashtags=Bitcoin,
+AdventCalendar,
+Covenants,
+Sapio
+"> Tweet</a>
+
+
+
+        </span>
+        <span style="vertical-align: super;">
+to continue the conversation...
+        </span>
+    </h3>
+
+    </div>
+</div>
+
+<aside class="related">
+  <h3>You might also enjoy...</h3>
+  <ul class="related-posts">
+    
+      <li>
+        <a href="/bitcoin/2021/12/11/advent-14/">
+          Payment Channels in a CTV+Sapio World
+          <small><time datetime="2021-12-11T00:00:00+00:00">11 Dec 2021</time></small>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/bitcoin/2021/12/20/advent-23/">
+          Derivatives and Options For Bitcoin
+          <small><time datetime="2021-12-20T00:00:00+00:00">20 Dec 2021</time></small>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/bitcoin/2021/12/18/advent-21/">
+          Packaging Sapio Applications
+          <small><time datetime="2021-12-18T00:00:00+00:00">18 Dec 2021</time></small>
+        </a>
+      </li>
+    
+  </ul>
+</aside>
+
+        </div>
+        <div class="content container" style="padding-bottom:0;padding-top:0;bottom:0px;">
+            <div class="posts" style="height:14pt;margin-bottom:0;">
+                <div class="post">
+                    <p style="text-align:center;font-size:12pt;">&copy; 2011-2021 Jeremy Rubin. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
