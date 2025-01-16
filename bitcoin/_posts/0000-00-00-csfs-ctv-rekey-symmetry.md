@@ -8,7 +8,7 @@ date: 2024-12-02
 
 _This is a collab post with [Rearden](https://twitter.com/reardencode)._
 
-As Rearden talked about at Bitcoin++ in Austin this year, there are many ways
+At Bitcoin++ in Austin this year Rearden showed that there are many ways
 to realize Lightning Symmetry using various bitcoin upgrade proposals. All of
 these methods require either an extra signing round-trip for each channel
 update, or the ability to force the hash of the settlement transaction to be
@@ -18,11 +18,11 @@ rebindable (i.e. not commit to a specific prior UTXO) and commit to some
 additional data being visible for that signature to be valid.
 
 We'll start by exploring why Lightning Symmetry requires this data visibility
-commitment, then dive into previously known solutions, and finally present a
-new solution we've developed to enable Lightning Symmetry using one extra
-signature, but no extra signing round-trip and without the need for
-concatenation or other explicit multi-commitments.
-
+commitment, then dive into previously known solutions, and present a new
+generalized technique for using CSFS to two or more variables. Finally, we will
+present an optimized solution based on the principles we've developed to enable
+Lightning Symmetry using one extra signature, but no extra signing round-trip
+and without the need for concatenation or other explicit multi-commitments.
 
 ## Less Common Definitions
 
@@ -113,13 +113,24 @@ and settlement hashes together by the keys which have signed them. CSFS is
 known to be useful for delegation, so we initially delegate to a rekey:
 ```
 script(n):
-DUP TOALT DUP TOALT IKEY CSFS VERIFY CTV 2DUP EQUAL NOT VERIFY ROT SWAP FROMALT CSFS VERIFY FROMALT CSFS VERIFY <S+n+1> CLTV
+    DUP TOALT DUP TOALT
+    IKEY CSFS VERIFY
+    OP_SIZE <32> EQUALVERIFY CTV
+    2DUP EQUAL NOT VERIFY
+    ROT SWAP FROMALT CSFS VERIFY
+    FROMALT CSFS VERIFY <S+n+1> CLTV
 channel:
-tr(musig(keyA, keyB), raw(<script(0)>))
+    tr(musig(keyA, keyB), raw(<script(0)>))
 update(n):
-tr(musig(keyA, keyB), raw(DEPTH NOTIF <settlement-n-hash> CTV ELSE <script(n)> ENDIF))
-stack:
-<settlement-n-sig> <update-n-sig> <settlement-n-ctv> <update-n-ctv> <rekey-sig> <rekey>
+    tr(musig(keyA, keyB),
+        raw(DEPTH NOTIF <settlement-n-hash> CTV ELSE <script(n)> ENDIF))
+stack(n):
+    <settlement-n-sig>
+    <update-n-sig>
+    <settlement-extradata>
+    <update-n-ctv>
+    <rekey-sig>
+    <rekey>
 ```
 
 Here the `rekey` is an ephemeral key either randomly generated or derived
@@ -133,6 +144,162 @@ are allowed to be equal, a malicious partner can simply place the same update
 hash on the stack with its signature twice, so they must be checked for
 inequality by the script.
 
+This scheme is secure  because of the length check for the arg `update-n-ctv`,
+it should be ensured that the other `<settlement-extradata>` is either not a
+valid CTV hash or is not length 32.
+
+## CSFS Key Laddering 
+Key Laddering extends the rekeying approach shown above to allow recursively
+rekeying to an arbitrary number of variables. This allows CSFS to be used without
+OP\_CAT to sign over collections of variables to be plugged into a script.
+
+
+For example, for 5 variables (not optimized, written for clarity):
+
+```
+DATASIGS: <sd1> <d1> <sd2> <d2> <sd3> <d3> <sd4> <d4> <sd5> <d5>
+stack: DATASIGS + <k5> <s5> <k4> <s4> <k3> <s3> <k2> <s2> <k1> <s1>
+
+program:
+
+\\ First, check that k1 is signed by IKEY
+    OVER IKEY CSFSV
+    DUP TOALT
+
+// Next, Check that k_i signs k_{i+1}
+    // stack: DATASIGS + <k5> <s5> <k4> <s4> <k3> <s3> <k2> <s2> <k1>
+    // altstack: <k1>
+
+        3DUP ROT SWAP CSFSV 2DROP DUP TOALT
+
+    // stack: DATASIGS + <k5> <s5> <k4> <s4> <k3> <s3> <k2>
+    // altstack: <k1> <k2>
+
+        3DUP ROT SWAP CSFSV 2DROP DUP TOALT
+
+    // stack: DATASIGS + <k5> <s5> <k4> <s4> <k3>
+    // altstack: <k1> <k2> <k3>
+
+        3DUP ROT SWAP CSFSV 2DROP DUP TOALT
+
+    // stack: DATASIGS + <k5> <s5> <k4>
+    // altstack: <k1> <k2> <k3> <k4>
+
+        3DUP ROT SWAP CSFSV 2DROP
+
+    // stack: <sd1> <d1> <sd2> <d2> <sd3> <d3> <sd4> <d4> <sd5> <d5> <k5>
+    // altstack: <k1> <k2> <k3> <k4>
+
+
+        FROMALT FROMALT FROMALT FROMALT
+
+    // stack: <sd1> <d1> <sd2> <d2> <sd3> <d3> <sd4> <d4> <sd5> <d5> <k5> <k4> <k3> <k2> <k1>
+    // altstack:
+
+// Now, check each signature of the data
+
+    <6> PICK // sd5
+    <6> PICK // d5
+    <6> PICK // k5
+    CSFSV
+
+    <8> PICK // sd4
+    <8> PICK // d4
+    <5> PICK // k4
+    CSFSV
+
+    <10> PICK // sd3
+    <10> PICK // d3
+    <4> PICK // k3
+    CSFSV
+
+    <12> PICK // sd2
+    <12> PICK // d2
+    <3> PICK // k2
+    CSFSV
+
+    <14> PICK // sd1
+    <14> PICK // d1
+    <2> PICK // k1
+    CSFSV
+
+// Now, Check the inequalities that no key is used as data:
+    // stack: <sd1> <d1> <sd2> <d2> <sd3> <d3> <sd4> <d4> <sd5> <d5> <k5> <k4> <k3> <k2> <k1>
+    // altstack:
+
+    // No need to check k1 != d0 since no d0
+
+    // Check that k2 != d1
+    <1> PICK
+    <14> PICK
+    NOT EQUAL VERIFY
+
+    // Check that k3 != d2
+    <2> PICK
+    <12> PICK
+    NOT EQUAL VERIFY
+
+
+    // Check that k4 != d3
+    <3> PICK
+    <8> PICK
+    NOT EQUAL VERIFY
+
+    // check that k5 != d4
+    <4> PICK
+    <6> PICK
+    NOT EQUAL VERIFY
+
+
+// stack: <sd1> <d1> <sd2> <d2> <sd3> <d3> <sd4> <d4> <sd5> <d5> <k5> <k4> <k3> <k2> <k1>
+// altstack:
+
+2DROP 2DROP DROP
+TOALT DROP
+TOALT DROP
+TOALT DROP
+TOALT DROP
+TOALT DROP
+
+// stack:
+// altstack: <d5> <d4> <d3> <d2> <d1>
+
+// Whatever else
+
+
+```
+This lets you sign an arbitrary number of variables in a sequence.
+
+One "gotcha" not shown in the above script is there is a need to ensure the signature over data and signatures over keys are not exchangable at each hop.
+Care should be taken to ensure this.
+
+One alternative scheme is to do "signature laddering". That is, instead of signing a key at each step, sign instead the next signature.
+
+E.g., re-key by signing with IKEY the first signature. Then verify it against any key / message pair it will validate against. The key can be used with a different signature for the value, and the message signed is the next signature. E.g.:
+
+
+```
+stack:
+<sig B>
+<key A>
+<sig^IKEY(sig A)>
+<sig^A(sig B)>
+
+DUP TOALT
+IKEY CSFS VERIFY
+FROMALT
+
+stack:
+<sig B>
+<key A>
+<sig^A(sig B)>
+
+ROT ROT CSFS VERIFY
+
+```
+
+This laddering is convenient, because the first IKEY sig commits to the roles of
+all the other data (key v.s. sig v.s. argument).
 
 ## CTV-CSFS with derived internal keys solution
 
