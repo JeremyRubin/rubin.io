@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+  <title> Sapio Studio Payment Pool Walkthrough &middot; Jeremy Rubin </title>
+  <link href="https://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/poole.css">
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/css/hyde.css">
+  <link rel="stylesheet" href="/public/font-awesome-4.5.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+                                 <link rel="shortcut icon" href="/public/favicon.ico">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+
+  
+  <link type="application/atom+xml" rel="alternate" href="http://rubin.io/feed.xml" title="Jeremy Rubin" />
+
+
+  <!-- GA -->
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-40376251-1', 'auto');
+    ga('send', 'pageview');
+</script>
+
+  
+  <link rel="me" href="https://twitter.com/JeremyRubin" >
+  <meta name="twitter:dnt" content="on">
+			   <script>window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
+
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+
+  return t;
+}(document, "script", "twitter-wjs"));</script>
+
+</head>
+
+    <body>
+        <div class="sidebar">
+    <h3 style="text-align: center;"> <a href="/"> Jeremy Rubin </a> </h3>
+    <div class="container">
+        <div class="sidebar-about">
+
+            <div class="sidebar-about-info"> 
+                <a href="/public/pdfs/resume.pdf"><i class="fa fa-file-text-o" title=Resume></i></a>
+                <a href=""><i class="fa fa-github" title=Github></i></a>
+                <a href="https://twitter.com/JeremyRubin"><i class="fa fa-twitter" title=Twitter></i></a>
+            </div>
+            <div class="sidebar-about-info hide-large">
+                <a class="" href="/">Home</a>
+                <a class="" href="/blog/">Blog</a>
+                <a class="" href="/talks/">Talks</a> 
+                <a class="" href="/projects/">Projects</a>
+                <a class="" href="/archive/">Site Index</a>
+            </div>
+        </div>
+
+
+
+
+        <nav class="sidebar-nav hide-small">
+            <a class="sidebar-nav-item" href="/">Home</a>
+            <a class="sidebar-nav-item" href="/blog/">Blog</a>
+            <a class="sidebar-nav-item" href="/talks/">Talks</a> 
+            <a class="sidebar-nav-item" href="/projects/">Projects</a>
+            <a class="sidebar-nav-item" href="/archive/">Site Index</a>
+        </nav>
+    </div>
+</div>
+
+
+
+        <div class="content container" style="padding-bottom:0;">
+            <div class="post">
+    <h1 class="post-title">Sapio Studio Payment Pool Walkthrough</h1>
+    <h3>Day 18: Rubin's Bitcoin Advent Calendar</h3>
+    
+
+<a class="twitter-share-button"
+data-size="large"
+href="https://twitter.com/intent/tweet?text=Sapio+Studio+Payment+Pool+Walkthrough&hashtags=Bitcoin,
+AdventCalendar,
+Covenants,
+Sapio
+"> Tweet</a>
+
+
+
+    <div>
+        <span class="post-date">15 Dec 2021
+        </span>
+    </div>
+    <p><em>Welcome to day 18 of my Bitcoin Advent Calendar. You can see an index of all
+the posts <a href="/advent21">here</a> or subscribe at
+<a href="https://judica.org/join">judica.org/join</a> to get new posts in your inbox</em></p>
+
+<p>Today’s post will be a pretty different format that usual, it’s basically going
+to be a pictorial walk through of the <a href="https://github.com/sapio-lang/sapio-studio">Sapio
+Studio</a>, the frontend tool for Sapio
+projects. As an example, we’ll go through a Payment Pool contract to familiarize
+ourselves.</p>
+
+<p>I wanted to put this post here, before we get into some more applications,
+because I want you to start thinking past “cool one-off concepts we can
+implement” and to start thinking about reusable components we can build and ship
+into a common Bitcoin Smart Contract software (Sapio Studio or its successors).</p>
+
+<hr />
+
+<p>At it’s core, Sapio Studio is just a wallet frontend to Bitcoin Core.
+<img src="/public/img/bitcoin/advent/studio/000000.png" alt="" /></p>
+
+<p>You can make a transaction, just like normal…</p>
+
+<p><img src="/public/img/bitcoin/advent/studio/000001.png" alt="" /></p>
+
+<p>And see it show up in the pending transactions…
+<img src="/public/img/bitcoin/advent/studio/000002.png" alt="" /></p>
+
+<p>And even mine some regtest blocks.
+<img src="/public/img/bitcoin/advent/studio/000003.png" alt="" /></p>
+
+<p>But where Sapio Studio is different is that there is also the ability to create
+contracts.
+<img src="/public/img/bitcoin/advent/studio/000004.png" alt="" />
+Before we can do that, we need to load a WASM Plugin with a compiled contract.
+<img src="/public/img/bitcoin/advent/studio/000006.png" alt="" />
+Let’s load the Payment Pool module. You can see the code for it
+<a href="https://github.com/sapio-lang/sapio/blob/b98db9637777a808835b4593ae1063230735fc8a/plugin-example/hanukkiah/src/plugin.rs">here</a>.
+<img src="/public/img/bitcoin/advent/studio/000007.png" alt="" />
+And now we can see we have a module!
+<img src="/public/img/bitcoin/advent/studio/000008.png" alt="" />
+Let’s load a few more so it doesn’t look lonely.
+<img src="/public/img/bitcoin/advent/studio/000009.png" alt="" />
+Now let’s check out the Payment Pool module.
+<img src="/public/img/bitcoin/advent/studio/000010.png" alt="" />
+Now let’s check out another one – we can see they each have different types of
+arguments, auto-generated from the code.
+<img src="/public/img/bitcoin/advent/studio/000011.png" alt="" /></p>
+
+<p>Let’s fill out the form with 10 keys to make a Payment Pool controlled by 10
+people, and then submit it.
+<img src="/public/img/bitcoin/advent/studio/000012.png" alt="" />
+What’s that??? It’s a small bug I am fixing :/.  Not to worry…
+<img src="/public/img/bitcoin/advent/studio/000013.png" alt="" />
+Just click repair layout.
+<img src="/public/img/bitcoin/advent/studio/000014.png" alt="" />
+And the presentation resets. I’ll fix it soon, but it can be useful if there’s a
+glitch to reset it.</p>
+
+<p>Now we can see the basic structure of the Payment Pool, and how it splits up.
+<img src="/public/img/bitcoin/advent/studio/000015.png" alt="" />
+Let’s get a closer look…
+<img src="/public/img/bitcoin/advent/studio/000016.png" alt="" />
+Let’s zoom out (not helpful!)…
+<img src="/public/img/bitcoin/advent/studio/000017.png" alt="" />
+Let’s zoom back in. Note how the transactions are square boxes and the outputs
+are rounded rectangles. Blue lines connect transactions to their outputs. Purple lines
+connect outputs to their (potential) spends.
+<img src="/public/img/bitcoin/advent/studio/000016.png" alt="" />
+If we click on a transaction we can learn more about it.
+<img src="/public/img/bitcoin/advent/studio/000018.png" alt="" />
+We even have some actions that we can take, like sending it to the network. 
+<img src="/public/img/bitcoin/advent/studio/000019.png" alt="" />
+Let’s try it….
+<img src="/public/img/bitcoin/advent/studio/000020.png" alt="" />
+Oops! We need to sign it first…
+<img src="/public/img/bitcoin/advent/studio/000021.png" alt="" />
+And then we can send it.
+<img src="/public/img/bitcoin/advent/studio/000022.png" alt="" />
+What other buttons do we have? What’s this do?
+<img src="/public/img/bitcoin/advent/studio/000023.png" alt="" />
+It teleports us to the output we are creating!
+<img src="/public/img/bitcoin/advent/studio/000024.png" alt="" />
+Notice how the output is marked “Updatable”, and there is also a “DO_TX”
+button (corresponding to the DO_TX in the Payment Pool). Let’s click that…
+<img src="/public/img/bitcoin/advent/studio/000025.png" alt="" />
+Ooooh. It prompts us with a form to do the transaction!
+<img src="/public/img/bitcoin/advent/studio/000026.png" alt="" />
+Ok, let’s fill this sucker out…
+<img src="/public/img/bitcoin/advent/studio/000027.png" alt="" />
+Click submit, then recompile (separate actions in case we want to make multiple “moves” before recompiling).
+<img src="/public/img/bitcoin/advent/studio/000028.png" alt="" />
+I really need to fix this bug…
+<img src="/public/img/bitcoin/advent/studio/000029.png" alt="" />
+Voila!</p>
+
+<p>As you can see, the original graph is intact and we’ve augmented onto it the new state transition.
+<img src="/public/img/bitcoin/advent/studio/000030.png" alt="" />
+The new part has our 0.1 BTC Spend + the re-creation of the Payment Pool with less funds.
+<img src="/public/img/bitcoin/advent/studio/000031.png" alt="" />
+Ok, let’s go nuts and do another state transition off-of the first one? This time more payouts!
+<img src="/public/img/bitcoin/advent/studio/000032.png" alt="" />
+Submit…</p>
+
+<p><img src="/public/img/bitcoin/advent/studio/000033.png" alt="" />
+And Recompile<sup id="fnref:bug" role="doc-noteref"><a href="#fn:bug" class="footnote" rel="footnote">1</a></sup>…</p>
+
+<p><img src="/public/img/bitcoin/advent/studio/000034.png" alt="" />
+I skipped showing you the bug this time.</p>
+
+<p>Now you can see <em>two</em> state transitions! And because we used more payouts than one, we can see some congestion control<sup id="fnref:bug2" role="doc-noteref"><a href="#fn:bug2" class="footnote" rel="footnote">2</a></sup> at work.</p>
+
+<p><img src="/public/img/bitcoin/advent/studio/000035.png" alt="" /></p>
+
+<p>It works! It all really, really works!</p>
+
+<hr />
+
+<p>One more thing I <em>can’t</em> show you with this contract is the timing simulator.</p>
+
+<p>This lets you load up a contract (like our Hanukkiah below) and…
+<img src="/public/img/bitcoin/advent/studio/000042.png" alt="" />
+Simulate the passing of time (or blocks).
+<img src="/public/img/bitcoin/advent/studio/000041.png" alt="" />
+Pretty cool!
+<img src="/public/img/bitcoin/advent/studio/000040.png" alt="" /></p>
+
+<p>There are also some settings you can configure for display settings, the node,
+and for sapio-cli. The first time you run Sapio, you’ll need to get some of
+these things configured correctly or else it will be broken. Currently, if you
+look  <a href="https://github.com/JeremyRubin/sapio-pod/blob/master/runner.sh">here</a> you
+can find a template for a script to get everything up and running for a first
+shot at it, otherwise you’ll have to do it by hand, or just change your
+<code class="language-plaintext highlighter-rouge">preferences.json</code> to be similar to mine in the note<sup id="fnref:config" role="doc-noteref"><a href="#fn:config" class="footnote" rel="footnote">3</a></sup>.</p>
+
+<p><img src="/public/img/bitcoin/advent/studio/000036.png" alt="" />
+<img src="/public/img/bitcoin/advent/studio/000037.png" alt="" />
+<img src="/public/img/bitcoin/advent/studio/000038.png" alt="" />
+<img src="/public/img/bitcoin/advent/studio/000039.png" alt="" /></p>
+
+<h3 id="before-you-ask">before you ask…</h3>
+<h1 id="of-course-there-is-dark-mode">OF COURSE THERE IS DARK MODE</h1>
+<p><em>configured by your local system theme preference</em>
+<img src="/public/img/bitcoin/advent/studio/dark.png" alt="" /></p>
+
+<hr />
+
+<p>I hope you enjoyed this! There’s <em>a metric fuckload</em> of work still to do to make
+Sapio Studio &amp; Sapio anywhere near production grade, but I hope this has helped
+elucidate how powerful and cool the Sapio approach is, and has inspired you to
+build something and try it out! I’d also be really eager for feedback on what
+features should be here/are missing.</p>
+
+<p>Lastly, if you’re just <strong>excited</strong> about this, it’s definitely a project
+that could use more experienced react/electron/bitcoin contributors, either
+yourself or if you’re interested in sponsoring :).</p>
+
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:bug" role="doc-endnote">
+      <p>it was here I noticed a small mistake that I named the updates “First Update” instead of “FirstUpdate” so I had to poke in the JSON and fix it in the interest of time… TODO for me to make invalid inputs invalid! <a href="#fnref:bug" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:bug2" role="doc-endnote">
+      <p>I used the wrong, wonky version of the TreePay by mistake and was too lazy to fix it, my bad :p it should look more tree-y. I’ll fix the actual code in the repo at some point. <a href="#fnref:bug2" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:config" role="doc-endnote">
+
+      <p>My config file, if it helps you :)</p>
+      <div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"sapio"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"binary"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/Users/jr/sapio/target/release/sapio-cli"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"oracle-local-enabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"oracle-remote-enabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"oracle-remote-oracles-list"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+            </span><span class="s2">"0.0.0.0:8010 tpubD6NzVbkrYhZ4Y78NbTJtGWzt9a4eeoFJ1phmTVxZNSAiVkVWW5GYixSobuXTQtzFDcSWPoXhtiDUu4n6sChuNKVXZ9UL4LvxnU1WG4Y7pxV"</span><span class="w">
+        </span><span class="p">],</span><span class="w">
+        </span><span class="nl">"oracle-remote-threshold"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"plugin_map"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">],</span><span class="w">
+        </span><span class="nl">"configsource"</span><span class="p">:</span><span class="w"> </span><span class="s2">"here"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"oracle-seed-file"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/Users/jr/sapio/SEED"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"oracle-netinterface"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.0.0.0:8010"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"display"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"sats-bound"</span><span class="p">:</span><span class="w"> </span><span class="s2">"9999999"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"animate-flow"</span><span class="p">:</span><span class="w"> </span><span class="mi">1594</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"poll-node-freq"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"bitcoin-config"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"rpcuser"</span><span class="p">:</span><span class="w"> </span><span class="s2">"jeremy"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"rpcpassword"</span><span class="p">:</span><span class="w"> </span><span class="s2">"hunter2"</span><span class="w">
+        </span><span class="nl">"rpcport"</span><span class="p">:</span><span class="w"> </span><span class="s2">"18443"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"rpchost"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.0.0.0"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"network"</span><span class="p">:</span><span class="w"> </span><span class="s2">"regtest"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>      </div>
+      <p><a href="#fnref:config" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+    <div>
+    <h3>
+        <span style="vertical-align: text-top;">
+    
+
+<a class="twitter-share-button"
+data-size="large"
+href="https://twitter.com/intent/tweet?text=Sapio+Studio+Payment+Pool+Walkthrough&hashtags=Bitcoin,
+AdventCalendar,
+Covenants,
+Sapio
+"> Tweet</a>
+
+
+
+        </span>
+        <span style="vertical-align: super;">
+to continue the conversation...
+        </span>
+    </h3>
+
+    </div>
+</div>
+
+<aside class="related">
+  <h3>You might also enjoy...</h3>
+  <ul class="related-posts">
+    
+      <li>
+        <a href="/bitcoin/2021/12/11/advent-14/">
+          Payment Channels in a CTV+Sapio World
+          <small><time datetime="2021-12-11T00:00:00+00:00">11 Dec 2021</time></small>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/bitcoin/2021/12/23/advent-26/">
+          The History and Future of Sapio
+          <small><time datetime="2021-12-23T00:00:00+00:00">23 Dec 2021</time></small>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/bitcoin/2022/04/17/next-steps-bip119/">
+          7 Theses on a next step for BIP-119
+          <small><time datetime="2022-04-17T00:00:00+00:00">17 Apr 2022</time></small>
+        </a>
+      </li>
+    
+  </ul>
+</aside>
+
+        </div>
+        <div class="content container" style="padding-bottom:0;padding-top:0;bottom:0px;">
+            <div class="posts" style="height:14pt;margin-bottom:0;">
+                <div class="post">
+                    <p style="text-align:center;font-size:12pt;">&copy; 2011-2021 Jeremy Rubin. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

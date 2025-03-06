@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+  <title> Contracting Primitives and Upgrades to Bitcoin &middot; Jeremy Rubin </title>
+  <link href="https://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/poole.css">
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/css/hyde.css">
+  <link rel="stylesheet" href="/public/font-awesome-4.5.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+                                 <link rel="shortcut icon" href="/public/favicon.ico">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+
+  
+  <link type="application/atom+xml" rel="alternate" href="http://rubin.io/feed.xml" title="Jeremy Rubin" />
+
+
+  <!-- GA -->
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-40376251-1', 'auto');
+    ga('send', 'pageview');
+</script>
+
+  
+  <link rel="me" href="https://twitter.com/JeremyRubin" >
+  <meta name="twitter:dnt" content="on">
+			   <script>window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
+
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+
+  return t;
+}(document, "script", "twitter-wjs"));</script>
+
+</head>
+
+    <body>
+        <div class="sidebar">
+    <h3 style="text-align: center;"> <a href="/"> Jeremy Rubin </a> </h3>
+    <div class="container">
+        <div class="sidebar-about">
+
+            <div class="sidebar-about-info"> 
+                <a href="/public/pdfs/resume.pdf"><i class="fa fa-file-text-o" title=Resume></i></a>
+                <a href=""><i class="fa fa-github" title=Github></i></a>
+                <a href="https://twitter.com/JeremyRubin"><i class="fa fa-twitter" title=Twitter></i></a>
+            </div>
+            <div class="sidebar-about-info hide-large">
+                <a class="" href="/">Home</a>
+                <a class="" href="/blog/">Blog</a>
+                <a class="" href="/talks/">Talks</a> 
+                <a class="" href="/projects/">Projects</a>
+                <a class="" href="/archive/">Site Index</a>
+            </div>
+        </div>
+
+
+
+
+        <nav class="sidebar-nav hide-small">
+            <a class="sidebar-nav-item" href="/">Home</a>
+            <a class="sidebar-nav-item" href="/blog/">Blog</a>
+            <a class="sidebar-nav-item" href="/talks/">Talks</a> 
+            <a class="sidebar-nav-item" href="/projects/">Projects</a>
+            <a class="sidebar-nav-item" href="/archive/">Site Index</a>
+        </nav>
+    </div>
+</div>
+
+
+
+        <div class="content container" style="padding-bottom:0;">
+            <div class="post">
+    <h1 class="post-title">Contracting Primitives and Upgrades to Bitcoin</h1>
+    <h3>Day 8: Rubin's Bitcoin Advent Calendar</h3>
+    
+
+<a class="twitter-share-button"
+data-size="large"
+href="https://twitter.com/intent/tweet?text=Contracting+Primitives+and+Upgrades+to+Bitcoin&hashtags=Bitcoin,
+AdventCalendar,
+Covenants,
+Upgrade,
+BIP119
+"> Tweet</a>
+
+
+
+    <div>
+        <span class="post-date">05 Dec 2021
+        </span>
+    </div>
+    <p><em>Welcome to day 8 of my Bitcoin Advent Calendar. You can see an index of all
+the posts <a href="/advent21">here</a> or subscribe at
+<a href="https://judica.org/join">judica.org/join</a> to get new posts in your inbox</em></p>
+
+<p>In this post we’ll rapid fire roll through a bunch of different smart contract
+primitives, existing and proposed. For a more thorough reading, links will be
+provided.</p>
+
+<h3 id="bip-119-ctv-checktemplateverify">BIP-119 CTV CheckTemplateVerify</h3>
+
+<p>CTV is a general purpose smart contract opcode with full enumeration, no dynamic
+state, no recursion, and primarily works through validation.</p>
+
+<p>Essentially, CTV only lets you select a specific next transaction that can
+occur. Consensus just checks a transaction hash against a CTV hash.</p>
+
+<p>Although this seems to be limited functionality, it can be used with a template
+metaprogramming system such as <a href="learn.sapio-lang.org">Sapio</a> to create
+sophisticated programs.</p>
+
+<p>The limited functionality isn’t a bug, it’s a feature.  CTV was designed to be
+ quick and easy to garner technical consensus with the entire Bitcoin community
+ as a simple and safe covenant without some of the issues more sophisticated
+ covenant systems might have. However, since its launch there’s been more
+ interest developing for more flexible covenants, which may take much longer to
+ deploy and deliver meaningful benefits to users.</p>
+
+<p>CTV is also designed to work well with other opcodes that might be added (such
+as CSFS, OP_AMOUNT, and OP_CAT), so it does not become irrelevant should more
+features be added, it simply gets better.</p>
+
+<p>CTV is currently a decently reviewed BIP pending more support from the community
+for inclusion (see <a href="https://utxos.org/signals">social signals</a>).</p>
+
+<p>Disclosure: I’m the author/advocate of BIP-119.</p>
+
+<p>For more:</p>
+
+<ol>
+  <li><a href="https://bitcoinops.org/en/newsletters/2019/05/29/#proposed-transaction-output-commitments">Optech</a></li>
+  <li><a href="https://utxos.org">utxos.org</a></li>
+  <li><a href="https://rubin.io/blog/2021/07/02/covenants/">Templates, Eltoo, and Covenants, Oh My!</a></li>
+  <li><a href="https://medium.com/block-digest-mempool/my-worries-about-too-generalized-covenants-5eff33affbb6">Shinobi’s Covenant Concerns</a></li>
+</ol>
+
+<h3 id="bip-118-apo-anyprevout">BIP-118 APO AnyPrevout</h3>
+
+<p>AnyPrevout is a culmination of research for the Lightning Network (dating back
+to the original whitepaper) for creating a type of “rebindable” bitcoin
+transaction that dramatically simplifies the protocols for LN by getting rid of
+a lot of the complexities around storing state and closing channels
+unilaterally. AnyPrevout helps make Decker Channels possible (or, confusingly,
+sometimes called Eltoo not to be confused with L2).</p>
+
+<p>The basics of how Anyprevout works is that it changes what parts a signature
+signs to exclude the specifics of the coin being spent. This has some drawbacks
+in terms of changing current invariants true of signatures, but it is generally
+safe.</p>
+
+<p>APO can also be used to implement something similar to CTV, but there are
+sufficient differences between the two (including with respect to efficiency)
+such that the proposals aren’t competitive.</p>
+
+<p>APO is currently a decently reviewed BIP pending more support from the community
+for inclusion. The largest blocker for wider support is a concrete functional
+prototype of LN with Decker Channels, which would drive surety that APO has
+“product market fit”. Certain developers believe that additional proposals, like
+SIGHASH_BUNDLE, would be required to make it fully functional.</p>
+
+<ol>
+  <li><a href="https://rubin.io/bitcoin/2021/07/09/bip-118-sighash-chart/">My BIP-118 Review</a></li>
+  <li><a href="https://github.com/bitcoin/bips/blob/master/bip-0118.mediawiki">The BIP</a></li>
+  <li><a href="https://blockstream.com/eltoo.pdf">Eltoo/Decker Channels</a></li>
+  <li><a href="https://rubin.io/blog/2021/07/02/covenants/">Templates, Eltoo, and Covenants, Oh My!</a></li>
+</ol>
+
+<h3 id="tluv-tapleafupdateverify">TLUV TapLeafUpdateVerify</h3>
+
+<p>TLUV is a proposed general purpose smart contract opcode that is open ended, has
+dynamic local state, recursive, and is somewhat computational.</p>
+
+<p>Essentially, TLUV lets you modify a Taproot Output being spent by changing the
+toplevel key and script paths being spent. TLUV only can read and affect a
+single input/output pair; the other outputs are unaffected. The functionality of
+TLUV is very “specific” to the implementation details of Taproot, as it must
+correctly modify the data structures behind it. For Example, you could have a
+Taproot output with 10 coins and a script like:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[{</span><span class="nl">"amt"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"key"</span><span class="p">:</span><span class="w"> </span><span class="s2">"multi(A,B,C)"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"scripts"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"signed(A) with up to 2 coins"</span><span class="p">,</span><span class="w">
+              </span><span class="s2">"signed(B) with up to 5 coins"</span><span class="p">,</span><span class="w">
+              </span><span class="s2">"signed(C) with up to 3 coins"</span><span class="p">]</span><span class="w">
+ </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre></div></div>
+
+<p>and TLUV would enable you to transition to the following outputs:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[{</span><span class="nl">"amt"</span><span class="p">:</span><span class="w"> </span><span class="mi">9</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"key"</span><span class="p">:</span><span class="w"> </span><span class="s2">"multi(A,B,C)"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"scripts"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"signed(A) with up to 1 coins"</span><span class="p">,</span><span class="w">
+              </span><span class="s2">"signed(B) with up to 5 coins"</span><span class="p">,</span><span class="w">
+              </span><span class="s2">"signed(C) with up to 3 coins"</span><span class="p">]</span><span class="w">
+ </span><span class="p">},</span><span class="w">
+ </span><span class="p">{</span><span class="nl">"amt"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.25</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"someone paid by A"</span><span class="w">
+ </span><span class="p">},</span><span class="w">
+ </span><span class="p">{</span><span class="nl">"amt"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.75</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"someone else paid by A"</span><span class="w">
+ </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre></div></div>
+
+<p>or even a full exit:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[{</span><span class="nl">"amt"</span><span class="p">:</span><span class="w"> </span><span class="mi">9</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"key"</span><span class="p">:</span><span class="w"> </span><span class="s2">"multi(B,C)"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"scripts"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"signed(B) with up to 5 coins"</span><span class="p">,</span><span class="w">
+              </span><span class="s2">"signed(C) with up to 3 coins"</span><span class="p">]</span><span class="w">
+ </span><span class="p">},</span><span class="w">
+ </span><span class="p">{</span><span class="nl">"amt"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.25</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"someone paid by A"</span><span class="w">
+ </span><span class="p">},</span><span class="w">
+ </span><span class="p">{</span><span class="nl">"amt"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.75</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"someone else paid by A"</span><span class="w">
+ </span><span class="p">}</span><span class="w">
+ </span><span class="p">{</span><span class="nl">"amt"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"A's key (exiting funds)"</span><span class="w">
+ </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre></div></div>
+
+<p>There are some potential footguns around modifying the top level key, as it
+needs to be a valid Taproot key after tweaking.</p>
+
+<p>TLUV as designed requires some form of OP_AMOUNT to enable the
+recursive shared UTXO shown above.</p>
+
+<p>There is no current concrete proposal (e.g. BIP) for TLUV, it’s open ended
+research presently.</p>
+
+<ol>
+  <li><a href="https://bitcoinops.org/en/newsletters/2021/09/15/">Optech</a></li>
+  <li><a href="https://www.mail-archive.com/bitcoin-dev@lists.linuxfoundation.org/msg10437.html">Mailing List</a></li>
+  <li><a href="https://www.mail-archive.com/bitcoin-dev@lists.linuxfoundation.org/msg10442.html">My Mailing List Response</a></li>
+</ol>
+
+<h3 id="csfs-checksigfromstack">CSFS CheckSigFromStack</h3>
+
+<p>CheckSigFromStack, or CheckDataSig (note for experts: usually shorthand for the
+verification-only version as there’s little point to check that something wasn’t
+signed by someone) is an opcode which checks an arbitrary message was signed by
+a key. Normally, when a Bitcoin script checks a signature, the message <em>must be</em>
+a hash of the current transaction computed in accordance with the requested
+transaction hashing program.</p>
+
+<p>CSFS has a couple “basic” applications that could be useful. For example, one
+might write a program where either a key K signs a transaction normally, or it
+signs a key which then signs a transaction. This allows the holder of a coin to
+“delegate” the ownership of a coin to another key without moving the coin.</p>
+
+<p>CSFS already exists in Bitcoin in some sense: using Lamport Signatures it is
+currently possible to check a signature over 5 bytes of data. This is not
+terribly useful, but one could imagine certain uses for e.g. delegating to the
+specified signer the duration of a timelock.</p>
+
+<p>CSFS really shines when it is combined with other opcodes. For example, CSFS
+plus CTV can enable something similar to AnyPrevout and Eltoo. CSFS plus CAT
+enables fully generic covenants in segwit V0, but not in Taproot (without some
+sort of OP_TWEAK as well). This is best left to reading some additional
+materials on the subject, but imagine if I first check the transaction signature
+normally, and then I check it on the stack against the transaction itself pushed
+onto the stack, which I used CAT to assemble from pieces. This would let me run
+programmatic checks on all the components of a script).</p>
+
+<p>While there is not currently a proposal for CSFS, it’s not terribly
+controversial and the design would be relatively straightforward.</p>
+
+<ol>
+  <li><a href="https://lists.linuxfoundation.org/pipermail/bitcoin-dev/2021-July/019192.html">BIP Suggestions</a></li>
+  <li><a href="https://rubin.io/blog/2021/07/02/covenants/">Templates, Eltoo, and Covenants, Oh My!</a></li>
+  <li><a href="https://rubin.io/blog/2021/07/02/signing-5-bytes/">CSFS from Math (5 bytes)</a></li>
+</ol>
+
+<h3 id="op_amount">OP_AMOUNT</h3>
+
+<p>OP_AMOUNT was proposed in 2017 by Johnson Lau (the earliest citation I could dig
+up) through a scripting extension called PUSHTXDATA that allows arbitrary data
+to be pushed on the stack. As a standalone extensions, getting the amount
+spent/created on the stack (whether as a push opcode or an opcode with verify
+semantics) would allow for smart contracts to either limit the amount being
+spent or switch behavior based on the amount.</p>
+
+<p>For example, with TLUV a Taproot branch can have an individual balance that can
+be updated at the discretion of the branch holder. Suppose I had a script tree
+that said Alice has 1 bitcoin and Bob has 20 Bitcoin. When Alice is spending,
+the script would require that the corresponding output (e.g., input 0 output 0)
+be reduced by at most 1 Bitcoin, and the output should be updated to change
+Alice’s script to have 1-(spent amount) in the next instance.</p>
+
+<p>As another example, CTV could be used with an OP_AMOUNT to enable a ultra high
+security vault if the amount sent is greater than 1 Bitcoin and a lower security
+vault if it is less than 1 Bitcoin.</p>
+
+<p>There’s no current concrete proposal for OP_AMOUNT. Difficulties in adding it
+remain because Bitcoin Scripts deal in 32-bit math and amounts are 64-bit values
+(51 bits precisely).</p>
+
+<ol>
+  <li><a href="https://github.com/jl2012/bips/blob/vault/bip-0ZZZ.mediawiki">OP_PUSHTXDATA</a></li>
+  <li><a href="https://www.mail-archive.com/bitcoin-dev@lists.linuxfoundation.org/msg10438.html">OP_IN_OUT_AMOUNT</a></li>
+</ol>
+
+<h3 id="sighash_bundle">SIGHASH_BUNDLE</h3>
+
+<p>Sighash Bundle is a part of an effort to make “Sighash Flags” more general.
+Sighash Flags are a mini “programming language” to describe what parts of a
+transaction a signer wants to sign for a transaction. Bundles in particular
+allow a signer to select a range of inputs and outputs in a way that the bundle
+description can be rebound to allow some form of post-hoc aggregation of
+transactions.</p>
+
+<p>It’s primarily proposed to help make Decker Channels work with a sub-protocol
+called “layered commitments”. It’s possible for inclusion, but it has the same
+issue as AnyPrevout, we need to see an end-to-end implementation of LN using it
+to be sure that the technology is solving the problem it is designed to.</p>
+
+<p>There’s no concrete implementation proposed yet.</p>
+
+<ol>
+  <li><a href="https://lists.linuxfoundation.org/pipermail/bitcoin-dev/2018-April/015862.html">Mailing List Post</a></li>
+</ol>
+
+<h3 id="transaction-sponsors">Transaction Sponsors</h3>
+
+<p>Transaction Sponsors is another proposal by yours truly.</p>
+
+<p>The basic concept of Transaction Sponsors is to allow expressing logic that
+Transaction B should only be in a block if Transaction A is also in the block.
+In particular, the proposal says that a transaction with a 0 value output with
+script <code class="language-plaintext highlighter-rouge">OP_VER &lt;txids&gt;</code> would make the transaction valid only if the txids were
+also in the block.</p>
+
+<p>The ability to express such a dependency has implications for designing novel
+smart contracts based on these dependencies, but this is not the focus of the
+sponsors proposal with respect to mempool policy.</p>
+
+<p>Instead, the Sponsors proposal is to use the ability to express additional
+dependencies as a way of dynamically adding fees to transactions in the mempool
+without relying on CPFP or RBF. This primitive is particularly helpful for
+driving progress of smart contracts based on CTV or Decker Channels without
+requiring any sort of transaction malleability.</p>
+
+<p>There is currently an implementation and Draft BIP of Sponsors, but the BIP has
+not been advanced for inclusion yet.</p>
+
+<ol>
+  <li><a href="https://lists.linuxfoundation.org/pipermail/bitcoin-dev/2020-September/018168.html">Mailing List Post</a></li>
+  <li><a href="https://lists.linuxfoundation.org/pipermail/bitcoin-dev/2021-November/019614.html">Post about difficulties of paying fees</a></li>
+</ol>
+
+<h3 id="op_cat-or-shastream">OP_CAT (Or SHASTREAM)</h3>
+
+<p>OP_CAT is “deceptively simple”. All it enables is the ability to take an
+argument “hello “ and an argument “world” and join them together into “hello
+world”.</p>
+
+<p>CAT was originally a part of Bitcoin, but it had some implementation flaws and
+was removed by Satoshi in an emergency patch early on in Bitcoin’s history.</p>
+
+<p>Although it is simple, it turns out that the ability to join bytestrings
+together adds a remarkable variety of functionality to Bitcoin, including things
+like quantum proof signatures and covenants.  There are a couple different
+variants of CAT that would be possible and have different tradeoffs, but largely
+CAT and friends are not controversial in their design. What does make CAT
+controversial is that because it has the propensity to introduce so many
+surprising behaviors in Bitcoin, we might prefer to better understand the
+impacts of users being able to author such advanced smart contracts.</p>
+
+<ol>
+  <li><a href="https://rubin.io/blog/2021/07/06/quantum-bitcoin/">Quantum Proof Bitcoin</a></li>
+  <li><a href="https://medium.com/blockstream/cat-and-schnorr-tricks-i-faf1b59bd298">Poelstra CAT Blog I</a></li>
+  <li><a href="https://medium.com/blockstream/cat-and-schnorr-tricks-ii-2f6ede3d7bb5">Poelstra CAT Blog II</a></li>
+</ol>
+
+<h3 id="op_tweak--ecmul">OP_TWEAK / ECMUL</h3>
+
+<p>These two opcodes enable manipulating an elliptic curve point on the stack for
+use in a covenant or to compute a particular private key.</p>
+
+<p>There’s no concrete proposal for this pair, but the implementations are
+basically specified already by the requirements of the secp256k1 curve.</p>
+
+<h3 id="adaptor-signatures">Adaptor Signatures</h3>
+
+<p>Adaptor Signatures are a technique that can be used with Schnorr signature and
+do not require any additional forks to Bitcoin.</p>
+
+<p>The basics of an Adaptor signature is that a party (or group of parties) can
+create an object which either takes in a signature and reveals a secret or takes
+a secret and reveals a signature.</p>
+
+<p>These adaptors can be used in place of hash preimage locks for a variety of use
+cases.</p>
+
+<ol>
+  <li><a href="https://bitcoinops.org/en/topics/adaptor-signatures/">Optech</a></li>
+</ol>
+
+<h3 id="delegation--graftroot">Delegation / Graftroot</h3>
+
+<p>Delegation is a general concept whereby you can take a script and instead of
+signing a transaction, you sign another script that can then execute. For
+example, imagine if there is a coin that requires a signature of Alice and Bob
+to spend. Suppose Alice wants to go offline, but Bob might want to transact.
+Alice could sign a script requiring a signature from Carol that “substitutes”
+for Alice’s signature in the future.</p>
+
+<p>Delegation is currently possible in a somewhat roundabout way through
+coin-delegation. This is where the other script fragment must be represented by a UTXO.</p>
+
+<p>Graftroot is an extension to Taproot which would let the top-level key-path
+signers sign delegating scripts, but not other tapscript branches. There are
+also several confusingly named extensions and alternatives in the links below.</p>
+
+<p>Delegation could also be combined with Anyprevout so that delegation
+authorizations are bound to a specific coin or to a specific script. CSFS
+enables a basic kind of delegation as well. This would enable, with Graftroot, a
+version of Taproot where the trees are constructed interactively and do not have
+any lookup cost.</p>
+
+<p>Other than what’s presently possible, there are no concrete proposals for adding
+new delegation features to Bitcoin.</p>
+
+<ol>
+  <li><a href="https://lists.linuxfoundation.org/pipermail/bitcoin-dev/2021-March/018615.html">Coin Delegation</a></li>
+  <li><a href="https://lists.linuxfoundation.org/pipermail/bitcoin-dev/2018-February/015700.html">Graftroot</a></li>
+  <li><a href="https://gist.github.com/sipa/ca1502f8465d0d5032d9dd2465f32603">Entroot</a></li>
+  <li><a href="https://lists.linuxfoundation.org/pipermail/bitcoin-dev/2018-July/016249.html">G’Root (not graftroot)</a></li>
+</ol>
+
+<h3 id="bip-300-drivechains">BIP-300 DriveChains</h3>
+
+<p>Drive chains are a highly application specific type of recursive covenant that
+is designed to help sidechains operate by tracking sidechain deposits and
+withdrawals with an on-chain miner driven voting system.</p>
+
+<p>The sidechains would have the ability to run arbitrary smart contracts (at the
+choice of the sidechain operators). Miners the upvote, downvote, or abstain from
+voting on withdrawals through a special output type.</p>
+
+<p>One of the main downsides to this approach is that the BIP-300 proposal as
+written requires the addition of new global state databases, rather than local
+state contained within the covenant transaction itself.</p>
+
+<p>Overall Drivechains are relatively controversial among the community; with lots
+of interest from the community and also some outspoken critics because of the
+changes to Bitcoin’s incentive stability for consensus. It’s included here for
+completeness and by request of what topics to cover in today’s post.</p>
+
+<p>It’s the author’s opinion that while the concept of Drivechains is useful, the
+implementation of it does not need to be as transactions inside of the existing block
+space and instead could be tracked via a separate commitment (like Segwit). This could
+happen if Drivechains were implemented via a more generliazed covenant rather than
+application specific.</p>
+
+<ol>
+  <li><a href="https://github.com/bitcoin/bips/blob/master/bip-0300.mediawiki">BIP-300</a></li>
+  <li><a href="https://www.drivechain.info">Drivechains</a></li>
+</ol>
+
+<h3 id="elements-opcodes">Elements Opcodes</h3>
+
+<p>Elements is Blockstream’s Bitcoin fork for their Liquid Sidechain. Elements has
+planned to add a broad variety of opcodes that can help to accomplish a variety
+of tasks, including many of the above, in addition to their existing extensions.</p>
+
+<ol>
+  <li><a href="https://elementsproject.org/features/opcodes">Existing Opcodes</a></li>
+  <li><a href="https://github.com/ElementsProject/elements/blob/master/doc/tapscript_opcodes.md">Upgrade for Taproot</a></li>
+</ol>
+
+<hr />
+
+<p>Breathe! That was a lot! There’s still other stuff that’s floating around, but
+these are the top-of-mind primitives in my head for bringing more
+programmability to Bitcoin.</p>
+
+<p>Future posts will zero in on what’s possible with BIP-119 and Sapio and help
+make the case that it is a fantastic next step in Bitcoin’s Upgrade journey by
+showing (not telling) how one little limited opcode opens up an entire world of
+possibilities, as well as laying out a – dare I say – personal roadmap for the
+inclusion and development of other upgrades as a coherent narrative for Bitcoin.</p>
+
+    <div>
+    <h3>
+        <span style="vertical-align: text-top;">
+    
+
+<a class="twitter-share-button"
+data-size="large"
+href="https://twitter.com/intent/tweet?text=Contracting+Primitives+and+Upgrades+to+Bitcoin&hashtags=Bitcoin,
+AdventCalendar,
+Covenants,
+Upgrade,
+BIP119
+"> Tweet</a>
+
+
+
+        </span>
+        <span style="vertical-align: super;">
+to continue the conversation...
+        </span>
+    </h3>
+
+    </div>
+</div>
+
+<aside class="related">
+  <h3>You might also enjoy...</h3>
+  <ul class="related-posts">
+    
+      <li>
+        <a href="/blog/2021/07/02/covenants/">
+          Templates, Eltoo, and Covenants, Oh My!
+          <small><time datetime="2021-07-02T00:00:00+00:00">02 Jul 2021</time></small>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/bitcoin/2021/12/24/advent-27/">
+          RoadMap or Load o' Crap?
+          <small><time datetime="2021-12-24T00:00:00+00:00">24 Dec 2021</time></small>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/bitcoin/2021/12/11/advent-14/">
+          Payment Channels in a CTV+Sapio World
+          <small><time datetime="2021-12-11T00:00:00+00:00">11 Dec 2021</time></small>
+        </a>
+      </li>
+    
+  </ul>
+</aside>
+
+        </div>
+        <div class="content container" style="padding-bottom:0;padding-top:0;bottom:0px;">
+            <div class="posts" style="height:14pt;margin-bottom:0;">
+                <div class="post">
+                    <p style="text-align:center;font-size:12pt;">&copy; 2011-2021 Jeremy Rubin. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

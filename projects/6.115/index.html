@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+  <title> Mechanically Raster Scanned RGB Laser Projector &middot; Jeremy Rubin </title>
+  <link href="https://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/poole.css">
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/css/hyde.css">
+  <link rel="stylesheet" href="/public/font-awesome-4.5.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+                                 <link rel="shortcut icon" href="/public/favicon.ico">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+
+  
+  <link type="application/atom+xml" rel="alternate" href="http://rubin.io/feed.xml" title="Jeremy Rubin" />
+
+
+  <!-- GA -->
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-40376251-1', 'auto');
+    ga('send', 'pageview');
+</script>
+
+  
+  <link rel="me" href="https://twitter.com/JeremyRubin" >
+  <meta name="twitter:dnt" content="on">
+			   <script>window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
+
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+
+  return t;
+}(document, "script", "twitter-wjs"));</script>
+
+</head>
+
+    <body>
+        <div class="sidebar">
+    <h3 style="text-align: center;"> <a href="/"> Jeremy Rubin </a> </h3>
+    <div class="container">
+        <div class="sidebar-about">
+
+            <div class="sidebar-about-info"> 
+                <a href="/public/pdfs/resume.pdf"><i class="fa fa-file-text-o" title=Resume></i></a>
+                <a href=""><i class="fa fa-github" title=Github></i></a>
+                <a href="https://twitter.com/JeremyRubin"><i class="fa fa-twitter" title=Twitter></i></a>
+            </div>
+            <div class="sidebar-about-info hide-large">
+                <a class="" href="/">Home</a>
+                <a class="" href="/blog/">Blog</a>
+                <a class="" href="/talks/">Talks</a> 
+                <a class="" href="/projects/">Projects</a>
+                <a class="" href="/archive/">Site Index</a>
+            </div>
+        </div>
+
+
+
+
+        <nav class="sidebar-nav hide-small">
+            <a class="sidebar-nav-item" href="/">Home</a>
+            <a class="sidebar-nav-item" href="/blog/">Blog</a>
+            <a class="sidebar-nav-item" href="/talks/">Talks</a> 
+            <a class="sidebar-nav-item" href="/projects/">Projects</a>
+            <a class="sidebar-nav-item" href="/archive/">Site Index</a>
+        </nav>
+    </div>
+</div>
+
+
+
+        <div class="content container" style="padding-bottom:0;">
+            <div class="post">
+    <h1 class="post-title">Mechanically Raster Scanned RGB Laser Projector</h1>
+    <h3>Final Project for 6.115 Microcomputer Project Lab</h3>
+    <span class="post-date">May 01, 2014</span>
+    <p><img src="/public/img/115.jpg" alt="Laser light show" /></p>
+
+<blockquote>
+  <p>This class is a chance to remember why you 
+came to MIT: to learn and to build. In the humble and 
+unbiased opinion of the lecturer and TA’s, 6.115 is one of 
+the most exciting classes you can take at MIT to further your 
+professional growth as an engineer.
+– 6.115 course description</p>
+</blockquote>
+
+<p>The course description was so taintalizing I had to take it.  Having taken the
+class, I think I’m qualified to say the description is completely accurate.</p>
+
+<p>6.115 is possibly the hardest class you can take at MIT, but also the most
+rewarding.</p>
+
+<p>If the class you will spend all your time in lab.  But you will learn how to
+build real things; there is really no substitute for the 6.115 way of just
+doing it.</p>
+
+<p>The class has 5 labs, and exam, and a free choice final project.  When you
+finish the labs and exam, the professor takes out the class for a fancy dinner
+and drinks.</p>
+
+<p>For the final project I wanted to make a 24-bit color mechanically raster
+scanned laser projector.  The basic idea is that you have an R, G, and B laser
+diode put into a combinator (using half silvered mirrors) which can each be
+pwm’ed with an 8 bit counter.  The light engine is directed at a mirror clad
+disk which rotates at 24HZ+ to scan the laser across each pixel row.  I chose 8
+rows for the design.  The raster scanner gets a sync pulse from an IR
+LED/Phototransistor pair pointed at a reflective dot on the disk.  Graphics are
+then double buffered on the chip and the pwm’s are updated to match the sync
+pulse for position.</p>
+
+<p>Unfortunately, I didn’t get my project working 100% – diodes in my light
+engine burned out and I didn’t have enough time in the semester to debug all
+the components, but I was really close and I learned a ton!</p>
+
+<p>You can check out my lab code <a href="https://github.com/JeremyRubin/6.115">here</a> .</p>
+
+</div>
+
+
+
+        </div>
+        <div class="content container" style="padding-bottom:0;padding-top:0;bottom:0px;">
+            <div class="posts" style="height:14pt;margin-bottom:0;">
+                <div class="post">
+                    <p style="text-align:center;font-size:12pt;">&copy; 2011-2021 Jeremy Rubin. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

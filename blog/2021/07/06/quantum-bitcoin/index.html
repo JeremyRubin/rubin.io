@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+  <title> Quantum Proofing Bitcoin with a CAT &middot; Jeremy Rubin </title>
+  <link href="https://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/poole.css">
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/css/hyde.css">
+  <link rel="stylesheet" href="/public/font-awesome-4.5.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+                                 <link rel="shortcut icon" href="/public/favicon.ico">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+
+  
+  <link type="application/atom+xml" rel="alternate" href="http://rubin.io/feed.xml" title="Jeremy Rubin" />
+
+
+  <!-- GA -->
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-40376251-1', 'auto');
+    ga('send', 'pageview');
+</script>
+
+  
+  <link rel="me" href="https://twitter.com/JeremyRubin" >
+  <meta name="twitter:dnt" content="on">
+			   <script>window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
+
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+
+  return t;
+}(document, "script", "twitter-wjs"));</script>
+
+</head>
+
+    <body>
+        <div class="sidebar">
+    <h3 style="text-align: center;"> <a href="/"> Jeremy Rubin </a> </h3>
+    <div class="container">
+        <div class="sidebar-about">
+
+            <div class="sidebar-about-info"> 
+                <a href="/public/pdfs/resume.pdf"><i class="fa fa-file-text-o" title=Resume></i></a>
+                <a href=""><i class="fa fa-github" title=Github></i></a>
+                <a href="https://twitter.com/JeremyRubin"><i class="fa fa-twitter" title=Twitter></i></a>
+            </div>
+            <div class="sidebar-about-info hide-large">
+                <a class="" href="/">Home</a>
+                <a class="" href="/blog/">Blog</a>
+                <a class="" href="/talks/">Talks</a> 
+                <a class="" href="/projects/">Projects</a>
+                <a class="" href="/archive/">Site Index</a>
+            </div>
+        </div>
+
+
+
+
+        <nav class="sidebar-nav hide-small">
+            <a class="sidebar-nav-item" href="/">Home</a>
+            <a class="sidebar-nav-item" href="/blog/">Blog</a>
+            <a class="sidebar-nav-item" href="/talks/">Talks</a> 
+            <a class="sidebar-nav-item" href="/projects/">Projects</a>
+            <a class="sidebar-nav-item" href="/archive/">Site Index</a>
+        </nav>
+    </div>
+</div>
+
+
+
+        <div class="content container" style="padding-bottom:0;">
+            <div class="post">
+    <h1 class="post-title">Quantum Proofing Bitcoin with a CAT</h1>
+    <h3>no cats harmed in the making of this post</h3>
+    
+
+<a class="twitter-share-button"
+data-size="large"
+href="https://twitter.com/intent/tweet?text=Quantum+Proofing+Bitcoin+with+a+CAT&hashtags=Bitcoin,
+Quantum
+"> Tweet</a>
+
+
+
+    <div>
+        <span class="post-date">06 Jul 2021
+        </span>
+    </div>
+    <p>I recently published <a href="https://rubin.io/blog/2021/07/02/signing-5-bytes/">a blog
+post</a> about signing up to a
+5 byte value using Bitcoin script arithmetic and Lamport signatures.</p>
+
+<p>By itself, this is neat, but a little limited. What if we could sign longer
+messages? If we can sign up to 20 bytes, we could sign a HASH160 digest which
+is most likely quantum safe…</p>
+
+<p>What would it mean if we signed the HASH160 digest of a signature? What the
+what? Why would we do that?</p>
+
+<p>Well, as it turns out, even if a quantum computer were able to crack ECDSA, it
+would yield revealing the private key but not the ability to malleate the
+content of what was actually signed.  I asked my good friend and cryptographer
+<a href="https://madars.org/">Madars Virza</a> if my intuition was correct, and he
+confirmed that it should be sufficient, but it’s definitely worth closer
+analysis before relying on this. While the ECDSA signature can be malleated to a
+different, negative form, if the signature is otherwise made immalleable there
+should only be one value the commitment can be opened to.</p>
+
+<p>If we required the ECDSA signature be signed with a quantum proof signature
+algorithm, then we’d have a quantum proof Bitcoin! And the 5 byte signing scheme
+we discussed previously is a Lamport signature, which is quantum secure.
+Unfortunately, we need at least 20 contiguous bytes… so we need some sort of
+OP_CAT like operation.</p>
+
+<p>OP_CAT can’t be directly soft forked to Segwit v0 because it modifies the
+stack, so instead we’ll (for simplicity) also show how to use a new opcode that
+uses verify semantics, OP_SUBSTRINGEQUALVERIFY that checks a splice of a string
+for equality.</p>
+
+<blockquote>
+  <p>Fun Fact: OP_CAT existed in Bitcoin untill 2010, when Satoshi “secretly”
+forked out a bunch of opcodes. So in theory the original Bitcoin implementation
+supported Post Quantum cryptography out of the box!</p>
+</blockquote>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>... FOR j in 0..=5
+    &lt;0&gt;
+    ... FOR i in 0..=31
+        SWAP hash160 DUP &lt;H(K_j_i_1)&gt; EQUAL IF DROP &lt;2**i&gt; ADD ELSE &lt;H(K_j_i_0)&gt; EQUALVERIFY ENDIF
+    ... END FOR
+    TOALTSTACK
+... END FOR
+
+DUP HASH160
+
+... IF CAT AVAILABLE
+    FROMALTSTACK
+    ... FOR j in 0..=5
+        FROMALTSTACK
+        CAT
+    ... END FOR
+    EQUALVERIFY
+... ELSE SUBSTRINGEQUALVERIFY AVAILABLE
+    ... FOR j in 0..=5
+        FROMALTSTACK &lt;0+j*4&gt; &lt;4+j*4&gt; SUBSTRINGEQUALVERIFY DROP DROP DROP
+    ...  END FOR
+    DROP
+... END IF
+
+&lt;pk&gt; CHECKSIG
+</code></pre></div></div>
+
+<p>That’s a long script… but will it fit? We need to verify 20 bytes of message
+each bit takes around 10 bytes script, an average of 3.375 bytes per number
+(counting pushes), and two 21 bytes keys = 55.375 bytes of program space and 21
+bytes of witness element per bit.</p>
+
+<p>It fits! <code class="language-plaintext highlighter-rouge">20*8*55.375 = 8860</code>, which leaves 1140 bytes less than the limit for
+the rest of the logic, which is plenty (around 15-40 bytes required for the rest
+of the logic, leaving 1100 free for custom signature checking). The stack size
+is 160 elements for the hash gadget, 3360 bytes.</p>
+
+<p>This can probably be made a bit more efficient by expanding to a ternary
+representation.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>        SWAP hash160 DUP &lt;H(K_j_i_0)&gt; EQUAL  IF DROP  ELSE &lt;3**i&gt; SWAP DUP &lt;H(K_j_i_T)&gt; EQUAL IF DROP SUB ELSE &lt;H(K_j_i_1)&gt; EQUALVERIFY ADD  ENDIF ENDIF
+</code></pre></div></div>
+
+<p>This should bring it up to roughly 85 bytes per trit, and there should be 101
+trits (<code class="language-plaintext highlighter-rouge">log(2**160)/log(3) == 100.94</code>), so about 8560 bytes… a bit cheaper!
+But the witness stack is “only” <code class="language-plaintext highlighter-rouge">2121</code> bytes…</p>
+
+<p>As a homework exercise, maybe someone can prove the optimal choice of radix for
+this protocol… My guess is that base 4 is optimal!</p>
+
+<h2 id="taproot">Taproot?</h2>
+
+<p>What about Taproot? As far as I’m aware the commitment scheme (<code class="language-plaintext highlighter-rouge">Q = pG + hash(pG
+|| m)G</code>) can be securely opened to m even with a quantum computer (finding <code class="language-plaintext highlighter-rouge">q</code>
+such that <code class="language-plaintext highlighter-rouge">qG = Q</code> might be trivial, but suppose key path was disabled, then
+finding m and p such that the taproot equation holds should be difficult because
+of the hash, but I’d need to certify that claim better).  Therefore this
+script can nest inside of a Tapscript path – Tapscript also does not impose a
+length limit, 32 byte hashes could be used as well.</p>
+
+<p>Further, to make keys reusable, there could be many Lamport keys comitted inside
+a taproot tree so that an address could be used for thousands of times before
+expiring. This could be used as a measure to protect accidental use rather than
+to support it.</p>
+
+<p>Lastly, Schnorr actually has a stronger non-malleability property than ECDSA,
+the signatures will be binding to the approved transaction and once Lamport
+signed, even a quantum computer could not steal the funds.</p>
+
+
+    <div>
+    <h3>
+        <span style="vertical-align: text-top;">
+    
+
+<a class="twitter-share-button"
+data-size="large"
+href="https://twitter.com/intent/tweet?text=Quantum+Proofing+Bitcoin+with+a+CAT&hashtags=Bitcoin,
+Quantum
+"> Tweet</a>
+
+
+
+        </span>
+        <span style="vertical-align: super;">
+to continue the conversation...
+        </span>
+    </h3>
+
+    </div>
+</div>
+
+<aside class="related">
+  <h3>You might also enjoy...</h3>
+  <ul class="related-posts">
+    
+      <li>
+        <a href="/blog/2021/07/02/covenants/">
+          Templates, Eltoo, and Covenants, Oh My!
+          <small><time datetime="2021-07-02T00:00:00+00:00">02 Jul 2021</time></small>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/bitcoin/2021/12/05/advent-8/">
+          Contracting Primitives and Upgrades to Bitcoin
+          <small><time datetime="2021-12-05T00:00:00+00:00">05 Dec 2021</time></small>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/bitcoin/2021/12/11/advent-14/">
+          Payment Channels in a CTV+Sapio World
+          <small><time datetime="2021-12-11T00:00:00+00:00">11 Dec 2021</time></small>
+        </a>
+      </li>
+    
+  </ul>
+</aside>
+
+        </div>
+        <div class="content container" style="padding-bottom:0;padding-top:0;bottom:0px;">
+            <div class="posts" style="height:14pt;margin-bottom:0;">
+                <div class="post">
+                    <p style="text-align:center;font-size:12pt;">&copy; 2011-2021 Jeremy Rubin. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
