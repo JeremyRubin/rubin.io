@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+  <title> Blog &middot; Jeremy Rubin </title>
+  <link href="https://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/poole.css">
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/css/hyde.css">
+  <link rel="stylesheet" href="/public/font-awesome-4.5.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+                                 <link rel="shortcut icon" href="/public/favicon.ico">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+
+  
+  <link type="application/atom+xml" rel="alternate" href="http://rubin.io/feed.xml" title="Jeremy Rubin" />
+
+
+  <!-- GA -->
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-40376251-1', 'auto');
+    ga('send', 'pageview');
+</script>
+
+  
+  <link rel="me" href="https://twitter.com/JeremyRubin" >
+  <meta name="twitter:dnt" content="on">
+			   <script>window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
+
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+
+  return t;
+}(document, "script", "twitter-wjs"));</script>
+
+</head>
+
+    <body>
+        <div class="sidebar">
+    <h3 style="text-align: center;"> <a href="/"> Jeremy Rubin </a> </h3>
+    <div class="container">
+        <div class="sidebar-about">
+
+            <div class="sidebar-about-info"> 
+                <a href="/public/pdfs/resume.pdf"><i class="fa fa-file-text-o" title=Resume></i></a>
+                <a href=""><i class="fa fa-github" title=Github></i></a>
+                <a href="https://twitter.com/JeremyRubin"><i class="fa fa-twitter" title=Twitter></i></a>
+            </div>
+            <div class="sidebar-about-info hide-large">
+                <a class="" href="/">Home</a>
+                <a class="" href="/blog/">Blog</a>
+                <a class="" href="/talks/">Talks</a> 
+                <a class="" href="/projects/">Projects</a>
+                <a class="" href="/archive/">Site Index</a>
+            </div>
+        </div>
+
+
+
+
+        <nav class="sidebar-nav hide-small">
+            <a class="sidebar-nav-item" href="/">Home</a>
+            <a class="sidebar-nav-item" href="/blog/">Blog</a>
+            <a class="sidebar-nav-item" href="/talks/">Talks</a> 
+            <a class="sidebar-nav-item" href="/projects/">Projects</a>
+            <a class="sidebar-nav-item" href="/archive/">Site Index</a>
+        </nav>
+    </div>
+</div>
+
+
+
+        <div class="content container" style="padding-bottom:0;">
+            <div class="page">
+    
+    
+    <h1>
+  Jeremy Rubin's Blog
+</h1>
+
+Here you'll find an assorted mix of content from yours truly. I post about a lot
+of things, but primarily <a href="/bitcoin/">Bitcoin</a>.
+
+<p>
+categories: <a href="/bitcoin/">Bitcoin</a>, <a href="/shenzhen/">Shenzhen Journey</a>.
+</p>
+<div class="posts">
+  
+<hr>
+  <div class="post">
+    <h2 class="post-title">
+        <a href="/bitcoin/2025/03/05/csfs-fun/">
+        Fun with CSFS I
+      </a>
+  </h2>
+  
+
+
+    <span class="post-date">05 Mar 2025</span>
+
+    <p>In this blog series, I’ll write up some fun uses for CSFS I’m aware of.</p>
+
+<p>The purpose is to document things that others might not know about.</p>
+
+<p>Did I invent these? Maybe. Maybe not. Citations to prior work welcome!</p>
+
+<h1 id="irreplacable-irreusable-addresses">Irreplacable Irreusable Addresses</h1>
+
+<p>You create a taproot that is a NUMS keypath (the NUMS keypath and single tapleaf is so that you learn all the spending info always), and a tapleaf that says either a <code class="language-plaintext highlighter-rouge">&lt;PK&gt; CHECKSIG</code>, or a proof that there were &gt;1 signatures produced by that key of any data that are distinct from one another and then either:</p>
+
+<ul>
+  <li>with CTV it can be sent to OP_RETURN, or;</li>
+  <li>without CTV it is anyonecanspend</li>
+</ul>
+
+<p>This means that as soon as you see a signature of a txn with this address, you know that there is no other txn that can be issued without harming the sender by making their funds burnable.</p>
+
+<p>for extra fun:</p>
+
+<p>The “equivocation bond” can be also in a different output, different address, to secure addresses with fresh collateral, even <em>retroactively</em>.</p>
+
+<h1 id="function-lookup-table-precompiles">Function Lookup Table Precompiles</h1>
+<p>Suppose we want to add an opcode to Bitcoin that evaluates <code class="language-plaintext highlighter-rouge">f(x)</code>.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>let X = musig(big one time setup federation).
+
+let CSFS(key, sig, data) = ...
+</code></pre></div></div>
+
+<p>Recall <a href="/bitcoin/2024/12/02/csfs-ctv-rekey-symmetry/">key laddering</a>…
+make a script with the following logic, via laddering:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>CSFS(X, sig_x, sig_arg)
+CSFS(Tweaked(X, arg), sig_arg, arg)
+CSFS(Tweaked(X, arg), sig_f, f(arg)))
+sig_f != sig_arg
+</code></pre></div></div>
+
+<p>now run (in signing committee) f(arg) over all values of arg.</p>
+
+<p>you now get a lookup table that can be used in any script for an arbitrary sized tree for a constant cost of 3 sigs and 2 keys ==&gt; 256 bytes, which is cheaper than using taproot pre-generated trees in many cases.</p>
+
+<p>This technique can be modified to also work for multiple arguments, as long as the result can be precomputed. That rules out “big output spaces” like OP_CAT, but rules in lookup tables like e.g. merkle trees.</p>
+
+<p>And for use cases where, e.g., a merkle tree would be signed by a key anyways, this is trust wise equivalent. E.g., a tree of user balances can be done in this fashion, and any user can “look up” their balance from the signature set.</p>
+
+<p>For “standard library” type uses, big federations can be used for a one-time-trusted-setup.</p>
+
+<h1 id="sighash-flag-detection">SIGHASH Flag Detection</h1>
+
+<p>Presently, bitcoin scripts cannot restrict which sighash flags are used. CSFS enables a limited version of this in Taproot outoputs. Here’s how:</p>
+
+<p>You can use CSFS to get the tx digest onto the stack from a signature.</p>
+
+<p>without op_cat, this is of limited use…</p>
+
+<p>however, we have the following formula:</p>
+
+<p>^ What is the output length of SigMsg()? The total length of SigMsg() can be computed using the following formula: 174 - is_anyonecanpay * 49 - is_none * 32 + has_annex * 32</p>
+
+<p>which is at most 206 bytes (when has_annex is set).</p>
+
+<p><em>N.B. This number ends up being + 1 byte sighash epoch, + 64 bytes for the tag in taggedhash.</em></p>
+
+<p>this means that using CSFS, you can restrict a signature to use some particular sighash flags, by using OP_SIZE.</p>
+
+<p>is_anyonecanpay=0, is_none=0, has_annex=0, size=174+65
+is_anyonecanpay=0, is_none=0, has_annex=1, size=206+65
+is_anyonecanpay=0, is_none=1, has_annex=0, size=142+65
+is_anyonecanpay=0, is_none=1, has_annex=1, size=174+65
+is_anyonecanpay=1, is_none=0, has_annex=0, size=125+65
+is_anyonecanpay=1, is_none=0, has_annex=1, size=157+65
+is_anyonecanpay=1, is_none=1, has_annex=0, size=93+65
+is_anyonecanpay=1, is_none=1, has_annex=1, size=125+65</p>
+
+<p>this means you can use CSFS to differentiate flag combos with anyonecanpay and none and annex, except for when is_none + has_annex are both set or unset.</p>
+
+<p>alas, this means you should probably only be interested in the following ability:</p>
+
+<p>is_anyonecanpay=0, is_none=1, has_annex=0, size=142+65
+is_anyonecanpay=1, is_none=1, has_annex=0, size=93+65</p>
+
+<p>and less interested but still interested in these, given the annex isn’t standard:</p>
+
+<p>is_anyonecanpay=0, is_none=0, has_annex=1, size=206+65
+is_anyonecanpay=1, is_none=0, has_annex=1, size=157+65</p>
+
+<p>note: the other flags can still be set given these ones!</p>
+
+  </div>
+<hr>
+  
+<hr>
+  <div class="post">
+    <h2 class="post-title">
+        <a href="/bitcoin/2024/12/02/csfs-ctv-rekey-symmetry/">
+        CSFS Re-Keying and Laddering, Deterministic Update Rekeying, & Applications to LN-Symmetry
+      </a>
+  </h2>
+  
+
+
+    <span class="post-date">02 Dec 2024</span>
+
+    <p><em>This is a collab post with <a href="https://twitter.com/reardencode">Rearden</a>.</em></p>
+
+<p>At Bitcoin++ in Austin this year Rearden showed that there are many ways
+to realize Lightning Symmetry using various bitcoin upgrade proposals. All of
+these methods require either an extra signing round-trip for each channel
+update, or the ability to force the hash of the settlement transaction to be
+visible with its corresponding update transaction. This can be generalized as
+the requirement that the signature authorizing a given channel be both
+rebindable (i.e. not commit to a specific prior UTXO) and commit to some
+additional data being visible for that signature to be valid.</p>
+
+<p>We’ll start by exploring why Lightning Symmetry requires this data visibility
+commitment, then dive into previously known solutions, and present a new
+generalized technique for using CSFS to two or more variables. Finally, we will
+present an optimized solution based on the principles we’ve developed to enable
+Lightning Symmetry using one extra signature, but no extra signing round-trip
+and without the need for concatenation or other explicit multi-commitments.</p>
+
+<h2 id="less-common-definitions">Less Common Definitions</h2>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">APO</code>: <code class="language-plaintext highlighter-rouge">SIGHASH_ANYPREVOUT</code> as defined in <a href="https://github.com/bitcoin/bips/blob/master/bip-0118.mediawiki">BIP118</a></li>
+  <li><code class="language-plaintext highlighter-rouge">IKEY</code>: <code class="language-plaintext highlighter-rouge">OP_INTERNALKEY</code> as defined in <a href="https://github.com/bitcoin/bips/blob/master/bip-0349.md">BIP349</a></li>
+  <li><code class="language-plaintext highlighter-rouge">CSFS</code>: <code class="language-plaintext highlighter-rouge">OP_CHECKSIGFROMSTACK</code> as defined in <a href="https://github.com/bitcoin/bips/pull/1535">BIP348</a></li>
+  <li><code class="language-plaintext highlighter-rouge">S</code>: <code class="language-plaintext highlighter-rouge">500,000,000</code> the lock time threshold <a href="https://github.com/bitcoin/bitcoin/blob/master/src/script/script.h#L47">defined in bitcoin</a></li>
+</ul>
+
+<h2 id="naive-ctv-csfs-lightning-symmetry-transactions">Naive CTV-CSFS Lightning Symmetry transactions</h2>
+
+<p>The scripts for a naive Taproot Lightning Symmetry channel are:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>channel:
+tr(musig(keyA, keyB), raw(CTV IKEY CSFS VERIFY &lt;S+1&gt; CLTV))
+update(n):
+tr(musig(keyA, keyB), raw(DEPTH NOTIF &lt;settlement-n-hash&gt; CTV ELSE CTV IKEY CSFS VERIFY &lt;S+n+1&gt; CLTV ENDIF))
+update-stack:
+&lt;update-n-sig&gt; &lt;update-n-hash&gt;
+</code></pre></div></div>
+
+<p>If a channel enters force close, an update outpoint will be placed on chain by
+A, and B will have a CSV delay encoded in the <code class="language-plaintext highlighter-rouge">settlement-n-hash</code> before it
+can be settled within which to respond with a later state. One of the stated
+goals of Lightning Symmetry is to eliminate the need for each partner to store
+<code class="language-plaintext highlighter-rouge">O(n)</code> state for each channel, but now we hit the problem. Because the update
+script is not visible on chain, while B can find the update, they cannot
+reconstruct the script without the <code class="language-plaintext highlighter-rouge">settlement-n-hash</code> and only A knows that
+hash unless B stores it for every state.</p>
+
+<h2 id="apo-annex-solution">APO-annex solution</h2>
+
+<p>In @instagibbs’ <a href="https://delvingbitcoin.org/t/ln-symmetry-project-recap/359">Lightning Symmetry
+work</a>, he used APO
+and the Taproot Annex where both parties to a channel will only sign an update
+transaction if their signatures commit to an annex containing the
+corresponding settlement hash needed to reconstruct the update spend script.</p>
+
+<p>The scripts for this are (roughly):</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>channel:
+tr(musig(keyA, keyB), raw(&lt;1&gt; CHECKSIGVERIFY &lt;S+1&gt; CLTV))
+update(n):
+tr(musig(keyA, keyB), raw(DEPTH NOTIF &lt;sig&gt; &lt;01||G&gt; CHECKSIG ELSE &lt;1&gt; CHECKSIGVERIFY &lt;S+n+1&gt; CLTV ENDIF))
+update-stack:
+&lt;update-n-sig&gt;
+</code></pre></div></div>
+
+<p>Here we see the use of APO as a covenant by precomputing a signature for the
+secret key <code class="language-plaintext highlighter-rouge">1</code> and public key <code class="language-plaintext highlighter-rouge">G</code>. Because CHECKSIG operations commit to the
+Taproot Annex, these scripts require no special handling for the channel
+parties to require each other to place the settlement transaction hash in the
+annex and therefore make it possible for either party to later reconstruct any
+prior state’s script for spending. Without the annex, an APO-based
+implementation would either fall back to the additional signing round-trip, or
+using an <code class="language-plaintext highlighter-rouge">OP_RETURN</code> to force this data to be visible.</p>
+
+<h2 id="naive-ctv-csfs-solution">Naive CTV-CSFS solution</h2>
+
+<p>Can we just commit to an additional hash using an additional signature?</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>channel:
+tr(musig(keyA, keyB), raw(CTV IKEY CSFS VERIFY IKEY CSFS VERIFY &lt;S+1&gt; CLTV))
+update(n):
+tr(musig(keyA, keyB), raw(DEPTH NOTIF &lt;settlement-n-hash&gt; CTV ELSE CTV IKEY CSFS VERIFY IKEY CSFS VERIFY &lt;S+n+1&gt; CLTV ENDIF))
+update-stack:
+&lt;settlement-n-sig&gt; &lt;settlement-n-hash&gt; &lt;update-n-sig&gt; &lt;update-n-hash&gt;
+</code></pre></div></div>
+
+<p>This method is broken because the two signatures are not linked in any way. A
+malicious channel partner can place a mismatched settlement hash, and update
+transaction on chain, preventing their partner who has a valid later update
+from reconstructing the scripts and updating the channel state.</p>
+
+<p>One obvious solution would be to combine the update hash and the settlement
+hash, but since bitcoin lacks a concatenation operator, we cannot do that.
+Recently <a href="https://x.com/4moonsettler">@4moonsettler</a> proposed
+<a href="https://github.com/bitcoin/bips/pull/1699"><code class="language-plaintext highlighter-rouge">OP_PAIRCOMMIT</code></a> as an alternative
+for this purpose.</p>
+
+<h2 id="ctv-csfs-delegation-solution">CTV-CSFS delegation solution</h2>
+
+<p>Now we come to the new solution that we’ve developed, which ties the update
+and settlement hashes together by the keys which have signed them. CSFS is
+known to be useful for delegation, so we initially delegate to a rekey:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>script(n):
+    DUP TOALT DUP TOALT
+    IKEY CSFS VERIFY
+    OP_SIZE &lt;32&gt; EQUALVERIFY CTV
+    2DUP EQUAL NOT VERIFY
+    ROT SWAP FROMALT CSFS VERIFY
+    FROMALT CSFS VERIFY &lt;S+n+1&gt; CLTV
+channel:
+    tr(musig(keyA, keyB), raw(&lt;script(0)&gt;))
+update(n):
+    tr(musig(keyA, keyB),
+        raw(DEPTH NOTIF &lt;settlement-n-hash&gt; CTV ELSE &lt;script(n)&gt; ENDIF))
+stack(n):
+    &lt;settlement-n-sig&gt;
+    &lt;update-n-sig&gt;
+    &lt;settlement-extradata&gt;
+    &lt;update-n-ctv&gt;
+    &lt;rekey-sig&gt;
+    &lt;rekey&gt;
+</code></pre></div></div>
+
+<p>Here the <code class="language-plaintext highlighter-rouge">rekey</code> is an ephemeral key either randomly generated or derived
+for each state using something like BIP32 and based on the channel key. What
+matters is that the <code class="language-plaintext highlighter-rouge">rekey</code> is never used to sign anything other than the two
+messages corresponding to the update and settlement hashes for its state. In
+this way they are only valid together and the correct settlement hash must be
+available for a channel partner to reconstruct the scripts and update the
+channel settlement. One quirk of this solution is that if the two signed items
+are allowed to be equal, a malicious partner can simply place the same update
+hash on the stack with its signature twice, so they must be checked for
+inequality by the script.</p>
+
+<p>This scheme is secure  because of the length check for the arg <code class="language-plaintext highlighter-rouge">update-n-ctv</code>,
+it should be ensured that the other <code class="language-plaintext highlighter-rouge">&lt;settlement-extradata&gt;</code> is either not a
+valid CTV hash or is not length 32.</p>
+
+<h2 id="csfs-key-laddering">CSFS Key Laddering</h2>
+<p>Key Laddering extends the rekeying approach shown above to allow recursively
+rekeying to an arbitrary number of variables. This allows CSFS to be used without
+OP_CAT to sign over collections of variables to be plugged into a script.</p>
+
+<p>For example, for 5 variables (not optimized, written for clarity):</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>DATASIGS: &lt;sd1&gt; &lt;d1&gt; &lt;sd2&gt; &lt;d2&gt; &lt;sd3&gt; &lt;d3&gt; &lt;sd4&gt; &lt;d4&gt; &lt;sd5&gt; &lt;d5&gt;
+stack: DATASIGS + &lt;k5&gt; &lt;s5&gt; &lt;k4&gt; &lt;s4&gt; &lt;k3&gt; &lt;s3&gt; &lt;k2&gt; &lt;s2&gt; &lt;k1&gt; &lt;s1&gt;
+
+program:
+
+\\ First, check that k1 is signed by IKEY
+    OVER IKEY CSFSV
+    DUP TOALT
+
+// Next, Check that k_i signs k_{i+1}
+    // stack: DATASIGS + &lt;k5&gt; &lt;s5&gt; &lt;k4&gt; &lt;s4&gt; &lt;k3&gt; &lt;s3&gt; &lt;k2&gt; &lt;s2&gt; &lt;k1&gt;
+    // altstack: &lt;k1&gt;
+
+        3DUP ROT SWAP CSFSV 2DROP DUP TOALT
+
+    // stack: DATASIGS + &lt;k5&gt; &lt;s5&gt; &lt;k4&gt; &lt;s4&gt; &lt;k3&gt; &lt;s3&gt; &lt;k2&gt;
+    // altstack: &lt;k1&gt; &lt;k2&gt;
+
+        3DUP ROT SWAP CSFSV 2DROP DUP TOALT
+
+    // stack: DATASIGS + &lt;k5&gt; &lt;s5&gt; &lt;k4&gt; &lt;s4&gt; &lt;k3&gt;
+    // altstack: &lt;k1&gt; &lt;k2&gt; &lt;k3&gt;
+
+        3DUP ROT SWAP CSFSV 2DROP DUP TOALT
+
+    // stack: DATASIGS + &lt;k5&gt; &lt;s5&gt; &lt;k4&gt;
+    // altstack: &lt;k1&gt; &lt;k2&gt; &lt;k3&gt; &lt;k4&gt;
+
+        3DUP ROT SWAP CSFSV 2DROP
+
+    // stack: &lt;sd1&gt; &lt;d1&gt; &lt;sd2&gt; &lt;d2&gt; &lt;sd3&gt; &lt;d3&gt; &lt;sd4&gt; &lt;d4&gt; &lt;sd5&gt; &lt;d5&gt; &lt;k5&gt;
+    // altstack: &lt;k1&gt; &lt;k2&gt; &lt;k3&gt; &lt;k4&gt;
+
+
+        FROMALT FROMALT FROMALT FROMALT
+
+    // stack: &lt;sd1&gt; &lt;d1&gt; &lt;sd2&gt; &lt;d2&gt; &lt;sd3&gt; &lt;d3&gt; &lt;sd4&gt; &lt;d4&gt; &lt;sd5&gt; &lt;d5&gt; &lt;k5&gt; &lt;k4&gt; &lt;k3&gt; &lt;k2&gt; &lt;k1&gt;
+    // altstack:
+
+// Now, check each signature of the data
+
+    &lt;6&gt; PICK // sd5
+    &lt;6&gt; PICK // d5
+    &lt;6&gt; PICK // k5
+    CSFSV
+
+    &lt;8&gt; PICK // sd4
+    &lt;8&gt; PICK // d4
+    &lt;5&gt; PICK // k4
+    CSFSV
+
+    &lt;10&gt; PICK // sd3
+    &lt;10&gt; PICK // d3
+    &lt;4&gt; PICK // k3
+    CSFSV
+
+    &lt;12&gt; PICK // sd2
+    &lt;12&gt; PICK // d2
+    &lt;3&gt; PICK // k2
+    CSFSV
+
+    &lt;14&gt; PICK // sd1
+    &lt;14&gt; PICK // d1
+    &lt;2&gt; PICK // k1
+    CSFSV
+
+// Now, Check the inequalities that no key is used as data:
+    // stack: &lt;sd1&gt; &lt;d1&gt; &lt;sd2&gt; &lt;d2&gt; &lt;sd3&gt; &lt;d3&gt; &lt;sd4&gt; &lt;d4&gt; &lt;sd5&gt; &lt;d5&gt; &lt;k5&gt; &lt;k4&gt; &lt;k3&gt; &lt;k2&gt; &lt;k1&gt;
+    // altstack:
+
+    // No need to check k1 != d0 since no d0
+
+    // Check that k2 != d1
+    &lt;1&gt; PICK
+    &lt;14&gt; PICK
+    NOT EQUAL VERIFY
+
+    // Check that k3 != d2
+    &lt;2&gt; PICK
+    &lt;12&gt; PICK
+    NOT EQUAL VERIFY
+
+
+    // Check that k4 != d3
+    &lt;3&gt; PICK
+    &lt;8&gt; PICK
+    NOT EQUAL VERIFY
+
+    // check that k5 != d4
+    &lt;4&gt; PICK
+    &lt;6&gt; PICK
+    NOT EQUAL VERIFY
+
+
+// stack: &lt;sd1&gt; &lt;d1&gt; &lt;sd2&gt; &lt;d2&gt; &lt;sd3&gt; &lt;d3&gt; &lt;sd4&gt; &lt;d4&gt; &lt;sd5&gt; &lt;d5&gt; &lt;k5&gt; &lt;k4&gt; &lt;k3&gt; &lt;k2&gt; &lt;k1&gt;
+// altstack:
+
+2DROP 2DROP DROP
+TOALT DROP
+TOALT DROP
+TOALT DROP
+TOALT DROP
+TOALT DROP
+
+// stack:
+// altstack: &lt;d5&gt; &lt;d4&gt; &lt;d3&gt; &lt;d2&gt; &lt;d1&gt;
+
+// Whatever else
+
+
+</code></pre></div></div>
+<p>This lets you sign an arbitrary number of variables in a sequence.</p>
+
+<p>One “gotcha” not shown in the above script is there is a need to ensure the signature over data and signatures over keys are not exchangable at each hop.
+Care should be taken to ensure this.</p>
+
+<p>One alternative scheme is to do “signature laddering”. That is, instead of signing a key at each step, sign instead the next signature.</p>
+
+<p>E.g., re-key by signing with IKEY the first signature. Then verify it against any key / message pair it will validate against. The key can be used with a different signature for the value, and the message signed is the next signature. E.g.:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>stack:
+&lt;sig B&gt;
+&lt;key A&gt;
+&lt;sig^IKEY(sig A)&gt;
+&lt;sig^A(sig B)&gt;
+
+DUP TOALT
+IKEY CSFS VERIFY
+FROMALT
+
+stack:
+&lt;sig B&gt;
+&lt;key A&gt;
+&lt;sig^A(sig B)&gt;
+
+ROT ROT CSFS VERIFY
+
+</code></pre></div></div>
+
+<p>This laddering is convenient, because the first IKEY sig commits to the roles of
+all the other data (key v.s. sig v.s. argument).</p>
+
+<h2 id="ctv-csfs-with-derived-internal-keys-solution">CTV-CSFS with derived internal keys solution</h2>
+
+<p>For Lightning Symmetry, each update transaction is signed with a specific
+monotonically increasing locktime, and nothing requires the internal key to be
+exactly the same for each update, so we can replace the internal key with a
+key deterministically derived from the channel key and the locktime, and then
+almost use the naive CTV-CSFS scripts:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>internalkey(n):
+bip32_derive(musig(keyA, keyB), /&lt;S+n+1&gt;)
+script(n):
+CTV 2DUP EQUAL NOT VERIFY ROT SWAP IKEY CSFS VERIFY IKEY CSFS VERIFY &lt;S+n+1&gt; CLTV
+channel:
+tr(musig(keyA, keyB), raw(&lt;script(0)&gt;))
+update:
+tr(internalkey(n), raw(DEPTH NOTIF &lt;settlement-n-hash&gt; CTV ELSE &lt;script(n)&gt; ENDIF))
+update-stack:
+&lt;settlement-n-sig&gt; &lt;update-n-sig&gt; &lt;settlement-n-hash&gt; &lt;update-n-hash&gt;
+</code></pre></div></div>
+
+<p>Either channel partner can deterministicaly derive the correct internal key
+needed to reconstruct the spend stack from any update from the locktime of the
+update transaction itself. These derived internal keys are only used to sign
+one pair of update and settlement hash, and the script checks that the two
+signatures are for different data.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>These techniques remove the need for bitcoin upgrade proposals which enable
+Lightning Symmetry to include a specific function for committing to multiple
+items with a single signature. Of course if a more efficient method for
+combining items into a single commitment is available Lightning developers
+will be able to take advantage of it and reduce the witness space required for
+Lightning Symmetry.</p>
+
+  </div>
+<hr>
+  
+<hr>
+  <div class="post">
+    <h2 class="post-title">
+        <a href="/bitcoin/2024/11/26/unfed-covenants/">
+        Un-FE’d Covenants
+      </a>
+  </h2>
+  
+
+
+    <span class="post-date">26 Nov 2024</span>
+
+    <p>Covenants in Bitcoin represent a method to restrict how and where coins can
+move. Functional Encryption (FE) offers an exciting avenue to implement
+covenants without native protocol changes. However, FE remains impractical with
+current cryptographic tools. In this work, we propose a practical
+implementation using an oracle-assisted model that combines off-chain
+computation, key management, and a BitVM-style economic incentive structure
+to enforce covenants without requiring a Bitcoin soft fork.</p>
+
+<p><a href="/public/pdfs/unfedcovenants.pdf">Read the full paper.</a></p>
+
+  </div>
+<hr>
+  
+<hr>
+  <div class="post">
+    <h2 class="post-title">
+        <a href="/bitcoin/2024/05/29/fed-up-covenants/">
+        FE'd Up Covenants
+      </a>
+  </h2>
+  
+
+
+    <span class="post-date">29 May 2024</span>
+
+    <p>Covenants are a way of expressing restrictions on Bitcoin. Covenants, while
+possible to implement as an extension to Bitcoin, do not exist natively. To
+enable them requires the Bitcoin community to agree upon upgrades such as CTV,
+CAT, CSFS, and more.  This paper serves to demonstrate at a high level how
+covenants could be introduced to Bitcoin without a soft fork using Functional
+Encryption and Zero Knowledge Proofs.
+<a href="/public/pdfs/fedcov.pdf">Read the full paper.</a></p>
+
+  </div>
+<hr>
+  
+<hr>
+  <div class="post">
+    <h2 class="post-title">
+        <a href="/bitcoin/2022/09/14/drivechain-apo/">
+        Spookchains: Drivechain Analog with Trusted Setup & APO
+      </a>
+  </h2>
+  
+
+
+    <span class="post-date">14 Sep 2022</span>
+
+    <p>This post draws heavily from <a href="https://lists.linuxfoundation.org/pipermail/bitcoin-dev/2022-February/019976.html">Zmnscpxj’s fantastic
+post</a>
+showing how to make drivechains with recursive covenants. In this post, I will
+show similar tricks that can accomplish something similar using ANYPREVOUT with
+a one time trusted setup ceremony.</p>
+
+<p>This post presents general techniques that could be applied to many
+different types of covenant.</p>
+
+<p><em>note: I originally wrote this around May 5th, 2022, and shared it with a
+limited audience</em></p>
+
+<p><img src="/public/img/bitcoin/spookchain.png" alt="Spooky Chains" /></p>
+
+<h1 id="peano-counters">Peano Counters</h1>
+
+<p>The first component we need to build is a Peano counter graph. Instead
+of using sha-256, like in Zmnscpxj’s scheme, we will use a key and
+build a simple 1 to 5 counter that has inc / dec.</p>
+
+<p>Assume a key K1…K5, and a point NUMS which is e.g.
+HashToCurve(“Spookchains”).</p>
+
+<p>Generate scripts as follows:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;1 || K1&gt; CHECKSIG
+...
+&lt;1 || K5&gt; CHECKSIG
+</code></pre></div></div>
+
+<p>Now generate 2 signatures under Ki with flags <code class="language-plaintext highlighter-rouge">SIGHASH_SINGLE |
+SIGHASH_ANYONECANPAY | SIGHASH_ANYPREVOUT</code>.</p>
+
+<h2 id="rule-increment">Rule Increment</h2>
+<p>For each Ki, when <code class="language-plaintext highlighter-rouge">i &lt; 5</code>, create a signature that covers a
+transaction described as:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Amount: 1 satoshi
+Key: Tr(NUMS, {&lt;1 || K{i+1}&gt; CHECKSIG})
+</code></pre></div></div>
+
+<h2 id="rule-decrement">Rule Decrement</h2>
+<p>For each Ki, when <code class="language-plaintext highlighter-rouge">i &gt; 1</code> The second signature should cover:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Amount: 1 satoshi
+Key: Tr(NUMS, {&lt;1 || K{i-1}&gt; CHECKSIG})
+</code></pre></div></div>
+
+<p><em>Are these really Peano?</em> Sort of. While a traditional Peano numeral
+is defined as a structural type, e.g. <code class="language-plaintext highlighter-rouge">Succ(Succ(Zero))</code>, here we
+define them via a Inc / Dec transaction operator, and we have to
+explicitly bound these Peano numbers since we need a unique key per
+element. They’re at least spiritually similar.</p>
+
+<h2 id="instantiation">Instantiation</h2>
+<p>Publish a booklet of all the signatures for the Increment and
+Decrement rules.</p>
+
+<p>Honest parties should destroy the secret key sets <code class="language-plaintext highlighter-rouge">k</code>.</p>
+
+<p>To create a counter, simply spend to output C:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Amount: 1 satoshi
+Key: Tr(NUMS, {&lt;1 || K1&gt; CHECKSIG})
+</code></pre></div></div>
+
+<p>The signature from K1 can be bound to C to ‘transition’ it to (+1):</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Amount: 1 satoshi
+Key: Tr(NUMS, {&lt;1 || K2&gt; CHECKSIG})
+</code></pre></div></div>
+
+<p>Which can then transition to (+1):</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Amount: 1 satoshi
+Key: Tr(NUMS, {&lt;1 || K3&gt; CHECKSIG})
+</code></pre></div></div>
+
+<p>Which can then transition (-1) to:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Amount: 1 satoshi
+Key: Tr(NUMS, {&lt;1 || K2&gt; CHECKSIG})
+</code></pre></div></div>
+
+<p>This can repeat indefinitely.</p>
+
+<p>We can generalize this technique from <code class="language-plaintext highlighter-rouge">1...5</code> to <code class="language-plaintext highlighter-rouge">1...N</code>.</p>
+
+<h1 id="handling-arbitrary-deposits--withdrawals">Handling Arbitrary Deposits / Withdrawals</h1>
+
+<p>One issue with the design presented previously is that it does not
+handle arbitrary deposits well.</p>
+
+<p>One simple way to handle this is to instantiate the protocol for every
+amount you’d like to support.</p>
+
+<p>This is not particularly efficient and requires a lot of storage
+space.</p>
+
+<p>Alternatively, divide (using base 2 or another base) the deposit
+amount into a counter utxo per bit.</p>
+
+<p>For each bit, instead of creating outputs with 1 satoshi, create
+outputs with 2^i satoshis.</p>
+
+<p>Instead of using keys <code class="language-plaintext highlighter-rouge">K1...KN</code>, create keys <code class="language-plaintext highlighter-rouge">K^i_j</code>, where i
+represents the number of sats, and j represents the counter. Multiple
+keys are required per amount otherwise the signatures would be valid
+for burning funds.</p>
+
+<h2 id="splitting-and-joining">Splitting and Joining</h2>
+
+<p>For each <code class="language-plaintext highlighter-rouge">K^i_j</code>, it may also be desirable to allow splitting or
+joining.</p>
+
+<p>Splitting can be accomplished by pre-signing, for every <code class="language-plaintext highlighter-rouge">K^i_j</code>, where
+<code class="language-plaintext highlighter-rouge">i!=0</code>, with <code class="language-plaintext highlighter-rouge">SIGHASH_ALL | SIGHASH_ANYPREVOUT</code>:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Input: 2^i sats with key K^i_j
+Outputs: 
+    - 2^i-1 sats to key K^{i-1}_j
+    - 2^i-1 sats to key K^{i-1}_j
+</code></pre></div></div>
+
+<p>Joining can be accomplished by pre-signing, for every <code class="language-plaintext highlighter-rouge">K^i_j</code>, where
+<code class="language-plaintext highlighter-rouge">i!=MAX</code>, with <code class="language-plaintext highlighter-rouge">SIGHASH_ALL | SIGHASH_ANYPREVOUT</code>:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Inputs:
+    - 2^i sats with key K^i_j
+    - 2^i sats with key K^i_j
+Outputs: 
+    - 2^i+1 sats to key K^{i+1}_j
+</code></pre></div></div>
+
+<p>N.B.: Joining allows for third parties to deposit money in externally,
+that is not a part of the covenant.</p>
+
+<p>The splitting and joining behavior means that spookchain operators
+would be empowered to consolidate UTXOs to a smaller number, while
+allowing arbitrary deposits.</p>
+
+<h1 id="one-vote-per-block">One Vote Per Block</h1>
+
+<p>To enforce that only one vote per block mined is allowed, ensure that
+all signatures set the input sequence to 1 block. No CSV is required
+because nSequence is in the signatures already.</p>
+
+<h1 id="terminal-states--thresholds">Terminal States / Thresholds</h1>
+
+<p>When a counter reaches the Nth state, it represents a certain amount
+of accumulated work over a period where progress was agreed on for
+some outcome.</p>
+
+<p>There should be some viable state transition at this point.</p>
+
+<p>One solution would be to have the money at this point sent to an
+<code class="language-plaintext highlighter-rouge">OP_TRUE</code> output, which the miner incrementing that state is
+responsible for following the rules of the spookchain. Or, it could be
+specified to be some administrator key / federation for convenience,
+with a N block timeout that degrades it to fewer signers (eventually
+0) if the federation is dead to allow recovery.</p>
+
+<p>This would look like, from any <code class="language-plaintext highlighter-rouge">K^i_j</code>, a signature for a transaction
+putting it into an <code class="language-plaintext highlighter-rouge">OP_TRUE</code> and immediately spending it. Other
+spookchain miners would be expected to orphan that miner otherwise.</p>
+
+<h1 id="open-states--proposals">Open States / Proposals</h1>
+
+<p>From a state <code class="language-plaintext highlighter-rouge">K^i_1</code>, the transaction transitioning to <code class="language-plaintext highlighter-rouge">K^i_2</code> can be
+treated as ‘special’ and the <code class="language-plaintext highlighter-rouge">OP_RETURN</code> output type can be used to
+commit to, e.g., the outputs that must be created in when the Terminal
+State is reached. This clarifies the issue of “what is being voted
+on”.</p>
+
+<p>This method does not <em>lock in</em> at a consensus layer what Terminal
+State is being voted on.</p>
+
+<p>In certain circumstances, without violating the one-time-setup
+constraint, if a fixed list of withdrawer’s addresses is known in
+advance, the Open States could cover withdrawals to specific
+participants, which then must collect a certain number of votes from
+miners.  However, it seems impossible, without new primitives, for an
+arbitrary transaction proposal to be voted on.</p>
+
+<h1 id="setup-variants">Setup Variants</h1>
+
+<h2 id="xpubs">xpubs</h2>
+
+<p>Instead of using randomly generated keys for each state, define each
+to be an xpub and derive a path where it is k/i/j for each
+state/satoshi amount. This saves some data, and also requires less
+entropy.</p>
+
+<h3 id="trustless-data-commit">Trustless Data Commit:</h3>
+
+<p>commit to the hash of the entire program spec as a tweak to the xpub,
+so that someone can quickly verify if they have all the signatures you
+are expected to generate if honest.</p>
+
+<p>One way to do this is to convert a hash to a list of HD Child Numbers
+(9 of them) deterministically, and tweak the xpub by that. This is a
+convenient, yet inefficient, way to tweak an xpub because the child
+has a normal derivation path for signing devices.</p>
+
+<h2 id="single-party">Single Party</h2>
+
+<p>A single party pre-signs all the transactions for the spookchain, and
+then deletes their xpriv.</p>
+
+<p>You trust them to have deleted the key, and signed properly, but you
+do not trust whoever served you the spookchain blob to have given you
+all the state transitions because of the trustless data commitment.</p>
+
+<h2 id="musig-multi-party">MuSig Multi-Party</h2>
+
+<p>Define a MuSig among all participants in the setup ceremony, N-of-N.</p>
+
+<p>Now you simply trust that any one person in the one-time-setup was
+honest! Very good.</p>
+
+<h2 id="unaggregated-multi-party">Unaggregated Multi-Party</h2>
+
+<p>Allow for unaggregated multi-sig keys in the spec. This grows with
+O(signers), however, it means that a-la-carte you can aggregate setups
+from random participants who never interacted / performed setup
+ceremonies independently if they signed the same specs.</p>
+
+<p>Can also combine multiple MuSig Multi-Parties in this way.</p>
+
+<p>This is nice because MuSig inherently implies the parties colluded at
+one point to do a MuSig setup, whereas unaggregated multi-sig could be
+performed with no connectivity between parties.</p>
+
+<h2 id="soft-forking-away-trust">Soft Forking Away Trust</h2>
+
+<p>Suppose a spookchain becomes popular. You could configure your client
+to reject invalid state transitions, or restrict the spookchain keys
+to only sign with the known signatures. This soft fork would smoothly
+upgrade the trust assumption.</p>
+
+<h2 id="symmetry-of-state-transition-rules--dag-covenants">Symmetry of State Transition Rules &amp; DAG Covenants</h2>
+
+<p>We could have our increment state transitions be done via a trustless
+covenant, and our backwards state transitions be done via the setup.</p>
+
+<p>This would look something like the following for state i:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Tr(NUMS, {
+    `&lt;sig for state K_{i+1}&gt; &lt;1 || PK_nonsecret&gt; CHECKSIG`,
+    `&lt;1 || Ki&gt; CHECKSIG`
+})
+</code></pre></div></div>
+
+<p>The advantage of such an optimization is theoretically nice because it
+means that <em>only</em> the non-destructuring recursive part of the
+computation is subject to the one-time-setup trust assumption, which
+might be of use in various other protocols, where recursivity might
+only be unlocked e.g. after a timeout (but for spookchains it is used
+at each step).</p>
+
+<p>A compiler writer might perform this task by starting with an arbitrary
+abstract graph, and then removing edges selectively (a number of heuristics may
+make sense, e.g., to minimize reliance on one-time-setup or minimize costs)
+until the graph is a Directed Acyclic Graph, consisting of one or more
+components, compiling those with committed covenants, and then adding the
+removed edges back using the one-time-setup key materials.</p>
+
+<h1 id="commentary-on-trust-and-covenantiness">Commentary on Trust and Covenantiness</h1>
+
+<p>Is this a covenant? I would say “yes”. When I defined covenants in my
+<em>Calculus of Covenants</em> post, it was with a particular set of
+assumptions per covenant.</p>
+
+<p>Under that model, you could, e.g., call a 7-10 multi-sig with specific
+committed instructions as 4-10 honest (requires 4 signatories to be
+honest to do invalid state transition) and 4-10 killable (requires 4
+signatories to die to have no way of recovering).</p>
+
+<p>For emulations that are pre-signed, like the varieties used to emulate
+CTV, it is a different model because if your program is correct and
+you’ve pre-gotten the signatures for N-N it is 1-N honest (only 1
+party must be honest to prevent an invalid state transition) and
+unkillable (all parties can safely delete keys).</p>
+
+<p>I model these types of assumptions around liveness and honesty as
+different ‘complexity classes’ than one another.</p>
+
+<p>What I would point out is that with the counter model presented above,
+this is entirely a pre-signed 1-N honest and unkillable covenant that
+requires no liveness from signers. Further, with APO, new instances of
+the covenant do not require a new set of signers, the setup is truly
+one-time. Therefore this type of covenant exists in an even lower
+trust-complexity class than CTV emulation via presigneds, which
+requires a new federation to sign off on each contract instance.</p>
+
+<p>With that preface, let us analyze this covenant:</p>
+
+<p>1) A set of sets of transaction intents (a family), potentially
+recursive or co-recursive (e.g., the types of state transitions that
+can be generated).  These intents can also be represented by a
+language that generates the transactions, rather than the literal
+transactions themselves. We do the family rather than just sets at
+this level because to instantiate a covenant we must pick a member of
+the family to use.</p>
+
+<p>The set of sets of transaction intents is to increment / decrement to
+a successor or predecessor, or to halve into two instances or double
+value by adding funds. Each successor or predecessor is the same type
+of covenant, with the excetion of the first and last, which have some
+special rules.</p>
+
+<p>2) A verifier generator function that generates a function that
+accepts an intent that is any element of one member of the family of
+intents and a proof for it and rejects others.</p>
+
+<p>The verifier generator is the simple APO CHECKSIG script.</p>
+
+<p>3) A prover generator function that generates a function that takes an
+intent that is any element of one member of the family and some extra
+data and returns either a new prover function, a finished proof, or a
+rejection (if not a valid intent).</p>
+
+<p>The prover generator is the selection of the correct signature from a
+table for a given script.</p>
+
+<p>Run the prover generator with the private keys present <em>once</em> to
+initialize over all reachable states, and cache the signatures, then
+the keys may be deleted for future runs.</p>
+
+<p>4) A set of proofs that the Prover, Verifier, and a set of intents are
+“impedance matched”, that is, all statements the prover can prove and
+all statements the verifier can verify are one-to-one and onto (or
+something similar), and that this also is one-to-one and onto with one
+element of the intents (a set of transactions) and no other.</p>
+
+<p>At a given key state the only things that may happen are signed
+transactions, no other data is interpreted off of the stack. Therefore
+there is perfect impedance match.</p>
+
+<p>5) A set of assumptions under which the covenant is verified (e.g., a
+multi-sig covenant with at least 1-n honesty, a multisig covenant with
+any 3-n honesty required, Sha256 collision resistance, Discrete Log
+Hardness, a SGX module being correct).</p>
+
+<p>Uniquely, that during the setup phase at least one of the keys
+were faithfully deleted.</p>
+
+<p>The usual suspects for any bitcoin transaction are also assumed for
+security.</p>
+
+<p>6) Composability:</p>
+
+<p>The Terminal State can pay out into a pre-specified covenant if
+desired from any other family of covenants.</p>
+
+
+  </div>
+<hr>
+  
+</div>
+
+<div class="pagination">
+  
+    <span class="pagination-item newer">Newer</span>
+  
+  
+  <a class="pagination-item older" href="/blog/page/2/">Older</a>
+  
+</div>
+
+</div>
+
+        </div>
+        <div class="content container" style="padding-bottom:0;padding-top:0;bottom:0px;">
+            <div class="posts" style="height:14pt;margin-bottom:0;">
+                <div class="post">
+                    <p style="text-align:center;font-size:12pt;">&copy; 2011-2021 Jeremy Rubin. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

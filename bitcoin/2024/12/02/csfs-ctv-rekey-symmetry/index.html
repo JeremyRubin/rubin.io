@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+  <title> CSFS Re-Keying and Laddering, Deterministic Update Rekeying, & Applications to LN-Symmetry &middot; Jeremy Rubin </title>
+  <link href="https://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/poole.css">
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/css/hyde.css">
+  <link rel="stylesheet" href="/public/font-awesome-4.5.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+                                 <link rel="shortcut icon" href="/public/favicon.ico">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+
+  
+  <link type="application/atom+xml" rel="alternate" href="http://rubin.io/feed.xml" title="Jeremy Rubin" />
+
+
+  <!-- GA -->
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-40376251-1', 'auto');
+    ga('send', 'pageview');
+</script>
+
+  
+  <link rel="me" href="https://twitter.com/JeremyRubin" >
+  <meta name="twitter:dnt" content="on">
+			   <script>window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
+
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+
+  return t;
+}(document, "script", "twitter-wjs"));</script>
+
+</head>
+
+    <body>
+        <div class="sidebar">
+    <h3 style="text-align: center;"> <a href="/"> Jeremy Rubin </a> </h3>
+    <div class="container">
+        <div class="sidebar-about">
+
+            <div class="sidebar-about-info"> 
+                <a href="/public/pdfs/resume.pdf"><i class="fa fa-file-text-o" title=Resume></i></a>
+                <a href=""><i class="fa fa-github" title=Github></i></a>
+                <a href="https://twitter.com/JeremyRubin"><i class="fa fa-twitter" title=Twitter></i></a>
+            </div>
+            <div class="sidebar-about-info hide-large">
+                <a class="" href="/">Home</a>
+                <a class="" href="/blog/">Blog</a>
+                <a class="" href="/talks/">Talks</a> 
+                <a class="" href="/projects/">Projects</a>
+                <a class="" href="/archive/">Site Index</a>
+            </div>
+        </div>
+
+
+
+
+        <nav class="sidebar-nav hide-small">
+            <a class="sidebar-nav-item" href="/">Home</a>
+            <a class="sidebar-nav-item" href="/blog/">Blog</a>
+            <a class="sidebar-nav-item" href="/talks/">Talks</a> 
+            <a class="sidebar-nav-item" href="/projects/">Projects</a>
+            <a class="sidebar-nav-item" href="/archive/">Site Index</a>
+        </nav>
+    </div>
+</div>
+
+
+
+        <div class="content container" style="padding-bottom:0;">
+            <div class="post">
+    <h1 class="post-title">CSFS Re-Keying and Laddering, Deterministic Update Rekeying, & Applications to LN-Symmetry</h1>
+    
+    
+
+<a class="twitter-share-button"
+data-size="large"
+href="https://twitter.com/intent/tweet?text=CSFS+Re-Keying+and+Laddering%2C+Deterministic+Update+Rekeying%2C+%26+Applications+to+LN-Symmetry&hashtags="> Tweet</a>
+
+
+
+    <div>
+        <span class="post-date">02 Dec 2024
+        </span>
+    </div>
+    <p><em>This is a collab post with <a href="https://twitter.com/reardencode">Rearden</a>.</em></p>
+
+<p>At Bitcoin++ in Austin this year Rearden showed that there are many ways
+to realize Lightning Symmetry using various bitcoin upgrade proposals. All of
+these methods require either an extra signing round-trip for each channel
+update, or the ability to force the hash of the settlement transaction to be
+visible with its corresponding update transaction. This can be generalized as
+the requirement that the signature authorizing a given channel be both
+rebindable (i.e. not commit to a specific prior UTXO) and commit to some
+additional data being visible for that signature to be valid.</p>
+
+<p>We’ll start by exploring why Lightning Symmetry requires this data visibility
+commitment, then dive into previously known solutions, and present a new
+generalized technique for using CSFS to two or more variables. Finally, we will
+present an optimized solution based on the principles we’ve developed to enable
+Lightning Symmetry using one extra signature, but no extra signing round-trip
+and without the need for concatenation or other explicit multi-commitments.</p>
+
+<h2 id="less-common-definitions">Less Common Definitions</h2>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">APO</code>: <code class="language-plaintext highlighter-rouge">SIGHASH_ANYPREVOUT</code> as defined in <a href="https://github.com/bitcoin/bips/blob/master/bip-0118.mediawiki">BIP118</a></li>
+  <li><code class="language-plaintext highlighter-rouge">IKEY</code>: <code class="language-plaintext highlighter-rouge">OP_INTERNALKEY</code> as defined in <a href="https://github.com/bitcoin/bips/blob/master/bip-0349.md">BIP349</a></li>
+  <li><code class="language-plaintext highlighter-rouge">CSFS</code>: <code class="language-plaintext highlighter-rouge">OP_CHECKSIGFROMSTACK</code> as defined in <a href="https://github.com/bitcoin/bips/pull/1535">BIP348</a></li>
+  <li><code class="language-plaintext highlighter-rouge">S</code>: <code class="language-plaintext highlighter-rouge">500,000,000</code> the lock time threshold <a href="https://github.com/bitcoin/bitcoin/blob/master/src/script/script.h#L47">defined in bitcoin</a></li>
+</ul>
+
+<h2 id="naive-ctv-csfs-lightning-symmetry-transactions">Naive CTV-CSFS Lightning Symmetry transactions</h2>
+
+<p>The scripts for a naive Taproot Lightning Symmetry channel are:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>channel:
+tr(musig(keyA, keyB), raw(CTV IKEY CSFS VERIFY &lt;S+1&gt; CLTV))
+update(n):
+tr(musig(keyA, keyB), raw(DEPTH NOTIF &lt;settlement-n-hash&gt; CTV ELSE CTV IKEY CSFS VERIFY &lt;S+n+1&gt; CLTV ENDIF))
+update-stack:
+&lt;update-n-sig&gt; &lt;update-n-hash&gt;
+</code></pre></div></div>
+
+<p>If a channel enters force close, an update outpoint will be placed on chain by
+A, and B will have a CSV delay encoded in the <code class="language-plaintext highlighter-rouge">settlement-n-hash</code> before it
+can be settled within which to respond with a later state. One of the stated
+goals of Lightning Symmetry is to eliminate the need for each partner to store
+<code class="language-plaintext highlighter-rouge">O(n)</code> state for each channel, but now we hit the problem. Because the update
+script is not visible on chain, while B can find the update, they cannot
+reconstruct the script without the <code class="language-plaintext highlighter-rouge">settlement-n-hash</code> and only A knows that
+hash unless B stores it for every state.</p>
+
+<h2 id="apo-annex-solution">APO-annex solution</h2>
+
+<p>In @instagibbs’ <a href="https://delvingbitcoin.org/t/ln-symmetry-project-recap/359">Lightning Symmetry
+work</a>, he used APO
+and the Taproot Annex where both parties to a channel will only sign an update
+transaction if their signatures commit to an annex containing the
+corresponding settlement hash needed to reconstruct the update spend script.</p>
+
+<p>The scripts for this are (roughly):</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>channel:
+tr(musig(keyA, keyB), raw(&lt;1&gt; CHECKSIGVERIFY &lt;S+1&gt; CLTV))
+update(n):
+tr(musig(keyA, keyB), raw(DEPTH NOTIF &lt;sig&gt; &lt;01||G&gt; CHECKSIG ELSE &lt;1&gt; CHECKSIGVERIFY &lt;S+n+1&gt; CLTV ENDIF))
+update-stack:
+&lt;update-n-sig&gt;
+</code></pre></div></div>
+
+<p>Here we see the use of APO as a covenant by precomputing a signature for the
+secret key <code class="language-plaintext highlighter-rouge">1</code> and public key <code class="language-plaintext highlighter-rouge">G</code>. Because CHECKSIG operations commit to the
+Taproot Annex, these scripts require no special handling for the channel
+parties to require each other to place the settlement transaction hash in the
+annex and therefore make it possible for either party to later reconstruct any
+prior state’s script for spending. Without the annex, an APO-based
+implementation would either fall back to the additional signing round-trip, or
+using an <code class="language-plaintext highlighter-rouge">OP_RETURN</code> to force this data to be visible.</p>
+
+<h2 id="naive-ctv-csfs-solution">Naive CTV-CSFS solution</h2>
+
+<p>Can we just commit to an additional hash using an additional signature?</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>channel:
+tr(musig(keyA, keyB), raw(CTV IKEY CSFS VERIFY IKEY CSFS VERIFY &lt;S+1&gt; CLTV))
+update(n):
+tr(musig(keyA, keyB), raw(DEPTH NOTIF &lt;settlement-n-hash&gt; CTV ELSE CTV IKEY CSFS VERIFY IKEY CSFS VERIFY &lt;S+n+1&gt; CLTV ENDIF))
+update-stack:
+&lt;settlement-n-sig&gt; &lt;settlement-n-hash&gt; &lt;update-n-sig&gt; &lt;update-n-hash&gt;
+</code></pre></div></div>
+
+<p>This method is broken because the two signatures are not linked in any way. A
+malicious channel partner can place a mismatched settlement hash, and update
+transaction on chain, preventing their partner who has a valid later update
+from reconstructing the scripts and updating the channel state.</p>
+
+<p>One obvious solution would be to combine the update hash and the settlement
+hash, but since bitcoin lacks a concatenation operator, we cannot do that.
+Recently <a href="https://x.com/4moonsettler">@4moonsettler</a> proposed
+<a href="https://github.com/bitcoin/bips/pull/1699"><code class="language-plaintext highlighter-rouge">OP_PAIRCOMMIT</code></a> as an alternative
+for this purpose.</p>
+
+<h2 id="ctv-csfs-delegation-solution">CTV-CSFS delegation solution</h2>
+
+<p>Now we come to the new solution that we’ve developed, which ties the update
+and settlement hashes together by the keys which have signed them. CSFS is
+known to be useful for delegation, so we initially delegate to a rekey:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>script(n):
+    DUP TOALT DUP TOALT
+    IKEY CSFS VERIFY
+    OP_SIZE &lt;32&gt; EQUALVERIFY CTV
+    2DUP EQUAL NOT VERIFY
+    ROT SWAP FROMALT CSFS VERIFY
+    FROMALT CSFS VERIFY &lt;S+n+1&gt; CLTV
+channel:
+    tr(musig(keyA, keyB), raw(&lt;script(0)&gt;))
+update(n):
+    tr(musig(keyA, keyB),
+        raw(DEPTH NOTIF &lt;settlement-n-hash&gt; CTV ELSE &lt;script(n)&gt; ENDIF))
+stack(n):
+    &lt;settlement-n-sig&gt;
+    &lt;update-n-sig&gt;
+    &lt;settlement-extradata&gt;
+    &lt;update-n-ctv&gt;
+    &lt;rekey-sig&gt;
+    &lt;rekey&gt;
+</code></pre></div></div>
+
+<p>Here the <code class="language-plaintext highlighter-rouge">rekey</code> is an ephemeral key either randomly generated or derived
+for each state using something like BIP32 and based on the channel key. What
+matters is that the <code class="language-plaintext highlighter-rouge">rekey</code> is never used to sign anything other than the two
+messages corresponding to the update and settlement hashes for its state. In
+this way they are only valid together and the correct settlement hash must be
+available for a channel partner to reconstruct the scripts and update the
+channel settlement. One quirk of this solution is that if the two signed items
+are allowed to be equal, a malicious partner can simply place the same update
+hash on the stack with its signature twice, so they must be checked for
+inequality by the script.</p>
+
+<p>This scheme is secure  because of the length check for the arg <code class="language-plaintext highlighter-rouge">update-n-ctv</code>,
+it should be ensured that the other <code class="language-plaintext highlighter-rouge">&lt;settlement-extradata&gt;</code> is either not a
+valid CTV hash or is not length 32.</p>
+
+<h2 id="csfs-key-laddering">CSFS Key Laddering</h2>
+<p>Key Laddering extends the rekeying approach shown above to allow recursively
+rekeying to an arbitrary number of variables. This allows CSFS to be used without
+OP_CAT to sign over collections of variables to be plugged into a script.</p>
+
+<p>For example, for 5 variables (not optimized, written for clarity):</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>DATASIGS: &lt;sd1&gt; &lt;d1&gt; &lt;sd2&gt; &lt;d2&gt; &lt;sd3&gt; &lt;d3&gt; &lt;sd4&gt; &lt;d4&gt; &lt;sd5&gt; &lt;d5&gt;
+stack: DATASIGS + &lt;k5&gt; &lt;s5&gt; &lt;k4&gt; &lt;s4&gt; &lt;k3&gt; &lt;s3&gt; &lt;k2&gt; &lt;s2&gt; &lt;k1&gt; &lt;s1&gt;
+
+program:
+
+\\ First, check that k1 is signed by IKEY
+    OVER IKEY CSFSV
+    DUP TOALT
+
+// Next, Check that k_i signs k_{i+1}
+    // stack: DATASIGS + &lt;k5&gt; &lt;s5&gt; &lt;k4&gt; &lt;s4&gt; &lt;k3&gt; &lt;s3&gt; &lt;k2&gt; &lt;s2&gt; &lt;k1&gt;
+    // altstack: &lt;k1&gt;
+
+        3DUP ROT SWAP CSFSV 2DROP DUP TOALT
+
+    // stack: DATASIGS + &lt;k5&gt; &lt;s5&gt; &lt;k4&gt; &lt;s4&gt; &lt;k3&gt; &lt;s3&gt; &lt;k2&gt;
+    // altstack: &lt;k1&gt; &lt;k2&gt;
+
+        3DUP ROT SWAP CSFSV 2DROP DUP TOALT
+
+    // stack: DATASIGS + &lt;k5&gt; &lt;s5&gt; &lt;k4&gt; &lt;s4&gt; &lt;k3&gt;
+    // altstack: &lt;k1&gt; &lt;k2&gt; &lt;k3&gt;
+
+        3DUP ROT SWAP CSFSV 2DROP DUP TOALT
+
+    // stack: DATASIGS + &lt;k5&gt; &lt;s5&gt; &lt;k4&gt;
+    // altstack: &lt;k1&gt; &lt;k2&gt; &lt;k3&gt; &lt;k4&gt;
+
+        3DUP ROT SWAP CSFSV 2DROP
+
+    // stack: &lt;sd1&gt; &lt;d1&gt; &lt;sd2&gt; &lt;d2&gt; &lt;sd3&gt; &lt;d3&gt; &lt;sd4&gt; &lt;d4&gt; &lt;sd5&gt; &lt;d5&gt; &lt;k5&gt;
+    // altstack: &lt;k1&gt; &lt;k2&gt; &lt;k3&gt; &lt;k4&gt;
+
+
+        FROMALT FROMALT FROMALT FROMALT
+
+    // stack: &lt;sd1&gt; &lt;d1&gt; &lt;sd2&gt; &lt;d2&gt; &lt;sd3&gt; &lt;d3&gt; &lt;sd4&gt; &lt;d4&gt; &lt;sd5&gt; &lt;d5&gt; &lt;k5&gt; &lt;k4&gt; &lt;k3&gt; &lt;k2&gt; &lt;k1&gt;
+    // altstack:
+
+// Now, check each signature of the data
+
+    &lt;6&gt; PICK // sd5
+    &lt;6&gt; PICK // d5
+    &lt;6&gt; PICK // k5
+    CSFSV
+
+    &lt;8&gt; PICK // sd4
+    &lt;8&gt; PICK // d4
+    &lt;5&gt; PICK // k4
+    CSFSV
+
+    &lt;10&gt; PICK // sd3
+    &lt;10&gt; PICK // d3
+    &lt;4&gt; PICK // k3
+    CSFSV
+
+    &lt;12&gt; PICK // sd2
+    &lt;12&gt; PICK // d2
+    &lt;3&gt; PICK // k2
+    CSFSV
+
+    &lt;14&gt; PICK // sd1
+    &lt;14&gt; PICK // d1
+    &lt;2&gt; PICK // k1
+    CSFSV
+
+// Now, Check the inequalities that no key is used as data:
+    // stack: &lt;sd1&gt; &lt;d1&gt; &lt;sd2&gt; &lt;d2&gt; &lt;sd3&gt; &lt;d3&gt; &lt;sd4&gt; &lt;d4&gt; &lt;sd5&gt; &lt;d5&gt; &lt;k5&gt; &lt;k4&gt; &lt;k3&gt; &lt;k2&gt; &lt;k1&gt;
+    // altstack:
+
+    // No need to check k1 != d0 since no d0
+
+    // Check that k2 != d1
+    &lt;1&gt; PICK
+    &lt;14&gt; PICK
+    NOT EQUAL VERIFY
+
+    // Check that k3 != d2
+    &lt;2&gt; PICK
+    &lt;12&gt; PICK
+    NOT EQUAL VERIFY
+
+
+    // Check that k4 != d3
+    &lt;3&gt; PICK
+    &lt;8&gt; PICK
+    NOT EQUAL VERIFY
+
+    // check that k5 != d4
+    &lt;4&gt; PICK
+    &lt;6&gt; PICK
+    NOT EQUAL VERIFY
+
+
+// stack: &lt;sd1&gt; &lt;d1&gt; &lt;sd2&gt; &lt;d2&gt; &lt;sd3&gt; &lt;d3&gt; &lt;sd4&gt; &lt;d4&gt; &lt;sd5&gt; &lt;d5&gt; &lt;k5&gt; &lt;k4&gt; &lt;k3&gt; &lt;k2&gt; &lt;k1&gt;
+// altstack:
+
+2DROP 2DROP DROP
+TOALT DROP
+TOALT DROP
+TOALT DROP
+TOALT DROP
+TOALT DROP
+
+// stack:
+// altstack: &lt;d5&gt; &lt;d4&gt; &lt;d3&gt; &lt;d2&gt; &lt;d1&gt;
+
+// Whatever else
+
+
+</code></pre></div></div>
+<p>This lets you sign an arbitrary number of variables in a sequence.</p>
+
+<p>One “gotcha” not shown in the above script is there is a need to ensure the signature over data and signatures over keys are not exchangable at each hop.
+Care should be taken to ensure this.</p>
+
+<p>One alternative scheme is to do “signature laddering”. That is, instead of signing a key at each step, sign instead the next signature.</p>
+
+<p>E.g., re-key by signing with IKEY the first signature. Then verify it against any key / message pair it will validate against. The key can be used with a different signature for the value, and the message signed is the next signature. E.g.:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>stack:
+&lt;sig B&gt;
+&lt;key A&gt;
+&lt;sig^IKEY(sig A)&gt;
+&lt;sig^A(sig B)&gt;
+
+DUP TOALT
+IKEY CSFS VERIFY
+FROMALT
+
+stack:
+&lt;sig B&gt;
+&lt;key A&gt;
+&lt;sig^A(sig B)&gt;
+
+ROT ROT CSFS VERIFY
+
+</code></pre></div></div>
+
+<p>This laddering is convenient, because the first IKEY sig commits to the roles of
+all the other data (key v.s. sig v.s. argument).</p>
+
+<h2 id="ctv-csfs-with-derived-internal-keys-solution">CTV-CSFS with derived internal keys solution</h2>
+
+<p>For Lightning Symmetry, each update transaction is signed with a specific
+monotonically increasing locktime, and nothing requires the internal key to be
+exactly the same for each update, so we can replace the internal key with a
+key deterministically derived from the channel key and the locktime, and then
+almost use the naive CTV-CSFS scripts:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>internalkey(n):
+bip32_derive(musig(keyA, keyB), /&lt;S+n+1&gt;)
+script(n):
+CTV 2DUP EQUAL NOT VERIFY ROT SWAP IKEY CSFS VERIFY IKEY CSFS VERIFY &lt;S+n+1&gt; CLTV
+channel:
+tr(musig(keyA, keyB), raw(&lt;script(0)&gt;))
+update:
+tr(internalkey(n), raw(DEPTH NOTIF &lt;settlement-n-hash&gt; CTV ELSE &lt;script(n)&gt; ENDIF))
+update-stack:
+&lt;settlement-n-sig&gt; &lt;update-n-sig&gt; &lt;settlement-n-hash&gt; &lt;update-n-hash&gt;
+</code></pre></div></div>
+
+<p>Either channel partner can deterministicaly derive the correct internal key
+needed to reconstruct the spend stack from any update from the locktime of the
+update transaction itself. These derived internal keys are only used to sign
+one pair of update and settlement hash, and the script checks that the two
+signatures are for different data.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>These techniques remove the need for bitcoin upgrade proposals which enable
+Lightning Symmetry to include a specific function for committing to multiple
+items with a single signature. Of course if a more efficient method for
+combining items into a single commitment is available Lightning developers
+will be able to take advantage of it and reduce the witness space required for
+Lightning Symmetry.</p>
+
+    <div>
+    <h3>
+        <span style="vertical-align: text-top;">
+    
+
+<a class="twitter-share-button"
+data-size="large"
+href="https://twitter.com/intent/tweet?text=CSFS+Re-Keying+and+Laddering%2C+Deterministic+Update+Rekeying%2C+%26+Applications+to+LN-Symmetry&hashtags="> Tweet</a>
+
+
+
+        </span>
+        <span style="vertical-align: super;">
+to continue the conversation...
+        </span>
+    </h3>
+
+    </div>
+</div>
+
+<aside class="related">
+  <h3>You might also enjoy...</h3>
+  <ul class="related-posts">
+    
+      <li>
+        <a href="/blog/2021/07/02/covenants/">
+          Templates, Eltoo, and Covenants, Oh My!
+          <small><time datetime="2021-07-02T00:00:00+00:00">02 Jul 2021</time></small>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/bitcoin/2021/12/05/advent-8/">
+          Contracting Primitives and Upgrades to Bitcoin
+          <small><time datetime="2021-12-05T00:00:00+00:00">05 Dec 2021</time></small>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/bitcoin/2021/12/11/advent-14/">
+          Payment Channels in a CTV+Sapio World
+          <small><time datetime="2021-12-11T00:00:00+00:00">11 Dec 2021</time></small>
+        </a>
+      </li>
+    
+  </ul>
+</aside>
+
+        </div>
+        <div class="content container" style="padding-bottom:0;padding-top:0;bottom:0px;">
+            <div class="posts" style="height:14pt;margin-bottom:0;">
+                <div class="post">
+                    <p style="text-align:center;font-size:12pt;">&copy; 2011-2021 Jeremy Rubin. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

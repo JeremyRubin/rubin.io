@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+  <title> Fun with CSFS I &middot; Jeremy Rubin </title>
+  <link href="https://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/poole.css">
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/css/hyde.css">
+  <link rel="stylesheet" href="/public/font-awesome-4.5.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+                                 <link rel="shortcut icon" href="/public/favicon.ico">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+
+  
+  <link type="application/atom+xml" rel="alternate" href="http://rubin.io/feed.xml" title="Jeremy Rubin" />
+
+
+  <!-- GA -->
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-40376251-1', 'auto');
+    ga('send', 'pageview');
+</script>
+
+  
+  <link rel="me" href="https://twitter.com/JeremyRubin" >
+  <meta name="twitter:dnt" content="on">
+			   <script>window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
+
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+
+  return t;
+}(document, "script", "twitter-wjs"));</script>
+
+</head>
+
+    <body>
+        <div class="sidebar">
+    <h3 style="text-align: center;"> <a href="/"> Jeremy Rubin </a> </h3>
+    <div class="container">
+        <div class="sidebar-about">
+
+            <div class="sidebar-about-info"> 
+                <a href="/public/pdfs/resume.pdf"><i class="fa fa-file-text-o" title=Resume></i></a>
+                <a href=""><i class="fa fa-github" title=Github></i></a>
+                <a href="https://twitter.com/JeremyRubin"><i class="fa fa-twitter" title=Twitter></i></a>
+            </div>
+            <div class="sidebar-about-info hide-large">
+                <a class="" href="/">Home</a>
+                <a class="" href="/blog/">Blog</a>
+                <a class="" href="/talks/">Talks</a> 
+                <a class="" href="/projects/">Projects</a>
+                <a class="" href="/archive/">Site Index</a>
+            </div>
+        </div>
+
+
+
+
+        <nav class="sidebar-nav hide-small">
+            <a class="sidebar-nav-item" href="/">Home</a>
+            <a class="sidebar-nav-item" href="/blog/">Blog</a>
+            <a class="sidebar-nav-item" href="/talks/">Talks</a> 
+            <a class="sidebar-nav-item" href="/projects/">Projects</a>
+            <a class="sidebar-nav-item" href="/archive/">Site Index</a>
+        </nav>
+    </div>
+</div>
+
+
+
+        <div class="content container" style="padding-bottom:0;">
+            <div class="post">
+    <h1 class="post-title">Fun with CSFS I</h1>
+    
+    
+
+<a class="twitter-share-button"
+data-size="large"
+href="https://twitter.com/intent/tweet?text=Fun+with+CSFS+I&hashtags="> Tweet</a>
+
+
+
+    <div>
+        <span class="post-date">05 Mar 2025
+        </span>
+    </div>
+    <p>In this blog series, I’ll write up some fun uses for CSFS I’m aware of.</p>
+
+<p>The purpose is to document things that others might not know about.</p>
+
+<p>Did I invent these? Maybe. Maybe not. Citations to prior work welcome!</p>
+
+<h1 id="irreplacable-irreusable-addresses">Irreplacable Irreusable Addresses</h1>
+
+<p>You create a taproot that is a NUMS keypath (the NUMS keypath and single tapleaf is so that you learn all the spending info always), and a tapleaf that says either a <code class="language-plaintext highlighter-rouge">&lt;PK&gt; CHECKSIG</code>, or a proof that there were &gt;1 signatures produced by that key of any data that are distinct from one another and then either:</p>
+
+<ul>
+  <li>with CTV it can be sent to OP_RETURN, or;</li>
+  <li>without CTV it is anyonecanspend</li>
+</ul>
+
+<p>This means that as soon as you see a signature of a txn with this address, you know that there is no other txn that can be issued without harming the sender by making their funds burnable.</p>
+
+<p>for extra fun:</p>
+
+<p>The “equivocation bond” can be also in a different output, different address, to secure addresses with fresh collateral, even <em>retroactively</em>.</p>
+
+<h1 id="function-lookup-table-precompiles">Function Lookup Table Precompiles</h1>
+<p>Suppose we want to add an opcode to Bitcoin that evaluates <code class="language-plaintext highlighter-rouge">f(x)</code>.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>let X = musig(big one time setup federation).
+
+let CSFS(key, sig, data) = ...
+</code></pre></div></div>
+
+<p>Recall <a href="/bitcoin/2024/12/02/csfs-ctv-rekey-symmetry/">key laddering</a>…
+make a script with the following logic, via laddering:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>CSFS(X, sig_x, sig_arg)
+CSFS(Tweaked(X, arg), sig_arg, arg)
+CSFS(Tweaked(X, arg), sig_f, f(arg)))
+sig_f != sig_arg
+</code></pre></div></div>
+
+<p>now run (in signing committee) f(arg) over all values of arg.</p>
+
+<p>you now get a lookup table that can be used in any script for an arbitrary sized tree for a constant cost of 3 sigs and 2 keys ==&gt; 256 bytes, which is cheaper than using taproot pre-generated trees in many cases.</p>
+
+<p>This technique can be modified to also work for multiple arguments, as long as the result can be precomputed. That rules out “big output spaces” like OP_CAT, but rules in lookup tables like e.g. merkle trees.</p>
+
+<p>And for use cases where, e.g., a merkle tree would be signed by a key anyways, this is trust wise equivalent. E.g., a tree of user balances can be done in this fashion, and any user can “look up” their balance from the signature set.</p>
+
+<p>For “standard library” type uses, big federations can be used for a one-time-trusted-setup.</p>
+
+<h1 id="sighash-flag-detection">SIGHASH Flag Detection</h1>
+
+<p>Presently, bitcoin scripts cannot restrict which sighash flags are used. CSFS enables a limited version of this in Taproot outoputs. Here’s how:</p>
+
+<p>You can use CSFS to get the tx digest onto the stack from a signature.</p>
+
+<p>without op_cat, this is of limited use…</p>
+
+<p>however, we have the following formula:</p>
+
+<p>^ What is the output length of SigMsg()? The total length of SigMsg() can be computed using the following formula: 174 - is_anyonecanpay * 49 - is_none * 32 + has_annex * 32</p>
+
+<p>which is at most 206 bytes (when has_annex is set).</p>
+
+<p><em>N.B. This number ends up being + 1 byte sighash epoch, + 64 bytes for the tag in taggedhash.</em></p>
+
+<p>this means that using CSFS, you can restrict a signature to use some particular sighash flags, by using OP_SIZE.</p>
+
+<p>is_anyonecanpay=0, is_none=0, has_annex=0, size=174+65
+is_anyonecanpay=0, is_none=0, has_annex=1, size=206+65
+is_anyonecanpay=0, is_none=1, has_annex=0, size=142+65
+is_anyonecanpay=0, is_none=1, has_annex=1, size=174+65
+is_anyonecanpay=1, is_none=0, has_annex=0, size=125+65
+is_anyonecanpay=1, is_none=0, has_annex=1, size=157+65
+is_anyonecanpay=1, is_none=1, has_annex=0, size=93+65
+is_anyonecanpay=1, is_none=1, has_annex=1, size=125+65</p>
+
+<p>this means you can use CSFS to differentiate flag combos with anyonecanpay and none and annex, except for when is_none + has_annex are both set or unset.</p>
+
+<p>alas, this means you should probably only be interested in the following ability:</p>
+
+<p>is_anyonecanpay=0, is_none=1, has_annex=0, size=142+65
+is_anyonecanpay=1, is_none=1, has_annex=0, size=93+65</p>
+
+<p>and less interested but still interested in these, given the annex isn’t standard:</p>
+
+<p>is_anyonecanpay=0, is_none=0, has_annex=1, size=206+65
+is_anyonecanpay=1, is_none=0, has_annex=1, size=157+65</p>
+
+<p>note: the other flags can still be set given these ones!</p>
+
+    <div>
+    <h3>
+        <span style="vertical-align: text-top;">
+    
+
+<a class="twitter-share-button"
+data-size="large"
+href="https://twitter.com/intent/tweet?text=Fun+with+CSFS+I&hashtags="> Tweet</a>
+
+
+
+        </span>
+        <span style="vertical-align: super;">
+to continue the conversation...
+        </span>
+    </h3>
+
+    </div>
+</div>
+
+<aside class="related">
+  <h3>You might also enjoy...</h3>
+  <ul class="related-posts">
+    
+      <li>
+        <a href="/blog/2021/07/02/covenants/">
+          Templates, Eltoo, and Covenants, Oh My!
+          <small><time datetime="2021-07-02T00:00:00+00:00">02 Jul 2021</time></small>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/bitcoin/2021/12/05/advent-8/">
+          Contracting Primitives and Upgrades to Bitcoin
+          <small><time datetime="2021-12-05T00:00:00+00:00">05 Dec 2021</time></small>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/bitcoin/2021/12/11/advent-14/">
+          Payment Channels in a CTV+Sapio World
+          <small><time datetime="2021-12-11T00:00:00+00:00">11 Dec 2021</time></small>
+        </a>
+      </li>
+    
+  </ul>
+</aside>
+
+        </div>
+        <div class="content container" style="padding-bottom:0;padding-top:0;bottom:0px;">
+            <div class="posts" style="height:14pt;margin-bottom:0;">
+                <div class="post">
+                    <p style="text-align:center;font-size:12pt;">&copy; 2011-2021 Jeremy Rubin. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
