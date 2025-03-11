@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+  <title> Payment Pools / Coin Pools &middot; Jeremy Rubin </title>
+  <link href="https://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/poole.css">
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/css/hyde.css">
+  <link rel="stylesheet" href="/public/font-awesome-4.5.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+                                 <link rel="shortcut icon" href="/public/favicon.ico">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+
+  
+  <link type="application/atom+xml" rel="alternate" href="http://rubin.io/feed.xml" title="Jeremy Rubin" />
+
+
+  <!-- GA -->
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-40376251-1', 'auto');
+    ga('send', 'pageview');
+</script>
+
+  
+  <link rel="me" href="https://twitter.com/JeremyRubin" >
+  <meta name="twitter:dnt" content="on">
+			   <script>window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
+
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+
+  return t;
+}(document, "script", "twitter-wjs"));</script>
+
+</head>
+
+    <body>
+        <div class="sidebar">
+    <h3 style="text-align: center;"> <a href="/"> Jeremy Rubin </a> </h3>
+    <div class="container">
+        <div class="sidebar-about">
+
+            <div class="sidebar-about-info"> 
+                <a href="/public/pdfs/resume.pdf"><i class="fa fa-file-text-o" title=Resume></i></a>
+                <a href=""><i class="fa fa-github" title=Github></i></a>
+                <a href="https://twitter.com/JeremyRubin"><i class="fa fa-twitter" title=Twitter></i></a>
+            </div>
+            <div class="sidebar-about-info hide-large">
+                <a class="" href="/">Home</a>
+                <a class="" href="/blog/">Blog</a>
+                <a class="" href="/talks/">Talks</a> 
+                <a class="" href="/projects/">Projects</a>
+                <a class="" href="/archive/">Site Index</a>
+            </div>
+        </div>
+
+
+
+
+        <nav class="sidebar-nav hide-small">
+            <a class="sidebar-nav-item" href="/">Home</a>
+            <a class="sidebar-nav-item" href="/blog/">Blog</a>
+            <a class="sidebar-nav-item" href="/talks/">Talks</a> 
+            <a class="sidebar-nav-item" href="/projects/">Projects</a>
+            <a class="sidebar-nav-item" href="/archive/">Site Index</a>
+        </nav>
+    </div>
+</div>
+
+
+
+        <div class="content container" style="padding-bottom:0;">
+            <div class="post">
+    <h1 class="post-title">Payment Pools / Coin Pools</h1>
+    <h3>Day 13: Rubin's Bitcoin Advent Calendar</h3>
+    
+
+<a class="twitter-share-button"
+data-size="large"
+href="https://twitter.com/intent/tweet?text=Payment+Pools+%2F+Coin+Pools&hashtags=Bitcoin,
+AdventCalendar,
+Covenants,
+Sapio
+"> Tweet</a>
+
+
+
+    <div>
+        <span class="post-date">10 Dec 2021
+        </span>
+    </div>
+    <p><em>Welcome to day 13 of my Bitcoin Advent Calendar. You can see an index of all
+the posts <a href="/advent21">here</a> or subscribe at
+<a href="https://judica.org/join">judica.org/join</a> to get new posts in your inbox</em></p>
+
+<p>Payment Pools are a general concept for a technique to share a single UTXO among
+a group. They’ve been discussed for a couple years<sup id="fnref:background" role="doc-noteref"><a href="#fn:background" class="footnote" rel="footnote">1</a></sup>, but now that
+Taproot is active are definitely more relevant! In this post we’ll go through
+some really simple Payment Pool designs before turning it up a little bit :)</p>
+
+<p>Mechanistically, all that is required of a Payment Pool is that:</p>
+
+<ol>
+  <li>It’s a single (shared) UTXO<sup id="fnref:single" role="doc-noteref"><a href="#fn:single" class="footnote" rel="footnote">2</a></sup></li>
+  <li>Every user can get their funds out unilaterally<sup id="fnref:implies" role="doc-noteref"><a href="#fn:implies" class="footnote" rel="footnote">3</a></sup></li>
+  <li>A set<sup id="fnref:unan" role="doc-noteref"><a href="#fn:unan" class="footnote" rel="footnote">4</a></sup> of users can authorize spend the funds</li>
+  <li>Unspent funds/change stays in the pool</li>
+</ol>
+
+<h2 id="why-pool">Why Pool?</h2>
+
+<p>Pools are really great for a number of reasons. In particular, Payment Pools are
+fantastic for Scalability since they mean 1 utxo can serve many masters, and
+also each txn only requires one signature to make a batched payment from a
+group. Payment Pools are kinda a killer version of a coin-join where you roll
+the funds from coinjoin to coinjoin automatically<sup id="fnref:greg" role="doc-noteref"><a href="#fn:greg" class="footnote" rel="footnote">5</a></sup>, giving you great privacy.
+We’ll also see how they benefit decentralization in a couple of days.</p>
+
+<h2 id="whats-the-simplest-design-that-can-satisfy-this">What’s the simplest design that can satisfy this?</h2>
+
+<p>Imagine a coin that is either N-of-N multisig OR a transaction distributing the
+coins to all users. The Sapio would look a bit like this:</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="n">SimplePool</span> <span class="p">{</span>
+    <span class="c">/// list of all initial balances</span>
+    <span class="n">members</span><span class="p">:</span> <span class="n">HashMap</span><span class="o">&lt;</span><span class="n">PublicKey</span><span class="p">,</span> <span class="n">Amount</span><span class="o">&gt;</span>
+<span class="p">}</span>
+
+<span class="k">impl</span> <span class="n">SimplePool</span> <span class="p">{</span>
+    <span class="c">/// Send their balances to everyone</span>
+    <span class="nd">#[then]</span>
+    <span class="k">fn</span> <span class="nf">ejection</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">let</span> <span class="k">mut</span> <span class="n">t</span> <span class="o">=</span> <span class="n">ctx</span><span class="nf">.template</span><span class="p">();</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">amount</span><span class="p">)</span> <span class="n">in</span> <span class="k">self</span><span class="py">.members</span><span class="nf">.iter</span><span class="p">()</span> <span class="p">{</span>
+            <span class="n">t</span> <span class="o">=</span> <span class="n">t</span><span class="nf">.add_output</span><span class="p">(</span><span class="n">amt</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">key</span><span class="p">,</span> <span class="nb">None</span><span class="p">)</span><span class="o">?</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="n">t</span><span class="nf">.into</span><span class="p">()</span>
+    <span class="p">}</span>
+
+    <span class="c">/// all signed the transaction!</span>
+    <span class="nd">#[guard]</span>
+    <span class="k">fn</span> <span class="nf">all_signed</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nn">Clause</span><span class="p">::</span><span class="nf">Threshold</span><span class="p">(</span><span class="k">self</span><span class="py">.members</span><span class="nf">.len</span><span class="p">(),</span>
+                          <span class="k">self</span><span class="py">.members</span>
+                              <span class="nf">.keys</span><span class="p">()</span>
+                              <span class="nf">.map</span><span class="p">(</span><span class="nn">Clause</span><span class="p">::</span><span class="n">Key</span><span class="p">)</span>
+                              <span class="nf">.collect</span><span class="p">())</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">impl</span> <span class="n">Contract</span> <span class="k">for</span> <span class="n">SimplePool</span> <span class="p">{</span>
+    <span class="nd">declare!</span><span class="p">{</span><span class="n">then</span><span class="p">,</span> <span class="nn">Self</span><span class="p">::</span><span class="n">ejection</span><span class="p">}</span>
+    <span class="nd">declare!</span><span class="p">{</span><span class="n">finish</span><span class="p">,</span> <span class="nn">Self</span><span class="p">::</span><span class="n">all_signed</span><span class="p">}</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+<p>Let’s check our list:</p>
+
+<ol>
+  <li>It’s a single UTXO – Check</li>
+  <li>Every user can get their funds out unilaterally – Check, with SimplePool::ejection</li>
+  <li>A set of users can authorize spend the funds – Check, unanimously</li>
+  <li>Unspent funds/change stay in the pool – We’ll give this a Check, just don’t sign transaction that don’t meet this contstraint.</li>
+</ol>
+
+<p>So we’re good! This is all we need.</p>
+
+<h2 id="but-is-it-really-all-we-need">But is it really all we need?</h2>
+
+<p>It’d be nice if the Payment Pool had a little bit more structure around the
+updating so that a little bit less was left to the user to do correctly.
+Luckily, Sapio has tools for that. Let’s define a transition function in Sapio
+that generates what we should do with <code class="language-plaintext highlighter-rouge">Simple::all_signed</code>.</p>
+
+<p>The transition function should take a list of signed updates per participant and
+generate a transaction for signing (signing the inputs helps with coordinating
+not signing the incorrect transaction). Any leftover funds should be sent into a
+new instance of the Payment Pool for future use.</p>
+
+<p>We’ll also make one more change for efficient ejections: In the version I gave
+above, the unilateral ejection option exits everyone out of the pool, which
+kinda sucks.</p>
+
+<p>However, we will ‘hybridize’ the payment pool with the tree payment.  Then, you
+would have “hierarchical” pools whereby splitting would keep pools alive. E.g.,
+if you had 30 people in a pool with a splitting radix of 2, 1 person
+force-ejecting themselves would create something like 1 pool of size 15, 1 pool
+of size 7, 1 pool of size 4, 1 pool of size 2, and 2 ejected people. They can
+always re-join a pool again after!</p>
+
+<p>First, we’ll define the basic Pool data and interface:</p>
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">#[derive(Deserialize,</span> <span class="nd">JsonSchema,</span> <span class="nd">Clone)]</span>
+<span class="k">struct</span> <span class="n">NextTxPool</span> <span class="p">{</span>
+    <span class="c">/// map of all initial balances as PK to BTC</span>
+    <span class="n">members</span><span class="p">:</span> <span class="n">BTreeMap</span><span class="o">&lt;</span><span class="n">PublicKey</span><span class="p">,</span> <span class="n">AmountF64</span><span class="o">&gt;</span><span class="p">,</span>
+    <span class="c">/// The current sequence number (for authenticating state updates)</span>
+    <span class="n">sequence</span><span class="p">:</span> <span class="nb">u64</span><span class="p">,</span>
+    <span class="c">/// If to require signatures or not (debugging, should be true)</span>
+    <span class="n">sig_needed</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="k">impl</span> <span class="n">Contract</span> <span class="k">for</span> <span class="n">NextTxPool</span> <span class="p">{</span>
+    <span class="nd">declare!</span> <span class="p">{</span><span class="n">then</span><span class="p">,</span> <span class="nn">Self</span><span class="p">::</span><span class="n">ejection</span><span class="p">}</span>
+    <span class="nd">declare!</span> <span class="p">{</span><span class="n">updatable</span><span class="o">&lt;</span><span class="n">DoTx</span><span class="o">&gt;</span><span class="p">,</span> <span class="nn">Self</span><span class="p">::</span><span class="n">do_tx</span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Now we’ll define the logic for ejecting from the pool:</p>
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">impl</span> <span class="n">NextTxPool</span> <span class="p">{</span>
+    <span class="c">/// Sum Up all the balances</span>
+    <span class="k">fn</span> <span class="nf">total</span><span class="p">(</span><span class="o">&amp;</span><span class="k">self</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="n">Amount</span> <span class="p">{</span>
+        <span class="k">self</span><span class="py">.members</span>
+            <span class="nf">.values</span><span class="p">()</span>
+            <span class="nf">.cloned</span><span class="p">()</span>
+            <span class="nf">.map</span><span class="p">(</span><span class="nn">Amount</span><span class="p">::</span><span class="n">from</span><span class="p">)</span>
+            <span class="nf">.fold</span><span class="p">(</span><span class="nn">Amount</span><span class="p">::</span><span class="nf">from_sat</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="p">|</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">|</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="c">/// Only compile an ejection if the pool has other users in it, otherwise</span>
+    <span class="c">/// it's base case.</span>
+    <span class="nd">#[compile_if]</span>
+    <span class="k">fn</span> <span class="nf">has_eject</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="k">self</span><span class="py">.members</span><span class="nf">.len</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="p">{</span>
+            <span class="nn">ConditionalCompileType</span><span class="p">::</span><span class="n">Required</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="nn">ConditionalCompileType</span><span class="p">::</span><span class="n">Never</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="c">/// Split the pool in two -- users can eject multiple times to fully eject.</span>
+    <span class="nd">#[then(compile_if</span> <span class="nd">=</span> <span class="s">"[Self::has_eject]"</span><span class="nd">)]</span>
+    <span class="k">fn</span> <span class="nf">ejection</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">let</span> <span class="k">mut</span> <span class="n">t</span> <span class="o">=</span> <span class="n">ctx</span><span class="nf">.template</span><span class="p">();</span>
+        <span class="k">let</span> <span class="n">mid</span> <span class="o">=</span> <span class="p">(</span><span class="k">self</span><span class="py">.members</span><span class="nf">.len</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span>
+        <span class="c">// find the middle</span>
+        <span class="k">let</span> <span class="n">key</span> <span class="o">=</span> <span class="k">self</span><span class="py">.members</span><span class="nf">.keys</span><span class="p">()</span><span class="nf">.nth</span><span class="p">(</span><span class="n">mid</span><span class="p">)</span><span class="nf">.expect</span><span class="p">(</span><span class="s">"must be present"</span><span class="p">);</span>
+        <span class="k">let</span> <span class="k">mut</span> <span class="n">pool_one</span><span class="p">:</span> <span class="n">NextTxPool</span> <span class="o">=</span> <span class="k">self</span><span class="nf">.clone</span><span class="p">();</span>
+        <span class="n">pool_one</span><span class="py">.sequence</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="k">let</span> <span class="n">pool_two</span> <span class="o">=</span> <span class="n">NextTxPool</span> <span class="p">{</span>
+            <span class="c">// removes the back half including key</span>
+            <span class="n">members</span><span class="p">:</span> <span class="n">pool_one</span><span class="py">.members</span><span class="nf">.split_off</span><span class="p">(</span><span class="o">&amp;</span><span class="n">key</span><span class="p">),</span>
+            <span class="n">sequence</span><span class="p">:</span> <span class="k">self</span><span class="py">.sequence</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="n">sig_needed</span><span class="p">:</span> <span class="k">self</span><span class="py">.sig_needed</span><span class="p">,</span>
+        <span class="p">};</span>
+        <span class="k">let</span> <span class="n">amt_one</span> <span class="o">=</span> <span class="n">pool_one</span><span class="nf">.total</span><span class="p">();</span>
+        <span class="k">let</span> <span class="n">amt_two</span> <span class="o">=</span> <span class="n">pool_two</span><span class="nf">.total</span><span class="p">();</span>
+        <span class="n">t</span><span class="nf">.add_output</span><span class="p">(</span><span class="n">amt_one</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">pool_one</span><span class="p">,</span> <span class="nb">None</span><span class="p">)</span><span class="o">?</span>
+            <span class="nf">.add_output</span><span class="p">(</span><span class="n">amt_two</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">pool_two</span><span class="p">,</span> <span class="nb">None</span><span class="p">)</span><span class="o">?</span>
+            <span class="nf">.into</span><span class="p">()</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>Next, we’ll define some data types for instructing the pool to update:</p>
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">/// Payment Request</span>
+<span class="nd">#[derive(Deserialize,</span> <span class="nd">JsonSchema)]</span>
+<span class="k">struct</span> <span class="n">PaymentRequest</span> <span class="p">{</span>
+    <span class="c">/// # Signature</span>
+    <span class="c">/// hex encoded signature of the fee, sequence number, and payments</span>
+    <span class="n">hex_der_sig</span><span class="p">:</span> <span class="nb">String</span><span class="p">,</span>
+    <span class="n">fee</span><span class="p">:</span> <span class="n">AmountF64</span><span class="p">,</span>
+    <span class="n">payments</span><span class="p">:</span> <span class="n">BTreeMap</span><span class="o">&lt;</span><span class="n">Address</span><span class="p">,</span> <span class="n">AmountF64</span><span class="o">&gt;</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="c">/// New Update message for generating a transaction from.</span>
+<span class="nd">#[derive(Deserialize,</span> <span class="nd">JsonSchema)]</span>
+<span class="k">struct</span> <span class="n">DoTx</span> <span class="p">{</span>
+    <span class="c">/// # Payments</span>
+    <span class="c">/// A mapping of public key in members to signed list of payouts with a fee rate.</span>
+    <span class="n">payments</span><span class="p">:</span> <span class="n">HashMap</span><span class="o">&lt;</span><span class="n">PublicKey</span><span class="p">,</span> <span class="n">PaymentRequest</span><span class="o">&gt;</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="c">/// required...</span>
+<span class="k">impl</span> <span class="n">Default</span> <span class="k">for</span> <span class="n">DoTx</span> <span class="p">{</span>
+    <span class="k">fn</span> <span class="nf">default</span><span class="p">()</span> <span class="k">-&gt;</span> <span class="n">Self</span> <span class="p">{</span>
+        <span class="n">DoTx</span> <span class="p">{</span>
+            <span class="n">payments</span><span class="p">:</span> <span class="nn">HashMap</span><span class="p">::</span><span class="nf">new</span><span class="p">(),</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="k">impl</span> <span class="n">StatefulArgumentsTrait</span> <span class="k">for</span> <span class="n">DoTx</span> <span class="p">{}</span>
+
+<span class="c">/// helper for rust type system issue</span>
+<span class="k">fn</span> <span class="nf">default_coerce</span><span class="p">(</span>
+    <span class="n">k</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">NextTxPool</span> <span class="k">as</span> <span class="n">Contract</span><span class="o">&gt;</span><span class="p">::</span><span class="n">StatefulArguments</span><span class="p">,</span>
+<span class="p">)</span> <span class="k">-&gt;</span> <span class="n">Result</span><span class="o">&lt;</span><span class="n">DoTx</span><span class="p">,</span> <span class="n">CompilationError</span><span class="o">&gt;</span> <span class="p">{</span>
+    <span class="nf">Ok</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Lastly, we’ll define the logic for actually doing the update:</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">impl</span> <span class="n">NextTxPool</span> <span class="p">{</span>
+    <span class="c">/// all signed the transaction!</span>
+    <span class="nd">#[guard]</span>
+    <span class="k">fn</span> <span class="nf">all_signed</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nn">Clause</span><span class="p">::</span><span class="nf">Threshold</span><span class="p">(</span>
+            <span class="k">self</span><span class="py">.members</span><span class="nf">.len</span><span class="p">(),</span>
+            <span class="k">self</span><span class="py">.members</span><span class="nf">.keys</span><span class="p">()</span><span class="nf">.cloned</span><span class="p">()</span><span class="nf">.map</span><span class="p">(</span><span class="nn">Clause</span><span class="p">::</span><span class="n">Key</span><span class="p">)</span><span class="nf">.collect</span><span class="p">(),</span>
+        <span class="p">)</span>
+    <span class="p">}</span>
+    <span class="c">/// This Function will create a proposed transaction that is safe to sign</span>
+    <span class="c">/// given a list of data from participants.</span>
+    <span class="nd">#[continuation(</span>
+        <span class="nd">guarded_by</span> <span class="nd">=</span> <span class="s">"[Self::all_signed]"</span><span class="nd">,</span>
+        <span class="nd">coerce_args</span> <span class="nd">=</span> <span class="s">"default_coerce"</span><span class="nd">,</span>
+        <span class="nd">web_api</span>
+    <span class="nd">)]</span>
+    <span class="k">fn</span> <span class="nf">do_tx</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">,</span> <span class="n">update</span><span class="p">:</span> <span class="n">DoTx</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c">// don't allow empty updates.</span>
+        <span class="k">if</span> <span class="n">update</span><span class="py">.payments</span><span class="nf">.is_empty</span><span class="p">()</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="nf">empty</span><span class="p">();</span>
+        <span class="p">}</span>
+        <span class="c">// collect members with updated balances here</span>
+        <span class="k">let</span> <span class="k">mut</span> <span class="n">new_members</span> <span class="o">=</span> <span class="k">self</span><span class="py">.members</span><span class="nf">.clone</span><span class="p">();</span>
+        <span class="c">// verification context</span>
+        <span class="k">let</span> <span class="n">secp</span> <span class="o">=</span> <span class="nn">Secp256k1</span><span class="p">::</span><span class="nf">new</span><span class="p">();</span>
+        <span class="c">// collect all the payments</span>
+        <span class="k">let</span> <span class="k">mut</span> <span class="n">all_payments</span> <span class="o">=</span> <span class="nd">vec!</span><span class="p">[];</span>
+        <span class="k">let</span> <span class="k">mut</span> <span class="n">spent</span> <span class="o">=</span> <span class="nn">Amount</span><span class="p">::</span><span class="nf">from_sat</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+        <span class="c">// for each payment...</span>
+        <span class="k">for</span> <span class="p">(</span>
+            <span class="n">from</span><span class="p">,</span>
+            <span class="n">PaymentRequest</span> <span class="p">{</span>
+                <span class="n">hex_der_sig</span><span class="p">,</span>
+                <span class="n">fee</span><span class="p">,</span>
+                <span class="n">payments</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="p">)</span> <span class="n">in</span> <span class="n">update</span><span class="py">.payments</span><span class="nf">.iter</span><span class="p">()</span>
+        <span class="p">{</span>
+            <span class="c">// every from must be in the members</span>
+            <span class="k">let</span> <span class="n">balance</span> <span class="o">=</span> <span class="k">self</span>
+                <span class="py">.members</span>
+                <span class="nf">.get</span><span class="p">(</span><span class="n">from</span><span class="p">)</span>
+                <span class="nf">.ok_or</span><span class="p">(</span><span class="nn">CompilationError</span><span class="p">::</span><span class="n">TerminateCompilation</span><span class="p">)</span><span class="o">?</span><span class="p">;</span>
+            <span class="k">let</span> <span class="n">new_balance</span> <span class="o">=</span> <span class="nn">Amount</span><span class="p">::</span><span class="nf">from</span><span class="p">(</span><span class="o">*</span><span class="n">balance</span><span class="p">)</span>
+                <span class="o">-</span> <span class="p">(</span><span class="n">payments</span>
+                    <span class="nf">.values</span><span class="p">()</span>
+                    <span class="nf">.cloned</span><span class="p">()</span>
+                    <span class="nf">.map</span><span class="p">(</span><span class="nn">Amount</span><span class="p">::</span><span class="n">from</span><span class="p">)</span>
+                    <span class="nf">.fold</span><span class="p">(</span><span class="nn">Amount</span><span class="p">::</span><span class="nf">from_sat</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="p">|</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">|</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span>
+                    <span class="o">+</span> <span class="nn">Amount</span><span class="p">::</span><span class="nf">from</span><span class="p">(</span><span class="o">*</span><span class="n">fee</span><span class="p">));</span>
+            <span class="c">// check for no underflow</span>
+            <span class="k">if</span> <span class="n">new_balance</span><span class="nf">.as_sat</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="p">{</span>
+                <span class="k">return</span> <span class="nf">Err</span><span class="p">(</span><span class="nn">CompilationError</span><span class="p">::</span><span class="n">TerminateCompilation</span><span class="p">);</span>
+            <span class="p">}</span>
+            <span class="c">// updates the balance or remove if empty</span>
+            <span class="k">if</span> <span class="n">new_balance</span><span class="nf">.as_sat</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="p">{</span>
+                <span class="n">new_members</span><span class="nf">.insert</span><span class="p">(</span><span class="n">from</span><span class="nf">.clone</span><span class="p">(),</span> <span class="n">new_balance</span><span class="nf">.into</span><span class="p">());</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="n">new_members</span><span class="nf">.remove</span><span class="p">(</span><span class="n">from</span><span class="p">);</span>
+            <span class="p">}</span>
+
+            <span class="c">// collect all the payment</span>
+            <span class="k">for</span> <span class="p">(</span><span class="n">address</span><span class="p">,</span> <span class="n">amt</span><span class="p">)</span> <span class="n">in</span> <span class="n">payments</span><span class="nf">.iter</span><span class="p">()</span> <span class="p">{</span>
+                <span class="n">spent</span> <span class="o">+=</span> <span class="nn">Amount</span><span class="p">::</span><span class="nf">from</span><span class="p">(</span><span class="o">*</span><span class="n">amt</span><span class="p">);</span>
+                <span class="n">all_payments</span><span class="nf">.push</span><span class="p">(</span><span class="n">Payment</span> <span class="p">{</span>
+                    <span class="n">address</span><span class="p">:</span> <span class="n">address</span><span class="nf">.clone</span><span class="p">(),</span>
+                    <span class="n">amount</span><span class="p">:</span> <span class="nn">Amount</span><span class="p">::</span><span class="nf">from</span><span class="p">(</span><span class="o">*</span><span class="n">amt</span><span class="p">)</span><span class="nf">.into</span><span class="p">(),</span>
+                <span class="p">})</span>
+            <span class="p">}</span>
+            <span class="c">// Check the signature for this request</span>
+            <span class="c">// came from this user</span>
+            <span class="k">if</span> <span class="k">self</span><span class="py">.sig_needed</span> <span class="p">{</span>
+                <span class="k">let</span> <span class="k">mut</span> <span class="n">hasher</span> <span class="o">=</span> <span class="nn">sha256</span><span class="p">::</span><span class="nn">Hash</span><span class="p">::</span><span class="nf">engine</span><span class="p">();</span>
+                <span class="n">hasher</span><span class="nf">.write</span><span class="p">(</span><span class="o">&amp;</span><span class="k">self</span><span class="py">.sequence</span><span class="nf">.to_le_bytes</span><span class="p">());</span>
+                <span class="n">hasher</span><span class="nf">.write</span><span class="p">(</span><span class="o">&amp;</span><span class="nn">Amount</span><span class="p">::</span><span class="nf">from</span><span class="p">(</span><span class="o">*</span><span class="n">fee</span><span class="p">)</span><span class="nf">.as_sat</span><span class="p">()</span><span class="nf">.to_le_bytes</span><span class="p">());</span>
+                <span class="k">for</span> <span class="p">(</span><span class="n">address</span><span class="p">,</span> <span class="n">amt</span><span class="p">)</span> <span class="n">in</span> <span class="n">payments</span><span class="nf">.iter</span><span class="p">()</span> <span class="p">{</span>
+                    <span class="n">hasher</span><span class="nf">.write</span><span class="p">(</span><span class="o">&amp;</span><span class="nn">Amount</span><span class="p">::</span><span class="nf">from</span><span class="p">(</span><span class="o">*</span><span class="n">amt</span><span class="p">)</span><span class="nf">.as_sat</span><span class="p">()</span><span class="nf">.to_le_bytes</span><span class="p">());</span>
+                    <span class="n">hasher</span><span class="nf">.write</span><span class="p">(</span><span class="n">address</span><span class="nf">.script_pubkey</span><span class="p">()</span><span class="nf">.as_bytes</span><span class="p">());</span>
+                <span class="p">}</span>
+                <span class="k">let</span> <span class="n">h</span> <span class="o">=</span> <span class="nn">sha256</span><span class="p">::</span><span class="nn">Hash</span><span class="p">::</span><span class="nf">from_engine</span><span class="p">(</span><span class="n">hasher</span><span class="p">);</span>
+                <span class="k">let</span> <span class="n">m</span> <span class="o">=</span> <span class="nn">Message</span><span class="p">::</span><span class="nf">from_slice</span><span class="p">(</span><span class="o">&amp;</span><span class="n">h</span><span class="nf">.as_inner</span><span class="p">()[</span><span class="o">..</span><span class="p">])</span><span class="nf">.expect</span><span class="p">(</span><span class="s">"Correct Size"</span><span class="p">);</span>
+                <span class="k">let</span> <span class="n">signed</span><span class="p">:</span> <span class="nb">Vec</span><span class="o">&lt;</span><span class="nb">u8</span><span class="o">&gt;</span> <span class="o">=</span> <span class="nn">FromHex</span><span class="p">::</span><span class="nf">from_hex</span><span class="p">(</span><span class="o">&amp;</span><span class="n">hex_der_sig</span><span class="p">)</span>
+                    <span class="nf">.map_err</span><span class="p">(|</span><span class="mi">_</span><span class="p">|</span> <span class="nn">CompilationError</span><span class="p">::</span><span class="n">TerminateCompilation</span><span class="p">)</span><span class="o">?</span><span class="p">;</span>
+                <span class="k">let</span> <span class="n">sig</span> <span class="o">=</span> <span class="nn">Signature</span><span class="p">::</span><span class="nf">from_der</span><span class="p">(</span><span class="o">&amp;</span><span class="n">signed</span><span class="p">)</span>
+                    <span class="nf">.map_err</span><span class="p">(|</span><span class="mi">_</span><span class="p">|</span> <span class="nn">CompilationError</span><span class="p">::</span><span class="n">TerminateCompilation</span><span class="p">)</span><span class="o">?</span><span class="p">;</span>
+                <span class="k">let</span> <span class="mi">_</span><span class="p">:</span> <span class="p">()</span> <span class="o">=</span> <span class="n">secp</span>
+                    <span class="nf">.verify</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">sig</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">from</span><span class="py">.key</span><span class="p">)</span>
+                    <span class="nf">.map_err</span><span class="p">(|</span><span class="mi">_</span><span class="p">|</span> <span class="nn">CompilationError</span><span class="p">::</span><span class="n">TerminateCompilation</span><span class="p">)</span><span class="o">?</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="c">// Send any leftover funds to a new pool</span>
+        <span class="k">let</span> <span class="n">change</span> <span class="o">=</span> <span class="n">NextTxPool</span> <span class="p">{</span>
+            <span class="n">members</span><span class="p">:</span> <span class="n">new_members</span><span class="p">,</span>
+            <span class="n">sequence</span><span class="p">:</span> <span class="k">self</span><span class="py">.sequence</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="n">sig_needed</span><span class="p">:</span> <span class="k">self</span><span class="py">.sig_needed</span><span class="p">,</span>
+        <span class="p">};</span>
+        <span class="c">// We'll use the contract from our last post to make the state</span>
+        <span class="c">// transitions more efficient!</span>
+        <span class="c">// Think about what else could be fun here though...</span>
+        <span class="k">let</span> <span class="n">out</span> <span class="o">=</span> <span class="n">TreePay</span> <span class="p">{</span>
+            <span class="n">participants</span><span class="p">:</span> <span class="n">all_payments</span><span class="p">,</span>
+            <span class="n">radix</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+        <span class="p">};</span>
+        <span class="n">ctx</span><span class="nf">.template</span><span class="p">()</span>
+            <span class="nf">.add_output</span><span class="p">(</span><span class="n">change</span><span class="nf">.total</span><span class="p">(),</span> <span class="o">&amp;</span><span class="n">change</span><span class="p">,</span> <span class="nb">None</span><span class="p">)</span><span class="o">?</span>
+            <span class="nf">.add_output</span><span class="p">(</span><span class="n">spent</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">out</span><span class="p">,</span> <span class="nb">None</span><span class="p">)</span><span class="o">?</span>
+            <span class="nf">.into</span><span class="p">()</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Now it’s pretty neat – rather than “exercise for the reader”, we can have Sapio
+generate payment pool updates for us. And exiting from the pool is very
+efficient and keeps most users online. But speaking of exercises for the reader,
+try thinking through these extensions<sup id="fnref:try" role="doc-noteref"><a href="#fn:try" class="footnote" rel="footnote">6</a></sup>…</p>
+
+<h4 id="no-code-payout-to-where">No Code: Payout to where?</h4>
+
+<p>Payouts in this version are defined as being to an address.</p>
+
+<p>How creative can we get with that? What if the payment request is 1 BTC to
+address X and we generated X as a 1 BTC expecting Vault in Sapio?</p>
+
+<p>What else cool can we do?</p>
+
+<h4 id="cut-through">Cut-through</h4>
+
+<p>We could make our <code class="language-plaintext highlighter-rouge">DoTx</code> differentiate between internal and external payouts. An
+internal payout would allow for adding a new key OR for increasing the balance
+of an existing key <em>before</em> other payments are processed. E.g., suppose we have
+Alice with 1 BTC and Bob with 2, under the code above Alice sending 0.5 to Bob
+and Bob sending 2.1 to Carol externally would fail and would remove funds from
+the pool. If we want to keep funds in the pool, we can do that! And if we want
+the balance from new internal transfers, could process before any deductions.</p>
+
+<p>Internal tranfers to multiple addresses per user can also be used to improve
+privacy!</p>
+
+<h4 id="adding-inputs">Adding Inputs</h4>
+
+<p>It should also be possible to have external inputs add balance to the pool
+during any state update.</p>
+
+<h4 id="fees">Fees?</h4>
+
+<p>I basically glance over fees in this presentation… But there is more work to
+be done to control and process fees fairly!</p>
+
+<h4 id="cold-er-ejections">Cold-er Ejections</h4>
+
+<p>If you get kicked out of a pool because you went offline, might you be able to
+specify – per user – some sort of vault program for the evicted coins to go into?</p>
+
+<h4 id="howdy-partner">Howdy Partner</h4>
+
+<p>Who is next to whom is actually kinda relevant for a Pool with Efficient Ejections.</p>
+
+<p>For example, if the pool splits because of an undersea cable breaking off France
+and Britain, dividing users based on English or French would be much better than
+random  because after one transaction you could have all the English and French
+users split and able to communicate again.</p>
+
+<p>What different heuristics might you group people by? Reputation system? Amount
+of funds at stake? Random? Sorted lexicographically?</p>
+
+<h2 id="lets-look-at-some-pictures">Let’s look at some pictures:</h2>
+
+<h6 id="creating-a-pool">Creating a Pool</h6>
+<p><img src="/public/img/bitcoin/advent/payment_pool/1.png" alt="" /></p>
+<h6 id="pool-created">Pool Created!</h6>
+<p><img src="/public/img/bitcoin/advent/payment_pool/2.png" alt="" /></p>
+<h6 id="inspecting-the-root">Inspecting the Root</h6>
+<p><img src="/public/img/bitcoin/advent/payment_pool/3.png" alt="" /></p>
+<h6 id="entering-an-update">Entering an update</h6>
+<p><img src="/public/img/bitcoin/advent/payment_pool/4.png" alt="" /></p>
+<h6 id="updated-tx-graph">Updated TX Graph</h6>
+<p>(had a ux bug, need to fix it before I add this :p)</p>
+
+<h2 id="do-payment-pools-need-ctv">Do Payment Pools Need CTV?</h2>
+
+<p>Not necessarily. Payment pools as shown can be done <em>today</em>, but they require
+participants to use their own emulation / pre-signing servers before depositing
+funds.</p>
+
+<p>This might not seem bad; we already need everyone online for an update, right?
+It’s truly not awful. However, many use cases of payment pool essentially
+require being able to generate a payment pool without having all of the parties
+online at the time of creation. E.g., imagine that your exchange matches you
+with reputable payment pool counterparties when you withdraw (if you request
+it). We’ll see the need concretely in a future post.</p>
+
+<h2 id="what-about-the-taproots">What about the Taproots</h2>
+
+<p>Unfortunately, rust-bitcoin/miniscript work on Taproot is still ongoing, so I
+can’t show you how cool Taproot is for this. But essentially, our
+<code class="language-plaintext highlighter-rouge">Self::all_signed</code> clauses become just a single key! And they can be
+non-interactively generated at every level for the tree-ejection version. This is
+great! It will work pretty much automatically without changing the user-code once
+the compiler supports taproot. Huge boon for privacy and efficiency!</p>
+
+<h2 id="contrast-this-vs">Contrast this V.S….</h2>
+<p>As noted<sup id="fnref:background:1" role="doc-noteref"><a href="#fn:background" class="footnote" rel="footnote">1</a></sup>, there are some other proposals out there.</p>
+
+<p>It’s the author’s opinion that Sapio + CTV are the best form of payment pool
+compared to alternatives for both scalability and privacy. To fully understand
+why is a lot more technical than this already technical post (beleive it or not).</p>
+
+<p>If you want to get into it,
+you can see my accounting for costs on the mailing list:</p>
+
+<ul>
+  <li><a href="https://lists.linuxfoundation.org/pipermail/bitcoin-dev/2021-September/019424.html">TLUV v CTV</a></li>
+  <li><a href="https://lists.linuxfoundation.org/pipermail/bitcoin-dev/2020-June/017968.html">CoinPool v CTV</a></li>
+</ul>
+
+<p>It boils down to a few things:</p>
+
+<ol>
+  <li>Cheaper</li>
+  <li>Simpler</li>
+  <li>More Composable</li>
+  <li>Better Privacy</li>
+</ol>
+
+<hr />
+
+<p>In posts coming soon we’ll get a heck’n lot more creative with what goes inside
+a payment pool, including lightning, mining pools, and “daos”! But that’s all
+for today.</p>
+
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:background" role="doc-endnote">
+      <p>Credit is boring, but I presented the ideas for them originally at SF Bitdevs in May 2019, and Greg Maxwell followed up on the concept more thoroughly in <a href="https://freenode.irclog.whitequark.org/bitcoin-wizards/2019-05-21#24639752">#bitcoin-wizards</a> afterwards. <a href="https://lists.linuxfoundation.org/pipermail/bitcoin-dev/2020-June/017964.html">Gleb and Antoine</a> have also been thinking about it recently (under the name Coin Pools – to be honest we’ll have to duke it out since I like the name Coin Pools better than Payment Pool so unclear if it’s going to be like “payment channels” for a variety of designs or “the lightning network”…), as well as AJ/Greg with <a href="https://lists.linuxfoundation.org/pipermail/bitcoin-dev/2021-September/019419.html">TLUV</a>. <a href="#fnref:background" class="reversefootnote" role="doc-backlink">&#8617;</a> <a href="#fnref:background:1" class="reversefootnote" role="doc-backlink">&#8617;<sup>2</sup></a></p>
+    </li>
+    <li id="fn:single" role="doc-endnote">
+      <p>Debatably, one could have a protocol where it’s a number of utxos but the core idea is that it should not be 1 user to 1 utxo. <a href="#fnref:single" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:implies" role="doc-endnote">
+      <p>This implies that no user can block the other users. <a href="#fnref:implies" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:unan" role="doc-endnote">
+      <p>Usually all users, not a subset. But possible to do fewer than all. <a href="#fnref:unan" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:greg" role="doc-endnote">
+      <p>Credit to Greg Maxwell for this description. It’s potent. <a href="#fnref:greg" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:try" role="doc-endnote">
+      <p>please do try! I think you can :) <a href="#fnref:try" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+    <div>
+    <h3>
+        <span style="vertical-align: text-top;">
+    
+
+<a class="twitter-share-button"
+data-size="large"
+href="https://twitter.com/intent/tweet?text=Payment+Pools+%2F+Coin+Pools&hashtags=Bitcoin,
+AdventCalendar,
+Covenants,
+Sapio
+"> Tweet</a>
+
+
+
+        </span>
+        <span style="vertical-align: super;">
+to continue the conversation...
+        </span>
+    </h3>
+
+    </div>
+</div>
+
+<aside class="related">
+  <h3>You might also enjoy...</h3>
+  <ul class="related-posts">
+    
+      <li>
+        <a href="/bitcoin/2021/12/11/advent-14/">
+          Payment Channels in a CTV+Sapio World
+          <small><time datetime="2021-12-11T00:00:00+00:00">11 Dec 2021</time></small>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/bitcoin/2021/12/09/advent-12/">
+          Congestion Control
+          <small><time datetime="2021-12-09T00:00:00+00:00">09 Dec 2021</time></small>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/bitcoin/2021/12/20/advent-23/">
+          Derivatives and Options For Bitcoin
+          <small><time datetime="2021-12-20T00:00:00+00:00">20 Dec 2021</time></small>
+        </a>
+      </li>
+    
+  </ul>
+</aside>
+
+        </div>
+        <div class="content container" style="padding-bottom:0;padding-top:0;bottom:0px;">
+            <div class="posts" style="height:14pt;margin-bottom:0;">
+                <div class="post">
+                    <p style="text-align:center;font-size:12pt;">&copy; 2011-2021 Jeremy Rubin. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

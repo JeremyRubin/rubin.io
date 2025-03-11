@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+  <title> Payment Channels in a CTV+Sapio World &middot; Jeremy Rubin </title>
+  <link href="https://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/poole.css">
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/css/hyde.css">
+  <link rel="stylesheet" href="/public/font-awesome-4.5.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+                                 <link rel="shortcut icon" href="/public/favicon.ico">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+
+  
+  <link type="application/atom+xml" rel="alternate" href="http://rubin.io/feed.xml" title="Jeremy Rubin" />
+
+
+  <!-- GA -->
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-40376251-1', 'auto');
+    ga('send', 'pageview');
+</script>
+
+  
+  <link rel="me" href="https://twitter.com/JeremyRubin" >
+  <meta name="twitter:dnt" content="on">
+			   <script>window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
+
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+
+  return t;
+}(document, "script", "twitter-wjs"));</script>
+
+</head>
+
+    <body>
+        <div class="sidebar">
+    <h3 style="text-align: center;"> <a href="/"> Jeremy Rubin </a> </h3>
+    <div class="container">
+        <div class="sidebar-about">
+
+            <div class="sidebar-about-info"> 
+                <a href="/public/pdfs/resume.pdf"><i class="fa fa-file-text-o" title=Resume></i></a>
+                <a href=""><i class="fa fa-github" title=Github></i></a>
+                <a href="https://twitter.com/JeremyRubin"><i class="fa fa-twitter" title=Twitter></i></a>
+            </div>
+            <div class="sidebar-about-info hide-large">
+                <a class="" href="/">Home</a>
+                <a class="" href="/blog/">Blog</a>
+                <a class="" href="/talks/">Talks</a> 
+                <a class="" href="/projects/">Projects</a>
+                <a class="" href="/archive/">Site Index</a>
+            </div>
+        </div>
+
+
+
+
+        <nav class="sidebar-nav hide-small">
+            <a class="sidebar-nav-item" href="/">Home</a>
+            <a class="sidebar-nav-item" href="/blog/">Blog</a>
+            <a class="sidebar-nav-item" href="/talks/">Talks</a> 
+            <a class="sidebar-nav-item" href="/projects/">Projects</a>
+            <a class="sidebar-nav-item" href="/archive/">Site Index</a>
+        </nav>
+    </div>
+</div>
+
+
+
+        <div class="content container" style="padding-bottom:0;">
+            <div class="post">
+    <h1 class="post-title">Payment Channels in a CTV+Sapio World</h1>
+    <h3>Day 14: Rubin's Bitcoin Advent Calendar</h3>
+    
+
+<a class="twitter-share-button"
+data-size="large"
+href="https://twitter.com/intent/tweet?text=Payment+Channels+in+a+CTV%2BSapio+World&hashtags=Bitcoin,
+AdventCalendar,
+Covenants,
+Sapio
+"> Tweet</a>
+
+
+
+    <div>
+        <span class="post-date">11 Dec 2021
+        </span>
+    </div>
+    <p><em>Welcome to day 14 of my Bitcoin Advent Calendar. You can see an index of all
+the posts <a href="/advent21">here</a> or subscribe at
+<a href="https://judica.org/join">judica.org/join</a> to get new posts in your inbox</em></p>
+
+<h2 id="lightning-lightning-lightning">Lightning Lightning Lightning</h2>
+
+<p>Everybody loves Lightning. I love Lightining, you love Lightning. We love
+everyone who works on Lightning. Heck, even
+<a href="https://twitter.com/chainalysis/status/1469317238893289475">Chainalysis</a> loves
+Lightning these days :(…</p>
+
+<h2 id="we-all-love-lightning">We all love Lightning.</h2>
+
+<p>But what if I told you we could love Lightning even more? Crazy, right?</p>
+
+<p>With CTV + Sapio we can improve on Lightning is some pretty cool ways you
+may not have heard too much about before. Buckle up, we’re in for another doozy
+of a post.</p>
+
+<h2 id="let-a-thousand-channels-bloom">Let a thousand channels bloom</h2>
+
+<p>The main thing we’re going to talk about in this post is the opening and closing
+of channels. There are some other things that CTV/Sapio can do that are a bit
+more niche to talk about<sup id="fnref:eltoo" role="doc-noteref"><a href="#fn:eltoo" class="footnote" rel="footnote">1</a></sup>, but there will always be future posts.</p>
+
+<h3 id="how-do-we-open-channels-today">How do we open channels today?</h3>
+
+<p>Let’s say I want to open a channel up with you. I shoot you a text on signal or
+something and say “hey what’s up, happy holidays friend. I would like to open a
+payment channel with you”. You say back, “Tis the season! Let’s do it, my Tor
+Hidden Service address is ABCXYZ”. Then I connect to your node from my computer
+and then I say I want to open a channel with you for 500,000 sats (at writing in
+2021 this was $250 US Dollars, not $250 Million Dollars). Then, you might
+authorize opening up the channel with me, or your node might just roll the dice
+and do it without your permission (IDK how the nodes actually work, depends on
+your client, and maybe in the future some reputation thingy).</p>
+
+<p>So now we have agreed to create a channel.</p>
+
+<p>Now, I ask you for a key to use in the channel and you send it to me. Then, I
+create an unsigned transaction F that is going to create and fund our channel.
+The channel is in Output C. I send you F and C. Then, I ask you to pre-sign a
+transaction spending from C that doesn’t yet exist, but would refund me and give
+you nothing in the event you go offline. This is basically just using the
+channel like it exists already for a payment 0 paying me. After I get those
+sweet sweet signatures from you, then I send you the signatures as well in case
+you want to close things out like normal.</p>
+
+<h5 id="houston-we-have-a-channel">Houston, we have a channel.</h5>
+
+<p>Now we can revoke old states and stuff and sign new states and all that fancy
+channel HTLC routing jazz. We don’t really need to know how a lot of that works
+down in the details so don’t ask.</p>
+
+<h4 id="something-a-little-more-nifty-perhaps">Something a little more nifty, perhaps?</h4>
+
+<p>Technically I presented you how single funded channels work, but you can also
+dual fund where we both contribute some funds. It’s relatively new feature to
+land and was a lot of work… Dual funded channels are important because when I
+opened the channel to you I had all the sats and I couldn’t receive any Bitcoin.
+Dual funded channels means you can immediately send both directions.</p>
+
+<h3 id="what-can-we-do-with-ctv">What can we do with CTV?</h3>
+
+<p>With CTV, the single funded channel opening story is a bit simpler. I ask you if
+you want to open a channel, you say “sure!” (maybe I even look up your key from
+a Web-of-Trust system), and send me a key. I then use Sapio to compile a channel
+for 500k sats to our keys, I send Bitcoin to it. The channel is created. I send
+you the Outpoint + the arguments to the channel, either through email,
+connecting to your node, or pigeon with a thumbdrive, and later you verify that
+I paid to the channel for our keys that Sapio output by running the compiler
+with the same arguments (500k sats to our keys).</p>
+
+<p>This is called a non-interactive channel open. Why’s that? Beyond having to do
+some basics (e.g., I have to know a key for you, which could be on a public
+Web-of-Trust), there is no step in the flow that requires any back-and-forth
+negotiation to create the channel. I just create it unilaterally, and then I
+could tell you about it a year later. You’d be able to verify it fine!</p>
+
+<p>For dual-funded channels, I send you a transaction you can pay into to finish
+opening it and I can go offline. Once opened, the channel works for us both
+recovering our funds.</p>
+
+<h3 id="sounds-niche">sounds niche</h3>
+
+<p>It kinda is. It’s an esoteric nerdy property. But I promise you it’s really
+cool! Let’s look at some examples:</p>
+
+<h4 id="cafe-latte-anyone">Cafe Latte Anyone?</h4>
+<p>Let’s say that I go to a cafe I’ve never been to and there is a QR code posted
+on the wall.  I then go about my business, ordering a 10,000 sat breakfast combo.
+To pay, I scan the QR-code, and then it has a XPUB for Non Interactive Channels on it.</p>
+
+<p>I can then plug in that XPUB into my Sapio Channel Creator and create a channel
+with a first payment of 10k sats and a total balance of 100k sats.  I show a QR
+code on my phone to the barista, who scans it, getting the details of the
+channel I made. Barista says looks good, acknowledging both the payment and the
+channel open. The details get backed up to The Cloud.</p>
+
+<p>But just then something happens: a masked figure comes in with a gun and tells
+the barista, “GIVE ME ALL YOUR SATOSHIS”. A child begins to cry, their parent
+covering their mouth with their hand. The bad guy barks, “GIVE ME ALL YOUR
+SATOSHIS… and no one gets hurt,” tapping the muzzle of the gun on the
+countertop. The barista smirks and snarls, “stupid thief, surely you’ve been
+reading the post on non-interactive lightning channels on Rubin’s Bitcoin Advent
+Calendar.” The robber adjusts the straps on their mask for some relief from the
+ear irritation. “If you had been reading it, you would know that I don’t need to
+have a key online in order for someone to create a channel with me! I just need
+the XPUB to verify they are made correctly. This is not those old-school
+channels. I have no ability to spend. We keep our keys colder than our cold
+brew.” The robbers shoulders sag and they mutter, “fine, in that case, I’ll have
+a medium cold brew coffee, one sugar with a splash of oat milk. And that big
+chocolate chip cookie”.</p>
+
+<p>That’s right. Because our cafe used non-interactive channels, they didn’t
+have to have a key online to create a channel with me! They just needed durable
+storage for the channel definition.</p>
+
+<p>And when I go to spend a bit extra for a bottle of Topo Chico™ later, they still
+don’t need to be online, I can start making payments without them
+counter-signing<sup id="fnref:caveat" role="doc-noteref"><a href="#fn:caveat" class="footnote" rel="footnote">2</a></sup>.</p>
+
+<h4 id="where-did-my-corn-come-from">Where did my corn come from?</h4>
+
+<p>How did I get the bitcoin for the channel I’m opening? Usually this is an
+assumption for Lightning (you have Bitcoin!), but in this case it’s central to
+the plot here. You probably got them from an exchange, mining, or something else.</p>
+
+<p>This means that in order to open a channel to someone, I need to do two transactions:</p>
+
+<ol>
+  <li>Get some money</li>
+  <li>Make the channel</li>
+</ol>
+
+<p>It’s possible, if I had a really legit hip exchange, they’d let me directly open
+a channel by offering me a transaction unsigned with the channel output C that I
+can presign with you! But then they can’t really batch payments (otherwise one
+user going offline can be a DoS attack on the batch payout) and they can also
+get DoS’d unbatched since we can “lock up” a coin while we run the protocol.</p>
+
+<p>If instead, we had CTV we could just generate an address for the channel we
+wanted and request the exchange pay to it the appropriate amount of coin.  The
+exchange could pay the channel address however they want, and we’d be able to
+use it right away.</p>
+
+<h4 id="however-they-want">However they want?</h4>
+
+<p>Yes. Let’s look at some options:</p>
+
+<ol>
+  <li>A normal transaction – Works great.</li>
+  <li>A batch transaction – No Problemo.</li>
+  <li>A <a href="/bitcoin/2021/12/09/advent-12/">Congestion Control Tree</a> – Even that!</li>
+</ol>
+
+<p>What was that last one? You read it right, a channel can be created in a Congestion Control tree,
+and be immediately usable!</p>
+
+<p>How’s this work? Well, because you can fully verify you’d receive a payment in a
+congestion control tree, you can likewise fully verify that your channel will be
+created.</p>
+
+<p>This is big. This means that you can just directly request a channel from a third party
+without even telling them that you’re making a channel!</p>
+
+<p>And this technique – channels in congestion control tree – generalizes
+beautifully.  It means you could create as many immediately usable channels as
+you like and lazily fully open them over their lifetime whenever blockspace is
+affordable.</p>
+
+<h5 id="i-lied-a-little">I Lied (a little)</h5>
+
+<p>If the exchange doesn’t follow your payment instructions to the T, e.g. if they
+split it into two UTXOs then it won’t work. Exchanges should probably not do
+anything other than what you asked them to do (this should be something to ensure
+in the exchanges terms of service…).</p>
+
+<h4 id="come-on-in-the-waters-warm">Come on in the water’s warm?</h4>
+
+<p>This concept also composes nicely with the <a href="/bitcoin/2021/12/10/advent-13/">Payment
+Pools</a> we saw yesterday.  Imagine you embed
+channels as the terminal outputs after a full-ejection from the pool.  Then,
+what you can do is have the N-of-N agree to an on-chain state update that
+respects (or preserves) any channel updates <em>before</em> you switch.  Embedding the
+channels inside means that Payment Pools would only need to do on-chain
+transactions when they need to make an external payment or re-configure
+liquidity among participants.</p>
+
+<p>For example, imagine a pool with Alice, Bob, Carol, and Dave each having one
+coin in a channel. We’ll do some channel updates, and then reconfigure.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Start:
+Pool(Channel([A, 1], [B, 1]), Channel([C, 1], [D, 1]))
+
+Channel Update (off-chain):
+Pool(Channel([A, 0.4], [B, 1.6]), Channel([C, 1], [D, 1]))
+
+Channel Update (off-chain):
+Pool(Channel([A, 0.4], [B, 1.6]), Channel([C, 1.3], [D, 0.7]))
+
+Pool Reconfigure (on-chainl swap channel partners):
+Pool(Channel([A, 0.4], [D, 0.7]), Channel([C, 1.3], [B, 1.6]))
+
+Pool Reconfigure (on-chain; add Eve/Bob Channel):
+Pool(Channel([A, 0.4], [D, 0.7]), Channel([C, 1.3], [B, 0.6]), Channel([E, 0.5], [B, 0.5]))
+</code></pre></div></div>
+
+<p>Pretty neat, right?</p>
+
+<p>This is particularly a big win for Scalability and Privacy, since we’re now
+containing tons of activity within a single UTXO, and even within that UTXO
+most of the information doesn’t need to be known to all participants.</p>
+
+<hr />
+
+<p>I’m not going to show you all of these integrations directly (Congestion Control, Pools, etc),
+because you gotta cut an article somewhere. But we do have enough…</p>
+
+<h1 id="time-to-code">Time to Code</h1>
+
+<p>OK enough ‘how it works’ and ‘what it can do’. Let’s get cracking on a basic
+channel implementation so you know I’m not bullshitting you<sup id="fnref:microbs" role="doc-noteref"><a href="#fn:microbs" class="footnote" rel="footnote">3</a></sup>.</p>
+
+<p>First, let’s define the basic information we’ll need:</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">/// Information for each Participant</span>
+<span class="k">struct</span> <span class="n">Participant</span> <span class="p">{</span>
+    <span class="c">/// signing key</span>
+    <span class="n">key</span><span class="p">:</span> <span class="n">PublicKey</span><span class="p">,</span>
+    <span class="c">/// amount of funds</span>
+    <span class="n">amount</span><span class="p">:</span> <span class="n">AmountF64</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c">/// A Channel can be either in an Open or Closing state.</span>
+<span class="k">enum</span> <span class="n">State</span> <span class="p">{</span>
+    <span class="n">Open</span><span class="p">,</span>
+    <span class="n">Closing</span>
+<span class="p">}</span>
+
+<span class="c">/// Channel definition.</span>
+<span class="k">struct</span> <span class="n">Channel</span> <span class="p">{</span>
+    <span class="c">/// If it is opening or closing</span>
+    <span class="n">state</span><span class="p">:</span> <span class="n">State</span><span class="p">,</span>
+    <span class="c">/// Each participant's balances</span>
+    <span class="n">parties</span><span class="p">:</span> <span class="p">[</span><span class="n">Participant</span><span class="p">;</span> <span class="mi">2</span><span class="p">],</span>
+    <span class="c">/// Amount of time transactions must be broadcast within</span>
+    <span class="n">timeout</span><span class="p">:</span> <span class="n">AnyRelTimeLock</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Pretty straightforward.</p>
+
+<p>Now, let’s define the API:</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">impl</span> <span class="n">Contract</span> <span class="k">for</span> <span class="n">Channel</span> <span class="p">{</span>
+    <span class="nd">declare!</span><span class="p">{</span><span class="n">then</span><span class="p">,</span> <span class="nn">Self</span><span class="p">::</span><span class="n">finish_close</span><span class="p">,</span> <span class="nn">Self</span><span class="p">::</span><span class="n">begin_close</span><span class="p">}</span>
+    <span class="nd">declare!</span><span class="p">{</span><span class="n">updatable</span><span class="o">&lt;</span><span class="n">Update</span><span class="o">&gt;</span><span class="p">,</span> <span class="nn">Self</span><span class="p">::</span><span class="n">update</span><span class="p">}</span> 
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Next, we’ll define the <code class="language-plaintext highlighter-rouge">being_close</code> logic. Essentially all it’s going to do is,
+if we’re in the <code class="language-plaintext highlighter-rouge">Open</code> state allow transitioning the pool to the <code class="language-plaintext highlighter-rouge">Closing</code> state.</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">impl</span> <span class="n">Channel</span> <span class="p">{</span>
+    <span class="nd">#[compile_if]</span>
+    <span class="k">fn</span> <span class="nf">if_open</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="k">let</span> <span class="nn">State</span><span class="p">::</span><span class="n">Open</span> <span class="o">=</span> <span class="k">self</span><span class="py">.state</span> <span class="p">{</span>
+            <span class="nn">ConditionalCompileType</span><span class="p">::</span><span class="n">Required</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="nn">ConditionalCompileType</span><span class="p">::</span><span class="n">Never</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="nd">#[then(compile_if</span> <span class="nd">=</span> <span class="s">"[Self::if_open]"</span><span class="nd">)]</span>
+    <span class="k">fn</span> <span class="nf">begin_close</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c">// copy the channel data and change to closing state</span>
+        <span class="c">// begin_close can happen at any time</span>
+        <span class="k">let</span> <span class="k">mut</span> <span class="n">close</span> <span class="o">=</span> <span class="k">self</span><span class="nf">.clone</span><span class="p">();</span>
+        <span class="n">close</span><span class="py">.state</span> <span class="o">=</span> <span class="nn">State</span><span class="p">::</span><span class="n">Closing</span><span class="p">;</span>
+        <span class="n">ctx</span><span class="nf">.template</span><span class="p">()</span>
+            <span class="nf">.add_output</span><span class="p">(</span><span class="nn">Amount</span><span class="p">::</span><span class="nf">from</span><span class="p">(</span><span class="k">self</span><span class="py">.parties</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="py">.amount</span><span class="p">)</span> <span class="o">+</span>
+                        <span class="nn">Amount</span><span class="p">::</span><span class="nf">from</span><span class="p">(</span><span class="k">self</span><span class="py">.parties</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="py">.amount</span><span class="p">),</span>
+                        <span class="o">&amp;</span><span class="n">close</span><span class="p">,</span> <span class="nb">None</span><span class="p">)</span><span class="o">?</span>
+            <span class="nf">.into</span><span class="p">()</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Next we’ll define the logic for the <code class="language-plaintext highlighter-rouge">Closing</code> state. Essentially, if the state
+as been in <code class="language-plaintext highlighter-rouge">Closing</code> and the timeout expires, then we allow a transaction to
+return the funds to the initial state. We’ll only add an output for a
+participant if they have any money!</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">impl</span> <span class="n">Channel</span> <span class="p">{</span>
+    <span class="nd">#[compile_if]</span>
+    <span class="k">fn</span> <span class="nf">if_closing</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="k">let</span> <span class="nn">State</span><span class="p">::</span><span class="n">Closing</span> <span class="o">=</span> <span class="k">self</span><span class="py">.state</span> <span class="p">{</span>
+            <span class="nn">ConditionalCompileType</span><span class="p">::</span><span class="n">Required</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="nn">ConditionalCompileType</span><span class="p">::</span><span class="n">Never</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="nd">#[then(compile_if</span> <span class="nd">=</span> <span class="s">"[Self::if_closing]"</span><span class="nd">)]</span>
+    <span class="k">fn</span> <span class="nf">finish_close</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c">// only allow finish_close after waiting for timelock</span>
+        <span class="k">let</span> <span class="k">mut</span> <span class="n">tmpl</span> <span class="o">=</span> <span class="n">ctx</span><span class="nf">.template</span><span class="p">()</span><span class="nf">.set_sequence</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="k">self</span><span class="py">.timelock</span><span class="p">)</span><span class="o">?</span><span class="p">;</span>
+        <span class="c">// add party 0 if they have funds</span>
+        <span class="k">if</span> <span class="nn">Amount</span><span class="p">::</span><span class="nf">from</span><span class="p">(</span><span class="k">self</span><span class="py">.parties</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="py">.amount</span><span class="p">)</span><span class="nf">.as_sat</span><span class="p">()</span> <span class="o">!=</span> <span class="mi">0</span> <span class="p">{</span>
+            <span class="n">tmpl</span> <span class="o">=</span> <span class="n">tmpl</span><span class="nf">.add_output</span><span class="p">(</span><span class="k">self</span><span class="py">.parties</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="py">.amount</span><span class="nf">.into</span><span class="p">(),</span> <span class="o">&amp;</span><span class="k">self</span><span class="py">.parties</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="py">.key</span><span class="p">,</span> <span class="nb">None</span><span class="p">)</span><span class="o">?</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="c">// add party 1 if they have funds</span>
+        <span class="k">if</span> <span class="nn">Amount</span><span class="p">::</span><span class="nf">from</span><span class="p">(</span><span class="k">self</span><span class="py">.parties</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="py">.amount</span><span class="p">)</span><span class="nf">.as_sat</span><span class="p">()</span> <span class="o">!=</span> <span class="mi">0</span> <span class="p">{</span>
+            <span class="n">tmpl</span> <span class="o">=</span> <span class="n">tmpl</span><span class="nf">.add_output</span><span class="p">(</span><span class="k">self</span><span class="py">.parties</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="py">.amount</span><span class="nf">.into</span><span class="p">(),</span> <span class="o">&amp;</span><span class="k">self</span><span class="py">.parties</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="py">.key</span><span class="p">,</span> <span class="nb">None</span><span class="p">)</span><span class="o">?</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="n">tmpl</span><span class="nf">.into</span><span class="p">()</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Almost lastly, we’ll add the updating logic. The updating logic has to be used in a very
+particular way in this contract, but it’s pretty basic by itself!</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">// updating a channel</span>
+<span class="k">enum</span> <span class="n">Update</span> <span class="p">{</span>
+    <span class="c">// nothing to do!</span>
+    <span class="nb">None</span><span class="p">,</span>
+    <span class="c">// An update that can later 'burned'</span>
+    <span class="nf">Revokable</span><span class="p">(</span><span class="n">Revokable</span><span class="p">),</span>
+    <span class="c">// An update that is formed to terminate a channel</span>
+    <span class="nf">Cooperate</span><span class="p">([</span><span class="n">Participants</span><span class="p">;</span> <span class="mi">2</span><span class="p">])</span>
+<span class="p">}</span>
+
+<span class="k">impl</span> <span class="n">Channel</span> <span class="p">{</span>
+    <span class="nd">#[guard]</span>
+    <span class="k">fn</span> <span class="nf">both_signed</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nn">Clause</span><span class="p">::</span><span class="nf">And</span><span class="p">(</span><span class="nd">vec!</span><span class="p">[</span><span class="nn">Clause</span><span class="p">::</span><span class="nf">Key</span><span class="p">(</span><span class="k">self</span><span class="py">.parties</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="py">.key</span><span class="p">),</span>
+                         <span class="nn">Clause</span><span class="p">::</span><span class="nf">Key</span><span class="p">(</span><span class="k">self</span><span class="py">.parties</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="py">.key</span><span class="p">)])</span>
+    <span class="p">}</span>
+
+    <span class="nd">#[continuation(guarded_by</span> <span class="nd">=</span> <span class="s">"[Self::both_signed]"</span><span class="nd">)]</span>
+    <span class="k">fn</span> <span class="nf">update</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">,</span> <span class="n">u</span><span class="p">:</span> <span class="n">Update</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">match</span> <span class="n">u</span> <span class="p">{</span>
+            <span class="c">// don't do anything</span>
+            <span class="nn">Update</span><span class="p">::</span><span class="nb">None</span> <span class="k">=&gt;</span> <span class="nf">empty</span><span class="p">(),</span>
+            <span class="c">// send funds to the revokable contract</span>
+            <span class="nn">Update</span><span class="p">::</span><span class="nf">Revokable</span><span class="p">(</span><span class="n">r</span><span class="p">)</span> <span class="k">=&gt;</span> <span class="p">{</span>
+                <span class="c">// note -- technically we only need to sign revokables where</span>
+                <span class="c">// state == State::Closing, but we do both for efficiency</span>
+                <span class="n">ctx</span><span class="nf">.template</span><span class="p">()</span>
+                    <span class="nf">.add_output</span><span class="p">(</span><span class="nn">Amount</span><span class="p">::</span><span class="nf">from</span><span class="p">(</span><span class="k">self</span><span class="py">.parties</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="py">.amount</span><span class="p">)</span> <span class="o">+</span> 
+                                <span class="nn">Amount</span><span class="p">::</span><span class="nf">from</span><span class="p">(</span><span class="k">self</span><span class="py">.parties</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="py">.amount</span><span class="p">),</span> <span class="o">&amp;</span><span class="n">r</span><span class="p">,</span> <span class="nb">None</span><span class="p">)</span><span class="o">?</span>
+                    <span class="nf">.into</span><span class="p">()</span>
+            <span class="p">},</span>
+            <span class="c">// Terminate the channel into two payouts.</span>
+            <span class="nn">Update</span><span class="p">::</span><span class="nf">Cooperate</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">=&gt;</span> <span class="p">{</span>
+                <span class="n">ctx</span><span class="nf">.template</span><span class="p">()</span>
+                   <span class="nf">.add_output</span><span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="py">.amount</span><span class="nf">.into</span><span class="p">(),</span> <span class="o">&amp;</span><span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="py">.key</span><span class="p">,</span> <span class="nb">None</span><span class="p">)</span><span class="o">?</span>
+                   <span class="nf">.add_output</span><span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="py">.amount</span><span class="nf">.into</span><span class="p">(),</span> <span class="o">&amp;</span><span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="py">.key</span><span class="p">,</span> <span class="nb">None</span><span class="p">)</span><span class="o">?</span>
+                   <span class="nf">.into</span><span class="p">()</span>
+
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Now to finish we need to define some sort of thing for <code class="language-plaintext highlighter-rouge">Revokable</code>.  Revokables
+are used to update a channel from one set of balances to another.  This will
+depend on your payment channel implementation. I’ve defined a basic one below,
+but this could be anything you like.</p>
+
+<p>Essentially, a Revokable is an offer from party A to party B to close the
+channel such that B can later provably “reject” the offer. If B uses a rejected
+offer, A can take the entire balance of the channel.</p>
+
+<p>How to use this to update a channel? To start, all parties agree on the new
+balances with a timeout.</p>
+
+<p>Next, party one gets a hash H(V) from party two that party two knows V and party
+one does not. Party one then creates a Revokable with <code class="language-plaintext highlighter-rouge">from_idx = 0</code>, the
+updated balances, timelock, and hash H(V). They feed the update arguments to
+<code class="language-plaintext highlighter-rouge">Channel::update</code> and sign the resulting transaction, sending the signed
+transaction to party two.  In particular in non-interactive channels, party one
+only <em>has</em> to sign revokable updates at the branch where <code class="language-plaintext highlighter-rouge">state ==
+State::Closing</code>, but it’s better for cases where your counterparty might not be
+malicious and just offline if you sign updates on both <code class="language-plaintext highlighter-rouge">Open</code> and <code class="language-plaintext highlighter-rouge">Closing</code>.
+Just signing on <code class="language-plaintext highlighter-rouge">Open</code> would be insecure.</p>
+
+<p>Then, we repeat this with roles reversed with one generating a hash and two
+signing transactions.</p>
+
+<p>Lastly, both reveals the hash preimage (V to H(V)) from any prior round to
+revoke the state from their counterparty.</p>
+
+<p>If either party ever broadcasts the Revokable that they received by signing the
+other half of the <code class="language-plaintext highlighter-rouge">Channel::update</code> after revealing their Hash preimage, the
+other party can take all the funds in the channel.</p>
+
+<p>Kinda a bit tough to understand, but you don’t really need to get it, you can
+embed whatever protocol like this inside that you want.</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="n">Revokable</span> <span class="p">{</span>
+    <span class="c">// updated balances</span>
+    <span class="n">parties</span><span class="p">:</span> <span class="p">[</span><span class="n">Participant</span><span class="p">;</span> <span class="mi">2</span><span class="p">],</span>
+    <span class="c">// preimage from the other party</span>
+    <span class="n">hash</span><span class="p">:</span> <span class="n">Hash</span><span class="p">,</span>
+    <span class="c">// how long the other party has to revoke</span>
+    <span class="n">timelock</span><span class="p">:</span> <span class="n">AnyRelTimeLock</span><span class="p">,</span>
+    <span class="c">// who is this update from</span>
+    <span class="n">from_idx</span><span class="p">:</span> <span class="nb">u8</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="k">impl</span> <span class="n">Contract</span> <span class="k">for</span> <span class="n">Revokable</span> <span class="p">{</span>
+    <span class="nd">declare!</span><span class="p">{</span><span class="n">then</span><span class="p">,</span> <span class="nn">Self</span><span class="p">::</span><span class="n">finish</span><span class="p">}</span>
+    <span class="nd">declare!</span><span class="p">{</span><span class="n">finish</span><span class="p">,</span> <span class="nn">Self</span><span class="p">::</span><span class="n">revoked</span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">impl</span> <span class="n">Revokable</span> <span class="p">{</span>
+    <span class="c">/// after waiting for the timeout, close the balances out at the appropriate values.</span>
+    <span class="nd">#[then]</span>
+    <span class="k">fn</span> <span class="nf">finish</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">let</span> <span class="k">mut</span> <span class="n">tmpl</span> <span class="o">=</span> <span class="n">ctx</span><span class="nf">.template</span><span class="p">()</span><span class="nf">.set_sequence</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="k">self</span><span class="py">.timelock</span><span class="p">)</span><span class="o">?</span><span class="p">;</span>
+        <span class="k">if</span> <span class="nn">Amount</span><span class="p">::</span><span class="nf">from</span><span class="p">(</span><span class="k">self</span><span class="py">.parties</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="py">.amount</span><span class="p">)</span><span class="nf">.as_sat</span><span class="p">()</span> <span class="o">!=</span> <span class="mi">0</span> <span class="p">{</span>
+            <span class="n">tmpl</span> <span class="o">=</span> <span class="n">tmpl</span><span class="nf">.add_output</span><span class="p">(</span><span class="k">self</span><span class="py">.parties</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="py">.amount</span><span class="nf">.into</span><span class="p">(),</span> <span class="o">&amp;</span><span class="k">self</span><span class="py">.parties</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="py">.key</span><span class="p">,</span> <span class="nb">None</span><span class="p">)</span><span class="o">?</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="nn">Amount</span><span class="p">::</span><span class="nf">from</span><span class="p">(</span><span class="k">self</span><span class="py">.parties</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="py">.amount</span><span class="p">)</span><span class="nf">.as_sat</span><span class="p">()</span> <span class="o">!=</span> <span class="mi">0</span> <span class="p">{</span>
+            <span class="n">tmpl</span> <span class="o">=</span> <span class="n">tmpl</span><span class="nf">.add_output</span><span class="p">(</span><span class="k">self</span><span class="py">.parties</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="py">.amount</span><span class="nf">.into</span><span class="p">(),</span> <span class="o">&amp;</span><span class="k">self</span><span class="py">.parties</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="py">.key</span><span class="p">,</span> <span class="nb">None</span><span class="p">)</span><span class="o">?</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="n">tmpl</span><span class="nf">.into</span><span class="p">()</span>
+    <span class="p">}</span>
+
+    <span class="c">/// if this was revoked by the other party</span>
+    <span class="c">/// we can sweep all the funds</span>
+    <span class="nd">#[guard]</span>
+    <span class="k">fn</span> <span class="nf">revoked</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nn">Clause</span><span class="p">::</span><span class="nf">And</span><span class="p">(</span><span class="nd">vec!</span><span class="p">[</span>
+            <span class="nn">Clause</span><span class="p">::</span><span class="nf">Sha256</span><span class="p">(</span><span class="k">self</span><span class="py">.hash</span><span class="p">),</span>
+            <span class="nn">Clause</span><span class="p">::</span><span class="nf">Key</span><span class="p">(</span><span class="k">self</span><span class="py">.parties</span><span class="p">[</span><span class="k">self</span><span class="py">.from_idx</span><span class="p">])])</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<hr />
+
+<p>And now some closing remarks:</p>
+
+<h2 id="ctv-required">CTV Required?</h2>
+
+<p>You don’t need CTV for these channel specs to work, but you do need CTV for the
+channels to be non-interactive. Without CTV you just use a multi-sig oracle of
+both parties, and the contracts come out logically similar to an existing
+lightning channel. Does that mean we’re going to enter…</p>
+
+<h2 id="the-era-of-sapio-lightning">The Era of Sapio Lightning?</h2>
+
+<p>It’s probably going to be a while/never before this actually becomes a
+“Lightning” standard thing, even if you could use this with self-hosted oracles
+today, although perhaps one day it could be!</p>
+
+<p>However, it’s possible! One path towards that would be if, perhaps, Sapio gets
+used to help define the “spec” that all lightning protocols should implement.
+Then it’d be theoretically possible to use Sapio for a channel implementation!
+Or maybe Sapio becomes a “plugin engine” for negotiating channels and updates can
+just be shipping some WASM.</p>
+
+<h2 id="what-didnt-make-the-cut">What didn’t make the cut?</h2>
+<p>Some ideas to mention, but not fully flesh out (yet?):</p>
+
+<h3 id="eltoo">Eltoo</h3>
+<p>So, so very much. To start CTV+CSFS can do something like Eltoo, no need for
+AnyPrevout. Very neat! If we had some Eltoo primitive available, I could show you
+revocation-free channels.</p>
+
+<h3 id="embedded-sapio-states">Embedded Sapio States</h3>
+
+<p>Instead of making the channel state a boring “pay X to 0, pay Y to 1”
+resolution, we can actually embed all sorts of contracts inside of channels.</p>
+
+<p>E.g., imagine if you have a channel whereby if you contested close it your
+counterparty’s funds (who is offline conceivably) go to a cold-storage vault.</p>
+
+<p>Or imagine if you had some sort of oracle resolved synthetic bitcoin settled
+derivative contract, like a DLC, embedded inside. You could then use this to HFT
+your synths!</p>
+
+<p>Or what if there were some new-fangled token protocol that lived inside state
+transition to state transition, and you could update you and your counterparty’s
+stake into those?</p>
+
+<p>You can really put anything you want. We’ll see in a couple days how you can
+define a Channel Plugin Interface so that you can dynamically link a logic
+module into a contract, rather than compiling it in.</p>
+
+<h3 id="embedded-channels">Embedded Channels</h3>
+
+<p>We saw a little bit of embedded channels. Channels embedded in congestion
+control, or in payment pools. But the concept can be a lot more diverse.
+Remember our Vaults and inheritence schemes? We could make the hot-wallet
+payouts from those go directly into Channels with some channel operator hub.  Or
+what about making channels directly out of coinjoins? Not having to pre-sign
+everything really helps.  Don’t sleep on this.</p>
+
+<h3 id="embedded-channel-creation-args">Embedded Channel Creation Args</h3>
+
+<p>We said earlier that channel creation required some sort of email. But it’s also
+sometimes possible to embed the channel metadata into e.g. an op_return on the
+channel creation. Perhaps as an IPFS hash or something. In this case, you would
+just need to scan over txs, download the relevant data, and then attempt
+plugging it into WASM (heck – the WASM could just receive the txn in question
+and do all the heavy lifting). If the WASM spits out a matching output/channel
+address, you now have a channel you can detect automatically. This doesn’t have
+to be bad for privacy if the data is encrypted somehow!</p>
+
+<h2 id="how-will-this-impact-the-world">How will this impact the world?</h2>
+
+<p>Non interactive channel creation is going to, for many users, dramatically
+decrease the cost of channel opening. Firstly you can defer paying fees when you
+open many channels (big news)! In fact, if the channel is long lived enough, you
+may never pay fees if someone else does first! That incentive to wait is called
+backpressure. It’s also going to “cut through” a lot of cases (e.g., exchange
+withdraw, move from cold storage, etc) that would otherwise require 2
+transactions. And channels in Payment Pools have big opportunities to leverage
+cooperative actions/updates to dramatically reduce chain load in the happy-case.</p>
+
+<p>This is a gigantic boon not just for scalability, but also for privacy. The less
+that happens on chain the better!</p>
+
+<p>I think it’s also likely that with non-interactive channels, one might <em>always</em>
+(as was the case with our cafe) opportunistically open channels instead of
+normal payments. Removing the “counterparty online” constraint is huge. Being
+able to just open it up and bet that you’ll be able to route is a big win. This
+is similar to “PayJoin”, whereby you try to always coin-join transactions on all
+payments for both privacy and fee savings.</p>
+
+<p>Tomorrow, we’ll see sort of a magnum opus of using non-interactive channels, so
+stay tuned folks, that’s all for today.</p>
+
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:eltoo" role="doc-endnote">
+      <p>CTV + CSFS can do something like Eltoo/Decker channels with a script like <code class="language-plaintext highlighter-rouge">CTV &lt;pk&gt; CSFSV</code>. <a href="#fnref:eltoo" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:caveat" role="doc-endnote">
+      <p>There are some caveats to this, but it should generally work when you’re making payments in one direction. <a href="#fnref:caveat" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:microbs" role="doc-endnote">
+      <p>Writing 27 posts is really hard and a big crunch, so I’m permitting myself a little micro-bullshit in that I’m not actually compiling this code so it probably has some bugs and stuff, but it should “read true” for the most part. I may clean this post up in the future and make sure everything works perfectly as described. <a href="#fnref:microbs" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+    <div>
+    <h3>
+        <span style="vertical-align: text-top;">
+    
+
+<a class="twitter-share-button"
+data-size="large"
+href="https://twitter.com/intent/tweet?text=Payment+Channels+in+a+CTV%2BSapio+World&hashtags=Bitcoin,
+AdventCalendar,
+Covenants,
+Sapio
+"> Tweet</a>
+
+
+
+        </span>
+        <span style="vertical-align: super;">
+to continue the conversation...
+        </span>
+    </h3>
+
+    </div>
+</div>
+
+<aside class="related">
+  <h3>You might also enjoy...</h3>
+  <ul class="related-posts">
+    
+      <li>
+        <a href="/bitcoin/2021/12/20/advent-23/">
+          Derivatives and Options For Bitcoin
+          <small><time datetime="2021-12-20T00:00:00+00:00">20 Dec 2021</time></small>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/bitcoin/2021/12/10/advent-13/">
+          Payment Pools / Coin Pools
+          <small><time datetime="2021-12-10T00:00:00+00:00">10 Dec 2021</time></small>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/bitcoin/2022/04/17/next-steps-bip119/">
+          7 Theses on a next step for BIP-119
+          <small><time datetime="2022-04-17T00:00:00+00:00">17 Apr 2022</time></small>
+        </a>
+      </li>
+    
+  </ul>
+</aside>
+
+        </div>
+        <div class="content container" style="padding-bottom:0;padding-top:0;bottom:0px;">
+            <div class="posts" style="height:14pt;margin-bottom:0;">
+                <div class="post">
+                    <p style="text-align:center;font-size:12pt;">&copy; 2011-2021 Jeremy Rubin. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

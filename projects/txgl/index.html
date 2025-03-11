@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+  <title> TXGL &middot; Jeremy Rubin </title>
+  <link href="https://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/poole.css">
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/css/hyde.css">
+  <link rel="stylesheet" href="/public/font-awesome-4.5.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+                                 <link rel="shortcut icon" href="/public/favicon.ico">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+
+  
+  <link type="application/atom+xml" rel="alternate" href="http://rubin.io/feed.xml" title="Jeremy Rubin" />
+
+
+  <!-- GA -->
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-40376251-1', 'auto');
+    ga('send', 'pageview');
+</script>
+
+  
+  <link rel="me" href="https://twitter.com/JeremyRubin" >
+  <meta name="twitter:dnt" content="on">
+			   <script>window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
+
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+
+  return t;
+}(document, "script", "twitter-wjs"));</script>
+
+</head>
+
+    <body>
+        <div class="sidebar">
+    <h3 style="text-align: center;"> <a href="/"> Jeremy Rubin </a> </h3>
+    <div class="container">
+        <div class="sidebar-about">
+
+            <div class="sidebar-about-info"> 
+                <a href="/public/pdfs/resume.pdf"><i class="fa fa-file-text-o" title=Resume></i></a>
+                <a href=""><i class="fa fa-github" title=Github></i></a>
+                <a href="https://twitter.com/JeremyRubin"><i class="fa fa-twitter" title=Twitter></i></a>
+            </div>
+            <div class="sidebar-about-info hide-large">
+                <a class="" href="/">Home</a>
+                <a class="" href="/blog/">Blog</a>
+                <a class="" href="/talks/">Talks</a> 
+                <a class="" href="/projects/">Projects</a>
+                <a class="" href="/archive/">Site Index</a>
+            </div>
+        </div>
+
+
+
+
+        <nav class="sidebar-nav hide-small">
+            <a class="sidebar-nav-item" href="/">Home</a>
+            <a class="sidebar-nav-item" href="/blog/">Blog</a>
+            <a class="sidebar-nav-item" href="/talks/">Talks</a> 
+            <a class="sidebar-nav-item" href="/projects/">Projects</a>
+            <a class="sidebar-nav-item" href="/archive/">Site Index</a>
+        </nav>
+    </div>
+</div>
+
+
+
+        <div class="content container" style="padding-bottom:0;">
+            <div class="post">
+    <h1 class="post-title">TXGL</h1>
+    <h3>Transaction Graphical Language</h3>
+    <span class="post-date">January 28, 2017</span>
+    <p>TXGL is a graphical framework, loosely based on circuit diagrams, for describing
+multi-transaction Bitcoin Contracts.</p>
+
+<p><em>You can download the TXGL SVG template <a href="/public/img/txgl/txgl.svg">here</a>.</em></p>
+
+<p><em>This work is licensed under a <a href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.</em></p>
+
+<h2 id="why-txgl">Why TXGL</h2>
+
+<p>When discussing cryptocurrency protocols, it can often be very difficult to
+describe to others what’s going on.</p>
+
+<p><a href="https://chain.com">Chain</a> is doing some awesome work on Ivy, which is a
+higher-level language that can compile to bitcoin scripts, which not only helps
+build scripts, but helps others understand them as well.</p>
+
+<p>However, complexity in Bitcoin hides not only at the script level, but also at
+the transaction level.</p>
+
+<p>TXGL is an attempt to create a visual diagram language for sketching out
+transactions pictorially. I originally began working on TXGL as I prepared my
+talk for <a href="https://cyber.stanford.edu/blockchainconf">BPASE 2017</a> as I struggled
+to clearly communicate the ideas I was presenting. The diagrams went a long way
+for my talk, and afterwards there was significant interest in TXGL as a
+stand-alone work, so I decided to try to better document how to read and
+construct TXGL diagrams.</p>
+
+<p>One of the key insights of TXGL is to draw (loosely) from EE schematics as a form
+of “transaction circuit diagram”. Each component in the diagram represents
+something that <em>could</em> appear on the blockchain during execution. This is an
+important point.  There are many considerations in actually executing such
+complex multi-transaction contracts, such as program storage, deadlocks, and
+multi-party construction/negotation. I’ve covered some of these complexities in
+my BPASE talk.</p>
+
+<p>TXGL is by no means a finished product, but hopefully by putting it out there,
+the academic community can begin experimenting with it as a rough standard and
+provide feedback on how to improve! 😁</p>
+
+<h2 id="txgl-standard">TXGL Standard</h2>
+
+<p>One of the issues that arises when describing multi-transaction bitcoin
+contracts is that the distinction between the terms <em>input</em> and <em>output</em> is not
+clear. This disturbing lack of clarity is because during a transaction, a set
+of unspent outputs are treated the set of inputs and create a new set of
+unspent outputs. But what is an input? Is it a spent output? Not quite, the
+input is a reference to the unspent output.  This concept is difficult to
+disambiguate orally and graphically.  Instead of using terminology which can be
+misunderstood, we will instead refer to either an input or an output as a
+transaction component when it is not being created or consumed specifically.</p>
+
+<p><img src="/public/img/txgl/component.png" alt="An isolated transaction component" class="center-image-plain" /></p>
+
+<p>A component should have a label. A component without a label shouldn’t be
+referred to in any accompanying text. Labels allow us to template out (in the
+c++ sense) generalizable information. For instance, a component could be
+“spent” via an M-of-N script or via a direct P2PKH. If the information is
+pertinent, it’s preferable to include it in an accompanying table rather than
+jam it into the diagram (an Asterisk on the label can be used to emphasize that
+there is more information needed).</p>
+
+<p>Each component (may) have a set of arrows pointing into it. An inwards arrow
+shows how the component was created. If there is no such arrow, then the source
+of the component is irrelevant.</p>
+
+<p>Each component (may) have a single arrow* pointing out of it. An outwards arrow
+shows how the component will be used. It is important to note that it may be
+possible that the component has other possible outwards arrows! An outward
+arrow does not “guarantee” execution, it only demonstrates intended spend.</p>
+
+<p>An arrow between two components composes a transaction.</p>
+
+<p><img src="/public/img/txgl/transaction.png" alt="A basic transaction" class="center-image-plain" /></p>
+
+<h3 id="special-components">Special Components</h3>
+
+<p>There are a few special types of component that have some additional rules.</p>
+
+<h4 id="multiplexer-select-one-component">Multiplexer “Select One” Component</h4>
+
+<p>A mux component takes in wires through the side-port, and emits only one of it’s branches.
+Above each black arrow, an optional condition can be placed. One such condition must be satisfied
+in order for the spend to occur (essentially, a kind of “switch” statement).</p>
+
+<p><img src="/public/img/txgl/or_outputs.png" alt="A mux" class="center-image-plain" /></p>
+
+<p>You can think of this as being like the following bitcoin script.</p>
+
+<p><code class="language-plaintext highlighter-rouge">OP_DUP &lt;0&gt; OP_EQUAL OP_IF A OP_ELSE OP_DROP OP_DUP &lt;1&gt; OP_IF B OP_ELSE ... OP_ENDIF OP_ENDIF OP_VERIFY</code></p>
+
+<p>It is important to note that a bijection between conditions and outputs IS
+NOT ENFORCED by the mux component natively.  Thus, one must consider the mux
+component as a list of possible spend conditions and a list of outputs which
+could occur under the intended execution. One must layer in some additional
+logic to ensure the bijection, and layer in further logic to ensure that one
+branch must be taken. This will be demonstrated in the “TXGL Extensions” section.</p>
+
+<h4 id="demultiplexer-select-all-component">Demultiplexer “Select All” Component</h4>
+
+<p>A demux takes in wires through the side-port and is intended to emit all of
+it’s outputs. Again, bijection is not guaranteed and the engineer must be careful to
+ensure that this is the case.</p>
+
+<p><img src="/public/img/txgl/and_outputs.png" alt="A demux" class="center-image-plain" /></p>
+
+<p>This is essentially the following Bitcoin Script:</p>
+
+<p><code class="language-plaintext highlighter-rouge">P_1 OP_VERIFY P_2 OP_VERIFY ... P_N OP_VERIFY</code></p>
+
+<h3 id="txgl-extensions">TXGL Extensions</h3>
+<p>These extensions depend on new features in Bitcoin, which are all well within
+the realm of possibility. I’m not completely pleased with the graphical
+representations here, but they are a start.</p>
+
+<h4 id="covenant">Covenant</h4>
+<p>We allow adding a constraint of a covenant to specify some invariant that must hold of the output.</p>
+
+<p><img src="/public/img/txgl/covenant.png" alt="" class="center-image-plain" /></p>
+
+<h4 id="join-covenant">Join Covenant</h4>
+
+<p>A component with a dome hat is generated by what we’ll call a Join Covenant.</p>
+
+<p><img src="/public/img/txgl/input_join_component.png" alt="" class="center-image-plain" /></p>
+
+<p>In a Join Covenant, it is restricted that the input components must be spent together.</p>
+
+<p>This is a property which could be correct either by construction (ie, the only
+component signed by N-of-N for each input) or by computation (the inputs script
+checks a property).</p>
+
+<p><img src="/public/img/txgl/input_join.png" alt="" class="center-image-plain" /></p>
+
+<p><em>Partial Join</em></p>
+
+<p>In the case where only one input component depends on the others, a dotted
+arrow pointing upwards can be made.
+<img src="/public/img/txgl/partial_input_join.png" alt="" class="center-image-plain" /></p>
+
+<h4 id="virtual-and-intermediate-components">Virtual and Intermediate Components</h4>
+
+<p>In many cases, an output is a “temporary” value – that is, it is meant to be
+spent atomically with it’s parent.</p>
+
+<p>In this case, the component should be drawn with a dashed border.
+<img src="/public/img/txgl/virtual_component.png" alt="" class="center-image-plain" /></p>
+
+<p>An example of such a component being used is as follows:</p>
+
+<p><img src="/public/img/txgl/virtual.png" alt="" class="center-image-plain" /></p>
+
+<p>In the above example, B must be consumed for A to be validly consumed.</p>
+
+<h4 id="impossible-component-covenant">Impossible Component Covenant</h4>
+
+<p>It is possible to make a transaction depend on a proof that a component could not be constructed.</p>
+
+<p>We draw an “un-constructible” component as follows:</p>
+
+<p><img src="/public/img/txgl/not_component.png" alt="" class="center-image-plain" /></p>
+
+<p>Naively, this can be done in Bitcoin by emitting an output component on spend
+which is consumed by dependents of that output. Such a dependent impossible
+component covenant can be drawn as follows:</p>
+
+<p><img src="/public/img/txgl/impossible_constructive.png" alt="" class="center-image-plain" /></p>
+
+<p>Note that we still black-out and complement the component for clarity, although
+clearly this sentinel-value output is possible to construct.</p>
+
+<p>An impossible component covenant could also be implemented as an introspective proof on the blockchain, as in:</p>
+
+<ol>
+  <li>Specify a component \(I\) desired to be proved impossible</li>
+  <li>Provide witness of how to construct \(I\)</li>
+  <li>Provide witness of another component \(R\) that already exists which shares
+has an ancestor input \(A\) that \(I\) must consume in it’s construction.</li>
+  <li>If \(R\) consumes \(A\), this implies that \(I\) cannot also consume \(A\)</li>
+  <li>Therefore, \(I\) is impossible to construct because \(R\) exists.</li>
+</ol>
+
+<p>For this construction, we won’t actually show how the proof is constructed.</p>
+
+<p><img src="/public/img/txgl/impossible.png" alt="" class="center-image-plain" /></p>
+
+<p>Relatedly, the trivial case of this proof is a <em>Consumed Output Proof</em>, which
+is simply a proof that some component has been spent.</p>
+
+<h4 id="sequentially-existent-output-covenant">Sequentially Existent Output Covenant</h4>
+
+<p>Similarly, it is possible to simply require that an input component does exist.</p>
+
+<p>The simplest way to implement this in Bitcoin, is via a transaction which
+recreates one of its inputs.</p>
+
+<p>Requiring this is possible with simple covenants (Russel O’Conner has
+demonstrated a quine).</p>
+
+<p>Such an observation is said to be Sequential, because observing the existence
+of the component serves to consume it, and re-emit it with a different txid,
+thus forcing an ordering of operations.</p>
+
+<h4 id="conditional-covenant">Conditional Covenant</h4>
+
+<p>Using a Multiplexer component and two covenants, we can construct a component which is guaranteed to select one of it’s outputs:</p>
+
+<p><img src="/public/img/txgl/conditional_component.png" alt="" class="center-image-plain" /></p>
+
+<h4 id="execution">Execution</h4>
+
+<p>In order to highlight what path through the multi-transaction contract is
+actually taken, red highlights can be used.</p>
+
+<p><img src="/public/img/txgl/execution.png" alt="" class="center-image-plain" /></p>
+
+<h3 id="examples">Examples</h3>
+
+<h4 id="covenant-mast">Covenant MAST</h4>
+
+<p>This contract allows for \(O(log(n))\) program compression by hashed branch elimination.</p>
+
+<p><img src="/public/img/txgl/mast_covenant.png" alt="" class="center-image-plain" /></p>
+
+<h4 id="optical-isolation-contract">Optical Isolation Contract</h4>
+
+<p>Much like sensitive electronics can isolate components using an optical isolator, we 
+can build bitcoin contracts which isolate value from control flow. In the
+diagram below, \(M_0\) provides the fee amount (like Gas in Ethereum) and
+\(M_1\) provides the value. \(M_1\) cannot spend to \(G\) unless it is proven
+that the protocol can no longer progress to \(F\).</p>
+
+<p><img src="/public/img/txgl/isolated.png" alt="" class="center-image-plain" /></p>
+
+<p>The below figure demonstrates the possible executions:</p>
+
+<p><img src="/public/img/txgl/isolated_executions.png" alt="" class="center-image-plain" /></p>
+
+<h2 id="future-work">Future Work</h2>
+
+<p>There are certainly more things to be able to add to TXGL. This is a rough
+working list of things I’ll hopefully add in the coming weeks.</p>
+
+<ol>
+  <li>Locktimes/CSV</li>
+  <li><a href="https://arxiv.org/abs/1612.05390">MULTIINPUT</a></li>
+  <li>SIGHASH_ANYONECANPAY</li>
+</ol>
+
+<p><em>You can download the TXGL SVG template <a href="/public/img/txgl/txgl.svg">here</a>.</em></p>
+
+</div>
+
+
+
+        </div>
+        <div class="content container" style="padding-bottom:0;padding-top:0;bottom:0px;">
+            <div class="posts" style="height:14pt;margin-bottom:0;">
+                <div class="post">
+                    <p style="text-align:center;font-size:12pt;">&copy; 2011-2021 Jeremy Rubin. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

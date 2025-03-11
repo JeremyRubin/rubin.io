@@ -1,0 +1,1762 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+  <title> Blog (page 6) &middot; Jeremy Rubin </title>
+  <link href="https://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/poole.css">
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/css/hyde.css">
+  <link rel="stylesheet" href="/public/font-awesome-4.5.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+                                 <link rel="shortcut icon" href="/public/favicon.ico">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+
+  
+  <link type="application/atom+xml" rel="alternate" href="http://rubin.io/feed.xml" title="Jeremy Rubin" />
+
+
+  <!-- GA -->
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-40376251-1', 'auto');
+    ga('send', 'pageview');
+</script>
+
+  
+  <link rel="me" href="https://twitter.com/JeremyRubin" >
+  <meta name="twitter:dnt" content="on">
+			   <script>window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
+
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+
+  return t;
+}(document, "script", "twitter-wjs"));</script>
+
+</head>
+
+    <body>
+        <div class="sidebar">
+    <h3 style="text-align: center;"> <a href="/"> Jeremy Rubin </a> </h3>
+    <div class="container">
+        <div class="sidebar-about">
+
+            <div class="sidebar-about-info"> 
+                <a href="/public/pdfs/resume.pdf"><i class="fa fa-file-text-o" title=Resume></i></a>
+                <a href=""><i class="fa fa-github" title=Github></i></a>
+                <a href="https://twitter.com/JeremyRubin"><i class="fa fa-twitter" title=Twitter></i></a>
+            </div>
+            <div class="sidebar-about-info hide-large">
+                <a class="" href="/">Home</a>
+                <a class="" href="/blog/">Blog</a>
+                <a class="" href="/talks/">Talks</a> 
+                <a class="" href="/projects/">Projects</a>
+                <a class="" href="/archive/">Site Index</a>
+            </div>
+        </div>
+
+
+
+
+        <nav class="sidebar-nav hide-small">
+            <a class="sidebar-nav-item" href="/">Home</a>
+            <a class="sidebar-nav-item" href="/blog/">Blog</a>
+            <a class="sidebar-nav-item" href="/talks/">Talks</a> 
+            <a class="sidebar-nav-item" href="/projects/">Projects</a>
+            <a class="sidebar-nav-item" href="/archive/">Site Index</a>
+        </nav>
+    </div>
+</div>
+
+
+
+        <div class="content container" style="padding-bottom:0;">
+            <div class="page">
+    
+    
+    <h1>
+  Jeremy Rubin's Blog
+</h1>
+
+Here you'll find an assorted mix of content from yours truly. I post about a lot
+of things, but primarily <a href="/bitcoin/">Bitcoin</a>.
+
+<p>
+categories: <a href="/bitcoin/">Bitcoin</a>, <a href="/shenzhen/">Shenzhen Journey</a>.
+</p>
+<div class="posts">
+  
+<hr>
+  <div class="post">
+    <h2 class="post-title">
+        <a href="/bitcoin/2021/12/09/advent-12/">
+        Congestion Control
+      </a>
+  </h2>
+  <h4>Day 12: Rubin's Bitcoin Advent Calendar</h4>
+
+
+    <span class="post-date">09 Dec 2021</span>
+
+    <p><em>Welcome to day 12 of my Bitcoin Advent Calendar. You can see an index of all
+the posts <a href="/advent21">here</a> or subscribe at
+<a href="https://judica.org/join">judica.org/join</a> to get new posts in your inbox</em></p>
+
+<p>Congestion is an ugly word, eh? When I hear it my fake synthesia triggers green
+slime feeling, being stuck in traffic with broken AC, and ~the bread line~
+waiting for your order at a crowded restaurant when you’re super starving. All
+not good things.</p>
+
+<p>So Congestion Control sounds pretty sweet right? We can’t do anything about the
+demand itself, but maybe we can make the experience better. We can take a mucinex,
+drive in the HOV lane, and eat the emergency bar you keep in your bag.</p>
+
+<p>How might this be used in Bitcoin?</p>
+
+<ol>
+  <li>Exchange collects N addresses they need to pay some bitcoin</li>
+  <li>Exchange inputs into this contract</li>
+  <li>Exchanges gets a single-output transaction, which they broadcast with high fee to get quick confirmation.</li>
+  <li>Exchange distributes the redemption paths to all recipients (e.g. via mempool, email, etc).</li>
+  <li>Users verify that the funds are “locked in” with this contract.</li>
+  <li>Party</li>
+  <li>Over time, when users are willing to pay fees, they CPFP pay for their redemptions (worst case cost \(O(\log N)\))</li>
+</ol>
+
+<p>Throughout this post, we’ll show how to build the above logic in Sapio!</p>
+
+<hr />
+
+<p>Before we get into that…</p>
+
+<h1 id="talk-nerdy-to-me">Talk Nerdy To Me</h1>
+
+<p>Let’s define some core concepts… Don’t worry too much if these are a bit hard
+to get, it’s just useful context to have or think about.</p>
+
+<h3 id="latency">Latency</h3>
+
+<p>Latency is the time from some notion of “started” to “stopped”. In Bitcoin you could think of the latency from 0 confirmations on a transaction (in mempool) to 1 confirmation (in a block), which is minimally expected to be 10
+minutes for high fee transactions, but could be longer depending on the other transactions.</p>
+
+<h3 id="fairness">Fairness</h3>
+
+<p>Fairness is a measure of how “equitable” a distribution of goods or services is.
+For example, suppose I want to divide 10 cookies among 10 children.</p>
+
+<p>What if 1 child gets two cookies and the other 9 get 8/9ths of a cookie each? Or
+what if 1 child gets no cookie and the other 9 get 10/9ths of a cookie each? How
+fair is that?</p>
+
+<p>Mathematicians and computer scientists love to come up with different measures
+of fairness to be able to quantatatively compare these scenarios and their
+relative fairness.</p>
+
+<p>In Bitcoin we might think of different types of fairness: how long does your
+transaction spend in the mempool? How much fee did you pay?</p>
+
+<h3 id="throughput--capacity">Throughput &amp; Capacity</h3>
+<p>Let’s spend another moment on fairness. Perfectly fair would be:</p>
+
+<ol>
+  <li>All children get 1 cookie</li>
+  <li>All children get 1/10th of 1 cookie.</li>
+  <li>All children get 0 cookies.</li>
+</ol>
+
+<p>Clearly only one of these is particularly efficient.</p>
+
+<p>Thus, we don’t just want to measure fairness, we also want to measure the
+throughput against the capacity. The capacity is the maximum throughput, and the
+the throughput is essentially how many of those cookies get eaten (usually, over
+time). Now let’s look at our prior scenarios:</p>
+
+<ol>
+  <li>All children get 1 cookie: Perfect Throughput.</li>
+  <li>All children get 1/10th of 1 cookie: 1/10th Throughtput/Capacity.</li>
+  <li>All children get 0 cookies: 0 Throughput :(</li>
+</ol>
+
+<p>In this case it seems simple: why not just divide the cookies you big butt!</p>
+
+<p>Well sometimes it’s hard to coordinate the sharing of these resources. For
+example, think about if the cookies had to be given out in a buffet. The first
+person might just take two cookies, not aware there were other kids who wouldn’t
+get one!</p>
+
+<p>This maps well onto the Bitcoin network. A really rich group of people might do
+a bunch of relatively high fee transactions that are low importance to them and
+inadvertently price out lower fee transactions that are more important to the
+sender. It’s not malicious, just a consequence of having more money. So even
+though Bitcoin can achieve 1MB of base transaction data every 10 minutes, that
+capacity might get filled with a couple big consolidation transactions instead
+of many transfers.</p>
+
+<h3 id="burst--over-provisioning">Burst &amp; Over Provisioning</h3>
+
+<p>One issue that comes up in systems is that users show up randomly. How often
+have you been at a restaurant with no line, you order your food, and then as
+soon as you sit down the line has ten people in it? Lucky me, you think. <em>I
+showed up at the right time!</em>. But then ten minutes later the line is clear.</p>
+
+<p>Customers show up kind of randomly. And thus we see big bursts of activity.
+Typically, in order to accomodate the bursts a restaurant must over-provision
+it’s staff. They only make money when customers are there, and they need to
+serve them quickly. But in between bursts, staff might just be watching grass
+grow.</p>
+
+<p>The same is true for Bitcoin. Transactions show up somewhat unpredictably, so
+ideally Bitcoin would have ample space to accomodate any burst (this isn’t
+true).</p>
+
+<h3 id="littles-law">Little’s Law</h3>
+
+<p>Little’s law is a deceptively simple concept:</p>
+
+\[L = \lambda \times W\]
+
+<p>where \(L = \) length of the queue, \(\lambda = \) the arrival rate and
+\(W=\) the average time a customer spends in the system.</p>
+
+<p>What’s remarkable about it is that it makes almost no assumptions about the underlying process.</p>
+
+<p>This can be used to think about, e.g., a mempool.</p>
+
+<p>Suppose there are 10,000 transactions in the mempool, and based on historical
+data we see 57 txns a minute.</p>
+
+\[\frac{10,000 \texttt{ minutes}}{57 \texttt{ transactions per minute}} = 175 \texttt{ minutes}\]
+
+<p>Thus we can infer how long transactions will on average spend waiting in the
+mempool, without knowing what the bursts look like! Very cool.</p>
+
+<h2 id="im-just-showing-off">I’m just showing off</h2>
+
+<p>I didn’t really need to make you read that gobbledygook, but I think they are
+really useful concepts that anyone who wants to think about the impacts of
+congestion &amp; control techniques should keep in mind… Hopefully you learned
+something!</p>
+
+<hr />
+
+<h1 id="its-bitcoin-time">It’s Bitcoin Time</h1>
+
+<p>Well, what’s going on in Bitcoin land? When we make a transaction there are
+multiple different things going on.</p>
+
+<ol>
+  <li>We are spending coins</li>
+  <li>We are creating new coins</li>
+</ol>
+
+<p>Currently, those two steps occur simultaneously. Think of our cookies. Imagine
+if we let one kid get cookies at a time, and they also have to get their milk at
+the same time. Then we let the next kid go. It’s going to take</p>
+
+\[T_{milk} + T_{cookies}\]
+
+<p>To get everyone served. What if instead we said kids could get one and then the
+other, in separate lines.</p>
+
+<p>Now it will take something closer to \(\max(T_{milk}, T_{cookies})\).<sup id="fnref:simpl" role="doc-noteref"><a href="#fn:simpl" class="footnote" rel="footnote">1</a></sup>
+Whichever process is longer will dominate the time. (Probably milk).</p>
+
+<p>Now imagine that getting a cookie takes 1 second per child, and getting a milk
+takes 30 seconds. Everyone knows that you can have a cookie and have milk after.
+If children take a random amount of time – let’s say on average 3 minutes,
+sometimes more, sometimes less – to eat their cookies, then we can serve 10
+kids cookies in 10 seconds, making everyone happy, and then fill up the milks
+while everyone is enjoying a cookie. However, if we did the opposite – got
+milks and then got cookies, it would take much longer for all of the kids to
+get something and you’d see chaos.</p>
+
+<p>Back to Bitcoin. Spending coins and creating new coins is a bit like milk and
+cookies. We can make the spend correspond to distributing the cookies and
+setting up the milk line. And the creating of the new coin can be more akin to
+filling up milks whenever a kid wants it.</p>
+
+<p>What this means practically is that by unbundling spending from redeeming we can
+serve a much greater number of users that if they were one aggregate product
+because we are taking the “expensive part” and letting it happen later than the
+“cheap part”. And if we do this cleverly, the “setting up the milk line” in the
+splitting of the spend allows all receivers to know they will get their fair share later.</p>
+
+<p>This makes the system much higher throughput (unlimited confirmations of
+transfer), lower latency to confirmation (you an see when a spend will
+eventually pay you), but higher latency to coin creation in the best case,
+although potentially no different than the average case, and (potentially) worse
+overall throughput since we have some waste from coordinating the splitting.</p>
+
+<p>It also improves costs because we may be willing to pay a higher price for part
+one (since it generates the confirmation) than part two.</p>
+
+<h1 id="can-we-build-it">Can we build it?</h1>
+
+<p>Let’s start with a basic example of congestion control in Sapio.</p>
+
+<p>First we define a payment as just being an Amount and an Address.</p>
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">/// A payment to a specific address</span>
+<span class="k">pub</span> <span class="k">struct</span> <span class="n">Payment</span> <span class="p">{</span>
+    <span class="c">/// # Amount</span>
+    <span class="c">/// The amount to send in btc</span>
+    <span class="k">pub</span> <span class="n">amount</span><span class="p">:</span> <span class="n">AmountF64</span><span class="p">,</span>
+    <span class="c">/// # Address</span>
+    <span class="c">/// The Address to send to</span>
+    <span class="k">pub</span> <span class="n">address</span><span class="p">:</span> <span class="n">Address</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Next, we’ll define a helper called <code class="language-plaintext highlighter-rouge">PayThese</code>, which takes a list of contracts
+of some kind and pays them after an optional delay in a single transaction.</p>
+
+<p>You can think of this (back to our kids) as calling a group of kids at a time
+(e.g., table 1, then table 2) to get their cookies.</p>
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="n">PayThese</span> <span class="p">{</span>
+    <span class="n">contracts</span><span class="p">:</span> <span class="nb">Vec</span><span class="o">&lt;</span><span class="p">(</span><span class="n">Amount</span><span class="p">,</span> <span class="nb">Box</span><span class="o">&lt;</span><span class="n">dyn</span> <span class="n">Compilable</span><span class="o">&gt;</span><span class="p">)</span><span class="o">&gt;</span><span class="p">,</span>
+    <span class="n">fees</span><span class="p">:</span> <span class="n">Amount</span><span class="p">,</span>
+    <span class="n">delay</span><span class="p">:</span> <span class="nb">Option</span><span class="o">&lt;</span><span class="n">AnyRelTimeLock</span><span class="o">&gt;</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="k">impl</span> <span class="n">PayThese</span> <span class="p">{</span>
+    <span class="nd">#[then]</span>
+    <span class="k">fn</span> <span class="nf">expand</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">let</span> <span class="k">mut</span> <span class="n">bld</span> <span class="o">=</span> <span class="n">ctx</span><span class="nf">.template</span><span class="p">();</span>
+        <span class="c">// Add an output for each contract</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">amt</span><span class="p">,</span> <span class="n">ct</span><span class="p">)</span> <span class="n">in</span> <span class="k">self</span><span class="py">.contracts</span><span class="nf">.iter</span><span class="p">()</span> <span class="p">{</span>
+            <span class="n">bld</span> <span class="o">=</span> <span class="n">bld</span><span class="nf">.add_output</span><span class="p">(</span><span class="o">*</span><span class="n">amt</span><span class="p">,</span> <span class="n">ct</span><span class="nf">.as_ref</span><span class="p">(),</span> <span class="nb">None</span><span class="p">)</span><span class="o">?</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="c">// if there is a delay, add it</span>
+        <span class="k">if</span> <span class="k">let</span> <span class="nf">Some</span><span class="p">(</span><span class="n">delay</span><span class="p">)</span> <span class="o">=</span> <span class="k">self</span><span class="py">.delay</span> <span class="p">{</span>
+            <span class="n">bld</span> <span class="o">=</span> <span class="n">bld</span><span class="nf">.set_sequence</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">delay</span><span class="p">)</span><span class="o">?</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="c">// pay some fees</span>
+        <span class="n">bld</span><span class="nf">.add_fees</span><span class="p">(</span><span class="k">self</span><span class="py">.fees</span><span class="p">)</span><span class="o">?</span><span class="nf">.into</span><span class="p">()</span>
+    <span class="p">}</span>
+
+    <span class="k">fn</span> <span class="nf">total_to_pay</span><span class="p">(</span><span class="o">&amp;</span><span class="k">self</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="n">Amount</span> <span class="p">{</span>
+        <span class="k">let</span> <span class="k">mut</span> <span class="n">amt</span> <span class="o">=</span> <span class="k">self</span><span class="py">.fees</span><span class="p">;</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">_</span><span class="p">)</span> <span class="n">in</span> <span class="k">self</span><span class="py">.contracts</span><span class="nf">.iter</span><span class="p">()</span> <span class="p">{</span>
+            <span class="n">amt</span> <span class="o">+=</span> <span class="o">*</span><span class="n">x</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="n">amt</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="k">impl</span> <span class="n">Contract</span> <span class="k">for</span> <span class="n">PayThese</span> <span class="p">{</span>
+    <span class="nd">declare!</span> <span class="p">{</span><span class="n">then</span><span class="p">,</span> <span class="nn">Self</span><span class="p">::</span><span class="n">expand</span><span class="p">}</span>
+    <span class="nd">declare!</span> <span class="p">{</span><span class="n">non</span> <span class="n">updatable</span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Lastly, we’ll define the logic for congestion control. The basics of what is
+happening is we are going to define two transactions: One which pays from A -&gt;
+B, and then one which is guaranteed in B’s script to pay from B -&gt; {1…n}. This
+splits the confirmation txn from the larger payout txn.</p>
+
+<p>However, we’re going to be a little more clever than that. We’ll apply this principle
+recursively to create a tree.</p>
+
+<p>Essentially what we are going to do is to take our 10 kids and then divide them
+into groups of 2 (or whatever radix). E.g.: <code class="language-plaintext highlighter-rouge">{1,2,3,4,5,6,7,8,9,10}</code> would become
+<code class="language-plaintext highlighter-rouge">{ {1,2}, {3,4}, {5,6}, {7,8}, {9,10} }</code>. The magic happens when we recursively
+apply this idea, like below:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{1,2,3,4,5,6,7,8,9,10}
+{ {1,2}, {3,4}, {5,6}, {7,8}, {9,10} }
+{ { {1,2}, {3,4} }, { {5,6}, {7,8} }, {9,10} }
+{ { {1,2}, {3,4} }, { { { 5,6}, {7,8} }, {9,10} } }
+{ { { {1,2}, {3,4}}, { { {5,6}, {7,8} }, {9,10} } } }
+</code></pre></div></div>
+
+<p>The end result of this grouping is a single group! So now we could do a
+transaction to pay/give cookies to that one group, and then if we wanted 9 to
+get their cookie/sats We’d only have to publish:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>level 0 to: Address({ { { {1,2}, {3,4} }, { { {5,6}, {7,8} }, {9,10} } } })
+level 1 to: Address({ { {5,6}, {7,8} }, {9,10} } })
+level 2 to: Address({9,10})
+</code></pre></div></div>
+
+<p>Now let’s show that in code:</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">/// # Tree Payment Contract</span>
+<span class="c">/// This contract is used to help decongest bitcoin</span>
+<span class="c">//// while giving users full confirmation of transfer.</span>
+<span class="nd">#[derive(JsonSchema,</span> <span class="nd">Serialize,</span> <span class="nd">Deserialize)]</span>
+<span class="k">pub</span> <span class="k">struct</span> <span class="n">TreePay</span> <span class="p">{</span>
+    <span class="c">/// # Payments</span>
+    <span class="c">/// all of the payments needing to be sent</span>
+    <span class="k">pub</span> <span class="n">participants</span><span class="p">:</span> <span class="nb">Vec</span><span class="o">&lt;</span><span class="n">Payment</span><span class="o">&gt;</span><span class="p">,</span>
+    <span class="c">/// # Tree Branching Factor</span>
+    <span class="c">/// the radix of the tree to build.</span>
+    <span class="c">/// Optimal for users should be around 4 or</span>
+    <span class="c">/// 5 (with CTV, not emulators).</span>
+    <span class="k">pub</span> <span class="n">radix</span><span class="p">:</span> <span class="nb">usize</span><span class="p">,</span>
+    <span class="nd">#[serde(with</span> <span class="nd">=</span> <span class="s">"bitcoin::util::amount::serde::as_sat"</span><span class="nd">)]</span>
+    <span class="nd">#[schemars(with</span> <span class="nd">=</span> <span class="s">"u64"</span><span class="nd">)]</span>
+    <span class="c">/// # Fee Sats (per tx)</span>
+    <span class="c">/// The amount of fees per transaction to allocate.</span>
+    <span class="k">pub</span> <span class="n">fee_sats_per_tx</span><span class="p">:</span> <span class="nn">bitcoin</span><span class="p">::</span><span class="nn">util</span><span class="p">::</span><span class="nn">amount</span><span class="p">::</span><span class="n">Amount</span><span class="p">,</span>
+    <span class="c">/// # Relative Timelock Backpressure</span>
+    <span class="c">/// When enabled, exert backpressure by slowing down</span>
+    <span class="c">/// tree expansion node by node either by time or blocks</span>
+    <span class="k">pub</span> <span class="n">timelock_backpressure</span><span class="p">:</span> <span class="nb">Option</span><span class="o">&lt;</span><span class="n">AnyRelTimeLock</span><span class="o">&gt;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="k">impl</span> <span class="n">TreePay</span> <span class="p">{</span>
+    <span class="nd">#[then]</span>
+        <span class="k">fn</span> <span class="nf">expand</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="p">{</span>
+            <span class="c">// A queue of all the payments to be made initialized with</span>
+            <span class="c">// all the input payments</span>
+            <span class="k">let</span> <span class="k">mut</span> <span class="n">queue</span> <span class="o">=</span> <span class="k">self</span>
+                <span class="py">.participants</span>
+                <span class="nf">.iter</span><span class="p">()</span>
+                <span class="nf">.map</span><span class="p">(|</span><span class="n">payment</span><span class="p">|</span> <span class="p">{</span>
+                    <span class="c">// Convert the payments to an internal representation</span>
+                    <span class="k">let</span> <span class="k">mut</span> <span class="n">amt</span> <span class="o">=</span> <span class="nn">AmountRange</span><span class="p">::</span><span class="nf">new</span><span class="p">();</span>
+                    <span class="n">amt</span><span class="nf">.update_range</span><span class="p">(</span><span class="n">payment</span><span class="py">.amount</span><span class="p">);</span>
+                    <span class="k">let</span> <span class="n">b</span><span class="p">:</span> <span class="nb">Box</span><span class="o">&lt;</span><span class="n">dyn</span> <span class="n">Compilable</span><span class="o">&gt;</span> <span class="o">=</span>
+                        <span class="nn">Box</span><span class="p">::</span><span class="nf">new</span><span class="p">(</span><span class="nn">Compiled</span><span class="p">::</span><span class="nf">from_address</span><span class="p">(</span><span class="n">payment</span><span class="py">.address</span><span class="nf">.clone</span><span class="p">(),</span>
+                        <span class="nf">Some</span><span class="p">(</span><span class="n">amt</span><span class="p">)));</span>
+                    <span class="p">(</span><span class="n">payment</span><span class="py">.amount</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+                <span class="p">})</span>
+                <span class="py">.collect</span><span class="p">::</span><span class="o">&lt;</span><span class="n">VecDeque</span><span class="o">&lt;</span><span class="p">(</span><span class="n">Amount</span><span class="p">,</span> <span class="nb">Box</span><span class="o">&lt;</span><span class="n">dyn</span> <span class="n">Compilable</span><span class="o">&gt;</span><span class="p">)</span><span class="o">&gt;&gt;</span><span class="p">();</span>
+
+            <span class="k">loop</span> <span class="p">{</span>
+                <span class="c">// take out a group of size `radix` payments</span>
+                <span class="k">let</span> <span class="n">v</span><span class="p">:</span> <span class="nb">Vec</span><span class="o">&lt;</span><span class="mi">_</span><span class="o">&gt;</span> <span class="o">=</span> <span class="n">queue</span>
+                    <span class="nf">.drain</span><span class="p">(</span><span class="mi">0</span><span class="o">..</span><span class="nn">std</span><span class="p">::</span><span class="nn">cmp</span><span class="p">::</span><span class="nf">min</span><span class="p">(</span><span class="k">self</span><span class="py">.radix</span><span class="p">,</span> <span class="n">queue</span><span class="nf">.len</span><span class="p">()))</span>
+                    <span class="nf">.collect</span><span class="p">();</span>
+                <span class="k">if</span> <span class="n">queue</span><span class="nf">.len</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">{</span>
+                    <span class="c">// in this case, there's no more payments to make so bundle</span>
+                    <span class="c">// them up into a final transaction</span>
+                    <span class="k">let</span> <span class="k">mut</span> <span class="n">builder</span> <span class="o">=</span> <span class="n">ctx</span><span class="nf">.template</span><span class="p">();</span>
+                    <span class="k">for</span> <span class="n">pay</span> <span class="n">in</span> <span class="n">v</span><span class="nf">.iter</span><span class="p">()</span> <span class="p">{</span>
+                        <span class="n">builder</span> <span class="o">=</span> <span class="n">builder</span><span class="nf">.add_output</span><span class="p">(</span><span class="n">pay</span><span class="na">.0</span><span class="p">,</span> <span class="n">pay</span><span class="na">.1</span><span class="nf">.as_ref</span><span class="p">(),</span> <span class="nb">None</span><span class="p">)</span><span class="o">?</span><span class="p">;</span>
+                    <span class="p">}</span>
+                    <span class="k">if</span> <span class="k">let</span> <span class="nf">Some</span><span class="p">(</span><span class="n">timelock</span><span class="p">)</span> <span class="o">=</span> <span class="k">self</span><span class="py">.timelock_backpressure</span> <span class="p">{</span>
+                        <span class="n">builder</span> <span class="o">=</span> <span class="n">builder</span><span class="nf">.set_sequence</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">timelock</span><span class="p">)</span><span class="o">?</span><span class="p">;</span>
+                    <span class="p">}</span>
+                    <span class="n">builder</span> <span class="o">=</span> <span class="n">builder</span><span class="nf">.add_fees</span><span class="p">(</span><span class="k">self</span><span class="py">.fee_sats_per_tx</span><span class="p">)</span><span class="o">?</span><span class="p">;</span>
+                    <span class="k">return</span> <span class="n">builder</span><span class="nf">.into</span><span class="p">();</span>
+                <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                    <span class="c">// There are still more, so make this group and add it to</span>
+                    <span class="c">// the back of the queue</span>
+                    <span class="k">let</span> <span class="n">pay</span> <span class="o">=</span> <span class="nn">Box</span><span class="p">::</span><span class="nf">new</span><span class="p">(</span><span class="n">PayThese</span> <span class="p">{</span>
+                        <span class="n">contracts</span><span class="p">:</span> <span class="n">v</span><span class="p">,</span>
+                        <span class="n">fees</span><span class="p">:</span> <span class="k">self</span><span class="py">.fee_sats_per_tx</span><span class="p">,</span>
+                        <span class="n">delay</span><span class="p">:</span> <span class="k">self</span><span class="py">.timelock_backpressure</span><span class="p">,</span>
+                    <span class="p">});</span>
+                    <span class="n">queue</span><span class="nf">.push_back</span><span class="p">((</span><span class="n">pay</span><span class="nf">.total_to_pay</span><span class="p">(),</span> <span class="n">pay</span><span class="p">))</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="k">impl</span> <span class="n">Contract</span> <span class="k">for</span> <span class="n">TreePay</span> <span class="p">{</span>
+    <span class="nd">declare!</span> <span class="p">{</span><span class="n">then</span><span class="p">,</span> <span class="nn">Self</span><span class="p">::</span><span class="n">expand</span><span class="p">}</span>
+    <span class="nd">declare!</span> <span class="p">{</span><span class="n">non</span> <span class="n">updatable</span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>So now what does that look like when we send to it? Let’s do a TreePay with 14 recipients and radix 4:</p>
+
+<p><img src="/public/img/bitcoin/advent/tree_pay.png" alt="sapio studio view of treepay" /></p>
+
+<p>As you can see, the queuing puts some structure into a batched payment! This is
+(roughly) the exact same code as above generating these transactions. What this
+also means is given an output and a description of the arguments passed to the
+contract, anyone can re-generate the expansion transactions and verify that they
+can eventually receive their money! These payout proofs can also be delivered in
+a pruned form, but that’s just a bonus.</p>
+
+<p>Everyone gets their cookie (confirmation of transfer) immediately, and knows
+they can get their milk (spendability) later. A smart wallet could manage your
+liquidity over pedning redemptions, so you could passively expand outputs
+whenever fees are cheap.</p>
+
+<hr />
+
+<p>There are <strong>a lot</strong> of extensions to this basic design, and we’ll see two really
+exciting ones tomorrow and the next day!</p>
+
+<p>If you want to read more about the impact of congestion control on the network,
+I previously wrote two articles simulating the impact of congestion control on
+the network which you can read here:</p>
+
+<ul>
+  <li><a href="https://utxos.org/analysis/bip_simulation/">Congestion Simulation</a></li>
+  <li><a href="https://utxos.org/analysis/batching_sim/">Batching Simulation</a></li>
+</ul>
+
+<p>What’s great about this is that not only do we make a big benefit for anyone who
+wants to use it, we show in the Batching Simulation that even with the overheads
+of a TreePay, the incentive compatible behavior around exchange batching can
+actually help us use less block space overall.</p>
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:simpl" role="doc-endnote">
+      <p>Simplifying here – I know Amdahl’s Law… <a href="#fnref:simpl" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+  </div>
+<hr>
+  
+<hr>
+  <div class="post">
+    <h2 class="post-title">
+        <a href="/bitcoin/2021/12/08/advent-11/">
+        Inheritence Schemes for Bitcoin
+      </a>
+  </h2>
+  <h4>Day 11: Rubin's Bitcoin Advent Calendar</h4>
+
+
+    <span class="post-date">08 Dec 2021</span>
+
+    <p><em>Welcome to day 11 of my Bitcoin Advent Calendar. You can see an index of all
+the posts <a href="/advent21">here</a> or subscribe at
+<a href="https://judica.org/join">judica.org/join</a> to get new posts in your inbox</em></p>
+
+<h2 id="you-are-going-to-die">You are going to die.</h2>
+
+<p>Merry Christmas! Hopefully not any time soon, but one of these days you will shuffle off this mortal coil.</p>
+
+<p>When that day comes, how will you give your loved ones your hard earned bitcoin?</p>
+
+<p>You do have a plan, right?</p>
+
+<p>This post is a continuation of the last post on Vaults. Whereas Vaults focus on trying to keep your coins away from someone, Inheritance focuses on making sure someone does get your coins. Basically opposites!</p>
+
+<h2 id="basic-bitcoin-plans">Basic Bitcoin Plans</h2>
+
+<p>Let’s say you’re a smarty pants and you set the following system up:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(2-of-3 Multisig of my keys) OR (After 1 year, 3-of-5 Multisig of my 4 family members keys and 1 lawyer to tie break)
+</code></pre></div></div>
+
+<p>Under this setup, you can spend your funds secured by a multisig. You have to
+spend them once a year to keep your greedy family away, but that’s OK.</p>
+
+<p>Until one day, you perish in a boating accident (shouldn’t have gone to that Flamin’ Hot Cheetos Yach Party in Miami).</p>
+
+<p>A year goes by, no one knows where your 2-of-3 keys are, and so the family’s
+backup keys go online.</p>
+
+<p>They raid your files and find a utxoset backup with descriptors and know how to
+combine their keys (that you made for them most likely…) with offline signing
+devices to sign a PSBT, and the money comes out.</p>
+
+<p>If the family can’t agree, a Lawyer who has your will can tie break the execution.</p>
+
+<p>Except wait…</p>
+
+<h2 id="your-kids-are-assholes-just-like-your-spouse">Your kids are assholes, just like your spouse</h2>
+
+<p>So your piece of shit husband/wife doesn’t think the kids should get anything (RIP
+college fund), so count them out on signing the tuition payments.</p>
+
+<p>Now we’re down to your 3 kids agreeing and your 1 lawyer.</p>
+
+<p>Your Lawyer thinks your spouse has a bit of a case, so the whole things in
+probate as far as they are concerned.</p>
+
+<p>And the kids? Well, the kids don’t want to go to college. You just gifted them
+42069 sats each, enough to pay for a ticket on Elon Musk’s spaceship. So they
+get together one night, withdraw all the money, and go to Mars. Or the Casino.
+Little Jimmy has never seen so much money, so he goes to Vegas for a last huzzah
+before the Mars trip, but he blows it all. So Jimmy stays behind, satless, and
+the other kids go to mars.</p>
+
+<h2 id="well-that-sucked">Well That Sucked</h2>
+
+<p>And it didn’t have to! What if you could express your last will and testament in
+Bitcoin transactions instead of in messy messy multisigs. You Can! Today! No new
+features required (although they’d sure be nice…).</p>
+
+<hr />
+
+<h1 id="building-inheritence-schemes-with-sapio">Building Inheritence Schemes with Sapio</h1>
+
+<p>You can make inheritence schemes with Sapio! While it does benefit from having
+CTV enabled for various reasons, technically it can work decently without CTV by
+pre-signing transactions with a CTV emulator.</p>
+
+<p>Here we’ll develop some interesting primitives that can be used to make various
+inheritence guarantees.</p>
+
+<h2 id="making-a-better-dead-man-switch">Making a better Dead Man Switch</h2>
+
+<p>First off, let’s make a better dead man switch. Recall we had to move our funds once a year because of the timelocks.</p>
+
+<p>That was dumb.</p>
+
+<p>Instead, let’s make a challenge of liveness! (again, deep apologies on these
+examples, I’m a bit behind on the series so haven’t checked as closely as I
+would usually…)</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">/// Opening state of a DeadManSwitch</span>
+<span class="nd">#[derive(Clone)]</span>
+<span class="k">struct</span> <span class="n">Alive</span> <span class="p">{</span>
+    <span class="c">/// Key needed to claim I'm dead</span>
+    <span class="n">is_dead</span><span class="p">:</span> <span class="nn">bitcoin</span><span class="p">::</span><span class="n">PublicKey</span><span class="p">,</span>
+    <span class="c">/// If someone says i'm dead but I'm alive, backup wallet address</span>
+    <span class="n">is_live</span><span class="p">:</span> <span class="nn">bitcoin</span><span class="p">::</span><span class="n">Address</span><span class="p">,</span>
+    <span class="c">/// My normal spending key (note: could be a Clause instead...)</span>
+    <span class="n">key</span><span class="p">:</span> <span class="nn">bitcoin</span><span class="p">::</span><span class="n">PublicKey</span><span class="p">,</span>
+    <span class="c">/// How long you have to claim you're not dead</span>
+    <span class="n">timeout</span><span class="p">:</span> <span class="n">RelTime</span><span class="p">,</span>
+    <span class="c">/// Addresses for CPFP Anchor Outputs</span>
+    <span class="n">is_dead_cpfp</span><span class="p">:</span> <span class="nn">bitcoin</span><span class="p">::</span><span class="n">Address</span><span class="p">,</span>
+    <span class="n">is_live_cpfp</span><span class="p">:</span> <span class="nn">bitcoin</span><span class="p">::</span><span class="n">Address</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="k">impl</span> <span class="n">Alive</span> <span class="p">{</span>
+    <span class="nd">#[guard]</span>
+    <span class="k">fn</span> <span class="nf">is_dead_sig</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nn">Clause</span><span class="p">::</span><span class="nf">Key</span><span class="p">(</span><span class="k">self</span><span class="py">.is_dead</span><span class="nf">.clone</span><span class="p">())</span>
+    <span class="p">}</span>
+    <span class="c">/// only allow the is_dead key to transition to a CheckIfDead </span>
+    <span class="nd">#[then(guarded_by=</span><span class="s">"[Self::is_dead_sig]"</span><span class="nd">)]</span>
+    <span class="k">fn</span> <span class="nf">am_i_dead</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">let</span> <span class="n">dust</span> <span class="o">=</span> <span class="nn">Amount</span><span class="p">::</span><span class="nf">from_sat</span><span class="p">(</span><span class="mi">600</span><span class="p">);</span>
+        <span class="k">let</span> <span class="n">amt</span> <span class="o">=</span> <span class="n">ctx</span><span class="nf">.funds</span><span class="p">();</span>
+        <span class="n">ctx</span><span class="nf">.template</span><span class="p">()</span>
+            <span class="c">// Send all but some dust to CheckIfDead</span>
+            <span class="nf">.add_output</span><span class="p">(</span><span class="n">amt</span> <span class="o">-</span> <span class="n">dust</span><span class="p">,</span> <span class="o">&amp;</span><span class="nf">CheckIfDead</span><span class="p">(</span><span class="k">self</span><span class="nf">.clone</span><span class="p">()),</span> <span class="nb">None</span><span class="p">)</span><span class="o">?</span>
+            <span class="c">// used for CPFP</span>
+            <span class="nf">.add_output</span><span class="p">(</span>
+                <span class="n">dust</span><span class="p">,</span>
+                <span class="o">&amp;</span><span class="nn">Compiled</span><span class="p">::</span><span class="nf">from_address</span><span class="p">(</span><span class="k">self</span><span class="py">.is_dead_cpfp</span><span class="nf">.clone</span><span class="p">(),</span> <span class="nb">None</span><span class="p">),</span>
+                <span class="nb">None</span><span class="p">,</span>
+            <span class="p">)</span><span class="o">?</span>
+            <span class="nf">.into</span><span class="p">()</span>
+    <span class="p">}</span>
+    <span class="c">/// Allow spending like normal</span>
+    <span class="nd">#[guard]</span>
+    <span class="k">fn</span> <span class="nf">spend</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nn">Clause</span><span class="p">::</span><span class="nf">Key</span><span class="p">(</span><span class="k">self</span><span class="py">.key</span><span class="nf">.clone</span><span class="p">())</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">impl</span> <span class="n">Contract</span> <span class="k">for</span> <span class="n">Alive</span> <span class="p">{</span>
+    <span class="nd">declare!</span> <span class="p">{</span><span class="n">finish</span><span class="p">,</span> <span class="nn">Self</span><span class="p">::</span><span class="n">spend</span><span class="p">}</span>
+    <span class="nd">declare!</span> <span class="p">{</span><span class="n">then</span><span class="p">,</span> <span class="nn">Self</span><span class="p">::</span><span class="n">am_i_dead</span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c">/// All the info we need is in Alive struct already...</span>
+<span class="k">struct</span> <span class="nf">CheckIfDead</span><span class="p">(</span><span class="n">Alive</span><span class="p">);</span>
+<span class="k">impl</span> <span class="n">CheckIfDead</span> <span class="p">{</span>
+    <span class="c">/// we're dead after the timeout and is_dead key signs to take the money</span>
+    <span class="nd">#[guard]</span>
+    <span class="k">fn</span> <span class="nf">is_dead</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nn">Clause</span><span class="p">::</span><span class="nf">And</span><span class="p">(</span><span class="nd">vec!</span><span class="p">[</span><span class="nn">Clause</span><span class="p">::</span><span class="nf">Key</span><span class="p">(</span><span class="k">self</span><span class="na">.0</span><span class="py">.is_dead</span><span class="nf">.clone</span><span class="p">()),</span> <span class="k">self</span><span class="na">.0</span><span class="py">.timeout</span><span class="nf">.clone</span><span class="p">()</span><span class="nf">.into</span><span class="p">()])</span>
+    <span class="p">}</span>
+
+    <span class="c">/// signature required for liveness claim</span>
+    <span class="nd">#[guard]</span>
+    <span class="k">fn</span> <span class="nf">alive_auth</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nn">Clause</span><span class="p">::</span><span class="nf">Key</span><span class="p">(</span><span class="k">self</span><span class="py">.key</span><span class="nf">.clone</span><span class="p">())</span>
+    <span class="p">}</span>
+    <span class="c">/// um excuse me i'm actually alive</span>
+    <span class="nd">#[then(guarded_by=</span><span class="s">"[Self::alive_auth]"</span><span class="nd">)]</span>
+    <span class="k">fn</span> <span class="nf">im_alive</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">let</span> <span class="n">dust</span> <span class="o">=</span> <span class="nn">Amount</span><span class="p">::</span><span class="nf">from_sat</span><span class="p">(</span><span class="mi">600</span><span class="p">);</span>
+        <span class="k">let</span> <span class="n">amt</span> <span class="o">=</span> <span class="n">ctx</span><span class="nf">.funds</span><span class="p">();</span>
+        <span class="n">ctx</span><span class="nf">.template</span><span class="p">()</span>
+            <span class="c">/// Send funds to the backup address!</span>
+            <span class="nf">.add_output</span><span class="p">(</span>
+                <span class="n">amt</span> <span class="o">-</span> <span class="n">dust</span><span class="p">,</span>
+                <span class="o">&amp;</span><span class="nn">Compiled</span><span class="p">::</span><span class="nf">from_address</span><span class="p">(</span><span class="k">self</span><span class="na">.0</span><span class="py">.is_live</span><span class="nf">.clone</span><span class="p">(),</span> <span class="nb">None</span><span class="p">),</span>
+                <span class="nb">None</span><span class="p">,</span>
+            <span class="p">)</span><span class="o">?</span>
+            <span class="c">/// Dust for CPFP-ing</span>
+            <span class="nf">.add_output</span><span class="p">(</span>
+                <span class="n">dust</span><span class="p">,</span>
+                <span class="o">&amp;</span><span class="nn">Compiled</span><span class="p">::</span><span class="nf">from_address</span><span class="p">(</span><span class="k">self</span><span class="na">.0</span><span class="py">.is_live_cpfp</span><span class="nf">.clone</span><span class="p">(),</span> <span class="nb">None</span><span class="p">),</span>
+                <span class="nb">None</span><span class="p">,</span>
+            <span class="p">)</span><span class="o">?</span>
+            <span class="nf">.into</span><span class="p">()</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">impl</span> <span class="n">Contract</span> <span class="k">for</span> <span class="n">CheckIfDead</span> <span class="p">{</span>
+    <span class="nd">declare!</span> <span class="p">{</span><span class="n">finish</span><span class="p">,</span> <span class="nn">Self</span><span class="p">::</span><span class="n">is_dead</span><span class="p">}</span>
+    <span class="nd">declare!</span> <span class="p">{</span><span class="n">then</span><span class="p">,</span> <span class="nn">Self</span><span class="p">::</span><span class="n">im_alive</span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>In this example, the funds start in a state of Alive, until a challenger calls
+<code class="language-plaintext highlighter-rouge">Alive::am_i_dead</code> or the original owner spends the coin. After the call of
+<code class="language-plaintext highlighter-rouge">Alive::am_i_dead</code>, the contract transitions to CheckIfDead state. From this state,
+the owner has <code class="language-plaintext highlighter-rouge">timeout</code> (either time or blocks) time to move the coin to their
+key, or else the claimer of the death can spend using <code class="language-plaintext highlighter-rouge">CheckIfDead::is_dead</code>.</p>
+
+<p>Of course, we can clean up this contract in various ways (e.g., making the
+destination if dead generic). That could look something like this:</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="n">Alive</span> <span class="p">{</span>
+    <span class="n">is_dead_cpfp</span><span class="p">:</span> <span class="nn">bitcoin</span><span class="p">::</span><span class="n">Address</span><span class="p">,</span>
+    <span class="n">is_live_cpfp</span><span class="p">:</span> <span class="nn">bitcoin</span><span class="p">::</span><span class="n">Address</span><span class="p">,</span>
+    <span class="c">// note that this permits composing Alive with some arbitrary function</span>
+    <span class="n">is_dead</span><span class="p">:</span> <span class="o">&amp;</span><span class="n">dyn</span> <span class="nf">Fn</span><span class="p">(</span><span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">,</span> <span class="n">cpfp</span><span class="p">:</span> <span class="nn">bitcoin</span><span class="p">::</span><span class="n">Address</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="n">TxTmplIt</span><span class="p">,</span>
+    <span class="n">is_live</span><span class="p">:</span> <span class="nn">bitcoin</span><span class="p">::</span><span class="n">Address</span><span class="p">,</span>
+    <span class="n">key</span><span class="p">:</span> <span class="nn">bitcoin</span><span class="p">::</span><span class="n">PublicKey</span><span class="p">,</span>
+    <span class="n">timeout</span><span class="p">:</span> <span class="n">RelTime</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="k">impl</span> <span class="n">CheckIfDead</span> <span class="p">{</span>
+    <span class="nd">#[then]</span>
+    <span class="k">fn</span> <span class="nf">is_dead</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">self</span><span class="na">.0</span><span class="nf">.is_dead</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="k">self</span><span class="na">.0</span><span class="py">.is_dead_cpfp</span><span class="nf">.clone</span><span class="p">())</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>This kind of dead man switch is much more reliable than having slowly eroding
+timelocks since it doesn’t require regular transaction refreshing, which was the
+source of <a href="https://medium.com/blockstream/patching-the-liquid-timelock-issue-b4b2f5f9a973">a bug in Blockstream’s federation
+code</a>.
+It also requires an explicit action to claim a lack of liveness, which also
+gives information about the trustworthiness of your kids (or any exploits of
+their signers).</p>
+
+<h2 id="not-so-fast">Not so fast</h2>
+
+<p>What if we want to make sure that little Jimmy and his gambling addiction don’t
+blow it all at once… Maybe if instead of giving Jimmy one big lump sum, we
+could give a little bit every month. Then maybe he’d be better off! This is
+basically an Annuity contract.</p>
+
+<p>Now let’s have a look at an annuity contract.</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="n">Annuity</span> <span class="p">{</span>
+    <span class="n">to</span><span class="p">:</span> <span class="nn">bitcoin</span><span class="p">::</span><span class="n">PublicKey</span><span class="p">,</span>
+    <span class="n">amount</span><span class="p">:</span> <span class="nn">bitcoin</span><span class="p">::</span><span class="n">Amount</span><span class="p">,</span>
+    <span class="n">period</span><span class="p">:</span> <span class="n">AnyRelTime</span>
+<span class="p">}</span>
+
+<span class="k">const</span> <span class="n">MIN_PAYOUT</span><span class="p">:</span> <span class="nn">bitcoin</span><span class="p">::</span><span class="n">Amount</span> <span class="o">=</span> <span class="nn">bitcoin</span><span class="p">::</span><span class="nn">Amount</span><span class="p">::</span><span class="nf">from_sat</span><span class="p">(</span><span class="mi">10000</span><span class="p">);</span>
+<span class="k">impl</span> <span class="n">Annuity</span> <span class="p">{</span>
+    <span class="nd">#[then]</span>
+    <span class="k">fn</span> <span class="nf">claim</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span><span class="n">Context</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">let</span> <span class="n">amt</span> <span class="o">=</span> <span class="n">ctx</span><span class="nf">.funds</span><span class="p">();</span>
+        <span class="c">// Basically, while there are funds left this contract recurses to itself,</span>
+        <span class="c">// until there's only a little bit left over.</span>
+        <span class="c">// No need for CPFP since we can spend from the `to` output for CPFP.</span>
+        <span class="k">if</span> <span class="n">amt</span> <span class="o">-</span> <span class="k">self</span><span class="py">.amount</span> <span class="o">&gt;</span> <span class="n">MIN_PAYOUT</span> <span class="p">{</span>
+            <span class="n">ctx</span><span class="nf">.template</span><span class="p">()</span>
+                <span class="nf">.add_output</span><span class="p">(</span><span class="k">self</span><span class="py">.amount</span><span class="p">,</span> <span class="o">&amp;</span><span class="k">self</span><span class="py">.to</span><span class="p">,</span> <span class="nb">None</span><span class="p">)</span><span class="o">?</span>
+                <span class="nf">.add_output</span><span class="p">(</span><span class="n">amt</span> <span class="o">-</span> <span class="k">self</span><span class="py">.amount</span><span class="p">,</span> <span class="o">&amp;</span><span class="k">self</span><span class="p">,</span> <span class="nb">None</span><span class="p">)</span><span class="o">?</span>
+                <span class="nf">.set_sequence</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="k">self</span><span class="py">.period</span><span class="nf">.into</span><span class="p">())</span><span class="o">?</span>
+                <span class="nf">.into</span><span class="p">()</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="n">amt</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="p">{</span>
+            <span class="n">ctx</span><span class="nf">.template</span><span class="p">()</span>
+                <span class="nf">.add_output</span><span class="p">(</span><span class="n">amt</span><span class="p">,</span> <span class="o">&amp;</span><span class="k">self</span><span class="py">.to</span><span class="p">,</span> <span class="nb">None</span><span class="p">)</span><span class="o">?</span>
+                <span class="nf">.set_sequence</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="k">self</span><span class="py">.period</span><span class="nf">.into</span><span class="p">())</span><span class="o">?</span>
+                <span class="nf">.into</span><span class="p">()</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="c">// nothing left to claim</span>
+            <span class="nf">empty</span><span class="p">()</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+
+<p>We could instead “transpose” an annuity into a non-serialized form. This would
+basically be a big transaction that has N outputs with locktimes on claiming
+each. However this has a few drawbacks:</p>
+
+<ol>
+  <li>
+    <p>Claims are non-serialized, which means that relative timelocks can only last
+at most 2 years. Therefore only absolute timelocks may be used.</p>
+  </li>
+  <li>
+    <p>You might want to make it possible for another entity to counterclaim Jimmy’s
+funds back, perhaps if he also died (talk about bad luck). In the transposed version, you would need to make N proof-of-life challenges v.s. just one<sup id="fnref:recursion" role="doc-noteref"><a href="#fn:recursion" class="footnote" rel="footnote">1</a></sup>.</p>
+  </li>
+  <li>
+    <p>You would have to pay more fees all at once (although less fees overall if feerates increase or stay flat).</p>
+  </li>
+  <li>
+    <p>It’s less extensible – for example, it would be possible to do a lot of cool
+things with serialization of payouts (e.g., allowing oracles to inflation adjust
+payout rate).</p>
+  </li>
+</ol>
+
+<h2 id="splits">Splits</h2>
+
+<p>Remember our annoying spouse, bad lawyer, etc? Well, instead of giving them a multisig, imagine
+we use the split function as the end output from our CheckIfDead:</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">fn</span> <span class="nf">split</span><span class="p">(</span><span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">,</span> <span class="n">cpfp</span><span class="p">:</span> <span class="nn">bitcoin</span><span class="p">::</span><span class="n">Address</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="n">TxTmplIt</span> <span class="p">{</span>
+    <span class="k">let</span> <span class="n">dust</span> <span class="o">=</span> <span class="nn">Amount</span><span class="p">::</span><span class="nf">from_sat</span><span class="p">(</span><span class="mi">600</span><span class="p">);</span>
+    <span class="k">let</span> <span class="n">amt</span> <span class="o">=</span> <span class="n">ctx</span><span class="nf">.funds</span><span class="p">()</span> <span class="o">-</span> <span class="n">dust</span><span class="p">;</span>
+    <span class="k">let</span> <span class="k">mut</span> <span class="n">ctx</span><span class="nf">.template</span><span class="p">()</span>
+       <span class="nf">.add_output</span><span class="p">(</span><span class="n">dust</span><span class="p">,</span> <span class="o">&amp;</span><span class="nn">Compiled</span><span class="p">::</span><span class="nf">from_address</span><span class="p">(</span><span class="n">cpfp</span><span class="p">,</span> <span class="nb">None</span><span class="p">),</span> <span class="nb">None</span><span class="p">)</span><span class="o">?</span>
+       <span class="nf">.add_output</span><span class="p">(</span><span class="n">amt</span><span class="o">*</span><span class="mf">0.5</span><span class="p">,</span> <span class="o">&amp;</span><span class="nn">from_somewhere</span><span class="p">::</span><span class="n">spouse_annuity</span><span class="p">,</span> <span class="nb">None</span><span class="p">)</span><span class="o">?</span>
+       <span class="nf">.add_output</span><span class="p">(</span><span class="n">amt</span> <span class="o">*</span> <span class="mf">0.1666</span><span class="p">,</span> <span class="o">&amp;</span><span class="nn">from_somewhere</span><span class="p">::</span><span class="n">kids_annuity</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">None</span><span class="p">)</span><span class="o">?</span>
+       <span class="nf">.add_output</span><span class="p">(</span><span class="n">amt</span><span class="o">*</span><span class="mf">0.1666</span><span class="p">,</span> <span class="o">&amp;</span><span class="nn">from_somewhere</span><span class="p">::</span><span class="n">kids_annuity</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="nb">None</span><span class="p">)</span><span class="o">?</span>
+       <span class="nf">.add_output</span><span class="p">(</span><span class="n">amt</span><span class="o">*</span><span class="mf">0.1666</span><span class="p">,</span> <span class="o">&amp;</span><span class="nn">from_somewhere</span><span class="p">::</span><span class="n">kids_annuity</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="nb">None</span><span class="p">)</span><span class="o">?</span>
+       <span class="nf">.into</span><span class="p">()</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>This way we don’t rely on any pesky disagreement over what to sign, the funds
+are split exactly how we like.</p>
+
+<h2 id="oracles-and-lawyers">Oracles and Lawyers</h2>
+
+<p>Lastly, it is possible to bake into these contracts all sorts of
+conditionallity.</p>
+
+<p>For example, imagine an Annuity that only makes payouts if a University
+Attendance Validator signs your tuition payment, otherwise you get the coins on
+your 25th Birthday.</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="n">Tuition</span> <span class="p">{</span>
+    <span class="c">/// keep this key secret from the school</span>
+    <span class="n">to</span><span class="p">:</span> <span class="nn">bitcoin</span><span class="p">::</span><span class="n">PublicKey</span><span class="p">,</span>
+    <span class="n">enrolled</span><span class="p">:</span> <span class="nn">bitcoin</span><span class="p">::</span><span class="n">PublicKey</span><span class="p">,</span>
+    <span class="n">school</span><span class="p">:</span> <span class="nn">bitcoin</span><span class="p">::</span><span class="n">PublicKey</span><span class="p">,</span>
+    <span class="n">amount</span><span class="p">:</span> <span class="nn">bitcoin</span><span class="p">::</span><span class="n">Amount</span><span class="p">,</span>
+    <span class="n">period</span><span class="p">:</span> <span class="n">AnyRelTime</span><span class="p">,</span>
+    <span class="n">birthday</span><span class="p">:</span> <span class="n">AbsTime</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="k">const</span> <span class="n">MIN_PAYOUT</span><span class="p">:</span> <span class="nn">bitcoin</span><span class="p">::</span><span class="n">Amount</span> <span class="o">=</span> <span class="nn">bitcoin</span><span class="p">::</span><span class="nn">Amount</span><span class="p">::</span><span class="nf">from_sat</span><span class="p">(</span><span class="mi">10000</span><span class="p">);</span>
+<span class="k">impl</span> <span class="n">Tuition</span> <span class="p">{</span>
+    <span class="nd">#[guard]</span>
+    <span class="k">fn</span> <span class="nf">enrolled</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nn">Clause</span><span class="p">::</span><span class="nf">And</span><span class="p">(</span><span class="nd">vec!</span><span class="p">[</span><span class="nn">Clause</span><span class="p">::</span><span class="nf">Key</span><span class="p">(</span><span class="k">self</span><span class="py">.enrolled</span><span class="p">),</span> <span class="nn">Clause</span><span class="p">::</span><span class="nf">Key</span><span class="p">(</span><span class="k">self</span><span class="py">.to</span><span class="p">)])</span>
+    <span class="p">}</span>
+    <span class="nd">#[then(guarded_by=</span><span class="s">"[Self::enrolled]"</span><span class="nd">)]</span>
+    <span class="k">fn</span> <span class="nf">claim</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span><span class="n">Context</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">let</span> <span class="n">amt</span> <span class="o">=</span> <span class="n">ctx</span><span class="nf">.funds</span><span class="p">();</span>
+        <span class="k">if</span> <span class="n">amt</span> <span class="o">-</span> <span class="k">self</span><span class="py">.amount</span> <span class="o">&gt;</span> <span class="n">MIN_PAYOUT</span> <span class="p">{</span>
+            <span class="c">// send money to school</span>
+            <span class="n">ctx</span><span class="nf">.template</span><span class="p">()</span>
+                <span class="nf">.add_output</span><span class="p">(</span><span class="k">self</span><span class="py">.amount</span><span class="p">,</span> <span class="o">&amp;</span><span class="k">self</span><span class="py">.enrolled</span><span class="p">,</span> <span class="nb">None</span><span class="p">)</span><span class="o">?</span>
+                <span class="nf">.add_output</span><span class="p">(</span><span class="n">amt</span> <span class="o">-</span> <span class="k">self</span><span class="py">.amount</span><span class="p">,</span> <span class="o">&amp;</span><span class="k">self</span><span class="p">,</span> <span class="nb">None</span><span class="p">)</span><span class="o">?</span>
+                <span class="nf">.set_sequence</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="k">self</span><span class="py">.period</span><span class="nf">.into</span><span class="p">())</span><span class="o">?</span>
+                <span class="nf">.into</span><span class="p">()</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="n">amt</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="p">{</span>
+            <span class="c">// give the change to child</span>
+            <span class="n">ctx</span><span class="nf">.template</span><span class="p">()</span>
+                <span class="nf">.add_output</span><span class="p">(</span><span class="n">amt</span><span class="p">,</span> <span class="o">&amp;</span><span class="k">self</span><span class="py">.to</span><span class="p">,</span> <span class="nb">None</span><span class="p">)</span><span class="o">?</span>
+                <span class="nf">.set_sequence</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="k">self</span><span class="py">.period</span><span class="nf">.into</span><span class="p">())</span><span class="o">?</span>
+                <span class="nf">.into</span><span class="p">()</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="nf">empty</span><span class="p">()</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="nd">#[guard]</span>
+    <span class="k">fn</span> <span class="nf">spend</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nn">Clause</span><span class="p">::</span><span class="nf">And</span><span class="p">(</span><span class="nd">vec!</span><span class="p">[</span><span class="k">self</span><span class="py">.birthday</span><span class="nf">.into</span><span class="p">(),</span> <span class="nn">Clause</span><span class="p">::</span><span class="nf">Key</span><span class="p">(</span><span class="k">self</span><span class="py">.to</span><span class="p">)])</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The oracle can’t really steal funds here – they can only sign the already
+agreed on txn and get the tuition payment to the “school” network. And on the
+specified Birthday, if not used for tuition, the funds go to the child directly.</p>
+
+<h1 id="where-do-these-live">Where do these live?</h1>
+
+<p>In theory what you’d end up doing is attaching these to every coin in you wallet
+under a dead-man switch.</p>
+
+<p>Ideally, you’d put enough under your main “structured” splits that you’re not
+moving all to often and then you would have the rest go into less structured
+stuff.  E.g., the college fund coins you might touch less frequently than the
+coins for general annuity. You can also sequence some things using absolute
+timelocks, for example.</p>
+
+<p>In an ideal world you would have a wallet agent that is aware of all your UTXOs
+and your will and testament state and makes sure to regenerate the correct
+conditions whenever you spend and then store them durably, but that’s a bit
+futuristic for the time being.  With CTV the story is a bit better, as for many
+designs you could distribute a WASM bundle for your wallet to your family and
+they could use that to generate all the transactions given an output, without
+needing to have every presigned transaction saved.</p>
+
+<p>This does demonstrate a relative strength for the account model, it’s much
+easier to keep all your funds in once account and write globally correct
+inheritence vault logic around it for all your funds, computed across
+percentages. No matter the UTXO model covenant, that someone might have multiple
+UTXOs poses an inherent challenge in doing this kind of stuff properly.</p>
+
+<h1 id="what-else">What else?</h1>
+
+<p>Well, this is just a small sampling of things you could do. Part of the power of
+Sapio is that I hope you’re feeling inspired to make your own bespoke
+inhertience scheme in it! No one size fits all, ever, but perhaps with the power
+of Sapio available to the world we’ll see a lot more experimentation with what’s
+possible.</p>
+
+<hr />
+
+<p>Till next time – Jeremy.</p>
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:recursion" role="doc-endnote">
+      <p>Note this is a case where unrolling can be used, but the contract sizes can blow up kinda quick, so careful programming might be needed or you might need to say that it can only be claimed that Jimmy is dead once or twice before he just gets all the money. Recursive covenants would not nescessarily have this issue. <a href="#fnref:recursion" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+  </div>
+<hr>
+  
+<hr>
+  <div class="post">
+    <h2 class="post-title">
+        <a href="/bitcoin/2021/12/07/advent-10/">
+        Building Vaults on Bitcoin
+      </a>
+  </h2>
+  <h4>Day 10: Rubin's Bitcoin Advent Calendar</h4>
+
+
+    <span class="post-date">07 Dec 2021</span>
+
+    <p><em>Welcome to day 10 of my Bitcoin Advent Calendar. You can see an index of all
+the posts <a href="/advent21">here</a> or subscribe at
+<a href="https://judica.org/join">judica.org/join</a> to get new posts in your inbox</em></p>
+
+<p>A “Vault” is a general concept for a way of protecting Bitcoin from theft
+through a cold-storage smart contract. While there is not formal definition of
+what is and is not a Vault, generally a Vault has more structure around a
+withdrawal than just a multisig.</p>
+
+<p>One of the earlier
+<a href="https://hackingdistributed.com/2016/02/26/how-to-implement-secure-bitcoin-vaults/">references</a>
+for Vaults was a design whereby every time you request to withdraw from it you
+can “reset” the request within a time limit.  This means that while an attacker
+might steal your keys, you can “fight” to make it a negative sum game – e.g.,
+they’ll just keep on paying fees to eventually steal an amount less than they
+paid. This might serve to disincentivize hacking exchanges if hackers are less
+likely to actually get coins.</p>
+
+<p>Similar Vaults can be built using Sapio, but the logic for them involves
+unrolling the contract a predefined number of steps. This isn’t bad because if
+the period of timeout is 1 week then just unrolling 5,200 times gets you one
+thousand years of hacking disincentive.</p>
+
+<p>The contract for that might look something like this in Sapio (<em>note: I was
+running behind on this post so I may make modifications to make these examples
+better later</em>):</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="n">VaultOne</span> <span class="p">{</span>
+    <span class="c">/// Key that will authorize:</span>
+    <span class="c">/// 1) Recursing with the vault</span>
+    <span class="c">/// 2) Spending from the vault after not moved for a period</span>
+    <span class="n">key</span><span class="p">:</span> <span class="nn">bitcoin</span><span class="p">::</span><span class="n">PublicKey</span><span class="p">,</span>
+    <span class="c">/// How long should the vault live for</span>
+    <span class="n">steps</span><span class="p">:</span> <span class="nb">u32</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="k">impl</span> <span class="n">VaultOne</span> <span class="p">{</span>
+    <span class="c">/// Checks if steps are remaining</span>
+    <span class="nd">#[compile_if]</span>
+    <span class="k">fn</span> <span class="nf">not_out_of_steps</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="k">self</span><span class="py">.steps</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">{</span>
+            <span class="nn">ConditionalCompileType</span><span class="p">::</span><span class="n">Never</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="nn">ConditionalCompileType</span><span class="p">::</span><span class="n">NoConstraint</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="nd">#[guard]</span>
+    <span class="k">fn</span> <span class="nf">authorize</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nn">Clause</span><span class="p">::</span><span class="nf">Key</span><span class="p">(</span><span class="k">self</span><span class="py">.key</span><span class="nf">.clone</span><span class="p">())</span>
+    <span class="p">}</span>
+
+    <span class="c">/// Recurses the vault if authorized</span>
+    <span class="nd">#[then(compile_if</span> <span class="nd">=</span> <span class="s">"[Self::not_out_of_steps]"</span><span class="nd">,</span> <span class="nd">guarded_by</span> <span class="nd">=</span> <span class="s">"[Self::authorize]"</span><span class="nd">)]</span>
+    <span class="k">fn</span> <span class="nf">step</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">let</span> <span class="n">next</span> <span class="o">=</span> <span class="n">VaultOne</span> <span class="p">{</span>
+            <span class="n">key</span><span class="p">:</span> <span class="k">self</span><span class="py">.key</span><span class="nf">.clone</span><span class="p">(),</span>
+            <span class="n">steps</span><span class="p">:</span> <span class="k">self</span><span class="py">.steps</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="p">};</span>
+        <span class="k">let</span> <span class="n">amt</span> <span class="o">=</span> <span class="n">ctx</span><span class="nf">.funds</span><span class="p">();</span>
+        <span class="n">ctx</span><span class="nf">.template</span><span class="p">()</span>
+            <span class="nf">.add_output</span><span class="p">(</span><span class="n">amt</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">next</span><span class="p">,</span> <span class="nb">None</span><span class="p">)</span><span class="o">?</span>
+            <span class="c">// For Paying fees via CPFP. Note that we should totally definitely</span>
+            <span class="c">// get rid of the dust limit for contracts like this, or enable</span>
+            <span class="c">// IUTXOS with 0 Value</span>
+            <span class="nf">.add_output</span><span class="p">(</span><span class="nn">Amount</span><span class="p">::</span><span class="nf">from_sat</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="o">&amp;</span><span class="k">self</span><span class="py">.key</span><span class="p">,</span> <span class="nb">None</span><span class="p">)</span><span class="o">?</span>
+            <span class="nf">.into</span><span class="p">()</span>
+    <span class="p">}</span>
+    <span class="c">/// Allow spending after a week long delay</span>
+    <span class="nd">#[guard]</span>
+    <span class="k">fn</span> <span class="nf">finish</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nn">Clause</span><span class="p">::</span><span class="nf">And</span><span class="p">(</span><span class="nd">vec!</span><span class="p">[</span>
+            <span class="nn">Clause</span><span class="p">::</span><span class="nf">Key</span><span class="p">(</span><span class="k">self</span><span class="py">.key</span><span class="nf">.clone</span><span class="p">()),</span>
+            <span class="nn">RelTime</span><span class="p">::</span><span class="nf">try_from</span><span class="p">(</span><span class="nn">Duration</span><span class="p">::</span><span class="nf">from_secs</span><span class="p">(</span><span class="mi">7</span> <span class="o">*</span> <span class="mi">24</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">60</span><span class="p">))</span>
+                <span class="nf">.unwrap</span><span class="p">()</span>
+                <span class="nf">.into</span><span class="p">(),</span>
+        <span class="p">])</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="c">/// Binds the logic to the Contract</span>
+<span class="k">impl</span> <span class="n">Contract</span> <span class="k">for</span> <span class="n">VaultOne</span> <span class="p">{</span>
+    <span class="nd">declare!</span> <span class="p">{</span><span class="n">then</span><span class="p">,</span> <span class="nn">Self</span><span class="p">::</span><span class="n">step</span><span class="p">}</span>
+    <span class="nd">declare!</span> <span class="p">{</span><span class="n">finish</span><span class="p">,</span> <span class="nn">Self</span><span class="p">::</span><span class="n">finish</span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>But we can also build much more sophisticated Vaults that do more. Suppose we
+want to have a vault where once a week you can claim a trickle of bitcoin into a
+hot wallet, or you can send it back to a cold storage key. This is a “structured
+liquidity vault” that gives you time-release Bitcoin. Let’s check out some code
+and talk about it more:</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">#[derive(Clone)]</span>
+<span class="k">struct</span> <span class="n">VaultTwo</span> <span class="p">{</span>
+    <span class="c">/// Key just for authorizing steps</span>
+    <span class="n">authorize_key</span><span class="p">:</span> <span class="nn">bitcoin</span><span class="p">::</span><span class="n">PublicKey</span><span class="p">,</span>
+    <span class="n">amount_per_step</span><span class="p">:</span> <span class="nn">bitcoin</span><span class="p">::</span><span class="n">Amount</span><span class="p">,</span>
+    <span class="c">/// Hot wallet key</span>
+    <span class="n">hot_key</span><span class="p">:</span> <span class="nn">bitcoin</span><span class="p">::</span><span class="n">PublicKey</span><span class="p">,</span>
+    <span class="c">/// Cold wallet key</span>
+    <span class="n">cold_key</span><span class="p">:</span> <span class="nn">bitcoin</span><span class="p">::</span><span class="n">PublicKey</span><span class="p">,</span>
+    <span class="n">steps</span><span class="p">:</span> <span class="nb">u32</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="k">impl</span> <span class="n">VaultTwo</span> <span class="p">{</span>
+    <span class="nd">#[compile_if]</span>
+    <span class="k">fn</span> <span class="nf">not_out_of_steps</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="k">self</span><span class="py">.steps</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">{</span>
+            <span class="nn">ConditionalCompileType</span><span class="p">::</span><span class="n">Never</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="nn">ConditionalCompileType</span><span class="p">::</span><span class="n">NoConstraint</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="nd">#[guard]</span>
+    <span class="k">fn</span> <span class="nf">authorized</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nn">Clause</span><span class="p">::</span><span class="nf">Key</span><span class="p">(</span><span class="k">self</span><span class="py">.authorize_key</span><span class="nf">.clone</span><span class="p">())</span>
+    <span class="p">}</span>
+    <span class="nd">#[then(compile_if</span> <span class="nd">=</span> <span class="s">"[Self::not_out_of_steps]"</span><span class="nd">,</span> <span class="nd">guarded_by</span> <span class="nd">=</span> <span class="s">"[Self::authorized]"</span><span class="nd">)]</span>
+    <span class="k">fn</span> <span class="nf">step</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c">// Creates a recursive vault with one fewer steps</span>
+        <span class="k">let</span> <span class="n">next</span> <span class="o">=</span> <span class="n">VaultTwo</span> <span class="p">{</span>
+            <span class="n">steps</span><span class="p">:</span> <span class="k">self</span><span class="py">.steps</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="o">..</span><span class="k">self</span><span class="nf">.clone</span><span class="p">()</span>
+        <span class="p">};</span>
+        <span class="k">let</span> <span class="n">amt</span> <span class="o">=</span> <span class="n">ctx</span><span class="nf">.funds</span><span class="p">();</span>
+        <span class="n">ctx</span><span class="nf">.template</span><span class="p">()</span>
+            <span class="c">// send to the new vault</span>
+            <span class="nf">.add_output</span><span class="p">(</span><span class="n">amt</span> <span class="o">-</span> <span class="k">self</span><span class="py">.amount_per_step</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">next</span><span class="p">,</span> <span class="nb">None</span><span class="p">)</span><span class="o">?</span>
+            <span class="c">// withdraw some to hot storage</span>
+            <span class="nf">.add_output</span><span class="p">(</span><span class="k">self</span><span class="py">.amount_per_step</span><span class="p">,</span> <span class="o">&amp;</span><span class="k">self</span><span class="py">.hot_key</span><span class="p">,</span> <span class="nb">None</span><span class="p">)</span><span class="o">?</span>
+            <span class="c">// For Paying fees via CPFP. Note that we should totally definitely</span>
+            <span class="c">// get rid of the dust limit for contracts like this, or enable</span>
+            <span class="c">// IUTXOS with 0 Value</span>
+            <span class="nf">.add_output</span><span class="p">(</span><span class="nn">Amount</span><span class="p">::</span><span class="nf">from_sat</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="o">&amp;</span><span class="k">self</span><span class="py">.authorize_key</span><span class="p">,</span> <span class="nb">None</span><span class="p">)</span><span class="o">?</span>
+            <span class="c">// restrict that we have to wait a week</span>
+            <span class="nf">.set_sequence</span><span class="p">(</span>
+                <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
+                <span class="nn">RelTime</span><span class="p">::</span><span class="nf">try_from</span><span class="p">(</span><span class="nn">Duration</span><span class="p">::</span><span class="nf">from_secs</span><span class="p">(</span><span class="mi">7</span> <span class="o">*</span> <span class="mi">24</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">60</span><span class="p">))</span><span class="o">?</span><span class="nf">.into</span><span class="p">(),</span>
+            <span class="p">)</span><span class="o">?</span>
+            <span class="nf">.into</span><span class="p">()</span>
+    <span class="p">}</span>
+    <span class="c">/// allow sending the remaining funds into cold storage</span>
+    <span class="nd">#[then(compile_if</span> <span class="nd">=</span> <span class="s">"[Self::not_out_of_steps]"</span><span class="nd">,</span> <span class="nd">guarded_by</span> <span class="nd">=</span> <span class="s">"[Self::authorized]"</span><span class="nd">)]</span>
+    <span class="k">fn</span> <span class="nf">terminate</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">ctx</span><span class="nf">.template</span><span class="p">()</span>
+            <span class="c">// send the remaining funds to cold storage</span>
+            <span class="nf">.add_output</span><span class="p">(</span><span class="k">self</span><span class="py">.amount_per_step</span><span class="o">*</span><span class="k">self</span><span class="py">.steps</span><span class="p">,</span> <span class="o">&amp;</span><span class="k">self</span><span class="py">.cold_key</span><span class="p">,</span> <span class="nb">None</span><span class="p">)</span><span class="o">?</span>
+            <span class="c">// For Paying fees via CPFP. Note that we should totally definitely</span>
+            <span class="c">// get rid of the dust limit for contracts like this, or enable</span>
+            <span class="c">// IUTXOS with 0 Value</span>
+            <span class="nf">.add_output</span><span class="p">(</span><span class="nn">Amount</span><span class="p">::</span><span class="nf">from_sat</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="o">&amp;</span><span class="k">self</span><span class="py">.authorize_key</span><span class="p">,</span> <span class="nb">None</span><span class="p">)</span><span class="o">?</span>
+            <span class="nf">.into</span><span class="p">()</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">impl</span> <span class="n">Contract</span> <span class="k">for</span> <span class="n">VaultTwo</span> <span class="p">{</span>
+    <span class="nd">declare!</span> <span class="p">{</span><span class="n">then</span><span class="p">,</span> <span class="nn">Self</span><span class="p">::</span><span class="n">step</span><span class="p">,</span> <span class="nn">Self</span><span class="p">::</span><span class="n">terminate</span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>This type of Vault is particularly interesting for e.g., withdrawing from an
+exchange business.  Imagine a user, Elsa who wants to have a great cold storage
+system. So Elsa sets up a xpub key and puts it on ice. She then generates a new
+address, and requests that the exchange let the funds go to it. Later that
+month, Elsa wants to buy a coffee with her Bitcoin so she has to thaw out her
+cold storage to spend (maybe using a offline PSBT signing), and transfer the
+funds to her destination or to a hot wallet if she wants a bit of extra pocket
+money. Instead suppose Elsa sets up a timerelease vault. Then, she can set up
+her cold vault and automatically be able to claim 1 Bitcoin a month out of it,
+or if she notices some coins missing from her hot wallet redirect the funds
+solely under her ice castle.</p>
+
+<p>This has many benefits for an average user. One is that you can invest in your
+cold storage of keys <em>once</em> in your life and only have to access it in
+unexpected circumstance. This means that: users might elect to use something
+more secure/inconvenient to access (e.g. strongly geo-sharded); that they won’t
+reveal access patterns by visiting their key storage facility; and that they
+don’t need to expose themselves to recurring fat-finger<sup id="fnref:fat" role="doc-noteref"><a href="#fn:fat" class="footnote" rel="footnote">1</a></sup> risk.</p>
+
+<h2 id="getting-a-little-more-advanced">Getting a little more advanced</h2>
+
+<p>What are some other things we might want to do in a vault?  Let’s do a quickfire
+– we won’t code these here, but you’ll see examples of these techniques in
+posts to come:</p>
+
+<h3 id="send-a-percentage-not-a-fixed-amount">Send a percentage, not a fixed amount</h3>
+
+<p>Let the contract know the intended amount, and then compute the withdrawals as
+percentages in the program.</p>
+
+<h3 id="non-key-destinations">Non-Key Destinations</h3>
+<p>In the examples above, we use keys for hot wallet, cold wallet, and authorizations.</p>
+
+<p>However, we could very well use other programs! For example, imagine a
+time-release vault that goes into a anti-theft locker.</p>
+
+<h3 id="change-hot-wallet-every-step">Change Hot Wallet Every Step</h3>
+
+<p>This one is pretty simple – if you have N steps just provide a list of N
+different destinations and use the i-th one as you go!</p>
+
+<h3 id="topping-up">Topping up:</h3>
+
+<p>There are advanced techniques that can be used to allow depositing <em>into</em> a
+vault after it has been created (i.e., topping up), but that’s too advanced to
+go into detail today. For those inclined, a small hint: make the “top up” vault
+consume an output from the previous vault, CTV commits to the script so you can
+use a salted P2SH out.</p>
+
+<h2 id="even-more-advanced">Even more advanced</h2>
+
+<p>What if we want to ensure that after a withdraw funds are re-inserted into the Vault?</p>
+
+<p>We’ll ditch the recursion (for now), and just look at some basic logic. Imagine
+a coin is held by a cold storage key, and we want to use Sapio to generate a transaction
+that withdraws funds to an address and sends the rest back into cold storage.</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="n">VaultThree</span> <span class="p">{</span>
+    <span class="n">key</span><span class="p">:</span> <span class="nn">bitcoin</span><span class="p">::</span><span class="n">PublicKey</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c">/// Special struct for passing arguments to a created contract</span>
+<span class="k">enum</span> <span class="n">Withdrawal</span> <span class="p">{</span>
+    <span class="nb">Send</span> <span class="p">{</span>
+        <span class="n">addr</span><span class="p">:</span> <span class="nn">bitcoin</span><span class="p">::</span><span class="n">Address</span><span class="p">,</span>
+        <span class="n">amount</span><span class="p">:</span> <span class="nn">bitcoin</span><span class="p">::</span><span class="n">Amount</span><span class="p">,</span>
+        <span class="n">fees</span><span class="p">:</span> <span class="nn">bitcoin</span><span class="p">::</span><span class="n">Amount</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="n">Nothing</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="c">/// required...</span>
+<span class="k">impl</span> <span class="n">Default</span> <span class="k">for</span> <span class="n">Withdrawal</span> <span class="p">{</span>
+    <span class="k">fn</span> <span class="nf">default</span><span class="p">()</span> <span class="k">-&gt;</span> <span class="n">Self</span> <span class="p">{</span>
+        <span class="nn">Withdrawal</span><span class="p">::</span><span class="n">Nothing</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="k">impl</span> <span class="n">StatefulArgumentsTrait</span> <span class="k">for</span> <span class="n">Withdrawal</span> <span class="p">{}</span>
+
+<span class="c">/// helper for rust type system issue</span>
+<span class="k">fn</span> <span class="nf">default_coerce</span><span class="p">(</span>
+    <span class="n">k</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">VaultThree</span> <span class="k">as</span> <span class="n">Contract</span><span class="o">&gt;</span><span class="p">::</span><span class="n">StatefulArguments</span><span class="p">,</span>
+<span class="p">)</span> <span class="k">-&gt;</span> <span class="n">Result</span><span class="o">&lt;</span><span class="n">Withdrawal</span><span class="p">,</span> <span class="n">CompilationError</span><span class="o">&gt;</span> <span class="p">{</span>
+    <span class="nf">Ok</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="k">impl</span> <span class="n">VaultThree</span> <span class="p">{</span>
+    <span class="nd">#[guard]</span>
+    <span class="k">fn</span> <span class="nf">signed</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nn">Clause</span><span class="p">::</span><span class="nf">Key</span><span class="p">(</span><span class="k">self</span><span class="py">.key</span><span class="nf">.clone</span><span class="p">())</span>
+    <span class="p">}</span>
+    <span class="nd">#[continuation(guarded_by</span> <span class="nd">=</span> <span class="s">"[Self::signed]"</span><span class="nd">,</span> <span class="nd">coerce_args</span> <span class="nd">=</span> <span class="s">"default_coerce"</span><span class="nd">)]</span>
+    <span class="k">fn</span> <span class="nf">withdraw</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">,</span> <span class="n">request</span><span class="p">:</span> <span class="n">Withdrawal</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="k">let</span> <span class="nn">Withdrawal</span><span class="p">::</span><span class="nb">Send</span> <span class="p">{</span> <span class="n">amount</span><span class="p">,</span> <span class="n">fees</span><span class="p">,</span> <span class="n">addr</span> <span class="p">}</span> <span class="o">=</span> <span class="n">request</span> <span class="p">{</span>
+            <span class="k">let</span> <span class="n">amt</span> <span class="o">=</span> <span class="n">ctx</span><span class="nf">.funds</span><span class="p">();</span>
+            <span class="n">ctx</span><span class="nf">.template</span><span class="p">()</span>
+                <span class="c">// send the rest recursively to this contract</span>
+                <span class="nf">.add_output</span><span class="p">(</span><span class="n">amt</span> <span class="o">-</span> <span class="n">amount</span> <span class="o">-</span> <span class="n">fees</span><span class="p">,</span> <span class="k">self</span><span class="p">,</span> <span class="nb">None</span><span class="p">)</span><span class="o">?</span>
+                <span class="c">// process the withdrawal</span>
+                <span class="nf">.add_output</span><span class="p">(</span><span class="n">amount</span><span class="p">,</span> <span class="o">&amp;</span><span class="nn">Compiled</span><span class="p">::</span><span class="nf">from_address</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="nb">None</span><span class="p">),</span> <span class="nb">None</span><span class="p">)</span><span class="o">?</span>
+                <span class="c">// mark fees as spent</span>
+                <span class="nf">.spend_amount</span><span class="p">(</span><span class="n">fees</span><span class="p">)</span><span class="o">?</span>
+                <span class="nf">.into</span><span class="p">()</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="nf">empty</span><span class="p">()</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="k">impl</span> <span class="n">Contract</span> <span class="k">for</span> <span class="n">VaultThree</span> <span class="p">{</span>
+    <span class="nd">declare!</span> <span class="p">{</span><span class="n">updatable</span><span class="o">&lt;</span><span class="n">Withdrawal</span><span class="o">&gt;</span><span class="p">,</span> <span class="nn">Self</span><span class="p">::</span><span class="n">withdraw</span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>Now we’ve seen how updatable continuation clauses can be used to dynamically
+pass arguments to a Sapio contract and let the module figure out what the next
+transactions should be, managing recursive and non-enumerated state transitions
+(albeit with a trust model).</p>
+
+<hr />
+
+<p>That’s probably enough for today, before I make your head explode. We’ll see more examples soon!</p>
+
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:fat" role="doc-endnote">
+      <p>Sending the wrong amount because you click the wrong key with your too-large hands. <a href="#fnref:fat" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+  </div>
+<hr>
+  
+<hr>
+  <div class="post">
+    <h2 class="post-title">
+        <a href="/bitcoin/2021/12/06/advent-9/">
+        Sapio Primer
+      </a>
+  </h2>
+  <h4>Day 9: Rubin's Bitcoin Advent Calendar</h4>
+
+
+    <span class="post-date">06 Dec 2021</span>
+
+    <p><em>Welcome to day 9 of my Bitcoin Advent Calendar. You can see an index of all
+the posts <a href="/advent21">here</a> or subscribe at
+<a href="https://judica.org/join">judica.org/join</a> to get new posts in your inbox</em></p>
+
+<p>We’re through the basics sections of the Advent calendar ow! Time for some more…
+specific content on the bleeding edge!</p>
+
+<p>This post is your introduction to the world of
+<a href="https://learn.sapio-lang.org">Sapio</a>. Sapio is the programming framework I’ve
+been developing for Bitcoin Smart Contracts. There’s a <em>ton</em> of material on <a href="https://learn.sapio-lang.org">the
+website</a>, so this post is going to be a bit
+high-level and then you should jump into the docs after to learn more.</p>
+
+<h2 id="what-the-heck-is-sapio">What the heck is Sapio?</h2>
+
+<p>Sapio is a tool that helps you design and use Bitcoin smart contracts based on
+covenants (like CTV) as well as manage potentially recursive state transitions
+at terminal states.</p>
+
+<p>That’s a mouthful and a half… let’s break it down with a very basic vault
+deposit example.</p>
+
+<p>Suppose I have 10 bitcoin sitting in my normal wallet.  I want to deposit it to
+an exchange. I go to my exchange and request an address to deposit to. The
+exchange wants their coins to be in a special cold storage whereby any move from
+cold storage has to “mature” for 10 days since it was claimed before it’s
+spendable as a hot-spend, otherwise it stays in cold.  The hot wallet has logic
+such that any unused funds after it transacts, goes back into the cold-storage
+contract. We saw a contract like this in the  <a href="/bitcoin/2021/12/04/advent-7/">day
+7</a> post.</p>
+
+<p>The exchange can use Sapio to generate an address that expects 10 coins and
+encodes this cold-to-hot logic without requiring the cold keys be online! Better
+than that, I don’t even have to contact the exchange for the address. The
+exchange can distribute a codesigned Sapio WASM applet that runs on my own
+machine locally. I download the applet into my Sapio Studio GUI and that
+generates the exchange deposit UX form for the contract that I (or my wallet)
+automatically fills out and then generates a proper address/spending
+transaction.</p>
+
+<p>Upon receipt of the deposit information, (which can in certain circumstances be
+completely on-chain in the txn, so no need for a separate communication
+channel), the exchange can us the WASM to generate an identical deposit program
+to verify the user isn’t cheating somehow. <strong>Bada-bing-bada-boom!</strong></p>
+
+<p>We’ll see in close detail examples like this coming in the following posts, but
+to sum up, Sapio helped us with the following:</p>
+
+<ol>
+  <li>Authoring a Smart Contract Application for a cold storage deposit solution</li>
+  <li>Distributing it as a deterministic executable with a GUI User using it to make a
+deposit</li>
+  <li>Receiving funds as a depositee directly into a smart contract</li>
+  <li>Generating withdrawal transactions out of the vault</li>
+  <li>Putting the remaining funds back into the cold storage</li>
+</ol>
+
+<p>This is not a hypothetical, all of these components exist and are usable today!
+Where there is an asterisk is that BIP-119 CTV does not yet exist, and so for
+apps like this the exchange would have to run some kind of <a href="https://learn.sapio-lang.org/ch05-01-ctv-emulator.html">signing
+server</a> you connect to.
+This works, but is a worse trust model.  For some applications, you don’t need
+CTV if you can get all of a contract’s parties to run their own oracles.
+Therefore you can still accomplish a lot without a worse trust model with what’s
+there today!</p>
+<hr />
+
+<p>Over the remaining posts we’ll go into great detail on different applications
+built in Sapio, but for now you can <a href="https://learn.sapio-lang.org">skim through
+learn.sapio-lang.org</a> to get started playing
+around with your own designs.</p>
+
+  </div>
+<hr>
+  
+<hr>
+  <div class="post">
+    <h2 class="post-title">
+        <a href="/bitcoin/2021/12/05/advent-8/">
+        Contracting Primitives and Upgrades to Bitcoin
+      </a>
+  </h2>
+  <h4>Day 8: Rubin's Bitcoin Advent Calendar</h4>
+
+
+    <span class="post-date">05 Dec 2021</span>
+
+    <p><em>Welcome to day 8 of my Bitcoin Advent Calendar. You can see an index of all
+the posts <a href="/advent21">here</a> or subscribe at
+<a href="https://judica.org/join">judica.org/join</a> to get new posts in your inbox</em></p>
+
+<p>In this post we’ll rapid fire roll through a bunch of different smart contract
+primitives, existing and proposed. For a more thorough reading, links will be
+provided.</p>
+
+<h3 id="bip-119-ctv-checktemplateverify">BIP-119 CTV CheckTemplateVerify</h3>
+
+<p>CTV is a general purpose smart contract opcode with full enumeration, no dynamic
+state, no recursion, and primarily works through validation.</p>
+
+<p>Essentially, CTV only lets you select a specific next transaction that can
+occur. Consensus just checks a transaction hash against a CTV hash.</p>
+
+<p>Although this seems to be limited functionality, it can be used with a template
+metaprogramming system such as <a href="learn.sapio-lang.org">Sapio</a> to create
+sophisticated programs.</p>
+
+<p>The limited functionality isn’t a bug, it’s a feature.  CTV was designed to be
+ quick and easy to garner technical consensus with the entire Bitcoin community
+ as a simple and safe covenant without some of the issues more sophisticated
+ covenant systems might have. However, since its launch there’s been more
+ interest developing for more flexible covenants, which may take much longer to
+ deploy and deliver meaningful benefits to users.</p>
+
+<p>CTV is also designed to work well with other opcodes that might be added (such
+as CSFS, OP_AMOUNT, and OP_CAT), so it does not become irrelevant should more
+features be added, it simply gets better.</p>
+
+<p>CTV is currently a decently reviewed BIP pending more support from the community
+for inclusion (see <a href="https://utxos.org/signals">social signals</a>).</p>
+
+<p>Disclosure: I’m the author/advocate of BIP-119.</p>
+
+<p>For more:</p>
+
+<ol>
+  <li><a href="https://bitcoinops.org/en/newsletters/2019/05/29/#proposed-transaction-output-commitments">Optech</a></li>
+  <li><a href="https://utxos.org">utxos.org</a></li>
+  <li><a href="https://rubin.io/blog/2021/07/02/covenants/">Templates, Eltoo, and Covenants, Oh My!</a></li>
+  <li><a href="https://medium.com/block-digest-mempool/my-worries-about-too-generalized-covenants-5eff33affbb6">Shinobi’s Covenant Concerns</a></li>
+</ol>
+
+<h3 id="bip-118-apo-anyprevout">BIP-118 APO AnyPrevout</h3>
+
+<p>AnyPrevout is a culmination of research for the Lightning Network (dating back
+to the original whitepaper) for creating a type of “rebindable” bitcoin
+transaction that dramatically simplifies the protocols for LN by getting rid of
+a lot of the complexities around storing state and closing channels
+unilaterally. AnyPrevout helps make Decker Channels possible (or, confusingly,
+sometimes called Eltoo not to be confused with L2).</p>
+
+<p>The basics of how Anyprevout works is that it changes what parts a signature
+signs to exclude the specifics of the coin being spent. This has some drawbacks
+in terms of changing current invariants true of signatures, but it is generally
+safe.</p>
+
+<p>APO can also be used to implement something similar to CTV, but there are
+sufficient differences between the two (including with respect to efficiency)
+such that the proposals aren’t competitive.</p>
+
+<p>APO is currently a decently reviewed BIP pending more support from the community
+for inclusion. The largest blocker for wider support is a concrete functional
+prototype of LN with Decker Channels, which would drive surety that APO has
+“product market fit”. Certain developers believe that additional proposals, like
+SIGHASH_BUNDLE, would be required to make it fully functional.</p>
+
+<ol>
+  <li><a href="https://rubin.io/bitcoin/2021/07/09/bip-118-sighash-chart/">My BIP-118 Review</a></li>
+  <li><a href="https://github.com/bitcoin/bips/blob/master/bip-0118.mediawiki">The BIP</a></li>
+  <li><a href="https://blockstream.com/eltoo.pdf">Eltoo/Decker Channels</a></li>
+  <li><a href="https://rubin.io/blog/2021/07/02/covenants/">Templates, Eltoo, and Covenants, Oh My!</a></li>
+</ol>
+
+<h3 id="tluv-tapleafupdateverify">TLUV TapLeafUpdateVerify</h3>
+
+<p>TLUV is a proposed general purpose smart contract opcode that is open ended, has
+dynamic local state, recursive, and is somewhat computational.</p>
+
+<p>Essentially, TLUV lets you modify a Taproot Output being spent by changing the
+toplevel key and script paths being spent. TLUV only can read and affect a
+single input/output pair; the other outputs are unaffected. The functionality of
+TLUV is very “specific” to the implementation details of Taproot, as it must
+correctly modify the data structures behind it. For Example, you could have a
+Taproot output with 10 coins and a script like:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[{</span><span class="nl">"amt"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"key"</span><span class="p">:</span><span class="w"> </span><span class="s2">"multi(A,B,C)"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"scripts"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"signed(A) with up to 2 coins"</span><span class="p">,</span><span class="w">
+              </span><span class="s2">"signed(B) with up to 5 coins"</span><span class="p">,</span><span class="w">
+              </span><span class="s2">"signed(C) with up to 3 coins"</span><span class="p">]</span><span class="w">
+ </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre></div></div>
+
+<p>and TLUV would enable you to transition to the following outputs:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[{</span><span class="nl">"amt"</span><span class="p">:</span><span class="w"> </span><span class="mi">9</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"key"</span><span class="p">:</span><span class="w"> </span><span class="s2">"multi(A,B,C)"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"scripts"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"signed(A) with up to 1 coins"</span><span class="p">,</span><span class="w">
+              </span><span class="s2">"signed(B) with up to 5 coins"</span><span class="p">,</span><span class="w">
+              </span><span class="s2">"signed(C) with up to 3 coins"</span><span class="p">]</span><span class="w">
+ </span><span class="p">},</span><span class="w">
+ </span><span class="p">{</span><span class="nl">"amt"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.25</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"someone paid by A"</span><span class="w">
+ </span><span class="p">},</span><span class="w">
+ </span><span class="p">{</span><span class="nl">"amt"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.75</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"someone else paid by A"</span><span class="w">
+ </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre></div></div>
+
+<p>or even a full exit:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[{</span><span class="nl">"amt"</span><span class="p">:</span><span class="w"> </span><span class="mi">9</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"key"</span><span class="p">:</span><span class="w"> </span><span class="s2">"multi(B,C)"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"scripts"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"signed(B) with up to 5 coins"</span><span class="p">,</span><span class="w">
+              </span><span class="s2">"signed(C) with up to 3 coins"</span><span class="p">]</span><span class="w">
+ </span><span class="p">},</span><span class="w">
+ </span><span class="p">{</span><span class="nl">"amt"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.25</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"someone paid by A"</span><span class="w">
+ </span><span class="p">},</span><span class="w">
+ </span><span class="p">{</span><span class="nl">"amt"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.75</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"someone else paid by A"</span><span class="w">
+ </span><span class="p">}</span><span class="w">
+ </span><span class="p">{</span><span class="nl">"amt"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"A's key (exiting funds)"</span><span class="w">
+ </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre></div></div>
+
+<p>There are some potential footguns around modifying the top level key, as it
+needs to be a valid Taproot key after tweaking.</p>
+
+<p>TLUV as designed requires some form of OP_AMOUNT to enable the
+recursive shared UTXO shown above.</p>
+
+<p>There is no current concrete proposal (e.g. BIP) for TLUV, it’s open ended
+research presently.</p>
+
+<ol>
+  <li><a href="https://bitcoinops.org/en/newsletters/2021/09/15/">Optech</a></li>
+  <li><a href="https://www.mail-archive.com/bitcoin-dev@lists.linuxfoundation.org/msg10437.html">Mailing List</a></li>
+  <li><a href="https://www.mail-archive.com/bitcoin-dev@lists.linuxfoundation.org/msg10442.html">My Mailing List Response</a></li>
+</ol>
+
+<h3 id="csfs-checksigfromstack">CSFS CheckSigFromStack</h3>
+
+<p>CheckSigFromStack, or CheckDataSig (note for experts: usually shorthand for the
+verification-only version as there’s little point to check that something wasn’t
+signed by someone) is an opcode which checks an arbitrary message was signed by
+a key. Normally, when a Bitcoin script checks a signature, the message <em>must be</em>
+a hash of the current transaction computed in accordance with the requested
+transaction hashing program.</p>
+
+<p>CSFS has a couple “basic” applications that could be useful. For example, one
+might write a program where either a key K signs a transaction normally, or it
+signs a key which then signs a transaction. This allows the holder of a coin to
+“delegate” the ownership of a coin to another key without moving the coin.</p>
+
+<p>CSFS already exists in Bitcoin in some sense: using Lamport Signatures it is
+currently possible to check a signature over 5 bytes of data. This is not
+terribly useful, but one could imagine certain uses for e.g. delegating to the
+specified signer the duration of a timelock.</p>
+
+<p>CSFS really shines when it is combined with other opcodes. For example, CSFS
+plus CTV can enable something similar to AnyPrevout and Eltoo. CSFS plus CAT
+enables fully generic covenants in segwit V0, but not in Taproot (without some
+sort of OP_TWEAK as well). This is best left to reading some additional
+materials on the subject, but imagine if I first check the transaction signature
+normally, and then I check it on the stack against the transaction itself pushed
+onto the stack, which I used CAT to assemble from pieces. This would let me run
+programmatic checks on all the components of a script).</p>
+
+<p>While there is not currently a proposal for CSFS, it’s not terribly
+controversial and the design would be relatively straightforward.</p>
+
+<ol>
+  <li><a href="https://lists.linuxfoundation.org/pipermail/bitcoin-dev/2021-July/019192.html">BIP Suggestions</a></li>
+  <li><a href="https://rubin.io/blog/2021/07/02/covenants/">Templates, Eltoo, and Covenants, Oh My!</a></li>
+  <li><a href="https://rubin.io/blog/2021/07/02/signing-5-bytes/">CSFS from Math (5 bytes)</a></li>
+</ol>
+
+<h3 id="op_amount">OP_AMOUNT</h3>
+
+<p>OP_AMOUNT was proposed in 2017 by Johnson Lau (the earliest citation I could dig
+up) through a scripting extension called PUSHTXDATA that allows arbitrary data
+to be pushed on the stack. As a standalone extensions, getting the amount
+spent/created on the stack (whether as a push opcode or an opcode with verify
+semantics) would allow for smart contracts to either limit the amount being
+spent or switch behavior based on the amount.</p>
+
+<p>For example, with TLUV a Taproot branch can have an individual balance that can
+be updated at the discretion of the branch holder. Suppose I had a script tree
+that said Alice has 1 bitcoin and Bob has 20 Bitcoin. When Alice is spending,
+the script would require that the corresponding output (e.g., input 0 output 0)
+be reduced by at most 1 Bitcoin, and the output should be updated to change
+Alice’s script to have 1-(spent amount) in the next instance.</p>
+
+<p>As another example, CTV could be used with an OP_AMOUNT to enable a ultra high
+security vault if the amount sent is greater than 1 Bitcoin and a lower security
+vault if it is less than 1 Bitcoin.</p>
+
+<p>There’s no current concrete proposal for OP_AMOUNT. Difficulties in adding it
+remain because Bitcoin Scripts deal in 32-bit math and amounts are 64-bit values
+(51 bits precisely).</p>
+
+<ol>
+  <li><a href="https://github.com/jl2012/bips/blob/vault/bip-0ZZZ.mediawiki">OP_PUSHTXDATA</a></li>
+  <li><a href="https://www.mail-archive.com/bitcoin-dev@lists.linuxfoundation.org/msg10438.html">OP_IN_OUT_AMOUNT</a></li>
+</ol>
+
+<h3 id="sighash_bundle">SIGHASH_BUNDLE</h3>
+
+<p>Sighash Bundle is a part of an effort to make “Sighash Flags” more general.
+Sighash Flags are a mini “programming language” to describe what parts of a
+transaction a signer wants to sign for a transaction. Bundles in particular
+allow a signer to select a range of inputs and outputs in a way that the bundle
+description can be rebound to allow some form of post-hoc aggregation of
+transactions.</p>
+
+<p>It’s primarily proposed to help make Decker Channels work with a sub-protocol
+called “layered commitments”. It’s possible for inclusion, but it has the same
+issue as AnyPrevout, we need to see an end-to-end implementation of LN using it
+to be sure that the technology is solving the problem it is designed to.</p>
+
+<p>There’s no concrete implementation proposed yet.</p>
+
+<ol>
+  <li><a href="https://lists.linuxfoundation.org/pipermail/bitcoin-dev/2018-April/015862.html">Mailing List Post</a></li>
+</ol>
+
+<h3 id="transaction-sponsors">Transaction Sponsors</h3>
+
+<p>Transaction Sponsors is another proposal by yours truly.</p>
+
+<p>The basic concept of Transaction Sponsors is to allow expressing logic that
+Transaction B should only be in a block if Transaction A is also in the block.
+In particular, the proposal says that a transaction with a 0 value output with
+script <code class="language-plaintext highlighter-rouge">OP_VER &lt;txids&gt;</code> would make the transaction valid only if the txids were
+also in the block.</p>
+
+<p>The ability to express such a dependency has implications for designing novel
+smart contracts based on these dependencies, but this is not the focus of the
+sponsors proposal with respect to mempool policy.</p>
+
+<p>Instead, the Sponsors proposal is to use the ability to express additional
+dependencies as a way of dynamically adding fees to transactions in the mempool
+without relying on CPFP or RBF. This primitive is particularly helpful for
+driving progress of smart contracts based on CTV or Decker Channels without
+requiring any sort of transaction malleability.</p>
+
+<p>There is currently an implementation and Draft BIP of Sponsors, but the BIP has
+not been advanced for inclusion yet.</p>
+
+<ol>
+  <li><a href="https://lists.linuxfoundation.org/pipermail/bitcoin-dev/2020-September/018168.html">Mailing List Post</a></li>
+  <li><a href="https://lists.linuxfoundation.org/pipermail/bitcoin-dev/2021-November/019614.html">Post about difficulties of paying fees</a></li>
+</ol>
+
+<h3 id="op_cat-or-shastream">OP_CAT (Or SHASTREAM)</h3>
+
+<p>OP_CAT is “deceptively simple”. All it enables is the ability to take an
+argument “hello “ and an argument “world” and join them together into “hello
+world”.</p>
+
+<p>CAT was originally a part of Bitcoin, but it had some implementation flaws and
+was removed by Satoshi in an emergency patch early on in Bitcoin’s history.</p>
+
+<p>Although it is simple, it turns out that the ability to join bytestrings
+together adds a remarkable variety of functionality to Bitcoin, including things
+like quantum proof signatures and covenants.  There are a couple different
+variants of CAT that would be possible and have different tradeoffs, but largely
+CAT and friends are not controversial in their design. What does make CAT
+controversial is that because it has the propensity to introduce so many
+surprising behaviors in Bitcoin, we might prefer to better understand the
+impacts of users being able to author such advanced smart contracts.</p>
+
+<ol>
+  <li><a href="https://rubin.io/blog/2021/07/06/quantum-bitcoin/">Quantum Proof Bitcoin</a></li>
+  <li><a href="https://medium.com/blockstream/cat-and-schnorr-tricks-i-faf1b59bd298">Poelstra CAT Blog I</a></li>
+  <li><a href="https://medium.com/blockstream/cat-and-schnorr-tricks-ii-2f6ede3d7bb5">Poelstra CAT Blog II</a></li>
+</ol>
+
+<h3 id="op_tweak--ecmul">OP_TWEAK / ECMUL</h3>
+
+<p>These two opcodes enable manipulating an elliptic curve point on the stack for
+use in a covenant or to compute a particular private key.</p>
+
+<p>There’s no concrete proposal for this pair, but the implementations are
+basically specified already by the requirements of the secp256k1 curve.</p>
+
+<h3 id="adaptor-signatures">Adaptor Signatures</h3>
+
+<p>Adaptor Signatures are a technique that can be used with Schnorr signature and
+do not require any additional forks to Bitcoin.</p>
+
+<p>The basics of an Adaptor signature is that a party (or group of parties) can
+create an object which either takes in a signature and reveals a secret or takes
+a secret and reveals a signature.</p>
+
+<p>These adaptors can be used in place of hash preimage locks for a variety of use
+cases.</p>
+
+<ol>
+  <li><a href="https://bitcoinops.org/en/topics/adaptor-signatures/">Optech</a></li>
+</ol>
+
+<h3 id="delegation--graftroot">Delegation / Graftroot</h3>
+
+<p>Delegation is a general concept whereby you can take a script and instead of
+signing a transaction, you sign another script that can then execute. For
+example, imagine if there is a coin that requires a signature of Alice and Bob
+to spend. Suppose Alice wants to go offline, but Bob might want to transact.
+Alice could sign a script requiring a signature from Carol that “substitutes”
+for Alice’s signature in the future.</p>
+
+<p>Delegation is currently possible in a somewhat roundabout way through
+coin-delegation. This is where the other script fragment must be represented by a UTXO.</p>
+
+<p>Graftroot is an extension to Taproot which would let the top-level key-path
+signers sign delegating scripts, but not other tapscript branches. There are
+also several confusingly named extensions and alternatives in the links below.</p>
+
+<p>Delegation could also be combined with Anyprevout so that delegation
+authorizations are bound to a specific coin or to a specific script. CSFS
+enables a basic kind of delegation as well. This would enable, with Graftroot, a
+version of Taproot where the trees are constructed interactively and do not have
+any lookup cost.</p>
+
+<p>Other than what’s presently possible, there are no concrete proposals for adding
+new delegation features to Bitcoin.</p>
+
+<ol>
+  <li><a href="https://lists.linuxfoundation.org/pipermail/bitcoin-dev/2021-March/018615.html">Coin Delegation</a></li>
+  <li><a href="https://lists.linuxfoundation.org/pipermail/bitcoin-dev/2018-February/015700.html">Graftroot</a></li>
+  <li><a href="https://gist.github.com/sipa/ca1502f8465d0d5032d9dd2465f32603">Entroot</a></li>
+  <li><a href="https://lists.linuxfoundation.org/pipermail/bitcoin-dev/2018-July/016249.html">G’Root (not graftroot)</a></li>
+</ol>
+
+<h3 id="bip-300-drivechains">BIP-300 DriveChains</h3>
+
+<p>Drive chains are a highly application specific type of recursive covenant that
+is designed to help sidechains operate by tracking sidechain deposits and
+withdrawals with an on-chain miner driven voting system.</p>
+
+<p>The sidechains would have the ability to run arbitrary smart contracts (at the
+choice of the sidechain operators). Miners the upvote, downvote, or abstain from
+voting on withdrawals through a special output type.</p>
+
+<p>One of the main downsides to this approach is that the BIP-300 proposal as
+written requires the addition of new global state databases, rather than local
+state contained within the covenant transaction itself.</p>
+
+<p>Overall Drivechains are relatively controversial among the community; with lots
+of interest from the community and also some outspoken critics because of the
+changes to Bitcoin’s incentive stability for consensus. It’s included here for
+completeness and by request of what topics to cover in today’s post.</p>
+
+<p>It’s the author’s opinion that while the concept of Drivechains is useful, the
+implementation of it does not need to be as transactions inside of the existing block
+space and instead could be tracked via a separate commitment (like Segwit). This could
+happen if Drivechains were implemented via a more generliazed covenant rather than
+application specific.</p>
+
+<ol>
+  <li><a href="https://github.com/bitcoin/bips/blob/master/bip-0300.mediawiki">BIP-300</a></li>
+  <li><a href="https://www.drivechain.info">Drivechains</a></li>
+</ol>
+
+<h3 id="elements-opcodes">Elements Opcodes</h3>
+
+<p>Elements is Blockstream’s Bitcoin fork for their Liquid Sidechain. Elements has
+planned to add a broad variety of opcodes that can help to accomplish a variety
+of tasks, including many of the above, in addition to their existing extensions.</p>
+
+<ol>
+  <li><a href="https://elementsproject.org/features/opcodes">Existing Opcodes</a></li>
+  <li><a href="https://github.com/ElementsProject/elements/blob/master/doc/tapscript_opcodes.md">Upgrade for Taproot</a></li>
+</ol>
+
+<hr />
+
+<p>Breathe! That was a lot! There’s still other stuff that’s floating around, but
+these are the top-of-mind primitives in my head for bringing more
+programmability to Bitcoin.</p>
+
+<p>Future posts will zero in on what’s possible with BIP-119 and Sapio and help
+make the case that it is a fantastic next step in Bitcoin’s Upgrade journey by
+showing (not telling) how one little limited opcode opens up an entire world of
+possibilities, as well as laying out a – dare I say – personal roadmap for the
+inclusion and development of other upgrades as a coherent narrative for Bitcoin.</p>
+
+  </div>
+<hr>
+  
+</div>
+
+<div class="pagination">
+  
+    <a class="pagination-item newer" href="/blog/page/5/">Newer</a>
+  
+  
+  <a class="pagination-item older" href="/blog/page/7/">Older</a>
+  
+</div>
+
+</div>
+
+        </div>
+        <div class="content container" style="padding-bottom:0;padding-top:0;bottom:0px;">
+            <div class="posts" style="height:14pt;margin-bottom:0;">
+                <div class="post">
+                    <p style="text-align:center;font-size:12pt;">&copy; 2011-2021 Jeremy Rubin. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

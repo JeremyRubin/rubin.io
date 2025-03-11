@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+  <title> Review of Smart Contract Concepts for Bitcoin &middot; Jeremy Rubin </title>
+  <link href="https://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/poole.css">
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/css/hyde.css">
+  <link rel="stylesheet" href="/public/font-awesome-4.5.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+                                 <link rel="shortcut icon" href="/public/favicon.ico">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+
+  
+  <link type="application/atom+xml" rel="alternate" href="http://rubin.io/feed.xml" title="Jeremy Rubin" />
+
+
+  <!-- GA -->
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-40376251-1', 'auto');
+    ga('send', 'pageview');
+</script>
+
+  
+  <link rel="me" href="https://twitter.com/JeremyRubin" >
+  <meta name="twitter:dnt" content="on">
+			   <script>window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
+
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+
+  return t;
+}(document, "script", "twitter-wjs"));</script>
+
+</head>
+
+    <body>
+        <div class="sidebar">
+    <h3 style="text-align: center;"> <a href="/"> Jeremy Rubin </a> </h3>
+    <div class="container">
+        <div class="sidebar-about">
+
+            <div class="sidebar-about-info"> 
+                <a href="/public/pdfs/resume.pdf"><i class="fa fa-file-text-o" title=Resume></i></a>
+                <a href=""><i class="fa fa-github" title=Github></i></a>
+                <a href="https://twitter.com/JeremyRubin"><i class="fa fa-twitter" title=Twitter></i></a>
+            </div>
+            <div class="sidebar-about-info hide-large">
+                <a class="" href="/">Home</a>
+                <a class="" href="/blog/">Blog</a>
+                <a class="" href="/talks/">Talks</a> 
+                <a class="" href="/projects/">Projects</a>
+                <a class="" href="/archive/">Site Index</a>
+            </div>
+        </div>
+
+
+
+
+        <nav class="sidebar-nav hide-small">
+            <a class="sidebar-nav-item" href="/">Home</a>
+            <a class="sidebar-nav-item" href="/blog/">Blog</a>
+            <a class="sidebar-nav-item" href="/talks/">Talks</a> 
+            <a class="sidebar-nav-item" href="/projects/">Projects</a>
+            <a class="sidebar-nav-item" href="/archive/">Site Index</a>
+        </nav>
+    </div>
+</div>
+
+
+
+        <div class="content container" style="padding-bottom:0;">
+            <div class="post">
+    <h1 class="post-title">Review of Smart Contract Concepts for Bitcoin</h1>
+    <h3>Day 7: Rubin's Bitcoin Advent Calendar</h3>
+    
+
+<a class="twitter-share-button"
+data-size="large"
+href="https://twitter.com/intent/tweet?text=Review+of+Smart+Contract+Concepts+for+Bitcoin&hashtags=Bitcoin,
+AdventCalendar
+"> Tweet</a>
+
+
+
+    <div>
+        <span class="post-date">04 Dec 2021
+        </span>
+    </div>
+    <p><em>Welcome to day 7 of my Bitcoin Advent Calendar. You can see an index of all
+the posts <a href="/advent21">here</a> or subscribe at
+<a href="https://judica.org/join">judica.org/join</a> to get new posts in your inbox</em></p>
+
+<p>In this post we’ll review a concepts for thinking about different types of smart
+contract capabilities and the implications of their availability.</p>
+
+<h2 id="recursive-vs-non-recursive">Recursive v.s. Non Recursive</h2>
+
+<p>Recursive is pretty much just a fancy way of saying “loops”. This is sometimes
+also called “Turing Complete”. That’s an even fancier way of saying loops. For
+example, imagine a bitcoin contract with the following logic:</p>
+
+<p>When Alice requests moving 1 coin to Bob by broadcasting a transaction with the
+request, Alice has 24 hours to completely cancel the transfer by broadcasting
+another transaction.</p>
+
+<p>This is a looping contract because after cancelling Alice can immediately
+re-request the transfer. An example of non-looping but similar logic would be:</p>
+
+<p>When Alice requests moving 1 coin to Bob,  Alice has 24 hours to cancel the
+transfer by sending the coins to Alice’s backup key.</p>
+
+<p>Here, the contract terminates after one canceled request by moving the coin
+elsewhere.  It’s possible to emulate recursive behavior a limited amount by
+“unrolling” a loop. For example:</p>
+
+<p>When Alice requests moving 1 coin to Bob,  Alice has 24 hours to cancel the
+transfer by sending the coins to (when Alice requests moving 1 coin to Bob, 
+Alice has 24 hours to cancel the transfer by sending the coins to Alice’s backup
+key).</p>
+
+<p>Here we substituted the backup key with a copy of the original logic. Now Alice
+can make 2 cancellable requests before sending the money to the backup. This
+looks recursive, and it can be expressed by a recursive meta-program. Meta
+program is just a fancy term for a program that makes programs. But when we put
+the contract into writing (e.g., an address on the chain), it has to be unrolled
+for the specific number of iterations we want possible.</p>
+
+<p>Unrolling is a very useful technique, and can be used in a broad variety of
+circumstances. For example, imagine we unroll a contract a million times and
+specify that transactions can only happen every 10 blocks. That covers like 200
+years of contract execution. However, unrolling has it’s limits. When choices
+(action A or B) are introduced, unrolling can be less effective since you have
+and exponential blowup (that means unrolling even like 32 steps might be too
+many). However, there are some tricks that can be employed by a clever and
+careful programmer to reduce this complexity through, for example, memoization.</p>
+
+<h2 id="fully-enumerated-vs-open-ended">Fully Enumerated v.s. Open Ended</h2>
+
+<p>Suppose I have a contract which is supposed to strike an American option<sup id="fnref:option" role="doc-noteref"><a href="#fn:option" class="footnote" rel="footnote">1</a></sup> and
+transfer a token. It might look like this:</p>
+
+<p>If Alice is paid 1 BTC by December 25th, 2021 Midnight, then transfer 100 tokens
+to Bob’s Control.</p>
+
+<p>A fully enumerated contract would be expressed as:</p>
+
+<p>If Alice is paid 1 BTC by December 25th, 2021 Midnight, then transfer 100 tokens
+to Bob’s Address B.</p>
+
+<p>Whereas an Open Ended contract would be expressed as:</p>
+
+<p>If Alice is paid 1 BTC by December 25th, 2021 Midnight, then transfer 100 tokens
+to the address Bob requested with the payment.</p>
+
+<p>The key difference being that in the fully enumerated case we must know the
+exact specifics of the contract and how it will execute, and in the open ended
+contract case there are bits and pieces we can dynamically specify.</p>
+
+<p>There are ways that a fully enumerated contract can emulate dynamic choice. For
+example:</p>
+
+<p>If Alice is paid 1 BTC by December 25th, 2021 Midnight, then transfer 100 tokens
+to one of Bob’s Address B1, B2, or B3 at Bob’s discretion.</p>
+
+<p>Now Bob can pick from one of three destinations in the future. However, these
+options must have been known in advance (a priori). With an open ended contract,
+the address could be generated after the fact (post hoc).</p>
+
+<p>This is a separate concept from recursive or non recursive. A contract that
+loops could loop through a set of fully enumerated states until reaching some
+terminal predetermined “exit” state (e.g., a plain address). The option contract
+described above is non-recursive, but can be open ended.</p>
+
+<h2 id="client-vs-consensus-validation">Client v.s. Consensus Validation</h2>
+
+<p>When you have a Bitcoin in an output, anyone who has run, say, Bitcoin Core can
+tell that it is valid by seeing it in the UTXO set. But what happens if you want
+to issue a token on top of Bitcoin with some set of unique rules? Bitcoin does
+not know anything about these tokens, and so it would be possible to make an
+invalid transaction (e.g., spending more value than you have). In order to
+ensure the token is valid and not corrupt, one must trace every prior
+transaction back to some “axiomatic” genesis transaction(s) minting the token.
+These traces can be cached, but by default Bitcoin software will not enforce
+that only valid transfers be made. We say that the token is Client validated
+while the Bitcoin is Consensus validated.</p>
+
+<p>Is one worse than the other? Not necessarily. While permitting invalid
+transactions in the chain seems bad, as long as the invalid transactions can be
+uniformly excluded by all who care about the token it is not much worse than the
+work you do to run a Bitcoin full node anyways. There does seem to be some value
+in the Bitcoin network preventing you from making invalid transactions, but the
+network doesn’t stop you from making bad transactions (e.g., you could send
+money to the wrong place).</p>
+
+<p>Client side validation can check all sorts of properties, not just tokens. For
+example, you could write a contract for an on-chain governed company and check
+transactions for valid state transitions amending the rules.</p>
+
+<p>The main drawback to client side validation comes when you want your contract to
+interoperate with Bitcoin values. While client side validation can burn tokens
+that are transferred invalidly, imagine an exchange contract that swaps Bitcoin
+for Token. If the exchange contract sends more Bitcoin than it should, the
+clients can tell that it was an invalid transaction but the Bitcoin is still
+gone. Thus Client validated contracts are best left to things that don’t hold
+Bitcoin. The exception to this rule is if the Client validated contracts admit a
+custodian, a special monitor or set of monitors that handle the contracts
+Bitcoin balances in e.g. a multisig. The monitors can client-side validate the
+contracts and sign off on any balance transfers. The drawback to this approach
+is trust, but in certain applications that we’ll see later the monitor could be
+all of the participants themselves, which makes the application of the rules
+trustless.</p>
+
+<h2 id="validation-vs-computation">Validation v.s. Computation</h2>
+
+<p>Validation and Computation are two sides of the same coin. A simple example to
+demonstrate:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Task</th>
+      <th>Input</th>
+      <th>Output</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Computation</td>
+      <td>Sort the numbers [4,5,1]</td>
+      <td>None</td>
+      <td>[1,4,5]</td>
+    </tr>
+    <tr>
+      <td>Validation</td>
+      <td>Check that [4,5,1] is sorted by indexes A</td>
+      <td>A = [2,0,1]</td>
+      <td>True</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Validation <em>is</em> a computation, but hopefully it’s easier to perform the
+validation computation than the computation itself.</p>
+
+<p>In a Bitcoin transaction we are always validating that the transaction was
+approved. A transaction in Bitcoin makes a clear precondition (the coins spent)
+and postcondition (the coins sent). Even in cases where we have to do a lot of
+computation to check the authorization, we still know the proposed outcome.</p>
+
+<p>Compare to an Ethereum transaction: We pass some input to a function, and the
+EVM verifies that our input was authorized (e.g., send 1 Eth to contract X with
+message “hello”). Then, the side effects of that action are computed dynamically
+by the EVM. For certain contracts, we might be able to predict what the side
+effect will be (e.g., a 1:1 token exchange like Eth to Wrapped Eth), but for
+other contracts (e.g., a floating exchange rate for Eth to Wrapped BTC) we will
+get an outcome that can’t be fully predicted. It is possible for contracts to
+choose to engineer themselves in a way to create more predictability, however in
+Ethereum this does not result in an Invalid transaction, it results in a valid
+transaction (that e.g. still costs gas) that has a result which is not taken.
+For example, a transaction which says “Buy 1 WBTC for 15 ETH” might fail to
+acquire WBTC since the price is now 16ETH, but the transaction would be valid
+that you tried to make the trade and failed. This is because Ethereum’s base
+layer is computational in nature with little validation: validation must be
+built on top.</p>
+
+<h3 id="sidenote-malleability">Sidenote: Malleability</h3>
+
+<p>For certain Bitcoin “covenant” transactions the validation/computation line can
+be thin. Transactions must always be transactions in a block, but it’s possible
+that in the future miners could receive “details” of a transaction and be
+responsible for generating the appropriate transaction themselves. For example,
+Blockstream released details on a <a href="https://medium.com/blockstream/simplicity-taproot-and-universal-sighashes-18be8647b3bd">noninteractive
+feebumping</a>
+transaction, whereby a miner can dynamically compute a transaction that pays
+them more fees the longer it takes to confirm.</p>
+
+<p>In the case of malleability like this, it’s not as simple as saying “don’t do
+it”, because miners have an incentive to extract the value if it is available.</p>
+
+<h2 id="dynamic-state">Dynamic State</h2>
+
+<p>Contracts can have different types of state. State is just a fancy term for
+information available to execution.</p>
+
+<p>Global state is information that is observable from anywhere. An example of this
+in Bitcoin is the UTXO Set: any transaction could spend any coin, and can “pull
+it into scope” by naming it’s Outpoint (whether or not the transaction is valid
+is another question). Another example of global state is the current block
+height, used for validating things like lock times. In Ethereum, there is a much
+expanded concept of Global state whereby contracts persist and allow read/write
+access from other contracts, and unlike Bitcoin’s UTXO set, observing a piece of
+information doesn’t destroy it like spending a coin does.</p>
+
+<p>Local State is information observable only within your own context. For example,
+a contract might hold balances for 3 different people, but the current values of
+those split balances is not something queryable by outside parties. This also
+includes implicit state, such as “the contract is currently pending an Action
+from Alice” that are not explicitly coded.</p>
+
+<p>Lastly, certain things are not State. An example of this is an authorizing
+signature, which is ephemeral data that is used in the transaction execution but
+does not have relevance for the continued execution of the contract and is not
+particularly observable (which signature we use shouldn’t matter).</p>
+
+<h2 id="general-vs-specific">General v.s. Specific</h2>
+
+<p>A General contract primitive is something that can be used across many different
+types of contract. A Specific contract implements well defined logic. In Bitcoin
+and Ethereum, the focus is on General contract primitives that can be used many
+ways. In some other ecosystems (e.g. NXT, Stellar), contract primitives have
+much more specific functionality.</p>
+
+<p>General/Specific ends up being more of a spectrum than a binary. Certain
+contract primitives might be very specific but find general use, similarly some
+general primitives might be more general than others.</p>
+
+<p>For example, the Lightning Network on Bitcoin has pursued a path of using
+general purpose extensions to Bitcoin so as not to “special case” payment
+channels. But is that worth it? Might Payment Channels be cheaper, easier to
+use, etc if we just designed built-in channels from the get-go? Perhaps yes, but
+then it might be harder to embed other things or incorporate new innovations
+into Lightning if it had to fit a single mold.</p>
+
+<hr />
+
+<p>This isn’t an exhaustive list of topics by any means, but it should be a good
+primer for thinking about upgrade proposals that people discuss in Bitcoin.
+You’ll find out more about that in… tomorrow’s post!.</p>
+
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:option" role="doc-endnote">
+      <p>An American option is the right to either purchase or compell a counterparty to buy an asset until a deadline. <a href="#fnref:option" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+    <div>
+    <h3>
+        <span style="vertical-align: text-top;">
+    
+
+<a class="twitter-share-button"
+data-size="large"
+href="https://twitter.com/intent/tweet?text=Review+of+Smart+Contract+Concepts+for+Bitcoin&hashtags=Bitcoin,
+AdventCalendar
+"> Tweet</a>
+
+
+
+        </span>
+        <span style="vertical-align: super;">
+to continue the conversation...
+        </span>
+    </h3>
+
+    </div>
+</div>
+
+<aside class="related">
+  <h3>You might also enjoy...</h3>
+  <ul class="related-posts">
+    
+      <li>
+        <a href="/bitcoin/2021/12/11/advent-14/">
+          Payment Channels in a CTV+Sapio World
+          <small><time datetime="2021-12-11T00:00:00+00:00">11 Dec 2021</time></small>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/bitcoin/2021/12/05/advent-8/">
+          Contracting Primitives and Upgrades to Bitcoin
+          <small><time datetime="2021-12-05T00:00:00+00:00">05 Dec 2021</time></small>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/bitcoin/2022/04/17/next-steps-bip119/">
+          7 Theses on a next step for BIP-119
+          <small><time datetime="2022-04-17T00:00:00+00:00">17 Apr 2022</time></small>
+        </a>
+      </li>
+    
+  </ul>
+</aside>
+
+        </div>
+        <div class="content container" style="padding-bottom:0;padding-top:0;bottom:0px;">
+            <div class="posts" style="height:14pt;margin-bottom:0;">
+                <div class="post">
+                    <p style="text-align:center;font-size:12pt;">&copy; 2011-2021 Jeremy Rubin. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

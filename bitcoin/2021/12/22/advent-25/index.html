@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+  <title> Decentralized Autonomous Organizations (DAOs) Will Save Bitcoin &middot; Jeremy Rubin </title>
+  <link href="https://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/poole.css">
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/css/hyde.css">
+  <link rel="stylesheet" href="/public/font-awesome-4.5.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+                                 <link rel="shortcut icon" href="/public/favicon.ico">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+
+  
+  <link type="application/atom+xml" rel="alternate" href="http://rubin.io/feed.xml" title="Jeremy Rubin" />
+
+
+  <!-- GA -->
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-40376251-1', 'auto');
+    ga('send', 'pageview');
+</script>
+
+  
+  <link rel="me" href="https://twitter.com/JeremyRubin" >
+  <meta name="twitter:dnt" content="on">
+			   <script>window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
+
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+
+  return t;
+}(document, "script", "twitter-wjs"));</script>
+
+</head>
+
+    <body>
+        <div class="sidebar">
+    <h3 style="text-align: center;"> <a href="/"> Jeremy Rubin </a> </h3>
+    <div class="container">
+        <div class="sidebar-about">
+
+            <div class="sidebar-about-info"> 
+                <a href="/public/pdfs/resume.pdf"><i class="fa fa-file-text-o" title=Resume></i></a>
+                <a href=""><i class="fa fa-github" title=Github></i></a>
+                <a href="https://twitter.com/JeremyRubin"><i class="fa fa-twitter" title=Twitter></i></a>
+            </div>
+            <div class="sidebar-about-info hide-large">
+                <a class="" href="/">Home</a>
+                <a class="" href="/blog/">Blog</a>
+                <a class="" href="/talks/">Talks</a> 
+                <a class="" href="/projects/">Projects</a>
+                <a class="" href="/archive/">Site Index</a>
+            </div>
+        </div>
+
+
+
+
+        <nav class="sidebar-nav hide-small">
+            <a class="sidebar-nav-item" href="/">Home</a>
+            <a class="sidebar-nav-item" href="/blog/">Blog</a>
+            <a class="sidebar-nav-item" href="/talks/">Talks</a> 
+            <a class="sidebar-nav-item" href="/projects/">Projects</a>
+            <a class="sidebar-nav-item" href="/archive/">Site Index</a>
+        </nav>
+    </div>
+</div>
+
+
+
+        <div class="content container" style="padding-bottom:0;">
+            <div class="post">
+    <h1 class="post-title">Decentralized Autonomous Organizations (DAOs) Will Save Bitcoin</h1>
+    <h3>Day 25: Rubin's Bitcoin Advent Calendar</h3>
+    
+
+<a class="twitter-share-button"
+data-size="large"
+href="https://twitter.com/intent/tweet?text=Decentralized+Autonomous+Organizations+%28DAOs%29+Will+Save+Bitcoin&hashtags=Bitcoin,
+AdventCalendar,
+Covenants,
+Sapio
+"> Tweet</a>
+
+
+
+    <div>
+        <span class="post-date">22 Dec 2021
+        </span>
+    </div>
+    <p><em>Welcome to day 25 of my Bitcoin Advent Calendar. You can see an index of all
+the posts <a href="/advent21">here</a> or subscribe at
+<a href="https://judica.org/join">judica.org/join</a> to get new posts in your inbox</em></p>
+
+<p>The title of this article is a joke. Gotcha!</p>
+
+<p><img src="/public/img/bitcoin/advent/dao/bart.png" alt="Bart Simpson writing &quot;DAOs are just fancy multisigs&quot;." /></p>
+
+<p>Decentralized Autonomous Organization is pretty much what’s called an <em><a href="http://itre.cis.upenn.edu/~myl/languagelog/archives/003555.html">orphan
+initialism</a></em>.
+So while DAO doesn’t really mean anything is decentralized, autonomous, or an
+organization, but the term DAO has stuck around anyways. Even moreso than NFT!
+More or less, DAOs are just fancy multisigs. But they’ve been used for all sorts
+of things, ranging from attempting to buy the US Constitution as a group,
+investing in startups, buying Ross Ulbricht’s NFTs, or maybe even buying my
+undies.</p>
+
+<p><img src="/public/img/bitcoin/advent/dao/nytimes.jpeg" alt="yes this is a joke" /></p>
+
+<p>This post has some required reading. You have to have read through at least up
+to <a href="/bitcoin/2021/12/10/advent-13/">payment pools</a> in the advent calendar, but
+ideally you’d have read all the posts…</p>
+
+<p>So how will fancy-multisigs save Bitcoin? In this post we’ll work through an
+example of building a DAO to fund Bitcoin Core Developers, like a Bitcoin native
+Gitcoin competitor.</p>
+<hr />
+
+<h1 id="what-do-we-want-from-our-dao">What do we want from our DAO:</h1>
+
+<p>The DAO will serve three functions:</p>
+
+<ol>
+  <li>To Add members who pay in</li>
+  <li>To make Payments if a Majority of the payers by value vote</li>
+  <li>To mint commemorative NFTs</li>
+</ol>
+
+<h2 id="majority-rules">Majority rules</h2>
+
+<p>DAOs are little democracies, and as such we need a voting scheme to do rule
+changes whereby a threshold (e.g., 51%) decides what happens next. We have two
+options, we can either count individuals as equal, or we can weight by amount of
+funds contributed. We can do any threshold we like, it’s just “this many people
+could steal the whole pot”.</p>
+
+<p>For this post, we’ll do the weighted by funds contributed because that feels
+closer to what’s happening in Ethereum land. Unfortunately a couple components
+around generated arbitrary weighted signatures<sup id="fnref:frost" role="doc-noteref"><a href="#fn:frost" class="footnote" rel="footnote">1</a></sup> just “aren’t quite there” or have
+messy tradeoffs so we won’t consider those – yet. Instead we’ll just make a silly
+limit: we will allow at most 24 participants<sup id="fnref:combo" role="doc-noteref"><a href="#fn:combo" class="footnote" rel="footnote">2</a></sup>.</p>
+
+<h2 id="implementing-a-dao">Implementing a DAO</h2>
+
+<p>First let’s define the basics. A DAO should have Members who each are ID’d by a
+key and have an amount of votes.</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">#[derive(Deserialize,</span> <span class="nd">JsonSchema,</span> <span class="nd">Serialize,</span> <span class="nd">Clone)]</span>
+<span class="k">struct</span> <span class="n">Member</span> <span class="p">{</span>
+    <span class="n">relative_votes</span><span class="p">:</span> <span class="nb">u64</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="nd">#[derive(Deserialize,</span> <span class="nd">JsonSchema,</span> <span class="nd">Clone)]</span>
+<span class="k">struct</span> <span class="n">Dao</span> <span class="p">{</span>
+    <span class="c">/// # Pool Members</span>
+    <span class="c">/// map of all initial balances as PK to BTC</span>
+    <span class="n">members</span><span class="p">:</span> <span class="n">BTreeMap</span><span class="o">&lt;</span><span class="n">PublicKey</span><span class="p">,</span> <span class="n">Member</span><span class="o">&gt;</span><span class="p">,</span>
+    <span class="c">/// The current sequence number (for authenticating state updates)</span>
+    <span class="n">sequence</span><span class="p">:</span> <span class="nb">u64</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="k">impl</span> <span class="n">Contract</span> <span class="k">for</span> <span class="n">Dao</span> <span class="p">{</span>
+    <span class="nd">declare!</span> <span class="p">{</span><span class="n">updatable</span><span class="o">&lt;</span><span class="n">Proposal</span><span class="o">&gt;</span><span class="p">,</span> <span class="nn">Self</span><span class="p">::</span><span class="n">hold_vote</span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Members can hold a vote on a proposal of some kind. Let’s do proposals
+that can make payments, mint NFTs, or add some noobs:</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">/// New Update message for generating a transaction from.</span>
+<span class="nd">#[derive(Deserialize,</span> <span class="nd">JsonSchema,</span> <span class="nd">Serialize)]</span>
+<span class="k">enum</span> <span class="n">Proposal</span> <span class="p">{</span>
+    <span class="c">/// # Payments</span>
+    <span class="c">/// A mapping of public key in members to signed list of payouts with a fee rate.</span>
+    <span class="n">Payments</span> <span class="p">{</span>
+        <span class="n">payments</span><span class="p">:</span> <span class="n">BTreeMap</span><span class="o">&lt;</span><span class="n">PublicKey</span><span class="p">,</span> <span class="n">AmountU64</span><span class="o">&gt;</span><span class="p">,</span>
+        <span class="c">// Some purpose for this proposal, as a String.</span>
+        <span class="n">reason</span><span class="p">:</span> <span class="nb">String</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="c">/// # Mint</span>
+    <span class="c">/// Make some NFTs</span>
+    <span class="n">Mint</span> <span class="p">{</span>
+        <span class="n">minting_module</span><span class="p">:</span> <span class="n">SapioHostAPI</span><span class="o">&lt;</span><span class="n">Mint_NFT_Trait_Version_0_1_0</span><span class="o">&gt;</span><span class="p">,</span>
+        <span class="n">mint_data</span><span class="p">:</span> <span class="n">Mint_NFT_Trait_Version_0_1_0</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="c">/// # Add People</span>
+    <span class="nb">Add</span> <span class="p">{</span>
+        <span class="n">noobs</span><span class="p">:</span> <span class="n">BTreeMap</span><span class="o">&lt;</span><span class="n">PublicKey</span><span class="p">,</span> <span class="n">Member</span><span class="o">&gt;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="nb">None</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="c">/// required...</span>
+<span class="k">impl</span> <span class="n">Default</span> <span class="k">for</span> <span class="n">Proposal</span> <span class="p">{</span>
+    <span class="k">fn</span> <span class="nf">default</span><span class="p">()</span> <span class="k">-&gt;</span> <span class="n">Self</span> <span class="p">{</span>
+        <span class="nn">Proposal</span><span class="p">::</span><span class="nb">None</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="k">impl</span> <span class="n">StatefulArgumentsTrait</span> <span class="k">for</span> <span class="n">Proposal</span> <span class="p">{}</span>
+
+<span class="c">/// helper for rust type system issue</span>
+<span class="k">fn</span> <span class="nf">default_coerce</span><span class="p">(</span><span class="n">k</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">Dao</span> <span class="k">as</span> <span class="n">Contract</span><span class="o">&gt;</span><span class="p">::</span><span class="n">StatefulArguments</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="n">Result</span><span class="o">&lt;</span><span class="n">Proposal</span><span class="p">,</span> <span class="n">CompilationError</span><span class="o">&gt;</span> <span class="p">{</span>
+    <span class="nf">Ok</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+
+<p>Now we can implement the main logic of the DAO. We want it to compute keys for
+the majority to rule, and we want it to allow a majority to vote on a Proposal.
+Note how when we make a payment, unlike in the Payment Pool, we decrease all
+member’s proportional ownership in the pool<sup id="fnref:rat" role="doc-noteref"><a href="#fn:rat" class="footnote" rel="footnote">3</a></sup>, so that new owners are not
+disadvantaged. But we could change that, to time-weight how long members have
+been part of the DAO as well, or give people ‘special voting weight’
+disconnected from money added. It’s really up to whatever you want…</p>
+
+<p>We’ll implement the logic for each type of proposal (minting, adding, or paying).</p>
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">impl</span> <span class="n">Dao</span> <span class="p">{</span>
+    <span class="c">/// Sum Up all the balances</span>
+    <span class="k">fn</span> <span class="nf">total</span><span class="p">(</span><span class="o">&amp;</span><span class="k">self</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="n">Amount</span> <span class="p">{</span>
+        <span class="nn">Amount</span><span class="p">::</span><span class="nf">from_sat</span><span class="p">(</span><span class="k">self</span><span class="py">.members</span><span class="nf">.iter</span><span class="p">()</span><span class="nf">.map</span><span class="p">(|</span><span class="n">e</span><span class="p">|</span> <span class="n">e</span><span class="na">.1</span><span class="py">.relative_votes</span><span class="p">)</span><span class="py">.sum</span><span class="p">::</span><span class="o">&lt;</span><span class="nb">u64</span><span class="o">&gt;</span><span class="p">())</span>
+    <span class="p">}</span>
+    <span class="c">/// all signed the transaction!</span>
+    <span class="nd">#[guard]</span>
+    <span class="k">fn</span> <span class="nf">majority_rules</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="mi">_</span><span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">let</span> <span class="n">ppl</span> <span class="o">=</span> <span class="k">self</span>
+            <span class="py">.members</span>
+            <span class="nf">.iter</span><span class="p">()</span>
+            <span class="nf">.map</span><span class="p">(|(</span><span class="n">m</span><span class="p">,</span> <span class="n">d</span><span class="p">)|</span> <span class="p">(</span><span class="n">m</span><span class="nf">.clone</span><span class="p">(),</span> <span class="n">d</span><span class="py">.relative_votes</span><span class="p">))</span>
+            <span class="nf">.collect</span><span class="p">();</span>
+        <span class="c">// TODO: we should probably make guards return Result...</span>
+        <span class="nf">key_groups_to_clause</span><span class="p">(</span>
+            <span class="o">&amp;</span><span class="nf">compute_key_groups</span><span class="p">(</span><span class="k">self</span><span class="nf">.total</span><span class="p">()</span><span class="nf">.as_sat</span><span class="p">()</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">ppl</span><span class="p">)</span><span class="nf">.expect</span><span class="p">(</span><span class="s">"Well Formed"</span><span class="p">),</span>
+        <span class="p">)</span>
+    <span class="p">}</span>
+    <span class="c">/// This Function will create a proposed transaction that is safe to sign</span>
+    <span class="c">/// given a list of data from participants.</span>
+    <span class="nd">#[continuation(</span>
+        <span class="nd">web_api,</span>
+        <span class="nd">guarded_by</span> <span class="nd">=</span> <span class="s">"[Self::majority_rules]"</span><span class="nd">,</span>
+        <span class="nd">coerce_args</span> <span class="nd">=</span> <span class="s">"default_coerce"</span>
+    <span class="nd">)]</span>
+    <span class="k">fn</span> <span class="nf">hold_vote</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">,</span> <span class="n">update</span><span class="p">:</span> <span class="n">Proposal</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c">// don't allow empty updates.</span>
+        <span class="k">match</span> <span class="n">update</span> <span class="p">{</span>
+            <span class="nn">Proposal</span><span class="p">::</span><span class="nb">None</span> <span class="k">=&gt;</span> <span class="nf">empty</span><span class="p">(),</span>
+            <span class="nn">Proposal</span><span class="p">::</span><span class="n">Mint</span> <span class="p">{</span>
+                <span class="n">minting_module</span><span class="p">,</span>
+                <span class="n">mint_data</span><span class="p">,</span>
+            <span class="p">}</span> <span class="k">=&gt;</span> <span class="p">{</span>
+                <span class="k">let</span> <span class="n">key</span> <span class="o">=</span> <span class="n">minting_module</span><span class="py">.key</span><span class="p">;</span>
+                <span class="c">// let's now compile a new 'mint' of the NFT</span>
+                <span class="k">let</span> <span class="n">new_nft_contract</span> <span class="o">=</span> <span class="nf">Ok</span><span class="p">(</span><span class="n">CreateArgs</span> <span class="p">{</span>
+                    <span class="n">context</span><span class="p">:</span> <span class="n">ContextualArguments</span> <span class="p">{</span>
+                        <span class="n">amount</span><span class="p">:</span> <span class="n">ctx</span><span class="nf">.funds</span><span class="p">(),</span>
+                        <span class="n">network</span><span class="p">:</span> <span class="n">ctx</span><span class="py">.network</span><span class="p">,</span>
+                        <span class="n">effects</span><span class="p">:</span> <span class="nn">Default</span><span class="p">::</span><span class="nf">default</span><span class="p">(),</span>
+                    <span class="p">},</span>
+                    <span class="n">arguments</span><span class="p">:</span> <span class="nn">mint_impl</span><span class="p">::</span><span class="nn">Versions</span><span class="p">::</span><span class="nf">Mint_NFT_Trait_Version_0_1_0</span><span class="p">(</span><span class="n">mint_data</span><span class="p">),</span>
+                <span class="p">})</span>
+                <span class="nf">.and_then</span><span class="p">(</span><span class="nn">serde_json</span><span class="p">::</span><span class="n">to_value</span><span class="p">)</span>
+                <span class="nf">.map</span><span class="p">(|</span><span class="n">args</span><span class="p">|</span> <span class="nf">create_contract_by_key</span><span class="p">(</span><span class="o">&amp;</span><span class="n">key</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="nn">Amount</span><span class="p">::</span><span class="nf">from_sat</span><span class="p">(</span><span class="mi">0</span><span class="p">)))</span>
+                <span class="nf">.map_err</span><span class="p">(|</span><span class="mi">_</span><span class="p">|</span> <span class="nn">CompilationError</span><span class="p">::</span><span class="n">TerminateCompilation</span><span class="p">)</span><span class="o">?</span>
+                <span class="nf">.ok_or</span><span class="p">(</span><span class="nn">CompilationError</span><span class="p">::</span><span class="n">TerminateCompilation</span><span class="p">)</span><span class="o">?</span><span class="p">;</span>
+                <span class="k">let</span> <span class="n">f</span> <span class="o">=</span> <span class="n">ctx</span><span class="nf">.funds</span><span class="p">();</span>
+                <span class="n">ctx</span><span class="nf">.template</span><span class="p">()</span>
+                    <span class="nf">.add_output</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="k">self</span><span class="p">,</span> <span class="nb">None</span><span class="p">)</span><span class="o">?</span>
+                    <span class="nf">.add_output</span><span class="p">(</span><span class="nn">Amount</span><span class="p">::</span><span class="nf">from_sat</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="o">&amp;</span><span class="n">new_nft_contract</span><span class="p">,</span> <span class="nb">None</span><span class="p">)</span><span class="o">?</span>
+                    <span class="nf">.into</span><span class="p">()</span>
+            <span class="p">}</span>
+            <span class="nn">Proposal</span><span class="p">::</span><span class="nb">Add</span> <span class="p">{</span> <span class="k">mut</span> <span class="n">noobs</span> <span class="p">}</span> <span class="k">=&gt;</span> <span class="p">{</span>
+                <span class="k">let</span> <span class="n">adding</span> <span class="o">=</span> <span class="nn">Amount</span><span class="p">::</span><span class="nf">from_sat</span><span class="p">(</span><span class="n">noobs</span><span class="nf">.values</span><span class="p">()</span><span class="nf">.map</span><span class="p">(|</span><span class="n">m</span><span class="p">|</span> <span class="n">m</span><span class="py">.relative_votes</span><span class="p">)</span><span class="nf">.sum</span><span class="p">());</span>
+                <span class="k">let</span> <span class="k">mut</span> <span class="n">new</span> <span class="o">=</span> <span class="k">self</span><span class="nf">.clone</span><span class="p">();</span>
+                <span class="n">noobs</span><span class="nf">.iter_mut</span><span class="p">()</span><span class="nf">.for_each</span><span class="p">(|(</span><span class="n">pk</span><span class="p">,</span> <span class="n">m</span><span class="p">)|</span> <span class="p">{</span>
+                    <span class="n">new</span><span class="py">.members</span>
+                        <span class="nf">.entry</span><span class="p">(</span><span class="o">*</span><span class="n">pk</span><span class="p">)</span>
+                        <span class="nf">.and_modify</span><span class="p">(|</span><span class="n">e</span><span class="p">|</span> <span class="n">e</span><span class="py">.relative_votes</span> <span class="o">+=</span> <span class="n">m</span><span class="py">.relative_votes</span><span class="p">)</span>
+                        <span class="nf">.or_insert</span><span class="p">(</span><span class="n">m</span><span class="nf">.clone</span><span class="p">());</span>
+                <span class="p">});</span>
+                <span class="k">let</span> <span class="n">f</span> <span class="o">=</span> <span class="n">ctx</span><span class="nf">.funds</span><span class="p">();</span>
+                <span class="n">ctx</span><span class="nf">.template</span><span class="p">()</span>
+                    <span class="nf">.add_sequence</span><span class="p">()</span>
+                    <span class="nf">.add_amount</span><span class="p">(</span><span class="n">adding</span><span class="p">)</span>
+                    <span class="nf">.add_output</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="k">self</span><span class="p">,</span> <span class="nb">None</span><span class="p">)</span><span class="o">?</span>
+                    <span class="nf">.add_output</span><span class="p">(</span><span class="nn">Amount</span><span class="p">::</span><span class="nf">from_sat</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="o">&amp;</span><span class="n">new</span><span class="p">,</span> <span class="nb">None</span><span class="p">)</span><span class="o">?</span>
+                    <span class="nf">.into</span><span class="p">()</span>
+            <span class="p">}</span>
+            <span class="nn">Proposal</span><span class="p">::</span><span class="n">Payments</span> <span class="p">{</span> <span class="n">payments</span> <span class="p">}</span> <span class="k">=&gt;</span> <span class="p">{</span>
+                <span class="k">if</span> <span class="n">payments</span><span class="nf">.is_empty</span><span class="p">()</span> <span class="p">{</span>
+                    <span class="k">return</span> <span class="nf">empty</span><span class="p">();</span>
+                <span class="p">}</span>
+                <span class="c">// collect members with updated balances here</span>
+                <span class="k">let</span> <span class="n">spent</span> <span class="o">=</span> <span class="n">payments</span>
+                    <span class="nf">.values</span><span class="p">()</span>
+                    <span class="nf">.cloned</span><span class="p">()</span>
+                    <span class="nf">.map</span><span class="p">(</span><span class="nn">Amount</span><span class="p">::</span><span class="n">from</span><span class="p">)</span>
+                    <span class="nf">.fold</span><span class="p">(</span><span class="nn">Amount</span><span class="p">::</span><span class="nf">from_sat</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="p">|</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">|</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="nf">.into</span><span class="p">());</span>
+                <span class="k">let</span> <span class="n">balance</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="p">(</span><span class="n">spent</span><span class="nf">.as_btc</span><span class="p">()</span> <span class="o">/</span> <span class="k">self</span><span class="nf">.total</span><span class="p">()</span><span class="nf">.as_btc</span><span class="p">());</span>
+                <span class="k">let</span> <span class="k">mut</span> <span class="n">new_members</span> <span class="o">=</span> <span class="k">self</span><span class="py">.members</span><span class="nf">.clone</span><span class="p">();</span>
+                <span class="n">new_members</span><span class="nf">.values_mut</span><span class="p">()</span><span class="nf">.for_each</span><span class="p">(|</span><span class="n">m</span><span class="p">|</span> <span class="p">{</span>
+                    <span class="n">m</span><span class="py">.relative_votes</span> <span class="o">=</span> <span class="p">(</span><span class="n">m</span><span class="py">.relative_votes</span> <span class="k">as</span> <span class="nb">f64</span> <span class="o">*</span> <span class="n">balance</span><span class="p">)</span><span class="nf">.round</span><span class="p">()</span> <span class="k">as</span> <span class="nb">u64</span><span class="p">;</span>
+                <span class="p">});</span>
+                <span class="c">// for each payment...</span>
+                <span class="c">// Send any leftover funds to a new pool</span>
+                <span class="k">let</span> <span class="n">change</span> <span class="o">=</span> <span class="n">Dao</span> <span class="p">{</span>
+                    <span class="n">members</span><span class="p">:</span> <span class="n">new_members</span><span class="p">,</span>
+                    <span class="n">sequence</span><span class="p">:</span> <span class="k">self</span><span class="py">.sequence</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+                <span class="p">};</span>
+                <span class="k">let</span> <span class="k">mut</span> <span class="n">tmpl</span> <span class="o">=</span> <span class="n">ctx</span><span class="nf">.template</span><span class="p">()</span><span class="nf">.add_output</span><span class="p">(</span><span class="n">change</span><span class="nf">.total</span><span class="p">(),</span> <span class="o">&amp;</span><span class="n">change</span><span class="p">,</span> <span class="nb">None</span><span class="p">)</span><span class="o">?</span><span class="p">;</span>
+                <span class="c">// optional: we could commit to the reason somewhere in metadata </span>
+                <span class="c">// e.g. a tapleaf branch... we don't do this here because meh.</span>
+                <span class="k">for</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">amount</span><span class="p">)</span> <span class="n">in</span> <span class="n">payments</span> <span class="p">{</span>
+                    <span class="n">tmpl</span> <span class="o">=</span> <span class="n">tmpl</span><span class="nf">.add_output</span><span class="p">(</span><span class="n">amount</span><span class="nf">.try_into</span><span class="p">()</span><span class="o">?</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">key</span><span class="p">,</span> <span class="nb">None</span><span class="p">)</span><span class="o">?</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="n">tmpl</span><span class="nf">.into</span><span class="p">()</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="nd">REGISTER!</span><span class="p">[</span><span class="n">Dao</span><span class="p">,</span> <span class="s">"logo.png"</span><span class="p">];</span>
+
+</code></pre></div></div>
+
+<p>Lastly, we need some super special sneaky algorithm fun to implement signing authorities
+based on majority value. As noted, special uses of FROST could replace this, or future
+research on better weighted key protocols.</p>
+
+<p>For now, we limit ourselves to 25 keys so that compilation isn’t too slow. We can afford
+having hundreds of thousands or millions of groups because of Taproot :).</p>
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">fn</span> <span class="n">key_groups_to_clause</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">(</span><span class="n">v</span><span class="p">:</span> <span class="o">&amp;</span><span class="p">(</span><span class="nb">Vec</span><span class="o">&lt;</span><span class="p">(</span><span class="n">PublicKey</span><span class="p">,</span> <span class="n">T</span><span class="p">)</span><span class="o">&gt;</span><span class="p">,</span> <span class="nb">Vec</span><span class="o">&lt;</span><span class="nb">u32</span><span class="o">&gt;</span><span class="p">))</span> <span class="k">-&gt;</span> <span class="n">Clause</span> <span class="p">{</span>
+    <span class="nn">Clause</span><span class="p">::</span><span class="nf">Threshold</span><span class="p">(</span>
+        <span class="mi">1</span><span class="p">,</span>
+        <span class="n">v</span><span class="na">.1</span><span class="nf">.iter</span><span class="p">()</span>
+            <span class="nf">.map</span><span class="p">(|</span><span class="n">m</span><span class="p">|</span> <span class="p">{</span>
+                <span class="nn">Clause</span><span class="p">::</span><span class="nf">And</span><span class="p">(</span>
+                    <span class="n">v</span><span class="na">.0</span><span class="nf">.iter</span><span class="p">()</span>
+                        <span class="nf">.enumerate</span><span class="p">()</span>
+                        <span class="nf">.filter_map</span><span class="p">(|(</span><span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="mi">_</span><span class="p">))|</span> <span class="p">{</span>
+                            <span class="k">if</span> <span class="n">m</span> <span class="o">&amp;</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">i</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span> <span class="p">{</span>
+                                <span class="nf">Some</span><span class="p">(</span><span class="n">k</span><span class="nf">.clone</span><span class="p">())</span>
+                            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                                <span class="nb">None</span>
+                            <span class="p">}</span>
+                        <span class="p">})</span>
+                        <span class="nf">.map</span><span class="p">(</span><span class="nn">Clause</span><span class="p">::</span><span class="n">Key</span><span class="p">)</span>
+                        <span class="nf">.collect</span><span class="p">(),</span>
+                <span class="p">)</span>
+            <span class="p">})</span>
+            <span class="nf">.collect</span><span class="p">(),</span>
+    <span class="p">)</span>
+<span class="p">}</span>
+<span class="k">fn</span> <span class="nf">compute_key_groups</span><span class="p">(</span>
+    <span class="n">threshold</span><span class="p">:</span> <span class="nb">u64</span><span class="p">,</span>
+    <span class="k">mut</span> <span class="n">el</span><span class="p">:</span> <span class="nb">Vec</span><span class="o">&lt;</span><span class="p">(</span><span class="n">PublicKey</span><span class="p">,</span> <span class="nb">u64</span><span class="p">)</span><span class="o">&gt;</span><span class="p">,</span>
+<span class="p">)</span> <span class="k">-&gt;</span> <span class="n">Result</span><span class="o">&lt;</span><span class="p">(</span><span class="nb">Vec</span><span class="o">&lt;</span><span class="p">(</span><span class="n">PublicKey</span><span class="p">,</span> <span class="nb">u64</span><span class="p">)</span><span class="o">&gt;</span><span class="p">,</span> <span class="nb">Vec</span><span class="o">&lt;</span><span class="nb">u32</span><span class="o">&gt;</span><span class="p">),</span> <span class="n">CompilationError</span><span class="o">&gt;</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="n">el</span><span class="nf">.len</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">25</span> <span class="p">||</span> <span class="n">el</span><span class="nf">.is_empty</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nf">Err</span><span class="p">(</span><span class="nn">CompilationError</span><span class="p">::</span><span class="n">TerminateCompilation</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="c">// sort for stable ordering</span>
+    <span class="n">el</span><span class="nf">.sort</span><span class="p">();</span>
+    <span class="c">// The bitmasks for which keys to participate</span>
+    <span class="k">let</span> <span class="k">mut</span> <span class="n">sets</span><span class="p">:</span> <span class="nb">Vec</span><span class="o">&lt;</span><span class="nb">u32</span><span class="o">&gt;</span> <span class="o">=</span> <span class="nd">vec!</span><span class="p">[];</span>
+    <span class="c">// BEGIN ALGORITHM:</span>
+    <span class="c">// if we see a bit set out of range, we can stop.</span>
+    <span class="k">let</span> <span class="n">fail_if_set</span> <span class="o">=</span> <span class="p">((</span><span class="o">!</span><span class="mi">0</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">el</span><span class="nf">.len</span><span class="p">())</span> <span class="o">&lt;&lt;</span> <span class="n">el</span><span class="nf">.len</span><span class="p">();</span>
+    <span class="c">// we know that 0 elements is invalid, we need up to el.len()</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="n">in</span> <span class="mi">1u32</span><span class="o">..=</span><span class="n">el</span><span class="nf">.len</span><span class="p">()</span> <span class="k">as</span> <span class="nb">u32</span> <span class="p">{</span>
+        <span class="c">// get the first member of our permutation</span>
+        <span class="k">let</span> <span class="k">mut</span> <span class="n">ct</span> <span class="o">=</span> <span class="nf">element_0</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+        <span class="c">// if any bits are set in the failure zone stop</span>
+        <span class="k">while</span> <span class="n">ct</span> <span class="o">&amp;</span> <span class="n">fail_if_set</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">{</span>
+            <span class="c">// compute the sum of the elements in this mask</span>
+            <span class="k">let</span> <span class="n">sum</span><span class="p">:</span> <span class="nb">u64</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="o">..</span><span class="n">el</span><span class="nf">.len</span><span class="p">())</span>
+                <span class="nf">.map</span><span class="p">(|</span><span class="n">i</span><span class="p">|</span> <span class="k">if</span> <span class="n">ct</span> <span class="o">&amp;</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">i</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span> <span class="p">{</span> <span class="n">el</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="na">.1</span> <span class="p">}</span> <span class="k">else</span> <span class="p">{</span> <span class="mi">0</span> <span class="p">})</span>
+                <span class="py">.sum</span><span class="p">::</span><span class="o">&lt;</span><span class="nb">u64</span><span class="o">&gt;</span><span class="p">();</span>
+            <span class="c">// this set is a candidate!</span>
+            <span class="k">if</span> <span class="n">sum</span> <span class="o">&gt;=</span> <span class="n">threshold</span> <span class="p">{</span>
+                <span class="c">// subtract the smallest value (this is why we sorted) -- if it</span>
+                <span class="c">// fails it is not a minimal set because there exists a passing</span>
+                <span class="c">// set without this element.</span>
+                <span class="c">// note: trailing zeros is guaranteed to be in bounds</span>
+                <span class="k">if</span> <span class="n">sum</span> <span class="o">-</span> <span class="n">el</span><span class="p">[</span><span class="n">ct</span><span class="nf">.trailing_zeros</span><span class="p">()</span> <span class="k">as</span> <span class="nb">usize</span><span class="p">]</span><span class="na">.1</span> <span class="o">&lt;</span> <span class="n">threshold</span> <span class="p">{</span>
+                    <span class="c">// it did fail, so save it</span>
+                    <span class="n">sets</span><span class="nf">.push</span><span class="p">(</span><span class="n">ct</span><span class="p">);</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+            <span class="c">// get the next ct</span>
+            <span class="n">ct</span> <span class="o">=</span> <span class="nf">next_perm</span><span class="p">(</span><span class="n">ct</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="nf">Ok</span><span class="p">((</span><span class="n">el</span><span class="p">,</span> <span class="n">sets</span><span class="p">))</span>
+<span class="p">}</span>
+
+<span class="c">/// Adapted from https://www.alexbowe.com/popcount-permutations/</span>
+<span class="c">///</span>
+<span class="c">/// Compute the lexicographically next bit permutation</span>
+<span class="c">/// Taken from http://graphics.stanford.edu/~seander/bithacks.html</span>
+<span class="k">fn</span> <span class="nf">next_perm</span><span class="p">(</span><span class="n">v</span><span class="p">:</span> <span class="nb">u32</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="nb">u32</span> <span class="p">{</span>
+    <span class="k">let</span> <span class="n">t</span><span class="p">:</span> <span class="nb">u32</span> <span class="o">=</span> <span class="n">v</span> <span class="p">|</span> <span class="p">(</span><span class="n">v</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span> <span class="c">// t gets v's least significant 0 bits set to 1</span>
+                              <span class="c">// Next set to 1 the most significant bit to change,</span>
+                              <span class="c">// set to 0 the least significant ones, and add the necessary 1 bits.</span>
+    <span class="k">let</span> <span class="n">w</span><span class="p">:</span> <span class="nb">u32</span> <span class="o">=</span> <span class="p">(</span><span class="n">t</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="p">|</span> <span class="p">(((</span><span class="o">!</span><span class="n">t</span> <span class="o">&amp;</span> <span class="p">(</span><span class="o">!</span><span class="n">t</span><span class="p">)</span><span class="nf">.wrapping_neg</span><span class="p">())</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="p">(</span><span class="n">v</span><span class="nf">.trailing_zeros</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span><span class="p">));</span>
+    <span class="n">w</span>
+<span class="p">}</span>
+<span class="c">///    Generates first permutation with a given amount of set bits, which is</span>
+<span class="c">///    used to generate the rest.</span>
+<span class="k">fn</span> <span class="nf">element_0</span><span class="p">(</span><span class="n">c</span><span class="p">:</span> <span class="nb">u32</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="nb">u32</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">c</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>All done! Not too bad huh? I think you’re really getting the hang of this thing!</p>
+
+<hr />
+
+<h1 id="using-a-dao">Using a DAO</h1>
+
+<p>Now that we have this DAO we can get together a group of people and share a UTXO.</p>
+
+<p>With that shared balance, we can get everyone in some kind of chat room and ‘govern’
+what proposals folks want to vote on.</p>
+
+<p>In particular, I would be very excited to see DAOs emerge for funding Bitcoin
+Developers.  This type of structure can potentially help folks communally
+allocate capital. Often times the biggest barrier is finding deals that make
+sense, and DAOs would enable you to share with a group of friends and they could
+make decisions for you.</p>
+
+<p>It would even be possible to create DAOs on behalf of third parties and fund
+them. For example, let’s say I get PKs for 10 devs I like and put a 10 BTC into
+it and set the shares up so that there is a ‘leader’ with 30%, and the rest
+split 70% of voting shares. The leader could just steal the money with another
+21%, but would they? I hope not! Instead, they can vote on good things as
+intended.  It’d also be possible for the DAO creator to embed an ‘oversight
+comittee’ that can yank the funds if not being used.</p>
+
+<p>Minting NFTs is kind of a cool feature since anyone can see they came from the
+DAO if they track the DAO’s state updates (conceivably these get published for
+auditing). NFTs could be issued as medals of honor for devs who follow their
+grants. Or, if you really like NFTs, they could be used to issue software
+licenses in exchange for contributing funds to the DAO operators.</p>
+
+<h1 id="does-this-need-ctv">Does this need CTV?</h1>
+
+<p>Nope. Just a fancy multisig, right?</p>
+
+<p>Where CTV is useful is if we want to vote on proposals to put things into CTV
+contracts, like subscriptions to developer grants, opening channels, etc.
+Imagine the developer gets a contract where they get paid out every week, but
+there is a auditing comittee that can be used to terminate the subscription and
+return funds to the DAO if misbehavior is detected.</p>
+
+<p>While you don’t need CTV in the DAO backbone, it would help open up new use
+cases.</p>
+
+<p>It would also be possible to add some ‘liveness’ smooth degradations of the DAO,
+whereby half the majority (e.g., if majority is 50%, 25%) could vote that the
+DAO is dead, and after a period of time for the majority recovery, distribute
+the funds on a pre-comitted schedule.</p>
+
+<p>We don’t show that here, but it wouldn’t be too hard now would it?</p>
+
+<h1 id="generalizing">Generalizing</h1>
+
+<p>One could go ahead and implement a DAO trait that all DAOs could share and build
+a common UX for managing DAOs with a wide variety of custom logic…</p>
+
+<p>It’d also be possible to have a DAO backbone which is a single UTXO, and have
+other UTXOs ‘owned’ by the DAO that can get merged in later as a proposal. This
+way contributions to the DAO don’t always require a state update from the DAO
+itself.</p>
+
+<p>For future work :)</p>
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:frost" role="doc-endnote">
+      <p>FROST allows n-M threshold Schnorr signatures, which can turn into a weighted solution by making M the total value and each party have W amount of keys for their contribution. But this scales poorly because you need to exchange keys and signatures linear in the Amount, which is up to a 51-bit number. <a href="#fnref:frost" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:combo" role="doc-endnote">
+      <p>We are going to brute force all the N-N key combinations, so we pick a low number like 24 and things stay ‘small’ enough. <a href="#fnref:combo" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:rat" role="doc-endnote">
+      <p>please please if you’re implementing this for real use rational types not floats. <a href="#fnref:rat" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+    <div>
+    <h3>
+        <span style="vertical-align: text-top;">
+    
+
+<a class="twitter-share-button"
+data-size="large"
+href="https://twitter.com/intent/tweet?text=Decentralized+Autonomous+Organizations+%28DAOs%29+Will+Save+Bitcoin&hashtags=Bitcoin,
+AdventCalendar,
+Covenants,
+Sapio
+"> Tweet</a>
+
+
+
+        </span>
+        <span style="vertical-align: super;">
+to continue the conversation...
+        </span>
+    </h3>
+
+    </div>
+</div>
+
+<aside class="related">
+  <h3>You might also enjoy...</h3>
+  <ul class="related-posts">
+    
+      <li>
+        <a href="/bitcoin/2021/12/11/advent-14/">
+          Payment Channels in a CTV+Sapio World
+          <small><time datetime="2021-12-11T00:00:00+00:00">11 Dec 2021</time></small>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/bitcoin/2021/12/10/advent-13/">
+          Payment Pools / Coin Pools
+          <small><time datetime="2021-12-10T00:00:00+00:00">10 Dec 2021</time></small>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/bitcoin/2021/12/20/advent-23/">
+          Derivatives and Options For Bitcoin
+          <small><time datetime="2021-12-20T00:00:00+00:00">20 Dec 2021</time></small>
+        </a>
+      </li>
+    
+  </ul>
+</aside>
+
+        </div>
+        <div class="content container" style="padding-bottom:0;padding-top:0;bottom:0px;">
+            <div class="posts" style="height:14pt;margin-bottom:0;">
+                <div class="post">
+                    <p style="text-align:center;font-size:12pt;">&copy; 2011-2021 Jeremy Rubin. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

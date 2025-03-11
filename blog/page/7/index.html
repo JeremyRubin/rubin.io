@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+  <title> Blog (page 7) &middot; Jeremy Rubin </title>
+  <link href="https://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/poole.css">
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/css/hyde.css">
+  <link rel="stylesheet" href="/public/font-awesome-4.5.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+                                 <link rel="shortcut icon" href="/public/favicon.ico">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+
+  
+  <link type="application/atom+xml" rel="alternate" href="http://rubin.io/feed.xml" title="Jeremy Rubin" />
+
+
+  <!-- GA -->
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-40376251-1', 'auto');
+    ga('send', 'pageview');
+</script>
+
+  
+  <link rel="me" href="https://twitter.com/JeremyRubin" >
+  <meta name="twitter:dnt" content="on">
+			   <script>window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
+
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+
+  return t;
+}(document, "script", "twitter-wjs"));</script>
+
+</head>
+
+    <body>
+        <div class="sidebar">
+    <h3 style="text-align: center;"> <a href="/"> Jeremy Rubin </a> </h3>
+    <div class="container">
+        <div class="sidebar-about">
+
+            <div class="sidebar-about-info"> 
+                <a href="/public/pdfs/resume.pdf"><i class="fa fa-file-text-o" title=Resume></i></a>
+                <a href=""><i class="fa fa-github" title=Github></i></a>
+                <a href="https://twitter.com/JeremyRubin"><i class="fa fa-twitter" title=Twitter></i></a>
+            </div>
+            <div class="sidebar-about-info hide-large">
+                <a class="" href="/">Home</a>
+                <a class="" href="/blog/">Blog</a>
+                <a class="" href="/talks/">Talks</a> 
+                <a class="" href="/projects/">Projects</a>
+                <a class="" href="/archive/">Site Index</a>
+            </div>
+        </div>
+
+
+
+
+        <nav class="sidebar-nav hide-small">
+            <a class="sidebar-nav-item" href="/">Home</a>
+            <a class="sidebar-nav-item" href="/blog/">Blog</a>
+            <a class="sidebar-nav-item" href="/talks/">Talks</a> 
+            <a class="sidebar-nav-item" href="/projects/">Projects</a>
+            <a class="sidebar-nav-item" href="/archive/">Site Index</a>
+        </nav>
+    </div>
+</div>
+
+
+
+        <div class="content container" style="padding-bottom:0;">
+            <div class="page">
+    
+    
+    <h1>
+  Jeremy Rubin's Blog
+</h1>
+
+Here you'll find an assorted mix of content from yours truly. I post about a lot
+of things, but primarily <a href="/bitcoin/">Bitcoin</a>.
+
+<p>
+categories: <a href="/bitcoin/">Bitcoin</a>, <a href="/shenzhen/">Shenzhen Journey</a>.
+</p>
+<div class="posts">
+  
+<hr>
+  <div class="post">
+    <h2 class="post-title">
+        <a href="/bitcoin/2021/12/04/advent-7/">
+        Review of Smart Contract Concepts for Bitcoin
+      </a>
+  </h2>
+  <h4>Day 7: Rubin's Bitcoin Advent Calendar</h4>
+
+
+    <span class="post-date">04 Dec 2021</span>
+
+    <p><em>Welcome to day 7 of my Bitcoin Advent Calendar. You can see an index of all
+the posts <a href="/advent21">here</a> or subscribe at
+<a href="https://judica.org/join">judica.org/join</a> to get new posts in your inbox</em></p>
+
+<p>In this post we’ll review a concepts for thinking about different types of smart
+contract capabilities and the implications of their availability.</p>
+
+<h2 id="recursive-vs-non-recursive">Recursive v.s. Non Recursive</h2>
+
+<p>Recursive is pretty much just a fancy way of saying “loops”. This is sometimes
+also called “Turing Complete”. That’s an even fancier way of saying loops. For
+example, imagine a bitcoin contract with the following logic:</p>
+
+<p>When Alice requests moving 1 coin to Bob by broadcasting a transaction with the
+request, Alice has 24 hours to completely cancel the transfer by broadcasting
+another transaction.</p>
+
+<p>This is a looping contract because after cancelling Alice can immediately
+re-request the transfer. An example of non-looping but similar logic would be:</p>
+
+<p>When Alice requests moving 1 coin to Bob,  Alice has 24 hours to cancel the
+transfer by sending the coins to Alice’s backup key.</p>
+
+<p>Here, the contract terminates after one canceled request by moving the coin
+elsewhere.  It’s possible to emulate recursive behavior a limited amount by
+“unrolling” a loop. For example:</p>
+
+<p>When Alice requests moving 1 coin to Bob,  Alice has 24 hours to cancel the
+transfer by sending the coins to (when Alice requests moving 1 coin to Bob, 
+Alice has 24 hours to cancel the transfer by sending the coins to Alice’s backup
+key).</p>
+
+<p>Here we substituted the backup key with a copy of the original logic. Now Alice
+can make 2 cancellable requests before sending the money to the backup. This
+looks recursive, and it can be expressed by a recursive meta-program. Meta
+program is just a fancy term for a program that makes programs. But when we put
+the contract into writing (e.g., an address on the chain), it has to be unrolled
+for the specific number of iterations we want possible.</p>
+
+<p>Unrolling is a very useful technique, and can be used in a broad variety of
+circumstances. For example, imagine we unroll a contract a million times and
+specify that transactions can only happen every 10 blocks. That covers like 200
+years of contract execution. However, unrolling has it’s limits. When choices
+(action A or B) are introduced, unrolling can be less effective since you have
+and exponential blowup (that means unrolling even like 32 steps might be too
+many). However, there are some tricks that can be employed by a clever and
+careful programmer to reduce this complexity through, for example, memoization.</p>
+
+<h2 id="fully-enumerated-vs-open-ended">Fully Enumerated v.s. Open Ended</h2>
+
+<p>Suppose I have a contract which is supposed to strike an American option<sup id="fnref:option" role="doc-noteref"><a href="#fn:option" class="footnote" rel="footnote">1</a></sup> and
+transfer a token. It might look like this:</p>
+
+<p>If Alice is paid 1 BTC by December 25th, 2021 Midnight, then transfer 100 tokens
+to Bob’s Control.</p>
+
+<p>A fully enumerated contract would be expressed as:</p>
+
+<p>If Alice is paid 1 BTC by December 25th, 2021 Midnight, then transfer 100 tokens
+to Bob’s Address B.</p>
+
+<p>Whereas an Open Ended contract would be expressed as:</p>
+
+<p>If Alice is paid 1 BTC by December 25th, 2021 Midnight, then transfer 100 tokens
+to the address Bob requested with the payment.</p>
+
+<p>The key difference being that in the fully enumerated case we must know the
+exact specifics of the contract and how it will execute, and in the open ended
+contract case there are bits and pieces we can dynamically specify.</p>
+
+<p>There are ways that a fully enumerated contract can emulate dynamic choice. For
+example:</p>
+
+<p>If Alice is paid 1 BTC by December 25th, 2021 Midnight, then transfer 100 tokens
+to one of Bob’s Address B1, B2, or B3 at Bob’s discretion.</p>
+
+<p>Now Bob can pick from one of three destinations in the future. However, these
+options must have been known in advance (a priori). With an open ended contract,
+the address could be generated after the fact (post hoc).</p>
+
+<p>This is a separate concept from recursive or non recursive. A contract that
+loops could loop through a set of fully enumerated states until reaching some
+terminal predetermined “exit” state (e.g., a plain address). The option contract
+described above is non-recursive, but can be open ended.</p>
+
+<h2 id="client-vs-consensus-validation">Client v.s. Consensus Validation</h2>
+
+<p>When you have a Bitcoin in an output, anyone who has run, say, Bitcoin Core can
+tell that it is valid by seeing it in the UTXO set. But what happens if you want
+to issue a token on top of Bitcoin with some set of unique rules? Bitcoin does
+not know anything about these tokens, and so it would be possible to make an
+invalid transaction (e.g., spending more value than you have). In order to
+ensure the token is valid and not corrupt, one must trace every prior
+transaction back to some “axiomatic” genesis transaction(s) minting the token.
+These traces can be cached, but by default Bitcoin software will not enforce
+that only valid transfers be made. We say that the token is Client validated
+while the Bitcoin is Consensus validated.</p>
+
+<p>Is one worse than the other? Not necessarily. While permitting invalid
+transactions in the chain seems bad, as long as the invalid transactions can be
+uniformly excluded by all who care about the token it is not much worse than the
+work you do to run a Bitcoin full node anyways. There does seem to be some value
+in the Bitcoin network preventing you from making invalid transactions, but the
+network doesn’t stop you from making bad transactions (e.g., you could send
+money to the wrong place).</p>
+
+<p>Client side validation can check all sorts of properties, not just tokens. For
+example, you could write a contract for an on-chain governed company and check
+transactions for valid state transitions amending the rules.</p>
+
+<p>The main drawback to client side validation comes when you want your contract to
+interoperate with Bitcoin values. While client side validation can burn tokens
+that are transferred invalidly, imagine an exchange contract that swaps Bitcoin
+for Token. If the exchange contract sends more Bitcoin than it should, the
+clients can tell that it was an invalid transaction but the Bitcoin is still
+gone. Thus Client validated contracts are best left to things that don’t hold
+Bitcoin. The exception to this rule is if the Client validated contracts admit a
+custodian, a special monitor or set of monitors that handle the contracts
+Bitcoin balances in e.g. a multisig. The monitors can client-side validate the
+contracts and sign off on any balance transfers. The drawback to this approach
+is trust, but in certain applications that we’ll see later the monitor could be
+all of the participants themselves, which makes the application of the rules
+trustless.</p>
+
+<h2 id="validation-vs-computation">Validation v.s. Computation</h2>
+
+<p>Validation and Computation are two sides of the same coin. A simple example to
+demonstrate:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Task</th>
+      <th>Input</th>
+      <th>Output</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Computation</td>
+      <td>Sort the numbers [4,5,1]</td>
+      <td>None</td>
+      <td>[1,4,5]</td>
+    </tr>
+    <tr>
+      <td>Validation</td>
+      <td>Check that [4,5,1] is sorted by indexes A</td>
+      <td>A = [2,0,1]</td>
+      <td>True</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Validation <em>is</em> a computation, but hopefully it’s easier to perform the
+validation computation than the computation itself.</p>
+
+<p>In a Bitcoin transaction we are always validating that the transaction was
+approved. A transaction in Bitcoin makes a clear precondition (the coins spent)
+and postcondition (the coins sent). Even in cases where we have to do a lot of
+computation to check the authorization, we still know the proposed outcome.</p>
+
+<p>Compare to an Ethereum transaction: We pass some input to a function, and the
+EVM verifies that our input was authorized (e.g., send 1 Eth to contract X with
+message “hello”). Then, the side effects of that action are computed dynamically
+by the EVM. For certain contracts, we might be able to predict what the side
+effect will be (e.g., a 1:1 token exchange like Eth to Wrapped Eth), but for
+other contracts (e.g., a floating exchange rate for Eth to Wrapped BTC) we will
+get an outcome that can’t be fully predicted. It is possible for contracts to
+choose to engineer themselves in a way to create more predictability, however in
+Ethereum this does not result in an Invalid transaction, it results in a valid
+transaction (that e.g. still costs gas) that has a result which is not taken.
+For example, a transaction which says “Buy 1 WBTC for 15 ETH” might fail to
+acquire WBTC since the price is now 16ETH, but the transaction would be valid
+that you tried to make the trade and failed. This is because Ethereum’s base
+layer is computational in nature with little validation: validation must be
+built on top.</p>
+
+<h3 id="sidenote-malleability">Sidenote: Malleability</h3>
+
+<p>For certain Bitcoin “covenant” transactions the validation/computation line can
+be thin. Transactions must always be transactions in a block, but it’s possible
+that in the future miners could receive “details” of a transaction and be
+responsible for generating the appropriate transaction themselves. For example,
+Blockstream released details on a <a href="https://medium.com/blockstream/simplicity-taproot-and-universal-sighashes-18be8647b3bd">noninteractive
+feebumping</a>
+transaction, whereby a miner can dynamically compute a transaction that pays
+them more fees the longer it takes to confirm.</p>
+
+<p>In the case of malleability like this, it’s not as simple as saying “don’t do
+it”, because miners have an incentive to extract the value if it is available.</p>
+
+<h2 id="dynamic-state">Dynamic State</h2>
+
+<p>Contracts can have different types of state. State is just a fancy term for
+information available to execution.</p>
+
+<p>Global state is information that is observable from anywhere. An example of this
+in Bitcoin is the UTXO Set: any transaction could spend any coin, and can “pull
+it into scope” by naming it’s Outpoint (whether or not the transaction is valid
+is another question). Another example of global state is the current block
+height, used for validating things like lock times. In Ethereum, there is a much
+expanded concept of Global state whereby contracts persist and allow read/write
+access from other contracts, and unlike Bitcoin’s UTXO set, observing a piece of
+information doesn’t destroy it like spending a coin does.</p>
+
+<p>Local State is information observable only within your own context. For example,
+a contract might hold balances for 3 different people, but the current values of
+those split balances is not something queryable by outside parties. This also
+includes implicit state, such as “the contract is currently pending an Action
+from Alice” that are not explicitly coded.</p>
+
+<p>Lastly, certain things are not State. An example of this is an authorizing
+signature, which is ephemeral data that is used in the transaction execution but
+does not have relevance for the continued execution of the contract and is not
+particularly observable (which signature we use shouldn’t matter).</p>
+
+<h2 id="general-vs-specific">General v.s. Specific</h2>
+
+<p>A General contract primitive is something that can be used across many different
+types of contract. A Specific contract implements well defined logic. In Bitcoin
+and Ethereum, the focus is on General contract primitives that can be used many
+ways. In some other ecosystems (e.g. NXT, Stellar), contract primitives have
+much more specific functionality.</p>
+
+<p>General/Specific ends up being more of a spectrum than a binary. Certain
+contract primitives might be very specific but find general use, similarly some
+general primitives might be more general than others.</p>
+
+<p>For example, the Lightning Network on Bitcoin has pursued a path of using
+general purpose extensions to Bitcoin so as not to “special case” payment
+channels. But is that worth it? Might Payment Channels be cheaper, easier to
+use, etc if we just designed built-in channels from the get-go? Perhaps yes, but
+then it might be harder to embed other things or incorporate new innovations
+into Lightning if it had to fit a single mold.</p>
+
+<hr />
+
+<p>This isn’t an exhaustive list of topics by any means, but it should be a good
+primer for thinking about upgrade proposals that people discuss in Bitcoin.
+You’ll find out more about that in… tomorrow’s post!.</p>
+
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:option" role="doc-endnote">
+      <p>An American option is the right to either purchase or compell a counterparty to buy an asset until a deadline. <a href="#fnref:option" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+  </div>
+<hr>
+  
+<hr>
+  <div class="post">
+    <h2 class="post-title">
+        <a href="/bitcoin/2021/12/03/advent-6/">
+        What's Smart about Smart Contracts: Bitcoin Maxi Edition
+      </a>
+  </h2>
+  <h4>Day 6: Rubin's Bitcoin Advent Calendar</h4>
+
+
+    <span class="post-date">03 Dec 2021</span>
+
+    <p><em>Welcome to day 6 of my Bitcoin Advent Calendar. You can see an index of all
+the posts <a href="/advent21">here</a> or subscribe at
+<a href="https://judica.org/join">judica.org/join</a> to get new posts in your inbox</em></p>
+
+<p>Now that we’ve established the four pillars of Privacy, Decentralization, Self
+Custody, and Scalability, let’s get into smart contracts. But first…</p>
+
+<h1 id="does-bitcoin-have-smart-contracts">DOES BITCOIN HAVE SMART CONTRACTS?</h1>
+
+<p>There is a lot of fuss around if bitcoin has or doesn’t have smart contracts,
+and this is usually people talking past one another. Bitcoin does have enough
+functionality to create certain smart contracts. But Bitcoin does not “have
+Smart Contracts” in the same way that, say, Ethereum “has” Smart Contracts.
+Sure, one can argue that because Ethereum is weaker in terms of its fulfillment
+of the four pillars, it doesn’t really have smart contracts either. But almost
+undeniably there is something happening in the Ethereum Ecosystem that isn’t
+happening for Bitcoin – yet.</p>
+
+<p>Often, Bitcoin Boosters will say that the types of things happening on Ethereum
+aren’t desirable at all and are just scams. Many of these Boosters then go on to
+promote projects of similar dubious nature… but that’s off topic for this post!
+While there are many projects that frankly suck, there are also many projects on
+Ethereum that are relevant to the interests of Bitcoiners! Examples of projects
+that advance Ethereum’s realization of these 4 pillars that would be difficult
+to build on Bitcoin include: Gnosis Safe for Custody; Tornado Cash for Privacy;
+Optimistic/Zero Knowledge Rollups for scalability; SmartPool for on-chain mining
+pool coordination. It’s claimed that any time something of value proves out in
+the other ecosystems, Bitcoin can easily just incorporate the highlights.</p>
+
+<p>My position is somewhat unique on this matter: Smart Contracts aren’t something
+you build on top of a layer with good decentralization, privacy, scalability,
+and self custody – Smart Contracts are a central part of what makes achieving
+those pillars possible! In other words, we need a Smart Contract ecosystem that
+enables broad innovation in order to make our four pillars robust. This is not
+the same as saying we need the Ethereum VM, but we do need something to be
+different than the status quo today to empower builders to create new tools on
+top of Bitcoin. This differs from a traditional Bitcoiner perspective which is
+more along the lines of once we improve our (insert generic property here); then
+we can consider figuring out how to add more smart contracts.</p>
+
+<h2 id="that-bar-sucks-its-too-crowded">That bar sucks it’s too crowded</h2>
+
+<p>Another reason sometimes given for not wanting smart contracts is that they’re
+too expensive and won’t scale.  While this is a valid concern, the story around
+fees is somewhat interesting. You may have seen people complain about high fees
+on other platforms and say therefore it sucks and should die. It’s a bit like saying
+a crowded bar is no good. Obviously, if people are at the bar it is good. That
+your enjoyment is less is solely because you’re antisocial. On other platforms,
+there are users paying exorbiant fees to do transactions… but would they be
+doing them if they weren’t getting commensurate value? Let’s have a look at some
+data from <a href="https://cryptofees.info">cryptofees</a><sup id="fnref:date" role="doc-noteref"><a href="#fn:date" class="footnote" rel="footnote">1</a></sup>.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>1 Day Fees</th>
+      <th>7 Day Avg. Fees</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Ethereum</td>
+      <td>$62,620,320.03</td>
+      <td>$55,285,528.00</td>
+    </tr>
+    <tr>
+      <td>Uniswap</td>
+      <td>$11,315,687.79</td>
+      <td>$10,507,247.12</td>
+    </tr>
+    <tr>
+      <td>Binance Smart Chain</td>
+      <td>$7,240,187.13</td>
+      <td>$7,525,565.73</td>
+    </tr>
+    <tr>
+      <td>Balancer</td>
+      <td>$1,572,934.46</td>
+      <td>$445,368.69</td>
+    </tr>
+    <tr>
+      <td>Aave</td>
+      <td>$1,465,761.04</td>
+      <td>$1,354,792.55</td>
+    </tr>
+    <tr>
+      <td>SushiSwap</td>
+      <td>$1,379,856.87</td>
+      <td>$1,664,071.03</td>
+    </tr>
+    <tr>
+      <td>Bitcoin</td>
+      <td>$1,160,676.57</td>
+      <td>$730,368.10</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Clearly a lot of folks are willing to pay for Ethereum and projects on top of
+it. Bitcoin is ultimately a business, and it relies on its customers paying fees
+to incentivize the production of blocks. More fees, more incentive to provide
+security for Bitcoin. It’s a little problematic, therefore, when users are
+getting more utility from (by virtue of how much they are spending) other chains
+than Bitcoin<sup id="fnref:gent" role="doc-noteref"><a href="#fn:gent" class="footnote" rel="footnote">2</a></sup>.</p>
+
+<p>Although we need to be careful to not hurt Bitcoin’s essential properties, it’s
+clear that smart contracts provide massive leverage for incentivizing users to
+do transactions to pay for block production, without which Bitcoin falls apart.</p>
+
+<h2 id="capitalist-or-communist">Capitalist or Communist?</h2>
+
+<p>The last point I’ll leave you with is perhaps a bit charged / “problematic”, but
+I think it’s a good one. Bitcoin is a bit like America. Ethereum is a bit like China.
+Provisionally, America is the Free Market Capitalism country and China is the
+State Controlled Communist Markets country. In practice, if you visit a market
+in China there <em>seems</em> to be a lot more capitalism than in the US. Tons and tons
+of small businesses, operating with (seemingly) little regulation. On the other
+hand, in San Francisco you can spend
+<a href="https://sf.eater.com/2021/4/22/22397615/matcha-n-more-ice-cream-store-200000-quits">$200k</a>
+trying to get permits for an Ice Cream shop and fail. On the flip side, in the states once you’re
+successful and operating it’s pretty darn hard for the government to substantial interfere.
+In China, your CEO might vanish for a few weeks like Jack Ma.</p>
+
+<p>Bitcoin is a bit like America. Building on it is incredibly hard, but if you
+figure it out and crack the code it’s supposed to work forever and devs bend
+backwards to ensure your use case won’t break.</p>
+
+<p>Ethereum is a bit like China. Building on it is incredibly easy – at first –
+but if what you’re doing violates the “social order” your thing will get rekt by
+king VB with EIPscallibur. Examples of this include the removal of refunds for
+clearing space which bricked a popular gas fee arbitrage token.</p>
+
+<p>Now, obviously this description is tinged with preference. I <em>love</em> America.
+Best country in the world (or, rather, terrible country, just better than all
+the other terrible countries). However, Bitcoin is not America and Ethereum is
+not China. There can be a middle road, and benefits from such an approach as
+well. Smart contracts seem to be really good at enabling permissionless
+innovation. Permissionless innovation is great for capitalism! Capitalism is
+great for improving utility of users and coordinating people. Wouldn’t it be
+nice if building on Bitcoin didn’t require getting proposals passed the
+developer “commitiburo” and  more innovators picked Bitcoin as the best chain to
+build new ideas on top of? Obivously we don’t want to sacrifice the other parts
+that make Bitcoin great, but we can still entertain the types of economic
+benefits we would see by enabling more permissionless innovation. Because
+ultimately, and perhaps tautologically…</p>
+
+<h2 id="the-best-platform-for-capitalism-wins">The best platform for capitalism wins</h2>
+
+<p>As described, Bitcoin has certain positive and negative properties. Ethereum
+too. At the end of the day, in aggregate, what “matters” is what participants
+choose to use and rely on through a free market selection process. That’s why
+despite <em>not</em> offfering the playground of Ethereum, Bitcoin has something that
+people value more: stability. However, stability and stagnation are two sides of
+the same coin. Stagnate for too long and competitors will eat your lunch.  And
+perhaps the stability that makes Bitcoin unique will eventually be convincingly
+present in other ecosystems, despite Bitcoin’s head start in that endeavor.</p>
+
+<p>Spooky Scary!</p>
+
+<hr />
+
+<p>In the coming posts we’ll review the concepts more in depth, the state of the
+art research for Bitcoin Smart Contracts, and get into some examples of useful
+Bitcoin contracts.</p>
+
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:date" role="doc-endnote">
+      <p>Snapshot from December 2nd 2021 <a href="#fnref:date" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:gent" role="doc-endnote">
+      <p>Shoutout <a href="https://pleb.fi/transcripts/2020/miami/ryang/">Ryan Gentry</a>. <a href="#fnref:gent" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+  </div>
+<hr>
+  
+<hr>
+  <div class="post">
+    <h2 class="post-title">
+        <a href="/bitcoin/2021/12/02/advent-5/">
+        Pillars of Bitcoin: Privacy
+      </a>
+  </h2>
+  <h4>Day 5: Rubin's Bitcoin Advent Calendar</h4>
+
+
+    <span class="post-date">02 Dec 2021</span>
+
+    <p><em>Welcome to day 5 of my Bitcoin Advent Calendar. You can see an index of all
+the posts <a href="/advent21">here</a> or subscribe at
+<a href="https://judica.org/join">judica.org/join</a> to get new posts in your inbox</em></p>
+
+<p>Privacy is foundational to Bitcoin. Fundamentally, we care about censorship
+resistance so folks can’t stop you from doing activity they can tell you’re
+doing… but what if they couldn’t tell you were doing anything at all? The more
+private a system is, the better it is at ensuring that all participants are free
+to do as they wish.</p>
+
+<p>Unfortunately, privacy is one of the most difficult things to achieve in the
+universe. For every action there is an equal and opposite reaction; if one wants
+to make an action, how can one ensure the reaction is not observable? And if one
+masks the reaction, how can one hide the masking?</p>
+
+<p>Privacy exists in a delicate position in our society. America is hands down the
+leader in rights to privacy of any society, but citizens still face a barrage of
+assaults against their privacy. Privacy from the government also differs from
+privacy from corporations, and the corporations often times can be in cahoots
+with the government. Some regulatory regimes (e.g., the EU) claim to be “better
+on privacy” than America, but have overall a weaker sense of individual rights
+than in America (so they may be better at the privilege of privacy, but not at
+the right to it).</p>
+
+<p>Why is privacy so delicate? In part, because unlike speech there’s no explicit
+enumerated right to privacy<sup id="fnref:centric" role="doc-noteref"><a href="#fn:centric" class="footnote" rel="footnote">1</a></sup>. Privacy is an unenumerated right under
+the American constitution. What this means is that legally we do believe it to
+be a right because it seems to be implied by other constitutional protections
+that could not exist without it (e.g., the right to not be searched without due
+process).  Because there’s not explicit protection of privacy, it’s a constant
+battle to determine what constitutes an violation of privacy. For example, if
+your house is extra hot because you’re growing pot in it (or hint hint Bitcoin
+mining), can police use thermal cameras to detect it and then establish probable
+cause to get a warrant and raid your house? See Kyllo v. United States, that’s
+an illegal search baby! However it’s possible that this line would erode over
+time as the expectation of privacy changes – if everyone had thermal camera
+sunglasses and could see your pot growing plain as day, maybe it’d be
+unreasonable to think
+you’re private!</p>
+
+<p>Cryptographic research has yielded amazing tools for creating provable privacy
+for digital actions. For example, it’s possible to send a digital message in a
+manner such that only the intended recipient can read it. And as long as your
+spying adversary isn’t standing over either of your shoulders looking at your
+screen (or more realistically, running a scanning program on all your data like
+the one Apple said they might be doing earlier this year), the only people who
+will know the contents of the message are you and the recipient.</p>
+
+<h3 id="the-government-kinda-sorta-hates-this-stuff">The government kinda sorta hates this stuff!</h3>
+
+<p>Because the bad guys can use it! But, because America is super free privacy
+loving country, citizens still have a basically unlimited protected right to use
+whatever privacy technology they want. Many politicians have mentioned wanting
+backdoors into software, but none have truly succeeded to introduce much truly
+limiting. Not to mention you can’t make math illegal, which is all that
+cryptography is. Alphabet soup agencies resort to trying to insert backdoors,
+but these are still subject to public review and the information revealed could
+only really be used legally for big “national security issues” like against a
+group with a pre-existing warrant, but the general collection of information
+would be illegal under the expectation of privacy right. At least in theory –
+Snowden showed us that mass data collection
+<em>does</em> still happen… But cryptography gets better, and open-source supply chain
+devices become better, so inserting backdoors in the code becomes harder and
+harder.</p>
+
+<p>So great, probably solved for Bitcoin, right? Just Crypto It. Not quite. While
+systems like ZCash do exist that make transactions much more private, they take
+up more space, so they decrease the availability of block space… however,
+perhaps with better privacy, there’s less ability to discriminate against
+different transaction sources, so less decentralization is needed to guarantee
+censorship resistance.</p>
+
+<p>This points to another conflict, which arises with privacy: auditability v.s.
+transparency v.s. Deniability.</p>
+
+<p>An auditable system means that anyone can verify the history of all transactions
+and check for validity transparently. Many bitcoiners have a preference for
+“elementary school math”, where validating the transaction record requires very
+basic math in the code, and not much else. However, if you go to a fully
+encrypted form, you might no longer be able to easily check important rules like
+the amount of coins not being increased through a crypto backdoor. This type of
+auditability where you could “do it by hand on a calculator” we’ll call
+transparency, since you can see everything! If it were encrypted, it would be
+opaquely auditable. You could tell it’s valid, but not the specific transfers
+that happened. Maybe no one person is going to look through all the data, but
+across all humanity someone is bound to audit at least the transactions they’re
+involved in.</p>
+
+<p>Deniability stands in contrast to either of these properties. If, say, a
+government agency comes to you and says “hey, we know you controlled key X,
+please show us all transactions that X was involved in”, a deniable system would
+allow you to produce any answer, making such a query useless. However, if a
+system was strongly deniable like that, it would be very hard to audit because
+the audit could potentially turn up differing results. So Bitcoin transactions
+aren’t particularly deniable by default.</p>
+
+<p>One of the drawbacks of Bitcoin’s auditability is that the auditability is
+<em>forever</em>. So if you have a lapse of privacy, all your old information can be
+checked. So let’s say you bought a coffee in 2021, and in 2055 the government
+decides all coffee drinkers are going to go to jail to pay for their drug use
+sins, then your old cafe might be able to reveal you as a customer. Bitcoin
+never forgets.</p>
+
+<h2 id="its-my-data-and-i-want-it-private-now">It’s My Data and I want it Private Now</h2>
+<p>Therefore it’s an urgent priority to make Bitcoin as private as possible as soon
+as possible in order to keep users safe now and forever, or else the fundamental
+usability of the system is at risk. However, compromising on auditability or
+decentralization would be unpopular, so it’s not as simple as adding ZCash and
+increasing block space.</p>
+
+<p>There are a lot of different pathways Bitcoin can take to increase privacy. For
+example, the lightning network can mask and make many payments ephemeral, as
+well as adding deniability if one continually signs false histories of revoked
+txns.  Sidechains can add all sorts of privacy primitives, if they want. And
+on-chain techniques like swaps or joins can be used to make the base privacy
+better as well.</p>
+
+<p>In future posts we’ll explore how covenants can have a role in improving
+privacy!</p>
+
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:centric" role="doc-endnote">
+      <p>This post is a bit America centric… generally speaking, America has the strongest set of protections of citizen (and non-citizen) rights of any country, so we use the American system as a meter-stick in this post. That privacy doesn’t exist as an enumerated right in the country which most strongly protects individual rights, as noted early, implies it’s only really worse in other countries. <a href="#fnref:centric" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+  </div>
+<hr>
+  
+<hr>
+  <div class="post">
+    <h2 class="post-title">
+        <a href="/bitcoin/2021/12/01/advent-4/">
+        Pillars of Bitcoin: Decentralization
+      </a>
+  </h2>
+  <h4>Day 4: Rubin's Bitcoin Advent Calendar</h4>
+
+
+    <span class="post-date">01 Dec 2021</span>
+
+    <p><em>Welcome to day 4 of my Bitcoin Advent Calendar. You can see an index of all
+the posts <a href="/advent21">here</a> or subscribe at
+<a href="https://judica.org/join">judica.org/join</a> to get new posts in your inbox</em></p>
+
+<p>Many may have tried, but few have successfully characterized what “being
+decentralized” means in an objective / quantitative sense. Instead, we’re left
+with soft “know it when I see it”s.</p>
+
+<p>Decentralization may be a pillar of Bitcoin with a lotta fanfare, but it’s still
+just a means to an end. It’s about the Pantheon, not the pillars! A system can
+be very decentralized and still kinda suck. Much like pillars with no roof won’t
+keep the rain out!</p>
+
+<h2 id="got-gas">Got Gas?</h2>
+<p>For a more than slightly contrived example, imagine a pre-internet driver
+navigating gas stations prices.  Kind of “decentralized”, right?
+Users/purchasers operate on local information to see pricing and make a decent
+decision, and sellers operate on local information to stay competitive. Over
+time the network should “converge” a sellers learn who has better prices
+throughout town, but from the perspective of an individual purchaser it’s really
+hard for them to determine within their remaining tank range/willingness to
+drive across town for a dollar who has the best prices. So while the market
+works as a decentralized pricing system, it’s not highly consistent!</p>
+
+<h2 id="its-hard-no-cap">It’s Hard; No CAP</h2>
+
+<p>Computer network nerds have three rules for keeping their jobs: consistency,
+availability, and partition tolerance. What do these mean in practice? Thinking
+back to our gas analogy, gas stations are very available (you can always get gas
+at some price), they’re strongly partition tolerant (i.e., if you can’t see
+other gas station’s advertised prices you won’t know if it’s better, but you can
+still get gas). But the pricing might be all over the map! No consistency!</p>
+
+<p>It’s really hard to achieve all three properties – there even exist proofs of
+its impossibility. Instead, engineers make tradeoffs to achieve different
+amounts of guarantee across the properties.</p>
+
+<p>For Bitcoin we care a <em>lot</em> about consistency<sup id="fnref:pedantic" role="doc-noteref"><a href="#fn:pedantic" class="footnote" rel="footnote">1</a></sup>. If I send money to
+Alice, I should not be able to send it to Bob. We also care a lot about
+partition tolerance. If some group of participants should shunt themselves out
+from others, the system should still operate? So do we inherently care less
+about availability? Well, kinda! If the “blockchain is closed” and you can’t
+transact, at least you still have your money. And technologies like Lightning
+Network can help bridge the gaps if the Bitcoin blockchain is unavailable that
+you can still fully confirm transactions as long as it comes back eventually.</p>
+
+<p>So, interestingly, Availability seems like the property we need to care about
+the least… but it’s one of the main reasons we need decentralization! That’s
+because even though we might have a design that elevates the other two
+properties, it doesn’t mean that availability is unimportant. And availability
+is not one monolithic level, there are many different types of availability
+fault one might experience on a network. For example, you might experience
+reduced or no availability if:</p>
+
+<ol>
+  <li>The network doesn’t have blockspace at your price</li>
+  <li>The internet is down</li>
+  <li>Your usual peers are offline</li>
+  <li>Theres a fire at a major data center</li>
+  <li>Your battery on your phone dies</li>
+  <li>A big solar flare happens</li>
+  <li>An evil government changes your DNS records to your mining pool and you don’t know the IP address</li>
+  <li>An evil government runs the network entirely and doesn’t like your transactions so they get censored.</li>
+</ol>
+
+<p>Some of these problems, decentralization can help us with! Some,
+decentralization can’t help with. And some are caused <em>by decentralization</em>. Uh
+oh!</p>
+
+<p>For example…</p>
+
+<p>A fire a major data center can be defrayed by being more decentralized – a fire
+can only spread so far! The other data centers should be fine, since Bitcoin is
+partition tolerant, the overall network is available.</p>
+
+<p>If a big solar flare happens, there’s not much <em>any</em> of us can do if all the
+internet is down and our devices got fried. Too catastrophic… We can recover
+eventually, your metal seed plates will be fine, but hopefully someone had some
+Faraday cage shielded backups.</p>
+
+<p>If blockspace is too expensive, decentralization may be the cause!</p>
+
+<p>In order to keep the network decentralization friendly, Bitcoin uses far less
+bandwidth and storage than a centralized system (like Google) could use. This
+ensures that participants on the network need not be particularly well resourced
+or well connected to be a meaningful, full participant in the Bitcoin Network.</p>
+
+<p>That’s because of another availability issue: censorship. Bitcoin fundamentally
+stands as a fuck-you to the entrenched powers that be. As such, Bitcoin uses
+decentralization to guarantee censorship-resistance against state actors. While
+there’s been much ink scaled about the censorship of scalability v.s. the
+censorship of state actors, Bitcoin is hyper focused on providing some form of
+“equal protection”.</p>
+
+<p>Everyone hates that you lose availability from high tx prices, and all are
+equally affected<sup id="fnref:arguably" role="doc-noteref"><a href="#fn:arguably" class="footnote" rel="footnote">2</a></sup>. Everyone hates solar flares, and all are equally
+affected. But with state actor censorship, enemies of the state, be they Jews,
+Conservative Non-Profits, Black Americans, Gazan Chocolatiers, People who
+believe things posted on *******’s Twitter Account etc, can be picked
+apart and subjected to selective abuses.  If anyone can run a node (and
+hopefully miner), and most people don’t have a political agenda, we can maybe
+protect individuals of any background.</p>
+
+<p>As such, Bitcoin’s decentralization is focused on censorship-resistance, even at
+the expense of on-chain availability.</p>
+
+<h2 id="the-neverending-story">The Neverending Story</h2>
+<p>The story doesn’t end there. Decentralization, as we noted earlier, is very
+tough to quantify. Even if we can’t quantify it, we can still reason about
+decentralization efficiency. Given the “costs of decentralization”, how much
+censorship resistance do we get? Can we decrease the costs and achieve the same
+amount?  Can we keep the cost the same and gain more censorship resistance?
+Or… do we need to increase the costs, because we’re not censorship resistant
+enough? Stay tuned for future posts we’re we’ll see if we can’t do something
+about it!</p>
+
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:pedantic" role="doc-endnote">
+      <p>If we’re being pedantic, technically Bitcoin sacrifices consistency for <em>eventual consistency</em> to preserve the other properties… but it really depends on what you view the “output” of the network being as you can detect consistency losses by seeing hashrate decreases, for example. My opinion is we sacrifice availability of high quality confirmations for consistency… <a href="#fnref:pedantic" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:arguably" role="doc-endnote">
+      <p>There is a complex interaction between scalability solutions and chain space that can help bridge the fact that rich people are typically in power and poorer people aren’t. <a href="#fnref:arguably" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+  </div>
+<hr>
+  
+<hr>
+  <div class="post">
+    <h2 class="post-title">
+        <a href="/bitcoin/2021/11/30/advent-3/">
+        Pillars of Bitcoin: Self Custody
+      </a>
+  </h2>
+  <h4>Day 3: Rubin's Bitcoin Advent Calendar</h4>
+
+
+    <span class="post-date">30 Nov 2021</span>
+
+    <p><em>Welcome to day 3 of my Bitcoin Advent Calendar. You can see an index of all
+the posts <a href="/advent21">here</a> or subscribe at
+<a href="https://judica.org/join">judica.org/join</a> to get new posts in your inbox</em></p>
+
+<p>Not your keys, not your coin. A simple maxim often repeated by Bitcoiners, but
+an important one. Why?</p>
+
+<h2 id="that-thing-about-the-gold-standard-you-probably-heard-before">That thing about the gold standard you probably heard before:</h2>
+
+<p>In the existing financial system, your assets aren’t really your assets. Let’s
+suppose you own a share of Google. You don’t really own that share, you own a
+virtual claim and the actual certificate sits somewhere with a corporation like
+The Depository Trust &amp; Clearing Corporation (DTCC). So what? Why does it matter
+who holds the paper?</p>
+
+<p>The U.S. Dollar is a great example of why you should care. One dollar used to
+represent an amount of Gold you could redeem for real physical
+bite-it-to-see-its-pure gold. This was a promise of course, the paper dollar did
+not have the actual gold in it. This was all good and dandy until in 1933,
+Executive Order 6102 was put in place which made the holding of physical gold
+illegal. Get arrested and go to jail illegal. EO 6102 mandated that all Gold be
+turned in to the Federal Reserve. This was quickly followed by a devaluing of
+the redemptive value of the dollar in Gold by the government from $20.67 per
+troy ounce to $35 as a “one time” move<sup id="fnref:troy" role="doc-noteref"><a href="#fn:troy" class="footnote" rel="footnote">1</a></sup>. Today a troy ounce costs around
+$1,800. This is because in 1971 an Executive Order was put through that ended
+the dollar’s gold backing entirely.</p>
+
+<h3 id="whats-this-got-to-do-with-bitcoin">What’s this got to do with Bitcoin?</h3>
+
+<p>If Bitcoin is held in accounts at regulated entities like exchanges a similar
+act to 6102 could make redeeming actual bitcoin impossible for users of those
+services. Suppose those users are forced to receive in place of their exchange
+Bitcoin a Bitcoin Note that is backed by bitcoin. And then one day, the amount
+of Bitcoin per Bitcoin Note can be reduced
+– or worse, completely unlinked.</p>
+
+<p>If this happens, all is lost. Bitcoin is fundamentally about a monetary standard
+for the world where no self-important rulers can manipulate the currency. Self
+custody is a requirement for Bitcoin to avoid these sorts of takeovers.</p>
+
+<h2 id="ok-ok-ill-keep-my-coins-off-exchange">OK, OK, I’ll keep my coins off exchange…</h2>
+<p>Just fixing your behavior isn’t enough, to keep Bitcoin functional you need most
+users to follow suit.  Yet many users today do choose to keep some or all of
+their Bitcoin on centralized services (yours truly included!).</p>
+
+<p>This is for two main reasons:</p>
+
+<ol>
+  <li>Game Theory: we can’t do anything about this.  As long as not too many other
+people are using an exchange for custody, it doesn’t matter if you are since a
+regulatory takeover won’t be too effective. So selfishly, you may as well
+benefit from the ease of keeping your coin on a service (assuming it is easier)
+rather than taking responsibility for your own assets. Likewise if no-one else
+is self custodying there’s not much advantage for you to be either.</li>
+  <li>Software freakin’ sucks for self custody! We can fix this. Although the
+quality of wallets has improved dramatically from Bitcoin’s early days, it’s
+still incredibly difficult to do well. Further, self-custody solutions don’t
+have solid options for handling many common needs such as inheritance, spending
+limits, and more.</li>
+</ol>
+
+<p>If we work on strengthening the fully self-sovereign self-custody options that
+Bitcoin users have at their disposal, we can help more Bitcoin users to choose
+to keep their funds themselves and achieve “herd immunity” against future
+executive order 6102s. If we self custody in great number, we don’t permit them
+the immediate victory over most users. You can’t arrest everyone, not easily at
+least.</p>
+
+<p>in short…</p>
+
+<h1 id="plebz">PLEBZ</h1>
+<h1 id="together">TOGETHER</h1>
+<h1 id="stronk">STRONK</h1>
+
+<hr />
+
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:troy" role="doc-endnote">
+      <p>A troy ounce of gold is about a 1 inch by 1 inch square that is 0.1 inches high. <a href="#fnref:troy" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+  </div>
+<hr>
+  
+</div>
+
+<div class="pagination">
+  
+    <a class="pagination-item newer" href="/blog/page/6/">Newer</a>
+  
+  
+  <a class="pagination-item older" href="/blog/page/8/">Older</a>
+  
+</div>
+
+</div>
+
+        </div>
+        <div class="content container" style="padding-bottom:0;padding-top:0;bottom:0px;">
+            <div class="posts" style="height:14pt;margin-bottom:0;">
+                <div class="post">
+                    <p style="text-align:center;font-size:12pt;">&copy; 2011-2021 Jeremy Rubin. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
