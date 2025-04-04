@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+  <title> Pillars of Bitcoin: Scalability &middot; Jeremy Rubin </title>
+  <link href="https://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/poole.css">
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/css/hyde.css">
+  <link rel="stylesheet" href="/public/font-awesome-4.5.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+                                 <link rel="shortcut icon" href="/public/favicon.ico">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+
+  
+  <link type="application/atom+xml" rel="alternate" href="http://rubin.io/feed.xml" title="Jeremy Rubin" />
+
+
+  <!-- GA -->
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-40376251-1', 'auto');
+    ga('send', 'pageview');
+</script>
+
+  
+  <link rel="me" href="https://twitter.com/JeremyRubin" >
+  <meta name="twitter:dnt" content="on">
+			   <script>window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
+
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+
+  return t;
+}(document, "script", "twitter-wjs"));</script>
+
+</head>
+
+    <body>
+        <div class="sidebar">
+    <h3 style="text-align: center;"> <a href="/"> Jeremy Rubin </a> </h3>
+    <div class="container">
+        <div class="sidebar-about">
+
+            <div class="sidebar-about-info"> 
+                <a href="/public/pdfs/resume.pdf"><i class="fa fa-file-text-o" title=Resume></i></a>
+                <a href=""><i class="fa fa-github" title=Github></i></a>
+                <a href="https://twitter.com/JeremyRubin"><i class="fa fa-twitter" title=Twitter></i></a>
+            </div>
+            <div class="sidebar-about-info hide-large">
+                <a class="" href="/">Home</a>
+                <a class="" href="/blog/">Blog</a>
+                <a class="" href="/talks/">Talks</a> 
+                <a class="" href="/projects/">Projects</a>
+                <a class="" href="/archive/">Site Index</a>
+            </div>
+        </div>
+
+
+
+
+        <nav class="sidebar-nav hide-small">
+            <a class="sidebar-nav-item" href="/">Home</a>
+            <a class="sidebar-nav-item" href="/blog/">Blog</a>
+            <a class="sidebar-nav-item" href="/talks/">Talks</a> 
+            <a class="sidebar-nav-item" href="/projects/">Projects</a>
+            <a class="sidebar-nav-item" href="/archive/">Site Index</a>
+        </nav>
+    </div>
+</div>
+
+
+
+        <div class="content container" style="padding-bottom:0;">
+            <div class="post">
+    <h1 class="post-title">Pillars of Bitcoin: Scalability</h1>
+    <h3>Day 2: Rubin's Bitcoin Advent Calendar</h3>
+    
+
+<a class="twitter-share-button"
+data-size="large"
+href="https://twitter.com/intent/tweet?text=Pillars+of+Bitcoin%3A+Scalability&hashtags=Bitcoin,
+AdventCalendar
+"> Tweet</a>
+
+
+
+    <div>
+        <span class="post-date">29 Nov 2021
+        </span>
+    </div>
+    <p><em>Welcome to day 2 of my Bitcoin Advent Calendar. You can see an index of all
+the posts <a href="/advent21">here</a> or subscribe at
+<a href="https://judica.org/join">judica.org/join</a> to get new posts in your inbox</em></p>
+
+<p>This is the first of four posts in an advent mini-series about four fundamental
+pillars of Bitcoin. I know, I know, a series within a series. What am I, nuts?
+But it’s important that we begin our journey by setting the stage with a few
+big picture objectives for Bitcoin before we get into why Smart Contracts
+matter.</p>
+
+<p>After all, we’re trying to build the hardest money possible, not Crypto
+Kitties… right?</p>
+
+<p>The four pillars I’ve chosen to focus on are Scalability, Self Custody,
+Decentralization, and Privacy. Are there other properties that are also
+important? Sure. Might there be a “more fundamental” name for each pillar? Ok.
+But generally I find that these 4 categories are different enough from one
+another and capture a very wide swath of what Bitcoin is and not overly
+specific or overly general. Otherwise we’d just have one pillar for Bitcoin:
+“To Fix This”.</p>
+
+<p>Now onto the content.</p>
+<hr />
+
+<p>Scalability is a controversy generating issue. Throughout Bitcoin’s history
+there have been acerbic disagreements about what sort of scale is required and
+how to accomplish it. Back then I even helped create a conference series,
+Scaling Bitcoin, where people got to present to/shout at each other in person!</p>
+
+<p>But why is scalability so important? And why does it generate controversy?</p>
+
+<p>Famously, certain folks have remarked that, “you can’t buy coffee with Bitcoin”
+because fees would be too high. This is an issue that’s easy to empathize with;
+if transactions cost $10 who wants to do that for a $5 coffee – No One!</p>
+
+<p>The common response is that Bitcoin isn’t for trivial purposes like buying a
+cup of coffee, it’s The Hardest And Most Sound Money To Ever Exist And If You
+Buy Coffee With It You Are Stupid.</p>
+
+<p>There’s some truth to that. Bitcoin doesn’t need to function to enable your
+trivial day to day purchases, it needs to exist to help you take self-sovereign
+control over your money! Forget about your coffee, stack sats, survive
+hyperinflation, avoid the pod, don’t eat the bugs. Capiche?</p>
+
+<p>So what’s the rub? Well, if Bitcoin is to really be the vaccine against
+autocratic rulers and corrupt financial systems, it needs to protect everyone,
+not just elite sat-stackers who can afford to use it. Scalability represents
+our desire for Bitcoin to be affordable for all who could benefit from it. Many
+who live under abusive or corrupt regimes today might already be priced out.
+Imagine earning 1000 satoshis per day and spending 300 satoshis to do a
+transaction. Real bummer. And what if fees go up? There’s also the insulting
+concept of dust in Bitcoin, 546 satoshis, currently about $0.30. Some people
+work hard just to earn that much! Where do you think people who fall on this
+low end of the economic spectrum live… in the freest of the free western
+countries? No, they’re Congolese children mining cobalt. Maybe it’s OK that
+they’re priced out: Bitcoin preserves wealth (and freedom), it doesn’t create
+it. And just having cheaper fees isn’t going to free the child workers. But
+still, wouldn’t you rather have Bitcoin be able to benefit anyone who might
+have the need to use it, regardless of net worth?</p>
+
+<p>Good news: there are techniques that exist today for scaling access to Bitcoin.
+Bad news: they all have different tradeoffs.</p>
+
+<h2 id="just-make-the-blocks-bigger-bro">Just Make the Blocks Bigger Bro</h2>
+
+<p>Early on in Bitcoin’s history a contingency of Bitcoiners
+felt strongly that Bitcoin should scale by increasing the size of Blocks to
+accommodate more transactions per second and keeping fees low. While mild block
+size increases (e.g., as done with SegWit) are probably ok, the ever-increasing
+block size would threaten Bitcoin’s decentralization and make it harder for
+anyone to be able to run and audit the system. And if you can’t run and audit
+Bitcoin yourself, you might as well be using the legacy financial system.</p>
+
+<p>There are some efficiency improvements that can shrink transactions marginally,
+contributing to an effectively larger block. But Blockspace will always be
+scarce, no matter how space efficient transactions are.</p>
+
+<h2 id="lightning-network">Lightning Network</h2>
+
+<p>The Lightning Network is a very popular means of scaling bitcoin. It makes a
+second layer on top of Bitcoin where you can make cheaper and lower latency
+payments. It functions sort of like the equivalent of Venmo versus Bank Wire
+Transfers. You set up a “payment channel” with a counterparty, and are able to
+make many cheap payments between you and the counterparty. You can even route
+payments through friend’s channels if you don’t have a direct link. A few major
+downsides to this approach are as follows:</p>
+
+<ol>
+  <li>That it requires an active online presence and ability to get bitcoin
+transactions confirmed (which still costs money!)</li>
+  <li>It requires some form of durable storage any time you make a transaction.</li>
+  <li>That in order to receive funds, you have to have someone loan you the
+“potential” capital (think credit worthiness, which requires some sort of
+reputation system and identities).</li>
+</ol>
+
+<p>In countries like El Salvador, which have begun adopting Bitcoin as legal
+tender, many users of the Lightning Network are doing so through a centralized
+service provider which doesn’t protect users from the types of abuse possible
+in current banking paradigms. In theory, this central service provider isn’t
+there because the El Salvador government is some kind of soon-to-be
+dictatorship, but rather because solving the problems of capital loan, regular
+online presence, and durable storage are hard problems for citizens of a poor
+country.</p>
+
+<h2 id="sidechains">Sidechains</h2>
+
+<p>Another popular approach is to make federated sidechains, such as
+RootStock, Liquid, Nomic, or ThorChain, etc. A Federated Sidechain is
+essentially a “fancy multisig”, where funds are sent into the custody of a set
+of entities (usually such that many independent entities would have to collude
+to steal funds). The federation then runs some sort of cryptocurrency backed by
+the deposits. Users are granted virtual bitcoin on the sidechain which they can
+use in accordance with the rules of the sidechain. Eventually they may request
+that whatever balance they have on the sidechain be sent out of the sidechain
+and into a normal bitcoin address of their choosing. This achieves a sort of
+scalability because the base layer does not have to validate or store any of
+the transactions occurring on the sidechain. However, the tradeoff is severe:
+the funds are completely owned by the Federation, which means that users are
+not guaranteed to be able to access their funds. It’s basically a bank with a
+cool API.</p>
+
+<hr />
+
+<p>This post doesn’t end in a fun or upbeat way: we want everyone to be able to
+access and benefit from Bitcoin; we can’t get everyone for access in the obvious
+way of bigger blocks or we risk unravelling Bitcoin’s core guarantees; and the
+solutions using layers on top of bitcoin reduce some of the core properties that
+make Bitcoin valuable to society in the first place. Some of these tradeoffs may
+be acceptable in certain cases, but we must always strive to support the most
+users with the strongest Hard Money properties we can.</p>
+
+<p>In future posts we’ll see how more sophisticated smart contracts could improve
+Bitcoin’s scalability, or at least provide a different set of tradeoffs compared
+to the solutions above.</p>
+
+    <div>
+    <h3>
+        <span style="vertical-align: text-top;">
+    
+
+<a class="twitter-share-button"
+data-size="large"
+href="https://twitter.com/intent/tweet?text=Pillars+of+Bitcoin%3A+Scalability&hashtags=Bitcoin,
+AdventCalendar
+"> Tweet</a>
+
+
+
+        </span>
+        <span style="vertical-align: super;">
+to continue the conversation...
+        </span>
+    </h3>
+
+    </div>
+</div>
+
+<aside class="related">
+  <h3>You might also enjoy...</h3>
+  <ul class="related-posts">
+    
+      <li>
+        <a href="/bitcoin/2022/04/17/next-steps-bip119/">
+          7 Theses on a next step for BIP-119
+          <small><time datetime="2022-04-17T00:00:00+00:00">17 Apr 2022</time></small>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/bitcoin/2021/12/11/advent-14/">
+          Payment Channels in a CTV+Sapio World
+          <small><time datetime="2021-12-11T00:00:00+00:00">11 Dec 2021</time></small>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/bitcoin/2021/12/24/advent-27/">
+          RoadMap or Load o' Crap?
+          <small><time datetime="2021-12-24T00:00:00+00:00">24 Dec 2021</time></small>
+        </a>
+      </li>
+    
+  </ul>
+</aside>
+
+        </div>
+        <div class="content container" style="padding-bottom:0;padding-top:0;bottom:0px;">
+            <div class="posts" style="height:14pt;margin-bottom:0;">
+                <div class="post">
+                    <p style="text-align:center;font-size:12pt;">&copy; 2011-2021 Jeremy Rubin. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+  <title> CheckSequenceVerify DISCOURAGE_UPGRADABLE_NOPS Defect &middot; Jeremy Rubin </title>
+  <link href="https://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/poole.css">
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/css/hyde.css">
+  <link rel="stylesheet" href="/public/font-awesome-4.5.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+                                 <link rel="shortcut icon" href="/public/favicon.ico">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+
+  
+  <link type="application/atom+xml" rel="alternate" href="http://rubin.io/feed.xml" title="Jeremy Rubin" />
+
+
+  <!-- GA -->
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-40376251-1', 'auto');
+    ga('send', 'pageview');
+</script>
+
+  
+  <link rel="me" href="https://twitter.com/JeremyRubin" >
+  <meta name="twitter:dnt" content="on">
+			   <script>window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
+
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+
+  return t;
+}(document, "script", "twitter-wjs"));</script>
+
+</head>
+
+    <body>
+        <div class="sidebar">
+    <h3 style="text-align: center;"> <a href="/"> Jeremy Rubin </a> </h3>
+    <div class="container">
+        <div class="sidebar-about">
+
+            <div class="sidebar-about-info"> 
+                <a href="/public/pdfs/resume.pdf"><i class="fa fa-file-text-o" title=Resume></i></a>
+                <a href=""><i class="fa fa-github" title=Github></i></a>
+                <a href="https://twitter.com/JeremyRubin"><i class="fa fa-twitter" title=Twitter></i></a>
+            </div>
+            <div class="sidebar-about-info hide-large">
+                <a class="" href="/">Home</a>
+                <a class="" href="/blog/">Blog</a>
+                <a class="" href="/talks/">Talks</a> 
+                <a class="" href="/projects/">Projects</a>
+                <a class="" href="/archive/">Site Index</a>
+            </div>
+        </div>
+
+
+
+
+        <nav class="sidebar-nav hide-small">
+            <a class="sidebar-nav-item" href="/">Home</a>
+            <a class="sidebar-nav-item" href="/blog/">Blog</a>
+            <a class="sidebar-nav-item" href="/talks/">Talks</a> 
+            <a class="sidebar-nav-item" href="/projects/">Projects</a>
+            <a class="sidebar-nav-item" href="/archive/">Site Index</a>
+        </nav>
+    </div>
+</div>
+
+
+
+        <div class="content container" style="padding-bottom:0;">
+            <div class="post">
+    <h1 class="post-title">CheckSequenceVerify DISCOURAGE_UPGRADABLE_NOPS Defect</h1>
+    
+    
+
+<a class="twitter-share-button"
+data-size="large"
+href="https://twitter.com/intent/tweet?text=CheckSequenceVerify+DISCOURAGE_UPGRADABLE_NOPS+Defect&hashtags=Bitcoin
+"> Tweet</a>
+
+
+
+    <div>
+        <span class="post-date">03 Sep 2021
+        </span>
+    </div>
+    <p>The other day I was writing some tests for BIP-119 (shoutout
+<a href="https://twitter.com/glozow">Gloria</a> for the detailed feedback on improving
+tests). I noticed something peculiar while attempting to write static test
+vectors for CTV. This peculiar thing led me to discover a minor flaw in
+Bitcoin’s interpreter – it isn’t going to break anything in the short term,
+but it has implications for how certain upgrades might be done in the future.</p>
+
+<p>In the interpreter we pass specific flags in at different times to check
+different rules at different times. This is used because we generally want the
+Mempool to be “restrictive” and block validation to be unrestrictive.  That
+sounds like the opposite of what you would want, but it’s because we want to
+ensure that we never break a consensus rule, so our mempool is “strict” to
+protect e.g. a miner from making a bad block, because our node’s understanding
+of consensus validation is less strict so we always know the mempool is full of
+stuff that will pass consensus.</p>
+
+<p>One of the specific types of “stricter” that is in the mempool is for things
+that may be changed in the future. For example, Taproot (a change proposed to
+Bitcoin) uses a Witness V1 script. Before Taproot activates, Witness V1 Scripts
+are <em>always</em> valid no matter if they’re signed or not. After it activates, a
+new rule takes effect in consensus, and Witness V1 Scripts will be processed in
+accordance with Taproot’s rules. Because the Mempool is stricter, it never lets in
+any Witness V1 script spends until it knows how to properly validate it. That way,
+for a miner who doesn’t want to upgrade to Taproot, they can use the old rules in their
+Mempool and not ever mine a bad block.</p>
+
+<p>One of the flags used for this purpose is DISCOURAGE_UPGRADABLE_NOPS. A NOP
+is simply an opcode in bitcoin that has no effect (nada). In the future,
+someone could add a rule to that NOP (e.g., check that the stack args present
+when the NOP executes satisfy some properties or the transaction is invalid,
+but do not remove anything from the stack so that the old consensus rules still
+seem correct). This is sufficient for consensus, but maybe people have decided
+that they want to create a bunch of outputs with NOPs in it because they are
+cute. Then, a fork that would add new semantics to a NOP would have the impact
+of locking people out of their wallets.  To prevent this, the Mempool uses the
+rule DISCOURAGE_UPGRADABLE_NOPS which makes it so that if you try to
+broadcast an output script with a NOP it gets bounced from the Mempool (but not
+consensus of course, should a deviant miner mine such a transaction). Hopefully
+our users get the message to not use NOPs because we… discourage upgradable
+nops.</p>
+
+<p>CheckSequenceVerify (CSV) was one such NOP before it grew up to be a big n’
+important opcode. Essentially all that CSV does is check that the sequence
+field is set in a particular manner. This lets you set relative block and time
+lock (e.g., takes this much time before a coin is spendable again). However,
+it’s possible that we might come up with new kinds of lock times in the future,
+so we have a bit we can set in the sequence that makes it ignored for consensus
+purposes. Maybe in the future, someone would find something nice to do with it,
+eh?</p>
+
+<p>This is the sequence verification code:</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">case</span> <span class="n">OP_CHECKSEQUENCEVERIFY</span><span class="p">:</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="n">flags</span> <span class="o">&amp;</span> <span class="n">SCRIPT_VERIFY_CHECKSEQUENCEVERIFY</span><span class="p">))</span> <span class="p">{</span>
+        <span class="c1">// not enabled; treat as a NOP3</span>
+        <span class="k">break</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">stack</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">set_error</span><span class="p">(</span><span class="n">serror</span><span class="p">,</span> <span class="n">SCRIPT_ERR_INVALID_STACK_OPERATION</span><span class="p">);</span>
+
+    <span class="c1">// nSequence, like nLockTime, is a 32-bit unsigned integer</span>
+    <span class="c1">// field. See the comment in CHECKLOCKTIMEVERIFY regarding</span>
+    <span class="c1">// 5-byte numeric operands.</span>
+    <span class="k">const</span> <span class="n">CScriptNum</span> <span class="n">nSequence</span><span class="p">(</span><span class="n">stacktop</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">fRequireMinimal</span><span class="p">,</span> <span class="mi">5</span><span class="p">);</span>
+
+    <span class="c1">// In the rare event that the argument may be &lt; 0 due to</span>
+    <span class="c1">// some arithmetic being done first, you can always use</span>
+    <span class="c1">// 0 MAX CHECKSEQUENCEVERIFY.</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">nSequence</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">set_error</span><span class="p">(</span><span class="n">serror</span><span class="p">,</span> <span class="n">SCRIPT_ERR_NEGATIVE_LOCKTIME</span><span class="p">);</span>
+
+    <span class="c1">// To provide for future soft-fork extensibility, if the</span>
+    <span class="c1">// operand has the disabled lock-time flag set,</span>
+    <span class="c1">// CHECKSEQUENCEVERIFY behaves as a NOP.</span>
+    <span class="k">if</span> <span class="p">((</span><span class="n">nSequence</span> <span class="o">&amp;</span> <span class="n">CTxIn</span><span class="o">::</span><span class="n">SEQUENCE_LOCKTIME_DISABLE_FLAG</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">break</span><span class="p">;</span>
+
+    <span class="c1">// Compare the specified sequence number with the input.</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">checker</span><span class="p">.</span><span class="n">CheckSequence</span><span class="p">(</span><span class="n">nSequence</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">set_error</span><span class="p">(</span><span class="n">serror</span><span class="p">,</span> <span class="n">SCRIPT_ERR_UNSATISFIED_LOCKTIME</span><span class="p">);</span>
+
+    <span class="k">break</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Spot anything funky? Look closer…</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="c1">// To provide for future soft-fork extensibility, if the</span>
+    <span class="c1">// operand has the disabled lock-time flag set,</span>
+    <span class="c1">// CHECKSEQUENCEVERIFY behaves as a NOP.</span>
+    <span class="k">if</span> <span class="p">((</span><span class="n">nSequence</span> <span class="o">&amp;</span> <span class="n">CTxIn</span><span class="o">::</span><span class="n">SEQUENCE_LOCKTIME_DISABLE_FLAG</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">break</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>Here, where we say it behaves as a NOP we don’t check any rules and skip the checks.</p>
+
+<p>See where the problem lies? If we ever <em>did</em> get around to a future upgrade
+here, then old miners who refuse to upgrade would be more than happy to accept
+invalid transactions into their mempool, and then following the fork, would end
+up mining invalid blocks leading to potential network partitions.</p>
+
+<p>That would be bad! Let’s not do that.</p>
+
+<p>What we really should be doing is:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="c1">// To provide for future soft-fork extensibility, if the</span>
+    <span class="c1">// operand has the disabled lock-time flag set,</span>
+    <span class="c1">// CHECKSEQUENCEVERIFY behaves as a NOP.</span>
+    <span class="k">if</span> <span class="p">((</span><span class="n">nSequence</span> <span class="o">&amp;</span> <span class="n">CTxIn</span><span class="o">::</span><span class="n">SEQUENCE_LOCKTIME_DISABLE_FLAG</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">flags</span> <span class="o">&amp;</span> <span class="n">SCRIPT_VERIFY_DISCOURAGE_UPGRADABLE_NOPS</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">set_error</span><span class="p">(</span><span class="n">serror</span><span class="p">,</span> <span class="n">SCRIPT_ERR_DISCOURAGE_UPGRADABLE_NOPS</span><span class="p">);</span>
+        <span class="k">break</span><span class="p">;</span>
+    <span class="p">}</span>
+</code></pre></div></div>
+
+<p>Which is exactly what I propose to do in <a href="https://github.com/bitcoin/bitcoin/pull/22871">this PR</a>.</p>
+
+<p>If this solution is adopted, then after the last release of the Bitcoin Core
+Implementation that has the unpatched code goes
+<a href="https://bitcoincore.org/en/lifecycle/">End-of-Life</a>, we could safely deploy
+new sequence rules. Because it takes a while for software to go EOL, I hope we
+can patch this soon.</p>
+
+    <div>
+    <h3>
+        <span style="vertical-align: text-top;">
+    
+
+<a class="twitter-share-button"
+data-size="large"
+href="https://twitter.com/intent/tweet?text=CheckSequenceVerify+DISCOURAGE_UPGRADABLE_NOPS+Defect&hashtags=Bitcoin
+"> Tweet</a>
+
+
+
+        </span>
+        <span style="vertical-align: super;">
+to continue the conversation...
+        </span>
+    </h3>
+
+    </div>
+</div>
+
+<aside class="related">
+  <h3>You might also enjoy...</h3>
+  <ul class="related-posts">
+    
+      <li>
+        <a href="/bitcoin/2022/04/17/next-steps-bip119/">
+          7 Theses on a next step for BIP-119
+          <small><time datetime="2022-04-17T00:00:00+00:00">17 Apr 2022</time></small>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/bitcoin/2021/12/24/advent-27/">
+          RoadMap or Load o' Crap?
+          <small><time datetime="2021-12-24T00:00:00+00:00">24 Dec 2021</time></small>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/blog/2021/07/02/covenants/">
+          Templates, Eltoo, and Covenants, Oh My!
+          <small><time datetime="2021-07-02T00:00:00+00:00">02 Jul 2021</time></small>
+        </a>
+      </li>
+    
+  </ul>
+</aside>
+
+        </div>
+        <div class="content container" style="padding-bottom:0;padding-top:0;bottom:0px;">
+            <div class="posts" style="height:14pt;margin-bottom:0;">
+                <div class="post">
+                    <p style="text-align:center;font-size:12pt;">&copy; 2011-2021 Jeremy Rubin. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,1732 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+  <title> Blog (page 5) &middot; Jeremy Rubin </title>
+  <link href="https://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/poole.css">
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/css/hyde.css">
+  <link rel="stylesheet" href="/public/font-awesome-4.5.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+                                 <link rel="shortcut icon" href="/public/favicon.ico">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+
+  
+  <link type="application/atom+xml" rel="alternate" href="http://rubin.io/feed.xml" title="Jeremy Rubin" />
+
+
+  <!-- GA -->
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-40376251-1', 'auto');
+    ga('send', 'pageview');
+</script>
+
+  
+  <link rel="me" href="https://twitter.com/JeremyRubin" >
+  <meta name="twitter:dnt" content="on">
+			   <script>window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
+
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+
+  return t;
+}(document, "script", "twitter-wjs"));</script>
+
+</head>
+
+    <body>
+        <div class="sidebar">
+    <h3 style="text-align: center;"> <a href="/"> Jeremy Rubin </a> </h3>
+    <div class="container">
+        <div class="sidebar-about">
+
+            <div class="sidebar-about-info"> 
+                <a href="/public/pdfs/resume.pdf"><i class="fa fa-file-text-o" title=Resume></i></a>
+                <a href=""><i class="fa fa-github" title=Github></i></a>
+                <a href="https://twitter.com/JeremyRubin"><i class="fa fa-twitter" title=Twitter></i></a>
+            </div>
+            <div class="sidebar-about-info hide-large">
+                <a class="" href="/">Home</a>
+                <a class="" href="/blog/">Blog</a>
+                <a class="" href="/talks/">Talks</a> 
+                <a class="" href="/projects/">Projects</a>
+                <a class="" href="/archive/">Site Index</a>
+            </div>
+        </div>
+
+
+
+
+        <nav class="sidebar-nav hide-small">
+            <a class="sidebar-nav-item" href="/">Home</a>
+            <a class="sidebar-nav-item" href="/blog/">Blog</a>
+            <a class="sidebar-nav-item" href="/talks/">Talks</a> 
+            <a class="sidebar-nav-item" href="/projects/">Projects</a>
+            <a class="sidebar-nav-item" href="/archive/">Site Index</a>
+        </nav>
+    </div>
+</div>
+
+
+
+        <div class="content container" style="padding-bottom:0;">
+            <div class="page">
+    
+    
+    <h1>
+  Jeremy Rubin's Blog
+</h1>
+
+Here you'll find an assorted mix of content from yours truly. I post about a lot
+of things, but primarily <a href="/bitcoin/">Bitcoin</a>.
+
+<p>
+categories: <a href="/bitcoin/">Bitcoin</a>, <a href="/shenzhen/">Shenzhen Journey</a>.
+</p>
+<div class="posts">
+  
+<hr>
+  <div class="post">
+    <h2 class="post-title">
+        <a href="/bitcoin/2021/12/15/advent-18/">
+        Sapio Studio Payment Pool Walkthrough
+      </a>
+  </h2>
+  <h4>Day 18: Rubin's Bitcoin Advent Calendar</h4>
+
+
+    <span class="post-date">15 Dec 2021</span>
+
+    <p><em>Welcome to day 18 of my Bitcoin Advent Calendar. You can see an index of all
+the posts <a href="/advent21">here</a> or subscribe at
+<a href="https://judica.org/join">judica.org/join</a> to get new posts in your inbox</em></p>
+
+<p>Today’s post will be a pretty different format that usual, it’s basically going
+to be a pictorial walk through of the <a href="https://github.com/sapio-lang/sapio-studio">Sapio
+Studio</a>, the frontend tool for Sapio
+projects. As an example, we’ll go through a Payment Pool contract to familiarize
+ourselves.</p>
+
+<p>I wanted to put this post here, before we get into some more applications,
+because I want you to start thinking past “cool one-off concepts we can
+implement” and to start thinking about reusable components we can build and ship
+into a common Bitcoin Smart Contract software (Sapio Studio or its successors).</p>
+
+<hr />
+
+<p>At it’s core, Sapio Studio is just a wallet frontend to Bitcoin Core.
+<img src="/public/img/bitcoin/advent/studio/000000.png" alt="" /></p>
+
+<p>You can make a transaction, just like normal…</p>
+
+<p><img src="/public/img/bitcoin/advent/studio/000001.png" alt="" /></p>
+
+<p>And see it show up in the pending transactions…
+<img src="/public/img/bitcoin/advent/studio/000002.png" alt="" /></p>
+
+<p>And even mine some regtest blocks.
+<img src="/public/img/bitcoin/advent/studio/000003.png" alt="" /></p>
+
+<p>But where Sapio Studio is different is that there is also the ability to create
+contracts.
+<img src="/public/img/bitcoin/advent/studio/000004.png" alt="" />
+Before we can do that, we need to load a WASM Plugin with a compiled contract.
+<img src="/public/img/bitcoin/advent/studio/000006.png" alt="" />
+Let’s load the Payment Pool module. You can see the code for it
+<a href="https://github.com/sapio-lang/sapio/blob/b98db9637777a808835b4593ae1063230735fc8a/plugin-example/hanukkiah/src/plugin.rs">here</a>.
+<img src="/public/img/bitcoin/advent/studio/000007.png" alt="" />
+And now we can see we have a module!
+<img src="/public/img/bitcoin/advent/studio/000008.png" alt="" />
+Let’s load a few more so it doesn’t look lonely.
+<img src="/public/img/bitcoin/advent/studio/000009.png" alt="" />
+Now let’s check out the Payment Pool module.
+<img src="/public/img/bitcoin/advent/studio/000010.png" alt="" />
+Now let’s check out another one – we can see they each have different types of
+arguments, auto-generated from the code.
+<img src="/public/img/bitcoin/advent/studio/000011.png" alt="" /></p>
+
+<p>Let’s fill out the form with 10 keys to make a Payment Pool controlled by 10
+people, and then submit it.
+<img src="/public/img/bitcoin/advent/studio/000012.png" alt="" />
+What’s that??? It’s a small bug I am fixing :/.  Not to worry…
+<img src="/public/img/bitcoin/advent/studio/000013.png" alt="" />
+Just click repair layout.
+<img src="/public/img/bitcoin/advent/studio/000014.png" alt="" />
+And the presentation resets. I’ll fix it soon, but it can be useful if there’s a
+glitch to reset it.</p>
+
+<p>Now we can see the basic structure of the Payment Pool, and how it splits up.
+<img src="/public/img/bitcoin/advent/studio/000015.png" alt="" />
+Let’s get a closer look…
+<img src="/public/img/bitcoin/advent/studio/000016.png" alt="" />
+Let’s zoom out (not helpful!)…
+<img src="/public/img/bitcoin/advent/studio/000017.png" alt="" />
+Let’s zoom back in. Note how the transactions are square boxes and the outputs
+are rounded rectangles. Blue lines connect transactions to their outputs. Purple lines
+connect outputs to their (potential) spends.
+<img src="/public/img/bitcoin/advent/studio/000016.png" alt="" />
+If we click on a transaction we can learn more about it.
+<img src="/public/img/bitcoin/advent/studio/000018.png" alt="" />
+We even have some actions that we can take, like sending it to the network. 
+<img src="/public/img/bitcoin/advent/studio/000019.png" alt="" />
+Let’s try it….
+<img src="/public/img/bitcoin/advent/studio/000020.png" alt="" />
+Oops! We need to sign it first…
+<img src="/public/img/bitcoin/advent/studio/000021.png" alt="" />
+And then we can send it.
+<img src="/public/img/bitcoin/advent/studio/000022.png" alt="" />
+What other buttons do we have? What’s this do?
+<img src="/public/img/bitcoin/advent/studio/000023.png" alt="" />
+It teleports us to the output we are creating!
+<img src="/public/img/bitcoin/advent/studio/000024.png" alt="" />
+Notice how the output is marked “Updatable”, and there is also a “DO_TX”
+button (corresponding to the DO_TX in the Payment Pool). Let’s click that…
+<img src="/public/img/bitcoin/advent/studio/000025.png" alt="" />
+Ooooh. It prompts us with a form to do the transaction!
+<img src="/public/img/bitcoin/advent/studio/000026.png" alt="" />
+Ok, let’s fill this sucker out…
+<img src="/public/img/bitcoin/advent/studio/000027.png" alt="" />
+Click submit, then recompile (separate actions in case we want to make multiple “moves” before recompiling).
+<img src="/public/img/bitcoin/advent/studio/000028.png" alt="" />
+I really need to fix this bug…
+<img src="/public/img/bitcoin/advent/studio/000029.png" alt="" />
+Voila!</p>
+
+<p>As you can see, the original graph is intact and we’ve augmented onto it the new state transition.
+<img src="/public/img/bitcoin/advent/studio/000030.png" alt="" />
+The new part has our 0.1 BTC Spend + the re-creation of the Payment Pool with less funds.
+<img src="/public/img/bitcoin/advent/studio/000031.png" alt="" />
+Ok, let’s go nuts and do another state transition off-of the first one? This time more payouts!
+<img src="/public/img/bitcoin/advent/studio/000032.png" alt="" />
+Submit…</p>
+
+<p><img src="/public/img/bitcoin/advent/studio/000033.png" alt="" />
+And Recompile<sup id="fnref:bug" role="doc-noteref"><a href="#fn:bug" class="footnote" rel="footnote">1</a></sup>…</p>
+
+<p><img src="/public/img/bitcoin/advent/studio/000034.png" alt="" />
+I skipped showing you the bug this time.</p>
+
+<p>Now you can see <em>two</em> state transitions! And because we used more payouts than one, we can see some congestion control<sup id="fnref:bug2" role="doc-noteref"><a href="#fn:bug2" class="footnote" rel="footnote">2</a></sup> at work.</p>
+
+<p><img src="/public/img/bitcoin/advent/studio/000035.png" alt="" /></p>
+
+<p>It works! It all really, really works!</p>
+
+<hr />
+
+<p>One more thing I <em>can’t</em> show you with this contract is the timing simulator.</p>
+
+<p>This lets you load up a contract (like our Hanukkiah below) and…
+<img src="/public/img/bitcoin/advent/studio/000042.png" alt="" />
+Simulate the passing of time (or blocks).
+<img src="/public/img/bitcoin/advent/studio/000041.png" alt="" />
+Pretty cool!
+<img src="/public/img/bitcoin/advent/studio/000040.png" alt="" /></p>
+
+<p>There are also some settings you can configure for display settings, the node,
+and for sapio-cli. The first time you run Sapio, you’ll need to get some of
+these things configured correctly or else it will be broken. Currently, if you
+look  <a href="https://github.com/JeremyRubin/sapio-pod/blob/master/runner.sh">here</a> you
+can find a template for a script to get everything up and running for a first
+shot at it, otherwise you’ll have to do it by hand, or just change your
+<code class="language-plaintext highlighter-rouge">preferences.json</code> to be similar to mine in the note<sup id="fnref:config" role="doc-noteref"><a href="#fn:config" class="footnote" rel="footnote">3</a></sup>.</p>
+
+<p><img src="/public/img/bitcoin/advent/studio/000036.png" alt="" />
+<img src="/public/img/bitcoin/advent/studio/000037.png" alt="" />
+<img src="/public/img/bitcoin/advent/studio/000038.png" alt="" />
+<img src="/public/img/bitcoin/advent/studio/000039.png" alt="" /></p>
+
+<h3 id="before-you-ask">before you ask…</h3>
+<h1 id="of-course-there-is-dark-mode">OF COURSE THERE IS DARK MODE</h1>
+<p><em>configured by your local system theme preference</em>
+<img src="/public/img/bitcoin/advent/studio/dark.png" alt="" /></p>
+
+<hr />
+
+<p>I hope you enjoyed this! There’s <em>a metric fuckload</em> of work still to do to make
+Sapio Studio &amp; Sapio anywhere near production grade, but I hope this has helped
+elucidate how powerful and cool the Sapio approach is, and has inspired you to
+build something and try it out! I’d also be really eager for feedback on what
+features should be here/are missing.</p>
+
+<p>Lastly, if you’re just <strong>excited</strong> about this, it’s definitely a project
+that could use more experienced react/electron/bitcoin contributors, either
+yourself or if you’re interested in sponsoring :).</p>
+
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:bug" role="doc-endnote">
+      <p>it was here I noticed a small mistake that I named the updates “First Update” instead of “FirstUpdate” so I had to poke in the JSON and fix it in the interest of time… TODO for me to make invalid inputs invalid! <a href="#fnref:bug" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:bug2" role="doc-endnote">
+      <p>I used the wrong, wonky version of the TreePay by mistake and was too lazy to fix it, my bad :p it should look more tree-y. I’ll fix the actual code in the repo at some point. <a href="#fnref:bug2" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:config" role="doc-endnote">
+
+      <p>My config file, if it helps you :)</p>
+      <div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"sapio"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"binary"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/Users/jr/sapio/target/release/sapio-cli"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"oracle-local-enabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"oracle-remote-enabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"oracle-remote-oracles-list"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+            </span><span class="s2">"0.0.0.0:8010 tpubD6NzVbkrYhZ4Y78NbTJtGWzt9a4eeoFJ1phmTVxZNSAiVkVWW5GYixSobuXTQtzFDcSWPoXhtiDUu4n6sChuNKVXZ9UL4LvxnU1WG4Y7pxV"</span><span class="w">
+        </span><span class="p">],</span><span class="w">
+        </span><span class="nl">"oracle-remote-threshold"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"plugin_map"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">],</span><span class="w">
+        </span><span class="nl">"configsource"</span><span class="p">:</span><span class="w"> </span><span class="s2">"here"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"oracle-seed-file"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/Users/jr/sapio/SEED"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"oracle-netinterface"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.0.0.0:8010"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"display"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"sats-bound"</span><span class="p">:</span><span class="w"> </span><span class="s2">"9999999"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"animate-flow"</span><span class="p">:</span><span class="w"> </span><span class="mi">1594</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"poll-node-freq"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"bitcoin-config"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"rpcuser"</span><span class="p">:</span><span class="w"> </span><span class="s2">"jeremy"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"rpcpassword"</span><span class="p">:</span><span class="w"> </span><span class="s2">"hunter2"</span><span class="w">
+        </span><span class="nl">"rpcport"</span><span class="p">:</span><span class="w"> </span><span class="s2">"18443"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"rpchost"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.0.0.0"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"network"</span><span class="p">:</span><span class="w"> </span><span class="s2">"regtest"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>      </div>
+      <p><a href="#fnref:config" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+  </div>
+<hr>
+  
+<hr>
+  <div class="post">
+    <h2 class="post-title">
+        <a href="/bitcoin/2021/12/14/advent-17/">
+        A Defense of Having Fun (and maybe staying poor)
+      </a>
+  </h2>
+  <h4>Day 17: Rubin's Bitcoin Advent Calendar</h4>
+
+
+    <span class="post-date">14 Dec 2021</span>
+
+    <p><em>Welcome to day 17 of my Bitcoin Advent Calendar. You can see an index of all
+the posts <a href="/advent21">here</a> or subscribe at
+<a href="https://judica.org/join">judica.org/join</a> to get new posts in your inbox</em></p>
+
+<p>A short story. I want to tell first. I recently made friends with
+<a href="https://twitter.com/fiveoutofnine">Eugene</a>, this really smart 19 year old Cal
+dropout, when I was visiting Miami for the NFT bachanal around Art Basel.</p>
+
+<p>Eugene just dropped a project he’s been working on, and it’s really freakin’
+cool. He basically implemented a human v. chess engine in Solidity that mints
+beautiful interactive NFTs of representations of the contract’s internal states.
+You can play the game / mint one for like 0.1 ETH on his site
+<a href="https://fiveoutofnine.com">here</a>, and see a permanent record of my
+embarassingly bad move where I missed a mate-in-one here:</p>
+
+<iframe allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="" frameborder="0" height="100%" sandbox="allow-scripts" src="https://fiveoutofnine.com/asset/17" width="100%" style="min-height:750px;"></iframe>
+
+<p>Definitely check out the site and read how it’s implemented. Eugene is very
+bright, and a talented hacker. The project? It’s not a get-rich-quick project,
+only cost is gas, so Eugene’s not raking it in (altho I think he should have,
+but he’ll have many more successes).</p>
+
+<hr />
+
+<h1 id="so-whats-the-moral-of-this-story">So what’s the moral of this story?</h1>
+
+<p>Why isn’t Eugene working on Bitcoin? People say that “eth is a scam” and that
+“everyone working on it are scammers”. But I don’t see that. I see people, like
+Eugene, wanting to build cool shit every day. And wanting to ship cool stuff.
+It’s fun. And I like to be friends with creative and curious people.</p>
+
+<p>Working on Bitcoin is can be fun. But mostly it’s not. My post yesterday? The
+one describing new techniques to make Bitcoin more decentralized? I had a lot
+of fun writing it. And then someone claimed that my work is “very dangerous” to
+Bitcoin.</p>
+
+<p>I get it, I truly do. Bitcoin is money for enemies. Don’t trust, verify.  In
+the IRC channels, twitter spaces, and other forums we hear rants like the below
+all the time:</p>
+
+<blockquote>
+  <p>Working on Bitcoin isn’t just a stupid fucking game of chess you idiot, it’s
+solving literally every geoscale challenge humanity has ever faced and your work
+on that is a bajillion fold more worthwhile. You are an asshole thinking you
+deserve to have any fun in your life when you could be a miserable piece of shit
+with people shouting at you all the time about how you suck and struggling to
+ship small features and hoping how you might ship one bigger project this
+decade.  Fun?  Fun??? You fucking asshole. If I don’t kill you, someone else will.</p>
+</blockquote>
+
+<p>But developers are people too, and good developers like to build cool shit.  If
+you haven’t noticed, Bitcoin development has a bit of a burnout problem, with
+multiple contributors stepping down their engagement recently. A likely cause
+is the struggle it takes to ship even the smallest features, not to mention the
+monumental effort it takes to ship a single large project. But the death
+threats certainly don’t help either.</p>
+
+<h3 id="it-doesnt-have-to-be-this-hard">It doesn’t have to be this hard</h3>
+
+<p>It’s hard to tell people, especially younger folk just entering the space, to
+work on Bitcoin full-time. What I say is as follows:</p>
+
+<blockquote>
+  <p>If you have a strong ideological calling to the mission of Bitcoin and sound money,
+it’s absolutely the most meaningful project for you to work on. But if that’s not you,
+and you want to explore crypto, you should probably play around with Ethereum or
+something else. Bitcoin is really tough to get funded for and the community,
+while amazing, can be very hostile.</p>
+</blockquote>
+
+<p>If I were more selfish about the mission, I’d glaze over these details. But I
+want folks to decide for themselves and find something that makes them truly
+happy.  For most “at-heart” Bitcoiners that won’t be a disincentive to taking
+the orange-pill, but for some it might. Note: I’m Jewish, so that probably
+influence my views on converting people to things (Jews believe in discouraging
+converts to find the pure of heart).</p>
+
+<p>Despite my best efforts to convince myself otherwise, I’ve been an audit-the-fed
+libertarian since elementary school or something and I have photos of myself
+with Ron Paul a decade apart. So I am one of those ideologically drawn to
+Bitcoin and not other projects with weaker foundations.</p>
+
+<p>But it doesn’t mean I don’t turn an envious eye to the activity and research
+happening in other communities, or get excited about on-chain chess engines even
+if they’re impractical for now. And there’s also the magic of a supportive
+communtiy that doesn’t threaten to have you beaten up when they disagree with
+you about the minutae of a soft fork rollout.</p>
+
+<p>Cool technologies attract nerds like moths to a lamp at night. Smart nerds
+trying to solve interesting problems create solutions. Experiments that strain
+the limits of a platform expose problems and create demand for solutions.
+These solutions often have major positive externalities.</p>
+
+<p>I don’t think I’m going to convince you here to care about NFTs. But I am –
+hopefully – going to convince you to care about NFTs the phenomenon.</p>
+
+<p>For example, scaling challenge in Ethereum have led to the development of Zero
+Knowledge Roll-Ups, privacy issues things like Tornado Cash, and more.  While as
+a project Eth might be #ngmi, Bitcoiners have traditionally said that if
+anything is worth having we’ll just be able to implement it ourselves in
+Bitcoin. But there are certain things that have network effects where it will be
+hard for us to replicate. And by the time we do go to replicate, the tooling
+that’s been developed for doing these things on Eth might be like a decade ahead
+of what we’ve got for Bitcoin. And all of the smart kids are going to become
+adults who are bought in technically and socially on things other than Bitcoin.
+And that really freakin’ matters.</p>
+
+<p>I’m not advocating that Bitcoiners should embrace full-blown degeneracy. But
+also it’s not in particular our job to prevent it technically. And the tools that
+are produced when people have fun can lead to major innvoations.</p>
+
+<p>For example, right now I am working on a system for building NFTs for Bitcoin on
+Sapio.</p>
+
+<p>Why? It’s fun. It touches on almost all of the infrastructure problems I’m
+working on for Sapio right now. And it is low enough risk – in terms of risk of
+losing Bitcoin – that I feel comfortable building and experimenting with these
+NFT test-subjects. Worst-come-to-worst, the artists can always re-issue anything
+corrupted via a software flaw.  And then as the software matures with low-risk
+but still fun applications, we can apply those learnings to managing Bitcoin as
+well.</p>
+
+<p>I also want to note that I really like artists. Artists as a community are
+incredible. Artists use NFTs, so I like NFTs.  Artists are the voice of the
+people. Art can tear down the establishment. Art can change the world.  And so
+for Bitcoin, whose use is an inherently political message, what better community
+to engage than the art world?</p>
+
+<p>Bitcoiners are really fixated on the technical nonsense backing NFTs – yeah,
+it’s not ‘literally’ the artwork.  But then again, what literally is the
+artwork? If you want a photograph and you want to pay the photographer for it,
+do you? Do you get a receipt for it? Can you use that bill of sale to sell the
+photo later? NFTs are just a better that. And if you don’t <em>like</em> the art that’s
+sold as NFTs right now, why not find artists you do like? Why not get them
+onboarded onto Bitcoin and fully orange-pilled? Hint: the HRF has a whole <a href="https://hrf.org/programs/art-in-protest/">Art
+in Protest</a> section on their website.
+Bitcoin NFTs could enable Bitcoin holders to pay dissident artists for their art
+and avoid being shut down by authorities. Why not embrace that culturally? Isn’t
+that the group that Bitcoin is for? And if you don’t like that, maybe you just
+don’t like art. That’s ok, don’t buy it.</p>
+
+<h2 id="but-nfts-are-stupid-jpegs-man">But NFTs are Stupid JPEGs Man</h2>
+
+<p>Ok sure. Whatever.</p>
+
+<p>But there are all these contracts (as I showed you in previous posts) that
+Bitcoin would benefit from, like inheritence schemes, vaults, decentralized
+mining, payment pools, and more. Believe it or not, there tools needed to make
+NFTs work well are the exact same tools required to make these work seamlessly.</p>
+
+<p>So why not have a little fun, let people experiment with new ideas, get excited,
+grow the community, and convert the big innovations into stable and mature
+tooling for the critical infrastructure applications? And maybe we’ll uncover
+some upside for brand new things that never occured possible to us before.</p>
+
+<hr />
+
+<p>Throught the end of this series I’ll have some more posts detailing how to build
+NFTs, Derivatives, DAOs, and Bonded Oracles. I hope that you can view them with
+an open mind and appreciate how – even if you don’t think they are core to what
+Bitcoin has to do – these innovations will fuel development of tools to support
+the projects you do like without turning Bitcoin into a shitcoin. Who knows,
+maybe you’ll find a new application you like.</p>
+
+  </div>
+<hr>
+  
+<hr>
+  <div class="post">
+    <h2 class="post-title">
+        <a href="/bitcoin/2021/12/13/advent-16/">
+        Composability in Sapio Contracts
+      </a>
+  </h2>
+  <h4>Day 16: Rubin's Bitcoin Advent Calendar</h4>
+
+
+    <span class="post-date">13 Dec 2021</span>
+
+    <p><em>Welcome to day 16 of my Bitcoin Advent Calendar. You can see an index of all
+the posts <a href="/advent21">here</a> or subscribe at
+<a href="https://judica.org/join">judica.org/join</a> to get new posts in your inbox</em></p>
+
+<p>Who here has some ERC-20s or 721s<sup id="fnref:rock" role="doc-noteref"><a href="#fn:rock" class="footnote" rel="footnote">1</a></sup>? Anyone? No one? Whatever.</p>
+
+<p>The Punchline is that a lotta fuss goes into Ethereum smart contracts being
+Turing Complete but guess what? Neither ERC-20 nor 721 really have anything to
+do with being Turing Complete. What they do have to do with is having a
+tightly defined interface that can integrate into other applications nicely.</p>
+
+<p>This is great news for Bitcoin. It means that a lot of the cool stuff happening
+in eth-land isn’t really about Turing Completeness, it’s about just defining
+really kickass interfaces for the things we’re trying to do.</p>
+
+<p>In the last few posts, we already saw examples of composability. We took a bunch
+of concepts and were able to nest them inside of each other to make
+Decentralized Coordination Free Mining Pools.  But we can do a lot more with
+composability than just compose ideas togehter by hand. In this post I’ll give
+you a little sampler of different types of programmatic composability and interfaces,
+like the ERC-20 and 721.</p>
+
+<hr />
+
+<h2 id="address-composability">Address Composability</h2>
+
+<p>Because many Sapio contracts can be made completely noninteractively (with CTV
+or an Oracle you’ll trust to be online later), if you compile a Sapio contract
+and get an address you can just plug it in somewhere and it “composes” and you
+can link it later. We saw this earlier with the ability to make a channel
+address and send it to an exchange.</p>
+
+<p>However, for Sapio if you just do an Address it won’t necessarily have the
+understanding of what that address is for so you won’t get any of the Sapio
+“rich” features.</p>
+
+<h3 id="pre-compiled">Pre-Compiled</h3>
+
+<p>You can also take not just an address, but an entire (json-serialized?) Compiled
+object that would include all the relevant metadata.</p>
+
+<h2 id="rust-generic-types-composability">Rust Generic Types Composability</h2>
+
+<p>Well, if you’re a rust programmer this basically boils down to rust types rule!
+We’ll give a couple examples.</p>
+
+<p>The simplest example is just composing directly in a function:</p>
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">#[then]</span>
+<span class="k">fn</span> <span class="nf">some_function</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">ctx</span><span class="nf">.template</span><span class="p">()</span>
+        <span class="nf">.add_output</span><span class="p">(</span><span class="n">ctx</span><span class="nf">.funds</span><span class="p">(),</span> <span class="o">&amp;</span><span class="n">SomeOtherContract</span><span class="p">{</span><span class="cm">/**/</span><span class="p">},</span> <span class="nb">None</span><span class="p">)</span><span class="o">?</span>
+        <span class="nf">.into</span><span class="p">()</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>What if we want to pass any Contract as an argument for a Contract? Simple:</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="n">X</span> <span class="p">{</span>
+    <span class="n">a</span> <span class="p">:</span> <span class="nb">Box</span><span class="o">&lt;</span><span class="n">dyn</span> <span class="n">Contract</span><span class="o">&gt;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>What if we want to restrict it a little bit more? We can use a trait bound.
+Now only Y (or anything implementing GoodContract) can be plugged in.</p>
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">trait</span> <span class="n">GoodContract</span> <span class="p">:</span> <span class="n">Contract</span> <span class="p">{</span>
+    <span class="nd">decl_then!</span><span class="p">{</span><span class="n">some_thing</span><span class="p">}</span>
+<span class="p">}</span>
+<span class="k">struct</span> <span class="n">Y</span> <span class="p">{</span>
+<span class="p">}</span>
+<span class="k">impl</span> <span class="n">GoodContract</span> <span class="k">for</span> <span class="n">Y</span> <span class="p">{</span>
+    <span class="nd">#[then]</span>
+    <span class="k">fn</span> <span class="nf">some_thing</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nf">empty</span><span class="p">()</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="k">impl</span> <span class="n">Contract</span> <span class="k">for</span> <span class="n">Y</span> <span class="p">{</span>
+    <span class="nd">declare!</span><span class="p">{</span><span class="n">then</span><span class="p">,</span> <span class="nn">Self</span><span class="p">::</span><span class="n">some_thing</span><span class="p">}</span>
+<span class="p">}</span>
+<span class="k">struct</span> <span class="n">X</span><span class="o">&lt;</span><span class="n">T</span><span class="p">:</span> <span class="n">GoodContract</span><span class="o">&gt;</span> <span class="p">{</span>
+    <span class="n">a</span> <span class="p">:</span> <span class="nb">Box</span><span class="o">&lt;</span><span class="n">dyn</span> <span class="n">GoodContract</span><span class="o">&gt;</span><span class="p">,</span>
+    <span class="c">// note the inner type of a and b don't have to match</span>
+    <span class="n">b</span> <span class="p">:</span> <span class="nb">Box</span><span class="o">&lt;</span><span class="n">dyn</span> <span class="n">GoodContract</span><span class="o">&gt;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Boxing gives us some power to be Generic at runtime, but we can also do some
+more “compile time” logic. This can have some advantages, e.g., if we want to
+guarantee that types are the same.</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="n">X</span><span class="o">&lt;</span><span class="n">T</span> <span class="p">:</span> <span class="n">Contract</span><span class="p">,</span> <span class="n">U</span><span class="p">:</span> <span class="n">GoodContract</span><span class="o">&gt;</span> <span class="p">{</span>
+    <span class="n">a</span> <span class="p">:</span> <span class="n">T</span><span class="p">,</span> 
+    <span class="n">b</span> <span class="p">:</span> <span class="n">T</span>
+    <span class="c">// a more specific concrete type -- could be a T even</span>
+    <span class="n">c</span><span class="p">:</span> <span class="n">U</span><span class="p">,</span>
+    <span class="n">d</span><span class="p">:</span> <span class="n">U</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Sometimes it can be helpful to wrap things in functions, like we saw in the Vaults post.</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="n">X</span><span class="o">&lt;</span><span class="n">T</span><span class="p">:</span> <span class="n">Contract</span><span class="o">&gt;</span>
+    <span class="c">// This lets us stub in whatever we want for a function</span>
+    <span class="n">a</span> <span class="p">:</span> <span class="nb">Box</span><span class="o">&lt;</span><span class="nf">Fn</span><span class="p">(</span><span class="n">Self</span><span class="p">,</span> <span class="n">Context</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="n">TxTmplIt</span><span class="o">&gt;</span><span class="p">,</span>
+    <span class="c">// this lets us get back any contract</span>
+    <span class="n">b</span> <span class="p">:</span> <span class="nb">Box</span><span class="o">&lt;</span><span class="nf">Fn</span><span class="p">(</span><span class="n">Self</span><span class="p">,</span> <span class="n">Context</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="nb">Box</span><span class="o">&lt;</span><span class="n">dyn</span> <span class="n">Contract</span><span class="o">&gt;&gt;</span><span class="p">,</span>
+    <span class="c">// this lets us get back a specific contract</span>
+    <span class="n">c</span> <span class="p">:</span> <span class="nb">Box</span><span class="o">&lt;</span><span class="nf">Fn</span><span class="p">(</span><span class="n">Self</span><span class="p">,</span> <span class="n">Context</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="n">T</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Clearly there’s a lot to do with the rust type system and making components.</p>
+
+<p>It would even be possible to make certain types of ‘unchecked’ type traits,
+for example:</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">trait</span> <span class="n">Reusable</span> <span class="p">{}</span>
+<span class="k">struct</span> <span class="n">AlsoReusable</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="p">{</span>
+    <span class="n">a</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="c">// Only reusable if T Reusable</span>
+<span class="k">impl</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">Reusable</span> <span class="k">for</span> <span class="n">AlsoReusable</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="k">where</span> <span class="n">T</span><span class="p">:</span> <span class="n">Reusable</span> <span class="p">{}</span>
+</code></pre></div></div>
+
+<p>The <code class="language-plaintext highlighter-rouge">Reusable</code> tag could be used to tag contract components that would be “reuse
+safe”.  E.g., an HTLC or HTLC containing component would not be reuse safe since
+hashes could be revealed. While reusability isn’t “proven” – that’s up to the
+author to check – these types of traits can help us reason about the properties
+of compositions of programs more safely. Unfortunately, Rust lacks negative
+trait bounds (i.e., Not-Reusable), so you can’t reason about certain types of things.</p>
+
+<h3 id="inheritence">Inheritence</h3>
+<p>We don’t have a fantastic way to do inheritence in Sapio presently. But stay
+tuned!  For now, then best you get is that you can do traits (like
+<code class="language-plaintext highlighter-rouge">GoodContract</code>).</p>
+
+<h2 id="cross-module-composability--wasm">Cross Module Composability &amp; WASM</h2>
+
+<p>One of the goals of Sapio is to be able to create contract modules with a
+well-defined API Boundary that communicates with JSONs and is “typed” with
+JSONSchema. This means that the Sapio modules can be running anywhere (e.g., a
+remote server) and we can treat it like any other component.</p>
+
+<p>Another goal of Sapio is to make it possible to compile modules into standalone
+WASM modules. WASM stands for Web Assembly, it’s basically a small deterministic
+computer emulator program format so we can compile our programs and run them
+anywhere that the WASM interpreter is available.</p>
+
+<p>Combining these two goals, it’s possible for one Sapio program to dynamically
+load another as a WASM module. This means we can come up with a component,
+compile it, and then link to it later from somewhere else. For example, we could
+have a Payment Pool where we make each person’s leaf node a WASM module of their
+choice, that could be something like a Channel, a Vault, or anything that
+satisfies a “Payment Pool Payout Interface”.</p>
+
+<p>For example, suppose we wanted to a generic API for making a batched
+payment.</p>
+
+<h3 id="defining-the-interface">Defining the Interface</h3>
+<p>First, we define a payment that we want to batch.</p>
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">/// A payment to a specific address</span>
+<span class="k">pub</span> <span class="k">struct</span> <span class="n">Payment</span> <span class="p">{</span>
+    <span class="c">/// # Amount (btc)</span>
+    <span class="c">/// The amount to send</span>
+    <span class="k">pub</span> <span class="n">amount</span><span class="p">:</span> <span class="n">AmountF64</span><span class="p">,</span>
+    <span class="c">/// # Address</span>
+    <span class="c">/// The Address to send to</span>
+    <span class="k">pub</span> <span class="n">address</span><span class="p">:</span> <span class="nn">bitcoin</span><span class="p">::</span><span class="n">Address</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>Next, we define the full API that we want. <em>Naming and versioning is still a
+something we need to work on in the Sapio ecosystem, but for now it makes sense
+to be verbose and include a version.</em></p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">pub</span> <span class="k">struct</span> <span class="n">BatchingTraitVersion0_1_1</span> <span class="p">{</span>
+    <span class="k">pub</span> <span class="n">payments</span><span class="p">:</span> <span class="nb">Vec</span><span class="o">&lt;</span><span class="n">Payment</span><span class="o">&gt;</span><span class="p">,</span>
+    <span class="c">/// # Feerate (Bitcoin per byte)</span>
+    <span class="k">pub</span> <span class="n">feerate_per_byte</span><span class="p">:</span> <span class="n">AmountF64</span> 
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Lastly, to finish defining the API, we have to do something really gross looking
+in order to make it automatically checkable – this is essentially this is what the
+user defined <code class="language-plaintext highlighter-rouge">BatchingTraitVersion0_1_1</code> is going to verify modules are able to 
+understand. This is going to be improved in Sapio over time for better typechecking!</p>
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">impl</span> <span class="n">SapioJSONTrait</span> <span class="k">for</span> <span class="n">BatchingTraitVersion0_1_1</span> <span class="p">{</span>
+    <span class="k">fn</span> <span class="nf">get_example_for_api_checking</span><span class="p">()</span> <span class="k">-&gt;</span> <span class="n">Value</span> <span class="p">{</span>
+        <span class="nd">#[derive(Serialize)]</span>
+        <span class="k">enum</span> <span class="n">Versions</span> <span class="p">{</span>
+            <span class="nf">BatchingTraitVersion0_1_1</span><span class="p">(</span><span class="n">BatchingTraitVersion0_1_1</span><span class="p">),</span>
+        <span class="p">}</span>
+        <span class="nn">serde_json</span><span class="p">::</span><span class="nf">to_value</span><span class="p">(</span><span class="nn">Versions</span><span class="p">::</span><span class="nf">BatchingTraitVersion0_1_1</span><span class="p">(</span>
+            <span class="n">BatchingTraitVersion0_1_1</span> <span class="p">{</span>
+                <span class="n">payments</span><span class="p">:</span> <span class="nd">vec!</span><span class="p">[],</span>
+                <span class="n">feerate_per_byte</span><span class="p">:</span> <span class="nn">Amount</span><span class="p">::</span><span class="nf">from_sat</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="nf">.into</span><span class="p">(),</span>
+            <span class="p">},</span>
+        <span class="p">))</span>
+        <span class="nf">.unwrap</span><span class="p">()</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<h3 id="implementing-the-interface">Implementing the Interface</h3>
+
+<p>Let’s say that we want to make a contract like <code class="language-plaintext highlighter-rouge">TreePay</code> implement
+<code class="language-plaintext highlighter-rouge">BatchingTraitVersion0_1_1</code>. What do we need to do?</p>
+
+<p>First, let’s get the boring stuff out of the way, we need to make the <code class="language-plaintext highlighter-rouge">TreePay</code>
+module understand that it should support <code class="language-plaintext highlighter-rouge">BatchingTraitVersion0_1_1</code>.</p>
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">/// # Different Calling Conventions to create a Treepay</span>
+<span class="k">enum</span> <span class="n">Versions</span> <span class="p">{</span>
+    <span class="c">/// # Standard Tree Pay</span>
+    <span class="nf">TreePay</span><span class="p">(</span><span class="n">TreePay</span><span class="p">),</span>
+    <span class="c">/// # Batching Trait API</span>
+    <span class="nf">BatchingTraitVersion0_1_1</span><span class="p">(</span><span class="n">BatchingTraitVersion0_1_1</span><span class="p">),</span>
+<span class="p">}</span>
+
+<span class="nd">REGISTER!</span><span class="p">[[</span><span class="n">TreePay</span><span class="p">,</span> <span class="n">Versions</span><span class="p">],</span> <span class="s">"logo.png"</span><span class="p">];</span>
+</code></pre></div></div>
+
+<p>Next, we just need to define logic converting the data provided in
+<code class="language-plaintext highlighter-rouge">BatchingTraitVersion0_1_1</code> into a <code class="language-plaintext highlighter-rouge">TreePay</code>. Since <code class="language-plaintext highlighter-rouge">BatchingTraitVersion0_1_1</code> 
+is really basic, we need to pick values for the other fields.</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">impl</span> <span class="n">From</span><span class="o">&lt;</span><span class="n">BatchingTraitVersion0_1_1</span><span class="o">&gt;</span> <span class="k">for</span> <span class="n">TreePay</span> <span class="p">{</span>
+    <span class="k">fn</span> <span class="nf">from</span><span class="p">(</span><span class="n">args</span><span class="p">:</span> <span class="n">BatchingTraitVersion0_1_1</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="n">Self</span> <span class="p">{</span>
+        <span class="n">TreePay</span> <span class="p">{</span>
+            <span class="n">participants</span><span class="p">:</span> <span class="n">args</span><span class="py">.payments</span><span class="p">,</span>
+            <span class="n">radix</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+            <span class="c">// estimate fees to be 4 outputs and 1 input + change</span>
+            <span class="n">fee_sats_per_tx</span><span class="p">:</span> <span class="n">args</span><span class="py">.feerate_per_byte</span> <span class="o">*</span> <span class="p">((</span><span class="mi">4</span> <span class="o">*</span> <span class="mi">41</span><span class="p">)</span> <span class="o">+</span> <span class="mi">41</span> <span class="o">+</span> <span class="mi">10</span><span class="p">),</span>
+            <span class="n">timelock_backpressure</span><span class="p">:</span> <span class="nb">None</span><span class="p">,</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="k">impl</span> <span class="n">From</span><span class="o">&lt;</span><span class="n">Versions</span><span class="o">&gt;</span> <span class="k">for</span> <span class="n">TreePay</span> <span class="p">{</span>
+    <span class="k">fn</span> <span class="nf">from</span><span class="p">(</span><span class="n">v</span><span class="p">:</span> <span class="n">Versions</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="n">TreePay</span> <span class="p">{</span>
+        <span class="k">match</span> <span class="n">v</span> <span class="p">{</span>
+            <span class="nn">Versions</span><span class="p">::</span><span class="nf">TreePay</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">=&gt;</span> <span class="n">v</span><span class="p">,</span>
+            <span class="nn">Versions</span><span class="p">::</span><span class="nf">BatchingTraitVersion0_1_1</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">=&gt;</span> <span class="n">v</span><span class="nf">.into</span><span class="p">(),</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="using-the-interface">Using the Interface</h3>
+
+<p>To use this <code class="language-plaintext highlighter-rouge">BatchingTraitVersion0_1_1</code>, we can just define a struct as follows,
+and when we deserialize it will be automatically verified to have declared a
+fitting API.</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">pub</span> <span class="k">struct</span> <span class="n">RequiresABatch</span> <span class="p">{</span>
+    <span class="c">/// # Which Plugin to Use</span>
+    <span class="c">/// Specify which contract plugin to call out to.</span>
+    <span class="n">handle</span><span class="p">:</span> <span class="n">SapioHostAPI</span><span class="o">&lt;</span><span class="n">BatchingTraitVersion0_1_1</span><span class="o">&gt;</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The <code class="language-plaintext highlighter-rouge">SapioHostAPI</code> handle can be either a human readable name (like
+“user_preferences.batching” or “org.judica.modules.batchpay.latest”) and looked
+up locally, or it could be an exact hash of the specific module to use.</p>
+
+<p>We can then use the handle to resolve and compile against the third party module.
+Because the module lives in an entirely separate WASM execution context,
+we don’t need to worry about it corrupting our module or being able to access
+information we don’t provide it.</p>
+
+<h1 id="call-to-action">Call to Action</h1>
+
+<p><strong>ARE YOU A BIG BRAIN PROGRAMMING LANGUAGE PERSON?</strong></p>
+
+<p><strong>PLEASE <a href="https://judica.org/join">HELP ME</a> MAKE THIS SAPIO
+HAVE A COOL AND USEFUL TYPE SYSTEM I AM A SMALL BRAIN BOI AND THIS STUFF IS
+HARD AND I NEED FRENZ.</strong></p>
+
+<p><strong>EVEN THE KIND OF “FRENZ” THAT YOU HAVE TO PAY FOR <em>wink</em>.</strong></p>
+
+<p><strong><a href="https://judica.org/join">CLICK HERE</a></strong></p>
+
+<hr />
+
+<p>In the posts coming Soon™, we’ll see some more specific examples of contracts
+that make heavier use of having interfaces and all the cool shit we can get done.</p>
+
+<h1 id="thats-all-i-have-to-say-see-you-tomorrow">That’s all I have to say. See you tomorrow.</h1>
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:rock" role="doc-endnote">
+      <p>if you’ve been living under a big rock, ICO tokens and NFTs. <a href="#fnref:rock" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+  </div>
+<hr>
+  
+<hr>
+  <div class="post">
+    <h2 class="post-title">
+        <a href="/bitcoin/2021/12/12/advent-15/">
+        Decentralized Coordination Free Mining Pools
+      </a>
+  </h2>
+  <h4>Day 15: Rubin's Bitcoin Advent Calendar</h4>
+
+
+    <span class="post-date">12 Dec 2021</span>
+
+    <p><em>Welcome to day 15 of my Bitcoin Advent Calendar. You can see an index of all
+the posts <a href="/advent21">here</a> or subscribe at
+<a href="https://judica.org/join">judica.org/join</a> to get new posts in your inbox</em></p>
+
+<h3 id="long-time-no-see-you-come-around-these-parts-often">Long time no see. You come around these parts often?</h3>
+
+<p>Let’s talk mining pools.</p>
+
+<p>First, let’s define some things. What is a pool? A pool is a way to take a
+strongly discontinuous income stream and turn it into a smoother income stream.</p>
+
+<p>For example, suppose you are a songwriter. You’re a dime a dozen, there are 1000
+songwriters. If you get song of the year, you get $1M Bonus. However, all the
+other songwriters are equally pretty good, it’s a crapshoot. So you and half the
+other songwriters agree to split the prize money whoever wins. Now, on average,
+every other year you get $2000, instead of once every thousand years. Since
+you’re only going to work about 50 years, your “expected” amount of winnings
+would be $50,000 if you worked alone. But expected winnings don’t buy bread. By
+pooling, your expected winnings are $2000 every other year for 50 years, so also
+$50,000. But you expect to actually have some spare cash laying around. However,
+if you got lucky and won the contest the year you wrote a hit, you’d end up way
+richer! but the odds are 1:20 of that ever happening in your life, so there
+aren’t that many rich songwriters (50 out of your 1000 peers…).</p>
+
+<p>Mining is basically the same as our songwriter contest, just instead of silver
+tongued lyrics, it’s noisy whirring bitcoin mining rigs. Many machines will
+never mine a block. Many miners (the people operating it) won’t either! However,
+by pooling their efforts together, they can turn a once-in-a-million-years
+chance into earning temperatureless immaterial bitcoin day in and day out.</p>
+
+<h2 id="who-pissed-in-your-pool">Who Pissed In your Pool?</h2>
+
+<p>The problem with pooling is that they take an extremely decentralized process
+and add a centralized coordination layer on top. This layer has numerous issues
+including but not limited to:</p>
+
+<ol>
+  <li>Weak Infrastructure: What happens if e.g. DNS goes down as it did recently?</li>
+  <li>KYC/AML requirements to split the rewards</li>
+  <li>Centralized “block policies”</li>
+  <li>Bloating chain space with miner payouts</li>
+  <li>Getting kicked out of their home country (happened in China recently)</li>
+  <li>Custodial hacking risk.</li>
+</ol>
+
+<p>People are working on a lot of these issues with upgrades like “Stratum V2”
+which aspire to give the pools less authority.</p>
+
+<p>In theory, mining pool operators should be against things that limit their
+business operations. However, we’re in a bit “later stage bitcoin mining”
+whereas pooling is seen more as a necessary evil, and most pools are anchored by
+big mining operations. And getting rid of pools would be great for Bitcoin,
+which would increase the value of folks holdings/mining rigs. So while it might
+seem irrational, it’s actually perfectly incentive compatible that mining pools
+operators consider mining pools to be something to make less of a centralization
+risk. Even if pools don’t exist in their current form, mining service providers
+can still make really good business offerring all kinds of support.  Forgive me
+if i’m speaking out of turn, pool ops!</p>
+
+<h2 id="making-mining-pools-better">Making Mining Pools Better</h2>
+
+<p>To make mining pools better, we can set some ambitious goals:</p>
+
+<ol>
+  <li>Funds should not be centrally custodied, ever, if at all.</li>
+  <li>No KYC/AML.</li>
+  <li>No “Extra network” software required.</li>
+  <li>No blockchain bloat.</li>
+  <li>No extra infrastructure.</li>
+  <li>The size of a viable pool should be smaller. Remember our singer – if you
+just pool with one other songwriter it doesn’t make your expected time till
+payout in your lifetime. So bigger the pools, more regular the payouts. We want
+the smallest possible “units of control” with the most regular payouts possible.</li>
+</ol>
+
+<h1 id="fuck--thats-a-huge-list-of-goals">Fuck.  That’s a huge list of goals.</h1>
+
+<p>But if you work with me here, you’ll see how we can nail every last one of them.
+And in doing so, we can clear up some major Privacy hurdles and Decentralization
+issues.</p>
+
+<hr />
+
+<h1 id="building-the-decentralized-coordination-free-mining-pool">Building the Decentralized Coordination Free Mining Pool</h1>
+<p>We’ll build this up step by step. We probably won’t look at any Sapio code
+today, but as a precursor I really must insist read the last couple posts first:</p>
+
+<ol>
+  <li><a href="/bitcoin/2021/12/09/advent-12/">Congestion Control</a></li>
+  <li><a href="/bitcoin/2021/12/10/advent-13/">Payment Pools</a></li>
+  <li><a href="/bitcoin/2021/12/11/advent-14/">Channels</a></li>
+</ol>
+
+<p>You read them, right?</p>
+
+<p>Right?</p>
+
+<p>Ok.</p>
+
+<p>The idea is actually really simple, but we’ll build it up piece by piece by piece.</p>
+
+<h2 id="part-1-window-functions-over-blocks">Part 1: Window Functions over Blocks.</h2>
+
+<p>A window function is a little program that operates over the last “N” things and
+computes something.</p>
+
+<p>E.g., a window function could operate over the last 5 hours and count how many
+carrots you ate. Or over the last 10 cars that pass you on the road.</p>
+
+<p>A window function of bitcoin blocks could operate over a number of different things.</p>
+
+<ul>
+  <li>The last 144 blocks</li>
+  <li>The last 24 hours of blocks</li>
+  <li>The last 100 blocks that meet some filter function (e.g, of size &gt; 500KB)</li>
+</ul>
+
+<p>A window function could compute lot of different things too:</p>
+
+<ul>
+  <li>The average time difference between blocks</li>
+  <li>The amount of fees paid in those blocks</li>
+  <li>A subset of the blocks that pass another filter.</li>
+</ul>
+
+<p>A last note: window functions need, for something like Bitcoin, a start height
+where we exclude things prior (e.g., last 100 blocks since block 500,000)</p>
+
+<h2 id="part-2-giving-presents-to-all-our-friends">Part 2: Giving presents to all our friends</h2>
+
+<p>Let’s do a window function over the last 100 Blocks and collect the 1st address
+in the output of the coinbase transaction.</p>
+
+<p>Now, in our block, instead of paying ourselves a reward, let’s divvy it up among
+the last 100 blocks and pay them out our entire block reward, split up.</p>
+
+<p>We’re so nice!</p>
+
+<h2 id="part-3-giving-presents-to-our-nice-friends-only">Part 3: Giving presents to our nice friends only</h2>
+
+<p>What if instead of paying everyone, we do a window function over the last 100
+blocks and filter for only blocks that followed the same rule that we are
+following (being nice). We take the addresses of each of them, and divvy up our
+award to them too like before.</p>
+
+<p>We’re so nice to only our nice friends!</p>
+
+<p>Now stop and think a minute. All the “nice” blocks in the last 100 didn’t get a
+reward directly, but they got paid by the future nice blocks handsomely.  Even
+though we don’t get any money from the block we mined, if our nice friends keep
+on mining then they’ll pay us too returning the favor.</p>
+
+<p>Re-read the above till it makes sense. This is the big idea. Now onto the “small”
+ideas.</p>
+
+<h2 id="part-4-deferring-payouts">Part 4: Deferring Payouts</h2>
+
+<p>This is all kinda nice, but now our blocks get really really big since we’re
+paying all our friends. Maybe we can be nice, but a little mean too and tell
+them to use their own block space to get their gift.</p>
+
+<p>So instead of paying them out directly, we round up all the nice block addresses
+like before and we toss it in a Congestion Control Tree.</p>
+
+<p>Now our friends do likewise too. Since the Congestion Control Module is
+deterministic, everyone can generate the same tree and both verify that our
+payout was received and generate the right transaction.</p>
+
+<p>Now this gift doesn’t take up any of our space!</p>
+
+<h2 id="part-5-compacting">Part 5: Compacting</h2>
+
+<p>But it still takes up space for someone, and that blows.</p>
+
+<p>So let’s do our pals a favor. Instead of just peeping the 1st address (which
+really could be anything) in the coinbase transaction, let’s use a good ole
+fashioned OP_RETURN (just some extra metadata) with a Taproot Public Key we want
+to use in it.</p>
+
+<p>Now let’s collect all the blocks that again follow the rule defined here, and
+take all their taproot keys.</p>
+
+<p>Now we gift them into a Payment Pool, instead of into just a Congestion Control
+tree with musig aggregated keys at every node.  It’s a minor difference – a
+Congestion Control tree doesn’t have a taproot key path – but that difference
+means the world.</p>
+
+<p>Now instead of having to expand to get everyone paid, they can use it like a
+Payment Pool!  And Pools from different runs can even do a many-to-one
+transaction where they merge balances.</p>
+
+<p>For example, imagine two pools:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>UTXO A from Block N: 1BTC Alice, 1BTC Carol, 1BTC Dave
+UTXO B Block N+1: 1BTC Alice, 1BTC Carol, 1BTC Bob
+</code></pre></div></div>
+
+<p>We can do a transaction as follows to merge the balances:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Spends:
+    UTXO A, B
+Creates:
+    UTXO C: 2BTC Alice, 2BTC Carol, 1BTC Dave, 1BTC Bob
+</code></pre></div></div>
+
+<p>Compared to doing the payments directly, fully expanding this creates only 4
+outputs instead of 6! It gets even better the more miners are involved.</p>
+
+<p>We could even merge many pools at the same time, and in the future, benefit from
+something like cross-input-signature aggregation to make it even cheaper and
+create even fewer outputs.</p>
+
+<h2 id="part-6-channels">Part 6: Channels</h2>
+
+<p>But wait, there’s more!</p>
+
+<p>We can even make the terminal leafs of the Payment Pool be channels instead of direct UTXOs.</p>
+
+<p>This has a few big benefits.</p>
+
+<ol>
+  <li>We don’t need to do any compaction as urgently, we can immediately route funds around.</li>
+  <li>We don’t need to necessarily wait 100 blocks to spend out of our coinbase since we can use the channel directly.</li>
+  <li>Instead of compaction, we can just “swap” payments around across channels.</li>
+</ol>
+
+<p><img src="/public/img/bitcoin/advent/dcfmp/aggpayments.svg" alt="channel balancing" />
+<em>How channel balancing might look.</em></p>
+
+<p>This should be opt-in (with a tag field to opt-in/out)  since if you didn’t want
+a channel it could be annoying to have the extra timeout delays, especially if you
+wanted e.g. to deposit directly to cold storage.</p>
+
+<h2 id="part-7-selecting-window-functions">Part 7: Selecting Window Functions</h2>
+
+<p>What’s the best window function?</p>
+
+<p>I got no freakin’ clue. We can window over time, blocks, fee amounts,
+participating blocks, non participating blocks, etc.</p>
+
+<p>Picking a good window function is an exercise in itself, and needs to be
+scrutinized for game theoretic attacks.</p>
+
+<h2 id="part-8-payout-functions">Part 8: Payout Functions</h2>
+
+<p>Earlier we showed the rewards as being just evenly split among the last blocks,
+but we could also reward people differently. E.g., we could reward miners who
+divided more reward to the other miners more (incentivize collecting more fees),
+or really anything deterministic that we can come up with.</p>
+
+<p>Again, I don’t know the answer here. It’s a big design space!</p>
+
+<h2 id="part-9-voting-on-parameters">Part 9: Voting on Parameters</h2>
+
+<p>One last idea: if we had some sort of parameter space for the window functions,
+we could perhaps vote on-chain for tweaking it. E.g., each miner could vote to
++1 or -1 from the window length.</p>
+
+<p>I don’t particularly think this is a good idea, because it brings in all sorts
+of weird attacks and incentives, but it is a cool case of on-chain governance so
+worth thinking more on.</p>
+
+<h2 id="part-10-end-of-transmission">Part 10: End of Transmission?</h2>
+
+<p>No more steps. Now we think a bit more about the implications of this.</p>
+
+<hr />
+
+<h2 id="solo-mining">Solo mining?</h2>
+
+<p>Well the bad news about this design is that we can’t really do solo mining.
+Remember, most miners probably will never mine a block. So they would never be
+able to enter the pool.</p>
+
+<p>We could mess around with including things like partial work shares (just a
+few!) into blocks, but I think the best bet is to instead to focus on
+micro-pools. Micro-pools would be small units of hashrate (say, 1%?) that are
+composed of lots of tiny miners.</p>
+
+<p>The tiny miners can all connect to each other and gossip around their work
+shares, use some sort of conesnsus algorithm, or use a pool operator. The blocks
+that they mine should use a taproot address/key which is a multisig of some
+portion of the workshares, that gets included in the top-level pool as a part of
+Payment Pool.</p>
+
+<p>So while we don’t quite make solo mining feasible, the larger the window we use
+the tinier the miners can be while getting better de-risking.</p>
+
+<h2 id="analysis">Analysis?</h2>
+
+<p>A little out of scope for here, but it should work conceptually!</p>
+
+<p>A while back I analyzed this kind of setup, <a href="https://utxos.org/uses/miningpools/">read more
+here</a>. Feel free to experiment
+with window and payout functions and report back!</p>
+
+<p><img src="/public/img/bitcoin/advent/dcfmp/bagpool.svg" alt="analysis of benefit to variance reduction" />
+<em>chart showing that the rewards are smoother over time</em></p>
+
+<h2 id="now-implement-it">Now Implement it!</h2>
+
+<p>Well we are <em>not</em> gonna do that here, since this is kinda a mangum opus of Sapio
+and it would be wayyyy too long. But it should be somewhat conceptually
+straightforward if you paid close attention to the “precursor” posts. And you
+can see some seeds of progress for an implementation on
+<a href="https://github.com/sapio-lang/sapio/blob/master/examples/dcf_mining_pool/src/main.rs">github</a>,
+although I’ve mostly been focused on simpler applications (e.g. the constituent
+components of payment pools and channels) for the time being… contributions welcome!</p>
+
+<hr />
+
+<p>TL;DR: Sapio + CTV makes pooled mining more decentralized and more private.</p>
+
+  </div>
+<hr>
+  
+<hr>
+  <div class="post">
+    <h2 class="post-title">
+        <a href="/bitcoin/2021/12/11/advent-14/">
+        Payment Channels in a CTV+Sapio World
+      </a>
+  </h2>
+  <h4>Day 14: Rubin's Bitcoin Advent Calendar</h4>
+
+
+    <span class="post-date">11 Dec 2021</span>
+
+    <p><em>Welcome to day 14 of my Bitcoin Advent Calendar. You can see an index of all
+the posts <a href="/advent21">here</a> or subscribe at
+<a href="https://judica.org/join">judica.org/join</a> to get new posts in your inbox</em></p>
+
+<h2 id="lightning-lightning-lightning">Lightning Lightning Lightning</h2>
+
+<p>Everybody loves Lightning. I love Lightining, you love Lightning. We love
+everyone who works on Lightning. Heck, even
+<a href="https://twitter.com/chainalysis/status/1469317238893289475">Chainalysis</a> loves
+Lightning these days :(…</p>
+
+<h2 id="we-all-love-lightning">We all love Lightning.</h2>
+
+<p>But what if I told you we could love Lightning even more? Crazy, right?</p>
+
+<p>With CTV + Sapio we can improve on Lightning is some pretty cool ways you
+may not have heard too much about before. Buckle up, we’re in for another doozy
+of a post.</p>
+
+<h2 id="let-a-thousand-channels-bloom">Let a thousand channels bloom</h2>
+
+<p>The main thing we’re going to talk about in this post is the opening and closing
+of channels. There are some other things that CTV/Sapio can do that are a bit
+more niche to talk about<sup id="fnref:eltoo" role="doc-noteref"><a href="#fn:eltoo" class="footnote" rel="footnote">1</a></sup>, but there will always be future posts.</p>
+
+<h3 id="how-do-we-open-channels-today">How do we open channels today?</h3>
+
+<p>Let’s say I want to open a channel up with you. I shoot you a text on signal or
+something and say “hey what’s up, happy holidays friend. I would like to open a
+payment channel with you”. You say back, “Tis the season! Let’s do it, my Tor
+Hidden Service address is ABCXYZ”. Then I connect to your node from my computer
+and then I say I want to open a channel with you for 500,000 sats (at writing in
+2021 this was $250 US Dollars, not $250 Million Dollars). Then, you might
+authorize opening up the channel with me, or your node might just roll the dice
+and do it without your permission (IDK how the nodes actually work, depends on
+your client, and maybe in the future some reputation thingy).</p>
+
+<p>So now we have agreed to create a channel.</p>
+
+<p>Now, I ask you for a key to use in the channel and you send it to me. Then, I
+create an unsigned transaction F that is going to create and fund our channel.
+The channel is in Output C. I send you F and C. Then, I ask you to pre-sign a
+transaction spending from C that doesn’t yet exist, but would refund me and give
+you nothing in the event you go offline. This is basically just using the
+channel like it exists already for a payment 0 paying me. After I get those
+sweet sweet signatures from you, then I send you the signatures as well in case
+you want to close things out like normal.</p>
+
+<h5 id="houston-we-have-a-channel">Houston, we have a channel.</h5>
+
+<p>Now we can revoke old states and stuff and sign new states and all that fancy
+channel HTLC routing jazz. We don’t really need to know how a lot of that works
+down in the details so don’t ask.</p>
+
+<h4 id="something-a-little-more-nifty-perhaps">Something a little more nifty, perhaps?</h4>
+
+<p>Technically I presented you how single funded channels work, but you can also
+dual fund where we both contribute some funds. It’s relatively new feature to
+land and was a lot of work… Dual funded channels are important because when I
+opened the channel to you I had all the sats and I couldn’t receive any Bitcoin.
+Dual funded channels means you can immediately send both directions.</p>
+
+<h3 id="what-can-we-do-with-ctv">What can we do with CTV?</h3>
+
+<p>With CTV, the single funded channel opening story is a bit simpler. I ask you if
+you want to open a channel, you say “sure!” (maybe I even look up your key from
+a Web-of-Trust system), and send me a key. I then use Sapio to compile a channel
+for 500k sats to our keys, I send Bitcoin to it. The channel is created. I send
+you the Outpoint + the arguments to the channel, either through email,
+connecting to your node, or pigeon with a thumbdrive, and later you verify that
+I paid to the channel for our keys that Sapio output by running the compiler
+with the same arguments (500k sats to our keys).</p>
+
+<p>This is called a non-interactive channel open. Why’s that? Beyond having to do
+some basics (e.g., I have to know a key for you, which could be on a public
+Web-of-Trust), there is no step in the flow that requires any back-and-forth
+negotiation to create the channel. I just create it unilaterally, and then I
+could tell you about it a year later. You’d be able to verify it fine!</p>
+
+<p>For dual-funded channels, I send you a transaction you can pay into to finish
+opening it and I can go offline. Once opened, the channel works for us both
+recovering our funds.</p>
+
+<h3 id="sounds-niche">sounds niche</h3>
+
+<p>It kinda is. It’s an esoteric nerdy property. But I promise you it’s really
+cool! Let’s look at some examples:</p>
+
+<h4 id="cafe-latte-anyone">Cafe Latte Anyone?</h4>
+<p>Let’s say that I go to a cafe I’ve never been to and there is a QR code posted
+on the wall.  I then go about my business, ordering a 10,000 sat breakfast combo.
+To pay, I scan the QR-code, and then it has a XPUB for Non Interactive Channels on it.</p>
+
+<p>I can then plug in that XPUB into my Sapio Channel Creator and create a channel
+with a first payment of 10k sats and a total balance of 100k sats.  I show a QR
+code on my phone to the barista, who scans it, getting the details of the
+channel I made. Barista says looks good, acknowledging both the payment and the
+channel open. The details get backed up to The Cloud.</p>
+
+<p>But just then something happens: a masked figure comes in with a gun and tells
+the barista, “GIVE ME ALL YOUR SATOSHIS”. A child begins to cry, their parent
+covering their mouth with their hand. The bad guy barks, “GIVE ME ALL YOUR
+SATOSHIS… and no one gets hurt,” tapping the muzzle of the gun on the
+countertop. The barista smirks and snarls, “stupid thief, surely you’ve been
+reading the post on non-interactive lightning channels on Rubin’s Bitcoin Advent
+Calendar.” The robber adjusts the straps on their mask for some relief from the
+ear irritation. “If you had been reading it, you would know that I don’t need to
+have a key online in order for someone to create a channel with me! I just need
+the XPUB to verify they are made correctly. This is not those old-school
+channels. I have no ability to spend. We keep our keys colder than our cold
+brew.” The robbers shoulders sag and they mutter, “fine, in that case, I’ll have
+a medium cold brew coffee, one sugar with a splash of oat milk. And that big
+chocolate chip cookie”.</p>
+
+<p>That’s right. Because our cafe used non-interactive channels, they didn’t
+have to have a key online to create a channel with me! They just needed durable
+storage for the channel definition.</p>
+
+<p>And when I go to spend a bit extra for a bottle of Topo Chico™ later, they still
+don’t need to be online, I can start making payments without them
+counter-signing<sup id="fnref:caveat" role="doc-noteref"><a href="#fn:caveat" class="footnote" rel="footnote">2</a></sup>.</p>
+
+<h4 id="where-did-my-corn-come-from">Where did my corn come from?</h4>
+
+<p>How did I get the bitcoin for the channel I’m opening? Usually this is an
+assumption for Lightning (you have Bitcoin!), but in this case it’s central to
+the plot here. You probably got them from an exchange, mining, or something else.</p>
+
+<p>This means that in order to open a channel to someone, I need to do two transactions:</p>
+
+<ol>
+  <li>Get some money</li>
+  <li>Make the channel</li>
+</ol>
+
+<p>It’s possible, if I had a really legit hip exchange, they’d let me directly open
+a channel by offering me a transaction unsigned with the channel output C that I
+can presign with you! But then they can’t really batch payments (otherwise one
+user going offline can be a DoS attack on the batch payout) and they can also
+get DoS’d unbatched since we can “lock up” a coin while we run the protocol.</p>
+
+<p>If instead, we had CTV we could just generate an address for the channel we
+wanted and request the exchange pay to it the appropriate amount of coin.  The
+exchange could pay the channel address however they want, and we’d be able to
+use it right away.</p>
+
+<h4 id="however-they-want">However they want?</h4>
+
+<p>Yes. Let’s look at some options:</p>
+
+<ol>
+  <li>A normal transaction – Works great.</li>
+  <li>A batch transaction – No Problemo.</li>
+  <li>A <a href="/bitcoin/2021/12/09/advent-12/">Congestion Control Tree</a> – Even that!</li>
+</ol>
+
+<p>What was that last one? You read it right, a channel can be created in a Congestion Control tree,
+and be immediately usable!</p>
+
+<p>How’s this work? Well, because you can fully verify you’d receive a payment in a
+congestion control tree, you can likewise fully verify that your channel will be
+created.</p>
+
+<p>This is big. This means that you can just directly request a channel from a third party
+without even telling them that you’re making a channel!</p>
+
+<p>And this technique – channels in congestion control tree – generalizes
+beautifully.  It means you could create as many immediately usable channels as
+you like and lazily fully open them over their lifetime whenever blockspace is
+affordable.</p>
+
+<h5 id="i-lied-a-little">I Lied (a little)</h5>
+
+<p>If the exchange doesn’t follow your payment instructions to the T, e.g. if they
+split it into two UTXOs then it won’t work. Exchanges should probably not do
+anything other than what you asked them to do (this should be something to ensure
+in the exchanges terms of service…).</p>
+
+<h4 id="come-on-in-the-waters-warm">Come on in the water’s warm?</h4>
+
+<p>This concept also composes nicely with the <a href="/bitcoin/2021/12/10/advent-13/">Payment
+Pools</a> we saw yesterday.  Imagine you embed
+channels as the terminal outputs after a full-ejection from the pool.  Then,
+what you can do is have the N-of-N agree to an on-chain state update that
+respects (or preserves) any channel updates <em>before</em> you switch.  Embedding the
+channels inside means that Payment Pools would only need to do on-chain
+transactions when they need to make an external payment or re-configure
+liquidity among participants.</p>
+
+<p>For example, imagine a pool with Alice, Bob, Carol, and Dave each having one
+coin in a channel. We’ll do some channel updates, and then reconfigure.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Start:
+Pool(Channel([A, 1], [B, 1]), Channel([C, 1], [D, 1]))
+
+Channel Update (off-chain):
+Pool(Channel([A, 0.4], [B, 1.6]), Channel([C, 1], [D, 1]))
+
+Channel Update (off-chain):
+Pool(Channel([A, 0.4], [B, 1.6]), Channel([C, 1.3], [D, 0.7]))
+
+Pool Reconfigure (on-chainl swap channel partners):
+Pool(Channel([A, 0.4], [D, 0.7]), Channel([C, 1.3], [B, 1.6]))
+
+Pool Reconfigure (on-chain; add Eve/Bob Channel):
+Pool(Channel([A, 0.4], [D, 0.7]), Channel([C, 1.3], [B, 0.6]), Channel([E, 0.5], [B, 0.5]))
+</code></pre></div></div>
+
+<p>Pretty neat, right?</p>
+
+<p>This is particularly a big win for Scalability and Privacy, since we’re now
+containing tons of activity within a single UTXO, and even within that UTXO
+most of the information doesn’t need to be known to all participants.</p>
+
+<hr />
+
+<p>I’m not going to show you all of these integrations directly (Congestion Control, Pools, etc),
+because you gotta cut an article somewhere. But we do have enough…</p>
+
+<h1 id="time-to-code">Time to Code</h1>
+
+<p>OK enough ‘how it works’ and ‘what it can do’. Let’s get cracking on a basic
+channel implementation so you know I’m not bullshitting you<sup id="fnref:microbs" role="doc-noteref"><a href="#fn:microbs" class="footnote" rel="footnote">3</a></sup>.</p>
+
+<p>First, let’s define the basic information we’ll need:</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">/// Information for each Participant</span>
+<span class="k">struct</span> <span class="n">Participant</span> <span class="p">{</span>
+    <span class="c">/// signing key</span>
+    <span class="n">key</span><span class="p">:</span> <span class="n">PublicKey</span><span class="p">,</span>
+    <span class="c">/// amount of funds</span>
+    <span class="n">amount</span><span class="p">:</span> <span class="n">AmountF64</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c">/// A Channel can be either in an Open or Closing state.</span>
+<span class="k">enum</span> <span class="n">State</span> <span class="p">{</span>
+    <span class="n">Open</span><span class="p">,</span>
+    <span class="n">Closing</span>
+<span class="p">}</span>
+
+<span class="c">/// Channel definition.</span>
+<span class="k">struct</span> <span class="n">Channel</span> <span class="p">{</span>
+    <span class="c">/// If it is opening or closing</span>
+    <span class="n">state</span><span class="p">:</span> <span class="n">State</span><span class="p">,</span>
+    <span class="c">/// Each participant's balances</span>
+    <span class="n">parties</span><span class="p">:</span> <span class="p">[</span><span class="n">Participant</span><span class="p">;</span> <span class="mi">2</span><span class="p">],</span>
+    <span class="c">/// Amount of time transactions must be broadcast within</span>
+    <span class="n">timeout</span><span class="p">:</span> <span class="n">AnyRelTimeLock</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Pretty straightforward.</p>
+
+<p>Now, let’s define the API:</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">impl</span> <span class="n">Contract</span> <span class="k">for</span> <span class="n">Channel</span> <span class="p">{</span>
+    <span class="nd">declare!</span><span class="p">{</span><span class="n">then</span><span class="p">,</span> <span class="nn">Self</span><span class="p">::</span><span class="n">finish_close</span><span class="p">,</span> <span class="nn">Self</span><span class="p">::</span><span class="n">begin_close</span><span class="p">}</span>
+    <span class="nd">declare!</span><span class="p">{</span><span class="n">updatable</span><span class="o">&lt;</span><span class="n">Update</span><span class="o">&gt;</span><span class="p">,</span> <span class="nn">Self</span><span class="p">::</span><span class="n">update</span><span class="p">}</span> 
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Next, we’ll define the <code class="language-plaintext highlighter-rouge">being_close</code> logic. Essentially all it’s going to do is,
+if we’re in the <code class="language-plaintext highlighter-rouge">Open</code> state allow transitioning the pool to the <code class="language-plaintext highlighter-rouge">Closing</code> state.</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">impl</span> <span class="n">Channel</span> <span class="p">{</span>
+    <span class="nd">#[compile_if]</span>
+    <span class="k">fn</span> <span class="nf">if_open</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="k">let</span> <span class="nn">State</span><span class="p">::</span><span class="n">Open</span> <span class="o">=</span> <span class="k">self</span><span class="py">.state</span> <span class="p">{</span>
+            <span class="nn">ConditionalCompileType</span><span class="p">::</span><span class="n">Required</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="nn">ConditionalCompileType</span><span class="p">::</span><span class="n">Never</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="nd">#[then(compile_if</span> <span class="nd">=</span> <span class="s">"[Self::if_open]"</span><span class="nd">)]</span>
+    <span class="k">fn</span> <span class="nf">begin_close</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c">// copy the channel data and change to closing state</span>
+        <span class="c">// begin_close can happen at any time</span>
+        <span class="k">let</span> <span class="k">mut</span> <span class="n">close</span> <span class="o">=</span> <span class="k">self</span><span class="nf">.clone</span><span class="p">();</span>
+        <span class="n">close</span><span class="py">.state</span> <span class="o">=</span> <span class="nn">State</span><span class="p">::</span><span class="n">Closing</span><span class="p">;</span>
+        <span class="n">ctx</span><span class="nf">.template</span><span class="p">()</span>
+            <span class="nf">.add_output</span><span class="p">(</span><span class="nn">Amount</span><span class="p">::</span><span class="nf">from</span><span class="p">(</span><span class="k">self</span><span class="py">.parties</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="py">.amount</span><span class="p">)</span> <span class="o">+</span>
+                        <span class="nn">Amount</span><span class="p">::</span><span class="nf">from</span><span class="p">(</span><span class="k">self</span><span class="py">.parties</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="py">.amount</span><span class="p">),</span>
+                        <span class="o">&amp;</span><span class="n">close</span><span class="p">,</span> <span class="nb">None</span><span class="p">)</span><span class="o">?</span>
+            <span class="nf">.into</span><span class="p">()</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Next we’ll define the logic for the <code class="language-plaintext highlighter-rouge">Closing</code> state. Essentially, if the state
+as been in <code class="language-plaintext highlighter-rouge">Closing</code> and the timeout expires, then we allow a transaction to
+return the funds to the initial state. We’ll only add an output for a
+participant if they have any money!</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">impl</span> <span class="n">Channel</span> <span class="p">{</span>
+    <span class="nd">#[compile_if]</span>
+    <span class="k">fn</span> <span class="nf">if_closing</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="k">let</span> <span class="nn">State</span><span class="p">::</span><span class="n">Closing</span> <span class="o">=</span> <span class="k">self</span><span class="py">.state</span> <span class="p">{</span>
+            <span class="nn">ConditionalCompileType</span><span class="p">::</span><span class="n">Required</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="nn">ConditionalCompileType</span><span class="p">::</span><span class="n">Never</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="nd">#[then(compile_if</span> <span class="nd">=</span> <span class="s">"[Self::if_closing]"</span><span class="nd">)]</span>
+    <span class="k">fn</span> <span class="nf">finish_close</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c">// only allow finish_close after waiting for timelock</span>
+        <span class="k">let</span> <span class="k">mut</span> <span class="n">tmpl</span> <span class="o">=</span> <span class="n">ctx</span><span class="nf">.template</span><span class="p">()</span><span class="nf">.set_sequence</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="k">self</span><span class="py">.timelock</span><span class="p">)</span><span class="o">?</span><span class="p">;</span>
+        <span class="c">// add party 0 if they have funds</span>
+        <span class="k">if</span> <span class="nn">Amount</span><span class="p">::</span><span class="nf">from</span><span class="p">(</span><span class="k">self</span><span class="py">.parties</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="py">.amount</span><span class="p">)</span><span class="nf">.as_sat</span><span class="p">()</span> <span class="o">!=</span> <span class="mi">0</span> <span class="p">{</span>
+            <span class="n">tmpl</span> <span class="o">=</span> <span class="n">tmpl</span><span class="nf">.add_output</span><span class="p">(</span><span class="k">self</span><span class="py">.parties</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="py">.amount</span><span class="nf">.into</span><span class="p">(),</span> <span class="o">&amp;</span><span class="k">self</span><span class="py">.parties</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="py">.key</span><span class="p">,</span> <span class="nb">None</span><span class="p">)</span><span class="o">?</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="c">// add party 1 if they have funds</span>
+        <span class="k">if</span> <span class="nn">Amount</span><span class="p">::</span><span class="nf">from</span><span class="p">(</span><span class="k">self</span><span class="py">.parties</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="py">.amount</span><span class="p">)</span><span class="nf">.as_sat</span><span class="p">()</span> <span class="o">!=</span> <span class="mi">0</span> <span class="p">{</span>
+            <span class="n">tmpl</span> <span class="o">=</span> <span class="n">tmpl</span><span class="nf">.add_output</span><span class="p">(</span><span class="k">self</span><span class="py">.parties</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="py">.amount</span><span class="nf">.into</span><span class="p">(),</span> <span class="o">&amp;</span><span class="k">self</span><span class="py">.parties</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="py">.key</span><span class="p">,</span> <span class="nb">None</span><span class="p">)</span><span class="o">?</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="n">tmpl</span><span class="nf">.into</span><span class="p">()</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Almost lastly, we’ll add the updating logic. The updating logic has to be used in a very
+particular way in this contract, but it’s pretty basic by itself!</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">// updating a channel</span>
+<span class="k">enum</span> <span class="n">Update</span> <span class="p">{</span>
+    <span class="c">// nothing to do!</span>
+    <span class="nb">None</span><span class="p">,</span>
+    <span class="c">// An update that can later 'burned'</span>
+    <span class="nf">Revokable</span><span class="p">(</span><span class="n">Revokable</span><span class="p">),</span>
+    <span class="c">// An update that is formed to terminate a channel</span>
+    <span class="nf">Cooperate</span><span class="p">([</span><span class="n">Participants</span><span class="p">;</span> <span class="mi">2</span><span class="p">])</span>
+<span class="p">}</span>
+
+<span class="k">impl</span> <span class="n">Channel</span> <span class="p">{</span>
+    <span class="nd">#[guard]</span>
+    <span class="k">fn</span> <span class="nf">both_signed</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nn">Clause</span><span class="p">::</span><span class="nf">And</span><span class="p">(</span><span class="nd">vec!</span><span class="p">[</span><span class="nn">Clause</span><span class="p">::</span><span class="nf">Key</span><span class="p">(</span><span class="k">self</span><span class="py">.parties</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="py">.key</span><span class="p">),</span>
+                         <span class="nn">Clause</span><span class="p">::</span><span class="nf">Key</span><span class="p">(</span><span class="k">self</span><span class="py">.parties</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="py">.key</span><span class="p">)])</span>
+    <span class="p">}</span>
+
+    <span class="nd">#[continuation(guarded_by</span> <span class="nd">=</span> <span class="s">"[Self::both_signed]"</span><span class="nd">)]</span>
+    <span class="k">fn</span> <span class="nf">update</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">,</span> <span class="n">u</span><span class="p">:</span> <span class="n">Update</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">match</span> <span class="n">u</span> <span class="p">{</span>
+            <span class="c">// don't do anything</span>
+            <span class="nn">Update</span><span class="p">::</span><span class="nb">None</span> <span class="k">=&gt;</span> <span class="nf">empty</span><span class="p">(),</span>
+            <span class="c">// send funds to the revokable contract</span>
+            <span class="nn">Update</span><span class="p">::</span><span class="nf">Revokable</span><span class="p">(</span><span class="n">r</span><span class="p">)</span> <span class="k">=&gt;</span> <span class="p">{</span>
+                <span class="c">// note -- technically we only need to sign revokables where</span>
+                <span class="c">// state == State::Closing, but we do both for efficiency</span>
+                <span class="n">ctx</span><span class="nf">.template</span><span class="p">()</span>
+                    <span class="nf">.add_output</span><span class="p">(</span><span class="nn">Amount</span><span class="p">::</span><span class="nf">from</span><span class="p">(</span><span class="k">self</span><span class="py">.parties</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="py">.amount</span><span class="p">)</span> <span class="o">+</span> 
+                                <span class="nn">Amount</span><span class="p">::</span><span class="nf">from</span><span class="p">(</span><span class="k">self</span><span class="py">.parties</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="py">.amount</span><span class="p">),</span> <span class="o">&amp;</span><span class="n">r</span><span class="p">,</span> <span class="nb">None</span><span class="p">)</span><span class="o">?</span>
+                    <span class="nf">.into</span><span class="p">()</span>
+            <span class="p">},</span>
+            <span class="c">// Terminate the channel into two payouts.</span>
+            <span class="nn">Update</span><span class="p">::</span><span class="nf">Cooperate</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">=&gt;</span> <span class="p">{</span>
+                <span class="n">ctx</span><span class="nf">.template</span><span class="p">()</span>
+                   <span class="nf">.add_output</span><span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="py">.amount</span><span class="nf">.into</span><span class="p">(),</span> <span class="o">&amp;</span><span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="py">.key</span><span class="p">,</span> <span class="nb">None</span><span class="p">)</span><span class="o">?</span>
+                   <span class="nf">.add_output</span><span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="py">.amount</span><span class="nf">.into</span><span class="p">(),</span> <span class="o">&amp;</span><span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="py">.key</span><span class="p">,</span> <span class="nb">None</span><span class="p">)</span><span class="o">?</span>
+                   <span class="nf">.into</span><span class="p">()</span>
+
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Now to finish we need to define some sort of thing for <code class="language-plaintext highlighter-rouge">Revokable</code>.  Revokables
+are used to update a channel from one set of balances to another.  This will
+depend on your payment channel implementation. I’ve defined a basic one below,
+but this could be anything you like.</p>
+
+<p>Essentially, a Revokable is an offer from party A to party B to close the
+channel such that B can later provably “reject” the offer. If B uses a rejected
+offer, A can take the entire balance of the channel.</p>
+
+<p>How to use this to update a channel? To start, all parties agree on the new
+balances with a timeout.</p>
+
+<p>Next, party one gets a hash H(V) from party two that party two knows V and party
+one does not. Party one then creates a Revokable with <code class="language-plaintext highlighter-rouge">from_idx = 0</code>, the
+updated balances, timelock, and hash H(V). They feed the update arguments to
+<code class="language-plaintext highlighter-rouge">Channel::update</code> and sign the resulting transaction, sending the signed
+transaction to party two.  In particular in non-interactive channels, party one
+only <em>has</em> to sign revokable updates at the branch where <code class="language-plaintext highlighter-rouge">state ==
+State::Closing</code>, but it’s better for cases where your counterparty might not be
+malicious and just offline if you sign updates on both <code class="language-plaintext highlighter-rouge">Open</code> and <code class="language-plaintext highlighter-rouge">Closing</code>.
+Just signing on <code class="language-plaintext highlighter-rouge">Open</code> would be insecure.</p>
+
+<p>Then, we repeat this with roles reversed with one generating a hash and two
+signing transactions.</p>
+
+<p>Lastly, both reveals the hash preimage (V to H(V)) from any prior round to
+revoke the state from their counterparty.</p>
+
+<p>If either party ever broadcasts the Revokable that they received by signing the
+other half of the <code class="language-plaintext highlighter-rouge">Channel::update</code> after revealing their Hash preimage, the
+other party can take all the funds in the channel.</p>
+
+<p>Kinda a bit tough to understand, but you don’t really need to get it, you can
+embed whatever protocol like this inside that you want.</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="n">Revokable</span> <span class="p">{</span>
+    <span class="c">// updated balances</span>
+    <span class="n">parties</span><span class="p">:</span> <span class="p">[</span><span class="n">Participant</span><span class="p">;</span> <span class="mi">2</span><span class="p">],</span>
+    <span class="c">// preimage from the other party</span>
+    <span class="n">hash</span><span class="p">:</span> <span class="n">Hash</span><span class="p">,</span>
+    <span class="c">// how long the other party has to revoke</span>
+    <span class="n">timelock</span><span class="p">:</span> <span class="n">AnyRelTimeLock</span><span class="p">,</span>
+    <span class="c">// who is this update from</span>
+    <span class="n">from_idx</span><span class="p">:</span> <span class="nb">u8</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="k">impl</span> <span class="n">Contract</span> <span class="k">for</span> <span class="n">Revokable</span> <span class="p">{</span>
+    <span class="nd">declare!</span><span class="p">{</span><span class="n">then</span><span class="p">,</span> <span class="nn">Self</span><span class="p">::</span><span class="n">finish</span><span class="p">}</span>
+    <span class="nd">declare!</span><span class="p">{</span><span class="n">finish</span><span class="p">,</span> <span class="nn">Self</span><span class="p">::</span><span class="n">revoked</span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">impl</span> <span class="n">Revokable</span> <span class="p">{</span>
+    <span class="c">/// after waiting for the timeout, close the balances out at the appropriate values.</span>
+    <span class="nd">#[then]</span>
+    <span class="k">fn</span> <span class="nf">finish</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">let</span> <span class="k">mut</span> <span class="n">tmpl</span> <span class="o">=</span> <span class="n">ctx</span><span class="nf">.template</span><span class="p">()</span><span class="nf">.set_sequence</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="k">self</span><span class="py">.timelock</span><span class="p">)</span><span class="o">?</span><span class="p">;</span>
+        <span class="k">if</span> <span class="nn">Amount</span><span class="p">::</span><span class="nf">from</span><span class="p">(</span><span class="k">self</span><span class="py">.parties</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="py">.amount</span><span class="p">)</span><span class="nf">.as_sat</span><span class="p">()</span> <span class="o">!=</span> <span class="mi">0</span> <span class="p">{</span>
+            <span class="n">tmpl</span> <span class="o">=</span> <span class="n">tmpl</span><span class="nf">.add_output</span><span class="p">(</span><span class="k">self</span><span class="py">.parties</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="py">.amount</span><span class="nf">.into</span><span class="p">(),</span> <span class="o">&amp;</span><span class="k">self</span><span class="py">.parties</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="py">.key</span><span class="p">,</span> <span class="nb">None</span><span class="p">)</span><span class="o">?</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="nn">Amount</span><span class="p">::</span><span class="nf">from</span><span class="p">(</span><span class="k">self</span><span class="py">.parties</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="py">.amount</span><span class="p">)</span><span class="nf">.as_sat</span><span class="p">()</span> <span class="o">!=</span> <span class="mi">0</span> <span class="p">{</span>
+            <span class="n">tmpl</span> <span class="o">=</span> <span class="n">tmpl</span><span class="nf">.add_output</span><span class="p">(</span><span class="k">self</span><span class="py">.parties</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="py">.amount</span><span class="nf">.into</span><span class="p">(),</span> <span class="o">&amp;</span><span class="k">self</span><span class="py">.parties</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="py">.key</span><span class="p">,</span> <span class="nb">None</span><span class="p">)</span><span class="o">?</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="n">tmpl</span><span class="nf">.into</span><span class="p">()</span>
+    <span class="p">}</span>
+
+    <span class="c">/// if this was revoked by the other party</span>
+    <span class="c">/// we can sweep all the funds</span>
+    <span class="nd">#[guard]</span>
+    <span class="k">fn</span> <span class="nf">revoked</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nn">Clause</span><span class="p">::</span><span class="nf">And</span><span class="p">(</span><span class="nd">vec!</span><span class="p">[</span>
+            <span class="nn">Clause</span><span class="p">::</span><span class="nf">Sha256</span><span class="p">(</span><span class="k">self</span><span class="py">.hash</span><span class="p">),</span>
+            <span class="nn">Clause</span><span class="p">::</span><span class="nf">Key</span><span class="p">(</span><span class="k">self</span><span class="py">.parties</span><span class="p">[</span><span class="k">self</span><span class="py">.from_idx</span><span class="p">])])</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<hr />
+
+<p>And now some closing remarks:</p>
+
+<h2 id="ctv-required">CTV Required?</h2>
+
+<p>You don’t need CTV for these channel specs to work, but you do need CTV for the
+channels to be non-interactive. Without CTV you just use a multi-sig oracle of
+both parties, and the contracts come out logically similar to an existing
+lightning channel. Does that mean we’re going to enter…</p>
+
+<h2 id="the-era-of-sapio-lightning">The Era of Sapio Lightning?</h2>
+
+<p>It’s probably going to be a while/never before this actually becomes a
+“Lightning” standard thing, even if you could use this with self-hosted oracles
+today, although perhaps one day it could be!</p>
+
+<p>However, it’s possible! One path towards that would be if, perhaps, Sapio gets
+used to help define the “spec” that all lightning protocols should implement.
+Then it’d be theoretically possible to use Sapio for a channel implementation!
+Or maybe Sapio becomes a “plugin engine” for negotiating channels and updates can
+just be shipping some WASM.</p>
+
+<h2 id="what-didnt-make-the-cut">What didn’t make the cut?</h2>
+<p>Some ideas to mention, but not fully flesh out (yet?):</p>
+
+<h3 id="eltoo">Eltoo</h3>
+<p>So, so very much. To start CTV+CSFS can do something like Eltoo, no need for
+AnyPrevout. Very neat! If we had some Eltoo primitive available, I could show you
+revocation-free channels.</p>
+
+<h3 id="embedded-sapio-states">Embedded Sapio States</h3>
+
+<p>Instead of making the channel state a boring “pay X to 0, pay Y to 1”
+resolution, we can actually embed all sorts of contracts inside of channels.</p>
+
+<p>E.g., imagine if you have a channel whereby if you contested close it your
+counterparty’s funds (who is offline conceivably) go to a cold-storage vault.</p>
+
+<p>Or imagine if you had some sort of oracle resolved synthetic bitcoin settled
+derivative contract, like a DLC, embedded inside. You could then use this to HFT
+your synths!</p>
+
+<p>Or what if there were some new-fangled token protocol that lived inside state
+transition to state transition, and you could update you and your counterparty’s
+stake into those?</p>
+
+<p>You can really put anything you want. We’ll see in a couple days how you can
+define a Channel Plugin Interface so that you can dynamically link a logic
+module into a contract, rather than compiling it in.</p>
+
+<h3 id="embedded-channels">Embedded Channels</h3>
+
+<p>We saw a little bit of embedded channels. Channels embedded in congestion
+control, or in payment pools. But the concept can be a lot more diverse.
+Remember our Vaults and inheritence schemes? We could make the hot-wallet
+payouts from those go directly into Channels with some channel operator hub.  Or
+what about making channels directly out of coinjoins? Not having to pre-sign
+everything really helps.  Don’t sleep on this.</p>
+
+<h3 id="embedded-channel-creation-args">Embedded Channel Creation Args</h3>
+
+<p>We said earlier that channel creation required some sort of email. But it’s also
+sometimes possible to embed the channel metadata into e.g. an op_return on the
+channel creation. Perhaps as an IPFS hash or something. In this case, you would
+just need to scan over txs, download the relevant data, and then attempt
+plugging it into WASM (heck – the WASM could just receive the txn in question
+and do all the heavy lifting). If the WASM spits out a matching output/channel
+address, you now have a channel you can detect automatically. This doesn’t have
+to be bad for privacy if the data is encrypted somehow!</p>
+
+<h2 id="how-will-this-impact-the-world">How will this impact the world?</h2>
+
+<p>Non interactive channel creation is going to, for many users, dramatically
+decrease the cost of channel opening. Firstly you can defer paying fees when you
+open many channels (big news)! In fact, if the channel is long lived enough, you
+may never pay fees if someone else does first! That incentive to wait is called
+backpressure. It’s also going to “cut through” a lot of cases (e.g., exchange
+withdraw, move from cold storage, etc) that would otherwise require 2
+transactions. And channels in Payment Pools have big opportunities to leverage
+cooperative actions/updates to dramatically reduce chain load in the happy-case.</p>
+
+<p>This is a gigantic boon not just for scalability, but also for privacy. The less
+that happens on chain the better!</p>
+
+<p>I think it’s also likely that with non-interactive channels, one might <em>always</em>
+(as was the case with our cafe) opportunistically open channels instead of
+normal payments. Removing the “counterparty online” constraint is huge. Being
+able to just open it up and bet that you’ll be able to route is a big win. This
+is similar to “PayJoin”, whereby you try to always coin-join transactions on all
+payments for both privacy and fee savings.</p>
+
+<p>Tomorrow, we’ll see sort of a magnum opus of using non-interactive channels, so
+stay tuned folks, that’s all for today.</p>
+
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:eltoo" role="doc-endnote">
+      <p>CTV + CSFS can do something like Eltoo/Decker channels with a script like <code class="language-plaintext highlighter-rouge">CTV &lt;pk&gt; CSFSV</code>. <a href="#fnref:eltoo" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:caveat" role="doc-endnote">
+      <p>There are some caveats to this, but it should generally work when you’re making payments in one direction. <a href="#fnref:caveat" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:microbs" role="doc-endnote">
+      <p>Writing 27 posts is really hard and a big crunch, so I’m permitting myself a little micro-bullshit in that I’m not actually compiling this code so it probably has some bugs and stuff, but it should “read true” for the most part. I may clean this post up in the future and make sure everything works perfectly as described. <a href="#fnref:microbs" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+  </div>
+<hr>
+  
+</div>
+
+<div class="pagination">
+  
+    <a class="pagination-item newer" href="/blog/page/4/">Newer</a>
+  
+  
+  <a class="pagination-item older" href="/blog/page/6/">Older</a>
+  
+</div>
+
+</div>
+
+        </div>
+        <div class="content container" style="padding-bottom:0;padding-top:0;bottom:0px;">
+            <div class="posts" style="height:14pt;margin-bottom:0;">
+                <div class="post">
+                    <p style="text-align:center;font-size:12pt;">&copy; 2011-2021 Jeremy Rubin. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
