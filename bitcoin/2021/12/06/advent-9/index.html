@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+  <title> Sapio Primer &middot; Jeremy Rubin </title>
+  <link href="https://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/poole.css">
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/css/hyde.css">
+  <link rel="stylesheet" href="/public/font-awesome-4.5.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+                                 <link rel="shortcut icon" href="/public/favicon.ico">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+
+  
+  <link type="application/atom+xml" rel="alternate" href="http://rubin.io/feed.xml" title="Jeremy Rubin" />
+
+
+  <!-- GA -->
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-40376251-1', 'auto');
+    ga('send', 'pageview');
+</script>
+
+  
+  <link rel="me" href="https://twitter.com/JeremyRubin" >
+  <meta name="twitter:dnt" content="on">
+			   <script>window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
+
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+
+  return t;
+}(document, "script", "twitter-wjs"));</script>
+
+</head>
+
+    <body>
+        <div class="sidebar">
+    <h3 style="text-align: center;"> <a href="/"> Jeremy Rubin </a> </h3>
+    <div class="container">
+        <div class="sidebar-about">
+
+            <div class="sidebar-about-info"> 
+                <a href="/public/pdfs/resume.pdf"><i class="fa fa-file-text-o" title=Resume></i></a>
+                <a href=""><i class="fa fa-github" title=Github></i></a>
+                <a href="https://twitter.com/JeremyRubin"><i class="fa fa-twitter" title=Twitter></i></a>
+            </div>
+            <div class="sidebar-about-info hide-large">
+                <a class="" href="/">Home</a>
+                <a class="" href="/blog/">Blog</a>
+                <a class="" href="/talks/">Talks</a> 
+                <a class="" href="/projects/">Projects</a>
+                <a class="" href="/archive/">Site Index</a>
+            </div>
+        </div>
+
+
+
+
+        <nav class="sidebar-nav hide-small">
+            <a class="sidebar-nav-item" href="/">Home</a>
+            <a class="sidebar-nav-item" href="/blog/">Blog</a>
+            <a class="sidebar-nav-item" href="/talks/">Talks</a> 
+            <a class="sidebar-nav-item" href="/projects/">Projects</a>
+            <a class="sidebar-nav-item" href="/archive/">Site Index</a>
+        </nav>
+    </div>
+</div>
+
+
+
+        <div class="content container" style="padding-bottom:0;">
+            <div class="post">
+    <h1 class="post-title">Sapio Primer</h1>
+    <h3>Day 9: Rubin's Bitcoin Advent Calendar</h3>
+    
+
+<a class="twitter-share-button"
+data-size="large"
+href="https://twitter.com/intent/tweet?text=Sapio+Primer&hashtags=Bitcoin,
+AdventCalendar,
+Covenants,
+Sapio
+"> Tweet</a>
+
+
+
+    <div>
+        <span class="post-date">06 Dec 2021
+        </span>
+    </div>
+    <p><em>Welcome to day 9 of my Bitcoin Advent Calendar. You can see an index of all
+the posts <a href="/advent21">here</a> or subscribe at
+<a href="https://judica.org/join">judica.org/join</a> to get new posts in your inbox</em></p>
+
+<p>We’re through the basics sections of the Advent calendar ow! Time for some more…
+specific content on the bleeding edge!</p>
+
+<p>This post is your introduction to the world of
+<a href="https://learn.sapio-lang.org">Sapio</a>. Sapio is the programming framework I’ve
+been developing for Bitcoin Smart Contracts. There’s a <em>ton</em> of material on <a href="https://learn.sapio-lang.org">the
+website</a>, so this post is going to be a bit
+high-level and then you should jump into the docs after to learn more.</p>
+
+<h2 id="what-the-heck-is-sapio">What the heck is Sapio?</h2>
+
+<p>Sapio is a tool that helps you design and use Bitcoin smart contracts based on
+covenants (like CTV) as well as manage potentially recursive state transitions
+at terminal states.</p>
+
+<p>That’s a mouthful and a half… let’s break it down with a very basic vault
+deposit example.</p>
+
+<p>Suppose I have 10 bitcoin sitting in my normal wallet.  I want to deposit it to
+an exchange. I go to my exchange and request an address to deposit to. The
+exchange wants their coins to be in a special cold storage whereby any move from
+cold storage has to “mature” for 10 days since it was claimed before it’s
+spendable as a hot-spend, otherwise it stays in cold.  The hot wallet has logic
+such that any unused funds after it transacts, goes back into the cold-storage
+contract. We saw a contract like this in the  <a href="/bitcoin/2021/12/04/advent-7/">day
+7</a> post.</p>
+
+<p>The exchange can use Sapio to generate an address that expects 10 coins and
+encodes this cold-to-hot logic without requiring the cold keys be online! Better
+than that, I don’t even have to contact the exchange for the address. The
+exchange can distribute a codesigned Sapio WASM applet that runs on my own
+machine locally. I download the applet into my Sapio Studio GUI and that
+generates the exchange deposit UX form for the contract that I (or my wallet)
+automatically fills out and then generates a proper address/spending
+transaction.</p>
+
+<p>Upon receipt of the deposit information, (which can in certain circumstances be
+completely on-chain in the txn, so no need for a separate communication
+channel), the exchange can us the WASM to generate an identical deposit program
+to verify the user isn’t cheating somehow. <strong>Bada-bing-bada-boom!</strong></p>
+
+<p>We’ll see in close detail examples like this coming in the following posts, but
+to sum up, Sapio helped us with the following:</p>
+
+<ol>
+  <li>Authoring a Smart Contract Application for a cold storage deposit solution</li>
+  <li>Distributing it as a deterministic executable with a GUI User using it to make a
+deposit</li>
+  <li>Receiving funds as a depositee directly into a smart contract</li>
+  <li>Generating withdrawal transactions out of the vault</li>
+  <li>Putting the remaining funds back into the cold storage</li>
+</ol>
+
+<p>This is not a hypothetical, all of these components exist and are usable today!
+Where there is an asterisk is that BIP-119 CTV does not yet exist, and so for
+apps like this the exchange would have to run some kind of <a href="https://learn.sapio-lang.org/ch05-01-ctv-emulator.html">signing
+server</a> you connect to.
+This works, but is a worse trust model.  For some applications, you don’t need
+CTV if you can get all of a contract’s parties to run their own oracles.
+Therefore you can still accomplish a lot without a worse trust model with what’s
+there today!</p>
+<hr />
+
+<p>Over the remaining posts we’ll go into great detail on different applications
+built in Sapio, but for now you can <a href="https://learn.sapio-lang.org">skim through
+learn.sapio-lang.org</a> to get started playing
+around with your own designs.</p>
+
+    <div>
+    <h3>
+        <span style="vertical-align: text-top;">
+    
+
+<a class="twitter-share-button"
+data-size="large"
+href="https://twitter.com/intent/tweet?text=Sapio+Primer&hashtags=Bitcoin,
+AdventCalendar,
+Covenants,
+Sapio
+"> Tweet</a>
+
+
+
+        </span>
+        <span style="vertical-align: super;">
+to continue the conversation...
+        </span>
+    </h3>
+
+    </div>
+</div>
+
+<aside class="related">
+  <h3>You might also enjoy...</h3>
+  <ul class="related-posts">
+    
+      <li>
+        <a href="/bitcoin/2021/12/11/advent-14/">
+          Payment Channels in a CTV+Sapio World
+          <small><time datetime="2021-12-11T00:00:00+00:00">11 Dec 2021</time></small>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/bitcoin/2021/12/05/advent-8/">
+          Contracting Primitives and Upgrades to Bitcoin
+          <small><time datetime="2021-12-05T00:00:00+00:00">05 Dec 2021</time></small>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/bitcoin/2022/04/17/next-steps-bip119/">
+          7 Theses on a next step for BIP-119
+          <small><time datetime="2022-04-17T00:00:00+00:00">17 Apr 2022</time></small>
+        </a>
+      </li>
+    
+  </ul>
+</aside>
+
+        </div>
+        <div class="content container" style="padding-bottom:0;padding-top:0;bottom:0px;">
+            <div class="posts" style="height:14pt;margin-bottom:0;">
+                <div class="post">
+                    <p style="text-align:center;font-size:12pt;">&copy; 2011-2021 Jeremy Rubin. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
