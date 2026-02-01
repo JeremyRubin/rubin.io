@@ -5,6 +5,7 @@ layout: post
 title: Improving the Bitcoin Development Process
 subtitle: MIT Bitcoin Expo 2016 Talk
 date: 2016-03-06
+external_url: "https://www.youtube.com/watch?v=OGIMXTtD0Sk"
 ---
 <iframe width="560" height="315"
 src="https://www.youtube.com/embed/OGIMXTtD0Sk" frameborder="0"

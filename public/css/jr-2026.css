@@ -386,6 +386,7 @@ p {
   margin: 0;
   font-size: 1.8rem;
   position: relative;
+  color: #f8f1e6;
 }
 
 .section-title::after {
@@ -615,25 +616,61 @@ p {
   margin: 2.5rem 0;
   padding: 1.6rem;
   border-radius: 18px;
-  background: #2f241b;
-  border: 1px solid rgba(192, 138, 58, 0.35);
+  background: #221a14;
+  border: 1px solid rgba(192, 138, 58, 0.25);
   box-shadow: var(--shadow-soft);
 }
 
 .cta-title {
-  margin: 0 0 0.5rem;
-  font-size: 1.4rem;
+  margin: 0 0 0.4rem;
+  font-size: 1.05rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent-3);
 }
 
 .cta-copy {
   margin: 0 0 1.2rem;
   color: var(--text-muted);
+  font-size: 0.95rem;
 }
 
 .cta-actions {
   display: flex;
-  gap: 0.75rem;
+  gap: 0.6rem;
   flex-wrap: wrap;
+}
+
+.cta-card .button {
+  padding: 0.45rem 0.9rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  box-shadow: none;
+}
+
+.cta-card .button.primary {
+  background: rgba(192, 138, 58, 0.15);
+  color: var(--accent-3);
+  border: 1px solid rgba(192, 138, 58, 0.5);
+}
+
+.cta-card .button.secondary {
+  background: transparent;
+  color: var(--text-muted);
+  border: 1px solid rgba(192, 138, 58, 0.25);
+}
+
+.cta-card .button.secondary:hover,
+.cta-card .button.secondary:focus {
+  color: var(--text);
+  border-color: rgba(192, 138, 58, 0.5);
+}
+
+.cta-card .button:hover,
+.cta-card .button:focus {
+  transform: translateY(-1px);
 }
 
 .cta-meta {
@@ -924,4 +961,16 @@ table th {
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
   }
+}
+.post-title,
+.page-title,
+.content-item h3,
+.content-item h3 a,
+.simple-list strong a {
+  color: #f8f1e6;
+}
+
+.content-item h3 a:hover,
+.simple-list strong a:hover {
+  color: var(--accent-3);
 }

@@ -6,6 +6,7 @@ title: Structuring Multi Transaction Contracts in Bitcoin
 subtitle: Stanford BPASE 2017
 date: 2017-01-26
 tags: bitcoin
+pdf_url: "/public/pdfs/multi-txn-contracts.pdf"
 ---
 
 I was asked to give a talk at Stanford Cyber Initiative's Blockchain Protocol

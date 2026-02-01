@@ -5,6 +5,7 @@ layout: post
 title: "What the #?!* is Bitcoin?"
 subtitle: TEDxBeaconStreet 2014
 date: 2014-12-24
+external_url: "https://www.youtube.com/watch?v=Vzjtvt77mgc"
 ---
 My TEDx talk is online!
 

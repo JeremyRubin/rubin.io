@@ -6,5 +6,6 @@ subtitle: SF Crypto Devs
 title: A hardCORE workout w/ Bitcoin Core Dev Jeremy Rubin
 date: 2018-04-23
 tags: bitcoin
+external_url: "https://www.youtube.com/watch?v=PKzJktErUdk"
 ---
 <iframe width="560" height="315" src="https://www.youtube.com/embed/PKzJktErUdk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>

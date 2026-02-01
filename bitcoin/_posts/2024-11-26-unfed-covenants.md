@@ -4,6 +4,7 @@ disqusId: 881a3856154d7360343c424492dbdc1d88e4b544
 layout: post
 title: Un-FE’d Covenants
 date: 2024-11-26
+pdf_url: "/public/pdfs/unfedcovenants.pdf"
 ---
 
 Covenants in Bitcoin represent a method to restrict how and where coins can

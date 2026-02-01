@@ -4,6 +4,7 @@ disqusId: 0e63bfd940033ea95ab7621035ebb603f3f5b06c
 layout: post
 title: FE'd Up Covenants
 date: 2024-05-29
+pdf_url: "/public/pdfs/fedcov.pdf"
 ---
 Covenants are a way of expressing restrictions on Bitcoin. Covenants, while
 possible to implement as an extension to Bitcoin, do not exist natively. To

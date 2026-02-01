@@ -6,6 +6,7 @@ title: Interview by Shin'ichiro Matsuo on Bitcoin Development
 subtitle: DG BC-2 Tokyo W'17
 date: 2017-02-01
 tags: bitcoin
+external_url: "https://www.youtube.com/watch?v=aycec_N59b8"
 ---
 
 Here's a few cuts of an interview from when I taught at [BC-2 Workshop Winter 2017](https://bc-2.jp/season1/).

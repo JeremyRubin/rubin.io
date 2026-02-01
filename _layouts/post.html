@@ -17,30 +17,65 @@ filterPaginated: True
     {% assign cta_title = page.cta_title %}
     {% if cta_title == nil %}
         {% if external_url and pdf_url %}
-        {% assign cta_title = "Continue with the full article" %}
+        {% assign cta_title = "Primary source" %}
         {% elsif external_url %}
-        {% assign cta_title = "Read the full article" %}
+            {% if external_url contains "youtube.com" or external_url contains "youtu.be" %}
+            {% assign cta_title = "Recorded talk" %}
+            {% elsif external_url contains "vimeo.com" %}
+            {% assign cta_title = "Recorded talk" %}
+            {% elsif external_url contains "spotify.com" %}
+            {% assign cta_title = "Audio recording" %}
+            {% elsif external_url contains "anchor.fm" %}
+            {% assign cta_title = "Audio recording" %}
+            {% else %}
+            {% assign cta_title = "External reference" %}
+            {% endif %}
         {% else %}
-        {% assign cta_title = "Download the PDF" %}
+        {% assign cta_title = "Downloadable PDF" %}
         {% endif %}
     {% endif %}
     {% assign cta_copy = page.cta_copy %}
     {% if cta_copy == nil %}
         {% if external_url and pdf_url %}
-        {% assign cta_copy = "This post links to an external article. Use the buttons below to read it or download the PDF." %}
+        {% assign cta_copy = "External source plus a downloadable PDF for offline reading." %}
         {% elsif external_url %}
-        {% assign cta_copy = "This post links to an external article. Use the button below to continue reading." %}
+            {% if external_url contains "youtube.com" or external_url contains "youtu.be" %}
+            {% assign cta_copy = "Video recording hosted off-site." %}
+            {% elsif external_url contains "vimeo.com" %}
+            {% assign cta_copy = "Video recording hosted off-site." %}
+            {% elsif external_url contains "spotify.com" %}
+            {% assign cta_copy = "Audio recording hosted off-site." %}
+            {% elsif external_url contains "anchor.fm" %}
+            {% assign cta_copy = "Audio recording hosted off-site." %}
+            {% else %}
+            {% assign cta_copy = "Primary source hosted off-site." %}
+            {% endif %}
         {% else %}
-        {% assign cta_copy = "Grab the PDF version of this article." %}
+        {% assign cta_copy = "Download the PDF for offline reading." %}
         {% endif %}
     {% endif %}
-    {% assign external_label = page.external_label | default: "Read the full article" %}
-    {% assign pdf_label = page.pdf_label | default: "Download PDF" %}
+    {% assign external_label = page.external_label %}
+    {% assign pdf_label = page.pdf_label | default: "View PDF" %}
     {% assign external_href = external_url %}
     {% if external_href and external_href contains "http" %}
     {% assign external_href = external_href %}
     {% elsif external_href %}
     {% assign external_href = site.baseurl | append: external_href %}
+    {% endif %}
+    {% if external_label == nil %}
+        {% if external_href contains "youtube.com" or external_href contains "youtu.be" %}
+        {% assign external_label = "Watch recording" %}
+        {% elsif external_href contains "vimeo.com" %}
+        {% assign external_label = "Watch recording" %}
+        {% elsif external_href contains "spotify.com" %}
+        {% assign external_label = "Listen to recording" %}
+        {% elsif external_href contains "anchor.fm" %}
+        {% assign external_label = "Listen to recording" %}
+        {% elsif external_href contains ".pdf" %}
+        {% assign external_label = "View PDF" %}
+        {% else %}
+        {% assign external_label = "External link" %}
+        {% endif %}
     {% endif %}
     {% assign pdf_href = pdf_url %}
     {% assign pdf_is_external = false %}
