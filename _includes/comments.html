@@ -3,11 +3,11 @@
 <a class="twitter-share-button"
 data-size="large"
 href="https://twitter.com/intent/tweet?text={{page.tweet | url_encode}}&hashtags={% for hashtag in page.hashtags %}{{hashtag}}{% unless forloop.last %},{% endunless %}
-{%endfor%}"> Tweet</a>
+{%endfor%}"> Share on Twitter</a>
 {% else %}
 <a class="twitter-share-button"
 data-size="large"
 href="https://twitter.com/intent/tweet?text={{page.title | url_encode}}&hashtags={% for hashtag in page.hashtags %}{{hashtag}}{% unless forloop.last %},{% endunless %}
-{%endfor%}"> Tweet</a>
+{%endfor%}"> Share on Twitter</a>
 {% endif %}
 {% endif %}

@@ -10,8 +10,65 @@ filterPaginated: True
         <span class="post-date">{{ page.date | date_to_string }}</span>
     </header>
     {{ content }}
+
+    {% assign external_url = page.external_url %}
+    {% assign pdf_url = page.pdf_url %}
+    {% if external_url or pdf_url %}
+    {% assign cta_title = page.cta_title %}
+    {% if cta_title == nil %}
+        {% if external_url and pdf_url %}
+        {% assign cta_title = "Continue with the full article" %}
+        {% elsif external_url %}
+        {% assign cta_title = "Read the full article" %}
+        {% else %}
+        {% assign cta_title = "Download the PDF" %}
+        {% endif %}
+    {% endif %}
+    {% assign cta_copy = page.cta_copy %}
+    {% if cta_copy == nil %}
+        {% if external_url and pdf_url %}
+        {% assign cta_copy = "This post links to an external article. Use the buttons below to read it or download the PDF." %}
+        {% elsif external_url %}
+        {% assign cta_copy = "This post links to an external article. Use the button below to continue reading." %}
+        {% else %}
+        {% assign cta_copy = "Grab the PDF version of this article." %}
+        {% endif %}
+    {% endif %}
+    {% assign external_label = page.external_label | default: "Read the full article" %}
+    {% assign pdf_label = page.pdf_label | default: "Download PDF" %}
+    {% assign external_href = external_url %}
+    {% if external_href and external_href contains "http" %}
+    {% assign external_href = external_href %}
+    {% elsif external_href %}
+    {% assign external_href = site.baseurl | append: external_href %}
+    {% endif %}
+    {% assign pdf_href = pdf_url %}
+    {% assign pdf_is_external = false %}
+    {% if pdf_href and pdf_href contains "http" %}
+    {% assign pdf_is_external = true %}
+    {% elsif pdf_href %}
+    {% assign pdf_href = site.baseurl | append: pdf_href %}
+    {% endif %}
+
+    <aside class="cta-card">
+        <h2 class="cta-title">{{ cta_title }}</h2>
+        <p class="cta-copy">{{ cta_copy }}</p>
+        <div class="cta-actions">
+            {% if external_href %}
+            <a class="button primary" href="{{ external_href }}" target="_blank" rel="noopener">{{ external_label }}</a>
+            {% endif %}
+            {% if pdf_href %}
+            <a class="button secondary" href="{{ pdf_href }}" target="_blank" rel="noopener"{% unless pdf_is_external %} download{% endunless %}>{{ pdf_label }}</a>
+            {% endif %}
+        </div>
+        {% if page.external_source %}
+        <p class="cta-meta">Source: {{ page.external_source }}</p>
+        {% endif %}
+    </aside>
+    {% endif %}
+
     <div class="post-footer">
-        <h3>Join the conversation</h3>
+        <h3>Share this post</h3>
         <div class="post-share">
             {% include comments.html %}
         </div>

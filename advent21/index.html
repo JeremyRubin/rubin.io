@@ -10,6 +10,7 @@ notitle?: True
     <div class="section-head">
         <h2 class="section-title">Advent 2021</h2>
     </div>
+    <p>A daily series from 2021, collected here in order.</p>
     <div class="content-list">
         {% assign filtered_posts = site.categories.bitcoin | where_exp: "item", "item.hashtags contains 'AdventCalendar'" | sort: 'date' %}
         {% for post in filtered_posts %}
