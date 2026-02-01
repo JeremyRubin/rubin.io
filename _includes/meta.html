@@ -1,2 +1,57 @@
+{% assign seo_title = page.title | default: site.title %}
+{% if seo_title != site.title %}
+  {% assign seo_title = seo_title | append: " - " | append: site.title %}
+{% endif %}
+{% assign seo_description = page.description | default: page.excerpt | default: site.description %}
+{% assign seo_description = seo_description | strip_html | normalize_whitespace | truncate: 160 %}
+{% assign canonical = site.url | append: site.baseurl | append: page.url %}
+{% assign og_type = "website" %}
+{% if page.layout == "post" %}
+  {% assign og_type = "article" %}
+{% endif %}
+{% assign og_image = page.og_image | default: page.image | default: site.og_image %}
+{% if og_image %}
+  {% unless og_image contains "http" %}
+    {% assign og_image = og_image | prepend: site.url %}
+  {% endunless %}
+{% endif %}
+{% assign twitter_handle = "" %}
+{% if site.author.twitter %}
+  {% assign twitter_handle = site.author.twitter | split: "twitter.com/" | last | split: "/" | first %}
+{% endif %}
 
-  {% feed_meta %}
+<meta name="description" content="{{ seo_description }}">
+<meta name="author" content="{{ site.author.name | default: site.title }}">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="{{ canonical }}">
+<meta property="og:title" content="{{ seo_title }}">
+<meta property="og:description" content="{{ seo_description }}">
+<meta property="og:type" content="{{ og_type }}">
+<meta property="og:url" content="{{ canonical }}">
+<meta property="og:site_name" content="{{ site.title }}">
+<meta property="og:locale" content="{{ site.locale | default: 'en_US' }}">
+{% if og_image %}
+<meta property="og:image" content="{{ og_image }}">
+{% endif %}
+<meta name="twitter:card" content="{% if og_image %}summary_large_image{% else %}summary{% endif %}">
+{% if og_image %}
+<meta name="twitter:image" content="{{ og_image }}">
+{% endif %}
+{% if twitter_handle != "" %}
+<meta name="twitter:site" content="@{{ twitter_handle }}">
+<meta name="twitter:creator" content="@{{ twitter_handle }}">
+{% endif %}
+{% if page.layout == "post" and page.date %}
+<meta property="article:published_time" content="{{ page.date | date_to_xmlschema }}">
+{% endif %}
+<link rel="sitemap" type="application/xml" href="{{ site.url }}{{ site.baseurl }}/sitemap.xml">
+{% feed_meta %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": {{ site.title | jsonify }},
+  "url": {{ site.url | append: site.baseurl | append: "/" | jsonify }},
+  "description": {{ site.description | strip_html | normalize_whitespace | jsonify }}
+}
+</script>

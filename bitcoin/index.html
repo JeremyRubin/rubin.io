@@ -3,32 +3,31 @@ layout: page
 title: Bitcoin Posts
 disqusId: 12ca6df123ee64b816b5848d34e9d278cf1d0934
 rank: E
+notitle?: True
 ---
 
-<p>
-    Do you like Bitcoin? Then these posts are for you!
-</p>
+<section class="section">
+    <div class="section-head">
+        <h2 class="section-title">Bitcoin Posts</h2>
+    </div>
+    <p>Do you like Bitcoin? Then these posts are for you.</p>
 
-<div class="posts" style="text-align:left" >
-    {% for post in  site.categories.bitcoin %}
-    <div>
-        <strong><a style="color: #000000;" href="{{site.baseurl}}{{ post.url }}"> {{ post.title}} </a></strong>
-        {% if !!post.subtitle %} 
-        (<em>{{post.subtitle}}</em>)
-        {% endif %}
-        <br>
-        <small><em>{{post.date | date:"%B %d, %Y"}}</em></small>
-        {% if !!post.tags %}
-        | <small>
-            {%capture tagsentence%}{{ post.tags | array_to_sentence_string }}{%endcapture%}
+    <div class="content-list">
+        {% for post in site.categories.bitcoin %}
+        <article class="content-item">
+            <h3><a href="{{site.baseurl}}{{ post.url }}">{{ post.title }}</a></h3>
+            {% if !!post.subtitle %}
+            <div class="meta">{{ post.subtitle }}</div>
+            {% endif %}
+            <div class="meta">{{ post.date | date:"%B %d, %Y" }}</div>
+            {% if !!post.tags %}
+            {% capture tagsentence %}{{ post.tags | array_to_sentence_string }}{% endcapture %}
             {% assign stripped = (tagsentence | lstrip) %}
             {% if stripped != '' %}
-            tags: {{tagsentence}}
-            {%endif%}
-        </small>
-        {% endif %}
-        <div>
-            {% endfor %}
-        </div>
+            <div class="meta">Tags: {{ tagsentence }}</div>
+            {% endif %}
+            {% endif %}
+        </article>
+        {% endfor %}
     </div>
-</div>
+</section>

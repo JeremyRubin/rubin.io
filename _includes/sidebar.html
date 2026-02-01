@@ -1,33 +1,37 @@
-<div class="sidebar">
-    <h3 style="text-align: center;"> <a href="{{ site.baseurl }}/"> {{ site.title }} </a> </h3>
-    <div class="container">
-        <div class="sidebar-about">
-
-            <div class="sidebar-about-info"> 
-                <a href="/public/pdfs/resume.pdf"><i class="fa fa-file-text-o" title=Resume></i></a>
-                <a href="{{ site.github.repo }}"><i class="fa fa-github" title=Github></i></a>
-                <a href="{{ site.author.twitter }}"><i class="fa fa-twitter" title=Twitter></i></a>
-            </div>
-            <div class="sidebar-about-info hide-large">
-                <a class="" href="/">Home</a>
-                <a class="" href="/blog/">Blog</a>
-                <a class="" href="/talks/">Talks</a> 
-                <a class="" href="/projects/">Projects</a>
-                <a class="" href="/archive/">Site Index</a>
+<header class="site-header">
+    <div class="header-inner">
+        <div class="brand">
+            <a class="brand-mark" href="{{ site.baseurl }}/">JR</a>
+            <div class="brand-text">
+                <a class="brand-name" href="{{ site.baseurl }}/">{{ site.title }}</a>
+                {% if site.description %}
+                <span class="brand-tagline">{{ site.description }}</span>
+                {% endif %}
             </div>
         </div>
-
-
-
-
-        <nav class="sidebar-nav hide-small">
-            <a class="sidebar-nav-item" href="/">Home</a>
-            <a class="sidebar-nav-item" href="/blog/">Blog</a>
-            <a class="sidebar-nav-item" href="/talks/">Talks</a> 
-            <a class="sidebar-nav-item" href="/projects/">Projects</a>
-            <a class="sidebar-nav-item" href="/archive/">Site Index</a>
+        <nav class="site-nav">
+            <a class="nav-link" href="{{ site.baseurl }}/">Home</a>
+            <a class="nav-link" href="{{ site.baseurl }}/blog/">Blog</a>
+            <a class="nav-link" href="{{ site.baseurl }}/talks/">Talks</a>
+            <a class="nav-link" href="{{ site.baseurl }}/projects/">Projects</a>
+            <a class="nav-link" href="{{ site.baseurl }}/archive/">Site Index</a>
         </nav>
+        <div class="site-actions">
+            {% if site.author.resume %}
+            <a class="icon-button" href="{{ site.author.resume }}" aria-label="Resume">
+                <i class="fa fa-file-text-o" aria-hidden="true"></i>
+            </a>
+            {% endif %}
+            {% if site.github and site.github.repo %}
+            <a class="icon-button" href="{{ site.github.repo }}" aria-label="GitHub">
+                <i class="fa fa-github" aria-hidden="true"></i>
+            </a>
+            {% endif %}
+            {% if site.author.twitter %}
+            <a class="icon-button" href="{{ site.author.twitter }}" aria-label="Twitter">
+                <i class="fa fa-twitter" aria-hidden="true"></i>
+            </a>
+            {% endif %}
+        </div>
     </div>
-</div>
-
-
+</header>

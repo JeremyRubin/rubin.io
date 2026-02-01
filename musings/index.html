@@ -1,44 +1,33 @@
 ---
 layout: page
 title: Musings
-disqusId: 0ffa55e62d5bc7b5738376caebb264e296096f3c
-rank: E
+disqusId:  3f962e76d0c1b31b606b1ccf7b4f8c64f3c3cd9f
+rank: F
+notitle?: True
 ---
 
-<p>
-    I think about a lot of ideas and sometimes unceremoniously scrap them. In
-    order to make these ideas available, I'm putting them out as musings.
-</p>
-<p>
-    My goal is to only "sit on" an idea for so long -- if it sits for too long,
-    I should just put it out there to see if anyone else is interested!
-</p>
-<p>
-    I'm back-filling these as I find various half-developed project notes on my
-    computer.
-</p>
-<hr>
+<section class="section">
+    <div class="section-head">
+        <h2 class="section-title">Musings</h2>
+    </div>
+    <p>Shorter pieces, notes, and casual updates.</p>
 
-<div class="posts" style="text-align:left" >
-    {% for post in  site.categories.musings %}
-    <div>
-        <strong><a style="color: #000000;" href="{{site.baseurl}}{{ post.url }}"> {{ post.title}} </a></strong>
-        {% if !!post.subtitle %} 
-        (<em>{{post.subtitle}}</em>)
-        {% endif %}
-        <br>
-        <small><em>{{post.date | date:"%B %d, %Y"}}</em></small>
-        {% if !!post.tags %}
-        | <small>
-            {%capture tagsentence%}{{ post.tags | array_to_sentence_string }}{%endcapture%}
+    <div class="content-list">
+        {% for post in site.categories.musings %}
+        <article class="content-item">
+            <h3><a href="{{site.baseurl}}{{ post.url }}">{{ post.title }}</a></h3>
+            {% if !!post.subtitle %}
+            <div class="meta">{{ post.subtitle }}</div>
+            {% endif %}
+            <div class="meta">{{ post.date | date:"%B %d, %Y" }}</div>
+            {% if !!post.tags %}
+            {% capture tagsentence %}{{ post.tags | array_to_sentence_string }}{% endcapture %}
             {% assign stripped = (tagsentence | lstrip) %}
             {% if stripped != '' %}
-            tags: {{tagsentence}}
-            {%endif%}
-        </small>
-        {% endif %}
-        <div>
-            {% endfor %}
-        </div>
+            <div class="meta">Tags: {{ tagsentence }}</div>
+            {% endif %}
+            {% endif %}
+        </article>
+        {% endfor %}
     </div>
-</div>
+</section>

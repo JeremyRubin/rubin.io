@@ -7,17 +7,11 @@ sidebartitle: Home
 rank: A
 ---
 
-<div class="bio-info">
-    <div style="text-align:center">
-        <h1>
-            Hi, I'm Jeremy Rubin.
-        </h1>
-    </div>
-    <div class="hide-small" id="bio-pic">
-        <img src="{{site.baseurl}}/public/img/jeremy3.jpg" />
-    </div>
-    <div id="bio-text">
-        <p>
+<section class="hero">
+    <div class="hero-text">
+        <p class="hero-eyebrow">Bitcoin / Hardware / FP / ML</p>
+        <h1>Hi, I'm Jeremy Rubin.</h1>
+        <p class="lead">
             I'm the founder of <a href="https://judica.org">Judica</a>, a
             bitcoin research and development organization focused on developing
             <a href="//learn.sapio-lang.org">Sapio</a>, a smart contract
@@ -26,125 +20,106 @@ rank: A
         <p>
             Hit me up for talks, workshops, special projects, and strategic consulting.
             I also angel invest in startups (non crypto too).
-            To get in touch, <a href="mailto:jr@mit.edu">email me</a>!
+            To get in touch, <a href="mailto:jr@mit.edu">email me</a>.
         </p>
+        <div class="hero-actions">
+            <a class="button primary" href="mailto:jr@mit.edu">Email me</a>
+            <a class="button secondary" href="{{site.baseurl}}/projects/">View projects</a>
+        </div>
     </div>
-    <div id="bio-text">
-        <p>
-        <h4>highlights:</h4>
-        <ul>
-            <li>
-                <a href="{{site.baseurl}}/projects/tidbit">Tidbit:</a>
-                NJ's AG tried to jail me for saving the free web.
-            </li>
-            <li>
-                <a href="{{site.baseurl}}/projects/mit-bitcoin-project">MIT
-                    Bitcoin Project:</a> Gave every MIT undergrad $100 of bitcoin
-            </li>
-            <li>
-                Co-Founded the <a href="https://github.com/mit-dci">MIT
-                    Digital Currency Initiative</a>
-            </li>
-            <li>
-                Co-Founded <a href="https://scalingbitcoin.org">Scaling Bitcoin</a>
-            </li>
-            <li>
-                MIT '16 MEng EECS + SB CSE
-            </li>
-            <li>
-                Thesis supervised by <a href="http://people.csail.mit.edu/rivest/">Professor Ronald L. Rivest</a>
-            </li>
-            <li>
-                Censored by the US Government for saying <a href="https://fucknazis.us">Fuck Nazis</a>.
-            </li>
-        </ul>
-
-        </p>
-
-
+    <div class="hero-media">
+        <img src="{{site.baseurl}}/public/img/jeremy3.jpg" alt="Jeremy Rubin">
     </div>
-    <div class="clearfix">
+</section>
+
+<section class="section">
+    <div class="section-head">
+        <h2 class="section-title">Highlights</h2>
     </div>
+    <ul class="highlight-list">
+        <li>
+            <a href="{{site.baseurl}}/projects/tidbit">Tidbit:</a>
+            NJ's AG tried to jail me for saving the free web.
+        </li>
+        <li>
+            <a href="{{site.baseurl}}/projects/mit-bitcoin-project">MIT Bitcoin Project:</a>
+            Gave every MIT undergrad $100 of bitcoin.
+        </li>
+        <li>
+            Co-Founded the <a href="https://github.com/mit-dci">MIT Digital Currency Initiative</a>.
+        </li>
+        <li>
+            Co-Founded <a href="https://scalingbitcoin.org">Scaling Bitcoin</a>.
+        </li>
+        <li>
+            MIT '16 MEng EECS + SB CSE.
+        </li>
+        <li>
+            Thesis supervised by <a href="http://people.csail.mit.edu/rivest/">Professor Ronald L. Rivest</a>.
+        </li>
+        <li>
+            Censored by the US Government for saying <a href="https://fucknazis.us">Fuck Nazis</a>.
+        </li>
+    </ul>
+</section>
 
-</div>
-<div>
-    <h3 style="text-align:center;"> Latest Projects</h3>
-
-    <div class="posts flex-container">
-
+<section class="section">
+    <div class="section-head">
+        <h2 class="section-title">Latest Projects</h2>
+        <a class="section-link" href="{{site.baseurl}}/projects/">See more projects</a>
+    </div>
+    <div class="card-grid">
         {% assign projects = site.collections | where: "label", "projects" | first %}
         {% assign projs = projects.docs | sort: 'date' | reverse %}
-        {% for post in projs limit:3%}
-        <div class="fade" style="    width: calc(100% * (1/3) - 10px - 1px);text-align:center;">
-
-            {%if !!post.pic%}
-            <a href="{{site.baseurl}}{{ post.url }}">
-                <img src="{{site.baseurl}}{{post.pic}}" alt="{{ post.title }}" style="padding-bottom:0; margin: 0 auto;
-                overflow:hidden;max-width:100%;max-height:7rem"></a>
-            {%endif%}
-            <p style="margin-bottom:0">
+        {% for post in projs limit:3 %}
+        <a class="card" href="{{site.baseurl}}{{ post.url }}">
+            <div class="card-media">
+                {% if !!post.pic %}
+                <img src="{{site.baseurl}}{{post.pic}}" alt="{{ post.title }}">
+                {% else %}
+                <div class="card-placeholder">{{ post.title }}</div>
+                {% endif %}
+            </div>
+            <div class="card-title">
                 {% if !!post.shorttitle %}
                 {{post.shorttitle}}
                 {% else %}
                 {{post.title}}
-                {%endif%}
-            </p>
-
-        </div>
+                {% endif %}
+            </div>
+        </a>
         {% endfor %}
     </div>
-    <br>
-    <div>
-        <p style="text-align:center;">
-            <a href="{{site.baseurl}}/projects">See More Projects</a>
-        </p>
+</section>
+
+<section class="section">
+    <div class="section-head">
+        <h2 class="section-title">Latest Blogposts</h2>
+        <a class="section-link" href="{{site.baseurl}}/blog/">See more blogposts</a>
     </div>
-</div>
+    <ul class="simple-list">
+        {% for post in site.posts limit:3 %}
+        <li>
+            <div class="meta">{{post.date | date:"%B %d, %Y"}}</div>
+            <strong><a href="{{site.baseurl}}{{ post.url }}">{{ post.title }}</a></strong>
+        </li>
+        {% endfor %}
+    </ul>
+</section>
 
-
-<div>
-    <h3 style="text-align:center;"> Latest Blogposts</h3>
-
-    <div>
-        <ul style="list-style-type:none">
-
-            {% for post in site.posts limit:3%}
-            <li>
-
-                <small><em>{{post.date | date:"%D"}}</em></small>
-                <strong><a style="color: #000000;" href="{{site.baseurl}}{{ post.url }}"> {{ post.title}} </a></strong>
-
-            </li>
-            {% endfor %}
-        </ul>
+<section class="section">
+    <div class="section-head">
+        <h2 class="section-title">Latest Talks</h2>
+        <a class="section-link" href="{{site.baseurl}}/talks/">See more talks</a>
     </div>
-    <div>
-        <p style="text-align:center;">
-            <a href="{{site.baseurl}}/blog">See More Blogposts</a>
-        </p>
-    </div>
-</div>
-<div>
-    <h3 style="text-align:center;"> Latest Talks</h3>
-
-    <div>
-        <ul style="list-style-type:none">
-
-            {% for post in site.categories.talks limit:3%}
-            <li>
-
-                <strong><a style="color: #000000;" href="{{site.baseurl}}{{ post.url }}"> {{ post.title}} </a></strong>
-                {% if !!post.subtitle %}
-                <em>@ {{post.subtitle}}</em>
-                {% endif %}
-
-            </li>
-            {% endfor %}
-        </ul>
-    </div>
-    <div>
-        <p style="text-align:center;">
-            <a href="{{site.baseurl}}/talks">See More Talks</a>
-        </p>
-    </div>
-</div>
+    <ul class="simple-list">
+        {% for post in site.categories.talks limit:3 %}
+        <li>
+            <strong><a href="{{site.baseurl}}{{ post.url }}">{{ post.title }}</a></strong>
+            {% if !!post.subtitle %}
+            <div class="meta">@ {{post.subtitle}}</div>
+            {% endif %}
+        </li>
+        {% endfor %}
+    </ul>
+</section>

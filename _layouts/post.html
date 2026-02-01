@@ -3,27 +3,20 @@ layout: default
 filterPaginated: True
 ---
 
-<div class="post">
-    <h1 class="post-title">{{ page.title }}</h1>
-    {% if !!page.subtitle %}<h3>{{page.subtitle}}</h3>{%endif%}
-    {% include comments.html %}
-    <div>
-        <span class="post-date">{{ page.date | date_to_string }}
-        </span>
-    </div>
+<article class="post">
+    <header class="post-header">
+        <h1 class="post-title">{{ page.title }}</h1>
+        {% if !!page.subtitle %}<p class="post-subtitle">{{page.subtitle}}</p>{%endif%}
+        <span class="post-date">{{ page.date | date_to_string }}</span>
+    </header>
     {{ content }}
-    <div>
-    <h3>
-        <span style="vertical-align: text-top;">
-    {% include comments.html %}
-        </span>
-        <span style="vertical-align: super;">
-to continue the conversation...
-        </span>
-    </h3>
-
+    <div class="post-footer">
+        <h3>Join the conversation</h3>
+        <div class="post-share">
+            {% include comments.html %}
+        </div>
     </div>
-</div>
+</article>
 {% if site.related_posts != empty %}
 <aside class="related">
   <h3>You might also enjoy...</h3>

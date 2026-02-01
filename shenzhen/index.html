@@ -1,80 +1,41 @@
 ---
 layout: page
-title: Shenzhen Blog
-disqusId: dbf6d531bcdc52fa6c59b104c82f47fac6b21d05
-rank: D
+title: Shenzhen Journey
+disqusId:  d9b7b8e6b5ff5e7b44c2de7aef227f6f5d2bb9f1
+rank: G
+notitle?: True
 paginate:
   limit: false
   per_page: 5
   permalink: /page/:num/
-  category: 'shenzhen'
-  reversed: true
+  categories: ['shenzhen']
 ---
 
-{% assign posts = site.categories.shenzhen %}
+<section class="section">
+    <div class="section-head">
+        <h2 class="section-title">Shenzhen Journey</h2>
+    </div>
+    <p>Posts from time spent in Shenzhen and beyond.</p>
 
-{% if paginator.page == 1 %}
-{% assign sorted_posts = (posts | sort:"date") %}
-<p> This is a collection of blog posts I wrote to document my travels in the
-    summer of 2015. For the most part, I was in Shenzhen doing a hardware
-    manufacturing bootcamp run through the MIT Media Lab by Bunnie Huang, but I
-    made a few stops elsewhere.
-</p>
-<p> The posts are ordered here in chronological order. I was really bad
-    about keeping my blog up to date, so most of these are written far after
-    the fact.
-</p>
-<p> Huge thanks are in order to Bunnie (and Sean Cross and Akiba) for putting
-    together such a fantastic experience. I hope to have done it (some) justice
-    in writing these posts.
-</p>
+    <div class="content-list">
+        {% for post in paginator.posts %}
+        <article class="content-item">
+            <h3><a href="{{site.baseurl}}{{ post.url }}">{{ post.title }}</a></h3>
+            <div class="meta">{{ post.date | date:"%B %d, %Y" }}</div>
+        </article>
+        {% endfor %}
+    </div>
 
-<hr>
-
-<div class="posts" style="text-align:left" >
-    <h3> Index: </h3>
-    <table style="border:none;">
-    <tbody>
-    {% for post in  sorted_posts%}
-    <tr style="border:none;">
-        <td style="border:none;outline:none;"><small><em>{{post.date | date:"%B %d, %Y"}}</em></small></td>
-        <td style="border:none;outline:none;"><a style="color: #000000;" href="{{site.baseurl}}{{ post.url }}"> {{ post.title}} </a></td>
-    </tr>
-    {% endfor %}
-    <tbody>
-    </table>
-</div>
-
-<hr>
-{% endif %}
-
-<div class="posts">
-  {% for post in paginator.posts %}
-  <div class="post">
-    <h2 class="post-title">
-        <a href="{{site.baseurl}}{{ post.url }}">
-        {{ post.title }}
-      </a>
-  </h2>
-  {% if !!post.subtitle %}<h4>{{post.subtitle}}</h4>{%endif%}
-
-
-    <span class="post-date">{{ post.date | date_to_string }}</span>
-
-    {{ post.content }}
-  </div>
-  {% endfor %}
-</div>
-
-<div class="pagination">
-  {% if paginator.previous_page %}
-    <a class="pagination-item newer" href="{{site.baseurl}}{{paginator.previous_page_path}}">Back</a>
-  {% else %}
-    <span class="pagination-item newer">Back</span>
-  {% endif %}
-  {% if paginator.next_page %}
-  <a class="pagination-item older" href="{{site.baseurl}}{{paginator.next_page_path}}">Next</a>
-  {% else %}
-    <span class="pagination-item older">Next</span>
-  {% endif %}
-</div>
+    <div class="pagination">
+        {% if paginator.previous_page %}
+          <a class="pagination-item newer" href="{{site.baseurl}}{{paginator.previous_page_path}}">Newer</a>
+        {% else %}
+          <span class="pagination-item newer">Newer</span>
+        {% endif %}
+        {% if paginator.next_page %}
+        <a class="pagination-item older" href="{{site.baseurl}}{{paginator.next_page_path}}">Older</a>
+        {% else %}
+          <span class="pagination-item older">Older</span>
+        {% endif %}
+    </div>
+</section>

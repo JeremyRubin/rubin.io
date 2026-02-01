@@ -3,33 +3,37 @@ layout: page
 title: Archive
 disqusId:  18d2ffa7c23e1282d0bac4afa40e384b493effda
 rank: Z
+notitle?: True
 ---
 {% assign projects = site.collections | where: "label", "projects" | first %}
-{% assign all = (projects.docs | merge:site.posts)%}
+{% assign all = (projects.docs | merge:site.posts) %}
 {% assign sorted_posts = (all | sort:"date" | reverse) %}
 
-<p>This is an archival page which (should) list all content on this site in reverse chronological order.
-If you see something missing, please let me know!</p>
-<hr>
+<section class="section">
+    <div class="section-head">
+        <h2 class="section-title">Archive</h2>
+    </div>
+    <p>
+        This is an archival page which (should) list all content on this site in reverse chronological order.
+        If you see something missing, please let me know.
+    </p>
 
-<div class="posts" style="text-align:left" >
-    {% for post in  sorted_posts%}
-    <div>
-        <strong><a style="color: #000000;" href="{{site.baseurl}}{{ post.url }}"> {{ post.title}} </a></strong>
-        {% if !!post.subtitle %} 
-        (<em>{{post.subtitle}}</em>)
-        {% endif %}
-        <br>
-        <small><em>{{post.date | date:"%B %d, %Y"}}</em></small>
-        {% if !!post.tags %}
-        <small>
-            {%capture tagsentence%}{{ post.tags | array_to_sentence_string }}{%endcapture%}
+    <div class="content-list">
+        {% for post in sorted_posts %}
+        <article class="content-item">
+            <h3><a href="{{site.baseurl}}{{ post.url }}">{{ post.title }}</a></h3>
+            {% if !!post.subtitle %}
+            <div class="meta">{{ post.subtitle }}</div>
+            {% endif %}
+            <div class="meta">{{ post.date | date:"%B %d, %Y" }}</div>
+            {% if !!post.tags %}
+            {% capture tagsentence %}{{ post.tags | array_to_sentence_string }}{% endcapture %}
             {% assign stripped = (tagsentence | lstrip) %}
             {% if stripped != '' %}
-            | tags: {{tagsentence}}
-            {%endif%}
-        </small>
-        {% endif %}
-    <div>
-    {% endfor %}
-</div>
+            <div class="meta">Tags: {{ tagsentence }}</div>
+            {% endif %}
+            {% endif %}
+        </article>
+        {% endfor %}
+    </div>
+</section>

@@ -2,16 +2,16 @@
 <html lang="en-us">
     {% include head.html %}
     <body>
+        <a class="skip-link" href="#main">Skip to content</a>
         {% include sidebar.html %}
-        <div class="content container" style="padding-bottom:0;">
+        <main id="main" class="content container">
             {{ content }}
-        </div>
-        <div class="content container" style="padding-bottom:0;padding-top:0;bottom:0px;">
-            <div class="posts" style="height:14pt;margin-bottom:0;">
-                <div class="post">
-                    <p style="text-align:center;font-size:12pt;">&copy; 2011-2021 Jeremy Rubin. All rights reserved.</p>
-                </div>
+        </main>
+        <footer class="site-footer">
+            <div class="footer-inner">
+                <p>&copy; 2011-2026 Jeremy Rubin. All rights reserved.</p>
+                <a href="{{ site.baseurl }}/atom.xml">RSS</a>
             </div>
-        </div>
+        </footer>
     </body>
 </html>
