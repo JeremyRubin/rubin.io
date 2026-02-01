@@ -1,13 +1,24 @@
-{% if page.comments %}
-{% if page.tweet %}
-<a class="twitter-share-button"
-data-size="large"
-href="https://twitter.com/intent/tweet?text={{page.tweet | url_encode}}&hashtags={% for hashtag in page.hashtags %}{{hashtag}}{% unless forloop.last %},{% endunless %}
-{%endfor%}"> Share on Twitter</a>
-{% else %}
-<a class="twitter-share-button"
-data-size="large"
-href="https://twitter.com/intent/tweet?text={{page.title | url_encode}}&hashtags={% for hashtag in page.hashtags %}{{hashtag}}{% unless forloop.last %},{% endunless %}
-{%endfor%}"> Share on Twitter</a>
-{% endif %}
-{% endif %}
+{% assign share_title = page.tweet | default: page.title | default: site.title %}
+{% assign share_url = site.url | append: site.baseurl | append: page.url %}
+{% assign share_summary = page.abstract | default: page.description | default: site.description | strip_html | truncate:
+200 %}
+{% assign hn_title = share_title | truncate: 80 %}
+{% assign hn_title_q = hn_title | url_encode | replace: '+', '%20' %}
+{% assign li_title_q = share_title | url_encode | replace: '+', '%20' %}
+{% assign li_summary_q = share_summary | url_encode | replace: '+', '%20' %}
+<div class="share-bar" role="list">
+  <a class="share-button" role="listitem"
+    href="https://twitter.com/intent/tweet?text={{ share_title | url_encode }}&url={{ share_url | url_encode }}"
+    target="_blank" rel="noopener">Twitter</a>
+  <a class="share-button" role="listitem"
+    href="https://news.ycombinator.com/submitlink?u={{ share_url | url_encode }}&t={{ hn_title_q }}" target="_blank"
+    rel="noopener">HN</a>
+  <a class="share-button" role="listitem"
+    href="https://www.reddit.com/submit?url={{ share_url | url_encode }}&title={{ share_title | url_encode }}"
+    target="_blank" rel="noopener">Reddit</a>
+  <a class="share-button" role="listitem"
+    href="mailto:?subject={{ share_title | url_encode }}&body={{ share_url | url_encode }}">Email</a>
+  <a class="share-button" role="listitem"
+    href="https://www.linkedin.com/shareArticle?mini=true&url={{ share_url | url_encode }}&title={{ li_title_q }}&summary={{ li_summary_q }}&source={{ site.title | url_encode }}"
+    target="_blank" rel="noopener">LinkedIn</a>
+</div>

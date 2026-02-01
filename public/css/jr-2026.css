@@ -604,19 +604,34 @@ p {
   margin-top: 0.5rem;
 }
 
-.post-share .twitter-share-button {
+.share-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.share-button {
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
-  padding: 0.65rem 1.3rem;
+  justify-content: center;
+  padding: 0.45rem 0.85rem;
   border-radius: 999px;
-  background: rgba(122, 139, 127, 0.25);
+  background: rgba(122, 139, 127, 0.2);
   border: 1px solid rgba(122, 139, 127, 0.45);
   text-decoration: none;
   font-weight: 600;
   color: var(--text);
   white-space: nowrap;
   line-height: 1.1;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.share-button:hover,
+.share-button:focus {
+  border-color: rgba(192, 138, 58, 0.6);
+  color: var(--accent-3);
 }
 
 .cta-card {
