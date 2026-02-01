@@ -10,7 +10,9 @@ filterPaginated: True
         {% if page.abstract %}<p class="post-abstract">{{ page.abstract }}</p>{% endif %}
         <span class="post-date">{{ page.date | date_to_string }}</span>
     </header>
-    {{ content }}
+    <div class="post-body">
+        {{ content }}
+    </div>
 
     {% assign external_url = page.external_url %}
     {% assign pdf_url = page.pdf_url %}
@@ -18,7 +20,7 @@ filterPaginated: True
     {% assign cta_title = page.cta_title %}
     {% if cta_title == nil %}
         {% if external_url and pdf_url %}
-        {% assign cta_title = "Primary source" %}
+        {% assign cta_title = "Citation" %}
         {% elsif external_url %}
             {% if external_url contains "youtube.com" or external_url contains "youtu.be" %}
             {% assign cta_title = "Recorded talk" %}
@@ -32,13 +34,13 @@ filterPaginated: True
             {% assign cta_title = "External reference" %}
             {% endif %}
         {% else %}
-        {% assign cta_title = "Downloadable PDF" %}
+        {% assign cta_title = "Full-text PDF" %}
         {% endif %}
     {% endif %}
     {% assign cta_copy = page.cta_copy %}
     {% if cta_copy == nil %}
         {% if external_url and pdf_url %}
-        {% assign cta_copy = "External source plus a downloadable PDF for offline reading." %}
+        {% assign cta_copy = "Official source plus a PDF copy for offline reading." %}
         {% elsif external_url %}
             {% if external_url contains "youtube.com" or external_url contains "youtu.be" %}
             {% assign cta_copy = "Video recording hosted off-site." %}
@@ -49,14 +51,14 @@ filterPaginated: True
             {% elsif external_url contains "anchor.fm" %}
             {% assign cta_copy = "Audio recording hosted off-site." %}
             {% else %}
-            {% assign cta_copy = "Primary source hosted off-site." %}
+            {% assign cta_copy = "Publisher- or author-hosted version." %}
             {% endif %}
         {% else %}
         {% assign cta_copy = "Download the PDF for offline reading." %}
         {% endif %}
     {% endif %}
     {% assign external_label = page.external_label %}
-    {% assign pdf_label = page.pdf_label | default: "View PDF" %}
+    {% assign pdf_label = page.pdf_label | default: "Download PDF" %}
     {% assign external_href = external_url %}
     {% if external_href and external_href contains "http" %}
     {% assign external_href = external_href %}
@@ -75,7 +77,7 @@ filterPaginated: True
         {% elsif external_href contains ".pdf" %}
         {% assign external_label = "View PDF" %}
         {% else %}
-        {% assign external_label = "External link" %}
+        {% assign external_label = "View on publisher" %}
         {% endif %}
     {% endif %}
     {% assign pdf_href = pdf_url %}

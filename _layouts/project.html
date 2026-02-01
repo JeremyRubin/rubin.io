@@ -3,11 +3,14 @@ layout: default
 filterPaginated: True
 ---
 
-<div class="post">
-    <h1 class="post-title">{{ page.title }}</h1>
-    {% if !!page.subtitle %}<h3>{{page.subtitle}}</h3>{%endif%}
-    <span class="post-date">{{ page.date | date: "%B %d, %Y" }}</span>
-    {{ content }}
-</div>
-
+<article class="post">
+    <header class="post-header">
+        <h1 class="post-title">{{ page.title }}</h1>
+        {% if !!page.subtitle %}<p class="post-subtitle">{{page.subtitle}}</p>{%endif%}
+        <span class="post-date">{{ page.date | date: "%B %d, %Y" }}</span>
+    </header>
+    <div class="post-body">
+        {{ content }}
+    </div>
+</article>
 

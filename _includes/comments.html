@@ -4,8 +4,6 @@
 200 %}
 {% assign hn_title = share_title | truncate: 80 %}
 {% assign hn_title_q = hn_title | url_encode | replace: '+', '%20' %}
-{% assign li_title_q = share_title | url_encode | replace: '+', '%20' %}
-{% assign li_summary_q = share_summary | url_encode | replace: '+', '%20' %}
 <div class="share-bar" role="list">
   <a class="share-button" role="listitem"
     href="https://twitter.com/intent/tweet?text={{ share_title | url_encode }}&url={{ share_url | url_encode }}"
@@ -19,6 +17,6 @@
   <a class="share-button" role="listitem"
     href="mailto:?subject={{ share_title | url_encode }}&body={{ share_url | url_encode }}">Email</a>
   <a class="share-button" role="listitem"
-    href="https://www.linkedin.com/shareArticle?mini=true&url={{ share_url | url_encode }}&title={{ li_title_q }}&summary={{ li_summary_q }}&source={{ site.title | url_encode }}"
-    target="_blank" rel="noopener">LinkedIn</a>
+    href="https://www.linkedin.com/sharing/share-offsite/?url={{ share_url | url_encode }}" target="_blank"
+    rel="noopener">LinkedIn</a>
 </div>

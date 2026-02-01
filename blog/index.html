@@ -32,9 +32,10 @@ paginate:
       <h3><a href="{{site.baseurl}}{{ post.url }}">{{ post.title }}</a></h3>
       {% if !!post.subtitle %}<div class="meta">{{post.subtitle}}</div>{%endif%}
       <div class="meta">{{ post.date | date_to_string }}</div>
-      <div class="post-body">
-        {{ post.content }}
-      </div>
+      {% assign summary = post.abstract | default: post.description | default: post.excerpt %}
+      {% if summary %}
+      <p class="post-excerpt">{{ summary | strip_html | normalize_whitespace | truncate: 220 }}</p>
+      {% endif %}
     </article>
     {% endfor %}
   </div>

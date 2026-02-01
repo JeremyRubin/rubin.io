@@ -17,7 +17,7 @@ tagline:          ''
 description:     'Bitcoin research, smart contracts, and applied cryptography.'
 url:            https://rubin.io
 locale:         en_US
-og_image:       /public/img/jeremy3.jpg
+og_image:       /public/img/jeremy.jpg
 
 keep_files: [public, .git]
 
@@ -33,6 +33,9 @@ pagination:
 # Custom vars
 version:          4.2.0
 lsi: false
+mathjax: true
+analytics:
+  ga4: "G-LF6VBT5B2T"
 collections:
   projects:
       output: true
