@@ -7,6 +7,7 @@ subtitle: DG NCC Tokyo '17
 date: 2017-07-24
 tags: bitcoin
 external_url: "https://vimeo.com/228186350"
+abstract: "Talk examining token designs for public works and the tradeoffs highlighted during the ICO era."
 ---
 
 I gave a talk at the Digital Garage New Context Conference in Tokyo about "Perfunctory Tokens".

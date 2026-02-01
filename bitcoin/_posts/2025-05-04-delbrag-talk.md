@@ -5,6 +5,7 @@ layout: post
 title: "Grokking DelBrag: Out-of-Band On-Chain Fraud Proofs through Circuit Garbling @ Bitcoin++ Austin"
 date: 2025-05-04
 pdf_url: "/public/pdfs/delbrag-talk-btcpp-austin-2025.pdf"
+abstract: "Talk version of Delbrag, explaining the protocol, circuit-garbling approach, and the performance implications for BitVM-style fraud proofs."
 ---
 
 My talk at Bitcoin++ on how DelBrag protocols work, including detailed schematics and timing analysis.

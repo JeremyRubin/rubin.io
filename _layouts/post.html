@@ -7,6 +7,7 @@ filterPaginated: True
     <header class="post-header">
         <h1 class="post-title">{{ page.title }}</h1>
         {% if !!page.subtitle %}<p class="post-subtitle">{{page.subtitle}}</p>{%endif%}
+        {% if page.abstract %}<p class="post-abstract">{{ page.abstract }}</p>{% endif %}
         <span class="post-date">{{ page.date | date_to_string }}</span>
     </header>
     {{ content }}

@@ -576,6 +576,13 @@ p {
   font-size: 1.1rem;
 }
 
+.post-abstract {
+  margin: 0.4rem 0 1rem;
+  color: #e6d8c6;
+  font-size: 1rem;
+  max-width: 44rem;
+}
+
 .post-date {
   display: inline-block;
   margin-bottom: 1.5rem;

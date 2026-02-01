@@ -7,6 +7,7 @@ subtitle: DG NCC SF '16
 date: 2016-11-01
 tags: bitcoin
 pdf_url: "/public/pdfs/ContributeToBitcoin.pdf"
+abstract: "Practical guide to getting started contributing to Bitcoin Core, including workflow, review norms, and project structure."
 ---
 
 I gave a talk at the Digital Garage New Context Conference San Francisco on how to begin contributing to Bitcoin.

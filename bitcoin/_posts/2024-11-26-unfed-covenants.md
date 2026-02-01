@@ -5,6 +5,7 @@ layout: post
 title: Un-FE’d Covenants
 date: 2024-11-26
 pdf_url: "/public/pdfs/unfedcovenants.pdf"
+abstract: "Proposes a practical, oracle-assisted covenant system using off-chain computation, key management, and BitVM-style incentives to enforce covenant logic without protocol changes."
 ---
 
 Covenants in Bitcoin represent a method to restrict how and where coins can

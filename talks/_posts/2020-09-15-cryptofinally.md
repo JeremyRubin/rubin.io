@@ -7,6 +7,7 @@ subtitle: Crypto Finally
 date: 2020-09-15
 tags: bitcoin
 external_url: "https://www.youtube.com/watch?v=srMXBHkoxEM"
+abstract: "Fireside chat covering Bitcoin Core development and Judica's research agenda."
 ---
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/srMXBHkoxEM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>

@@ -5,6 +5,7 @@ layout: post
 title: FE'd Up Covenants
 date: 2024-05-29
 pdf_url: "/public/pdfs/fedcov.pdf"
+abstract: "Explores how Bitcoin covenants could be emulated without a soft fork by combining functional encryption and zero-knowledge proofs, outlining the high-level mechanism and tradeoffs."
 ---
 Covenants are a way of expressing restrictions on Bitcoin. Covenants, while
 possible to implement as an extension to Bitcoin, do not exist natively. To

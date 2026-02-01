@@ -8,6 +8,7 @@ date: 2017-02-01
 tags: bitcoin
 external_url: "https://vimeo.com/215140673"
 pdf_url: "https://bc-2.jp/archive/season1/materials/0104_performace.pdf"
+abstract: "Introduction to Bitcoin Core development covering the contribution process, BIP lifecycle, and performance considerations."
 ---
 
 Here's an introduction to Bitcoin Core Development I gave at the [BC-2 Workshop](https://bc-2.jp/season1/).

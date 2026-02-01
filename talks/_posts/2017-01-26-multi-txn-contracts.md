@@ -7,6 +7,7 @@ subtitle: Stanford BPASE 2017
 date: 2017-01-26
 tags: bitcoin
 pdf_url: "/public/pdfs/multi-txn-contracts.pdf"
+abstract: "Discusses techniques for structuring multi-transaction Bitcoin contracts and the security and usability tradeoffs."
 ---
 
 I was asked to give a talk at Stanford Cyber Initiative's Blockchain Protocol
