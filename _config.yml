@@ -14,7 +14,7 @@ permalink:        pretty
 # Setup
 title:            'Jeremy Rubin'
 tagline:          ''
-description:     'Bitcoin research, programming languages, hardware, and applied cryptography.'
+description:     'Bitcoin research, smart contracts, and applied cryptography.'
 url:            https://rubin.io
 locale:         en_US
 og_image:       /public/img/jeremy3.jpg
