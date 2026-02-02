@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+  <title> Sapio Primer &middot; Jeremy Rubin </title>
+  <link href="https://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#c08a3a">
+  <meta name="color-scheme" content="dark">
+
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/font-awesome-4.5.0/css/font-awesome.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="/public/css/jr-2026.css">
+  
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+  <link rel="icon" type="image/svg+xml" href="/public/favicon.svg">
+  <link rel="shortcut icon" href="/public/favicon.ico">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Welcome to day 9 of my Bitcoin Advent Calendar. You can see an index of all the posts here or subscribe at judica.org/join to get new posts in your inbox">
+<meta name="author" content="Jeremy Rubin">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://rubin.io/bitcoin/2021/12/06/advent-9/">
+<meta property="og:title" content="Sapio Primer - Jeremy Rubin">
+<meta property="og:description" content="Welcome to day 9 of my Bitcoin Advent Calendar. You can see an index of all the posts here or subscribe at judica.org/join to get new posts in your inbox">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://rubin.io/bitcoin/2021/12/06/advent-9/">
+<meta property="og:site_name" content="Jeremy Rubin">
+<meta property="og:locale" content="en_US">
+
+<meta property="og:image" content="https://rubin.io/public/img/jeremy.jpg">
+
+<meta name="twitter:card" content="summary_large_image">
+
+<meta name="twitter:image" content="https://rubin.io/public/img/jeremy.jpg">
+
+
+<meta name="twitter:site" content="@JeremyRubin">
+<meta name="twitter:creator" content="@JeremyRubin">
+
+
+<meta property="article:published_time" content="2021-12-06T00:00:00+00:00">
+
+<link rel="sitemap" type="application/xml" href="https://rubin.io/sitemap.xml">
+<link type="application/atom+xml" rel="alternate" href="https://rubin.io/feed.xml" title="Jeremy Rubin" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Jeremy Rubin",
+  "url": "https://rubin.io/",
+  "description": "Bitcoin research, smart contracts, and applied cryptography."
+}
+</script>
+
+
+  
+<!-- GA4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LF6VBT5B2T"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-LF6VBT5B2T');
+</script>
+
+
+  
+
+  <link rel="me" href="https://twitter.com/JeremyRubin">
+
+
+
+</head>
+
+    <body>
+        <a class="skip-link" href="#main">Skip to content</a>
+        <header class="site-header">
+    <div class="header-inner">
+        <div class="brand">
+            <a class="brand-mark" href="/">JR</a>
+            <div class="brand-text">
+                <a class="brand-name" href="/">Jeremy Rubin</a>
+                
+                <span class="brand-tagline">Bitcoin research, smart contracts, and applied cryptography.</span>
+                
+            </div>
+        </div>
+        <nav class="site-nav">
+            <a class="nav-link" href="/">Home</a>
+            <a class="nav-link" href="/blog/">Blog</a>
+            <a class="nav-link" href="/talks/">Talks</a>
+            <a class="nav-link" href="/projects/">Projects</a>
+            <a class="nav-link" href="/archive/">Site Index</a>
+        </nav>
+        <div class="site-actions">
+            
+            <a class="icon-button" href="/public/pdfs/resume.pdf" aria-label="Resume">
+                <i class="fa fa-file-text-o" aria-hidden="true"></i>
+            </a>
+            
+            
+            
+            <a class="icon-button" href="https://twitter.com/JeremyRubin" aria-label="Twitter">
+                <i class="fa fa-twitter" aria-hidden="true"></i>
+            </a>
+            
+        </div>
+    </div>
+</header>
+
+        <main id="main" class="content container">
+            <article class="post">
+    <header class="post-header">
+        <h1 class="post-title">Sapio Primer</h1>
+        <p class="post-subtitle">Day 9: Rubin's Bitcoin Advent Calendar</p>
+        
+        <span class="post-date">06 Dec 2021</span>
+    </header>
+    <div class="post-body">
+        <p><em>Welcome to day 9 of my Bitcoin Advent Calendar. You can see an index of all
+the posts <a href="/advent21">here</a> or subscribe at
+<a href="https://judica.org/join">judica.org/join</a> to get new posts in your inbox</em></p>
+
+<p>We’re through the basics sections of the Advent calendar ow! Time for some more…
+specific content on the bleeding edge!</p>
+
+<p>This post is your introduction to the world of
+<a href="https://learn.sapio-lang.org">Sapio</a>. Sapio is the programming framework I’ve
+been developing for Bitcoin Smart Contracts. There’s a <em>ton</em> of material on <a href="https://learn.sapio-lang.org">the
+website</a>, so this post is going to be a bit
+high-level and then you should jump into the docs after to learn more.</p>
+
+<h2 id="what-the-heck-is-sapio">What the heck is Sapio?</h2>
+
+<p>Sapio is a tool that helps you design and use Bitcoin smart contracts based on
+covenants (like CTV) as well as manage potentially recursive state transitions
+at terminal states.</p>
+
+<p>That’s a mouthful and a half… let’s break it down with a very basic vault
+deposit example.</p>
+
+<p>Suppose I have 10 bitcoin sitting in my normal wallet.  I want to deposit it to
+an exchange. I go to my exchange and request an address to deposit to. The
+exchange wants their coins to be in a special cold storage whereby any move from
+cold storage has to “mature” for 10 days since it was claimed before it’s
+spendable as a hot-spend, otherwise it stays in cold.  The hot wallet has logic
+such that any unused funds after it transacts, goes back into the cold-storage
+contract. We saw a contract like this in the  <a href="/bitcoin/2021/12/04/advent-7/">day
+7</a> post.</p>
+
+<p>The exchange can use Sapio to generate an address that expects 10 coins and
+encodes this cold-to-hot logic without requiring the cold keys be online! Better
+than that, I don’t even have to contact the exchange for the address. The
+exchange can distribute a codesigned Sapio WASM applet that runs on my own
+machine locally. I download the applet into my Sapio Studio GUI and that
+generates the exchange deposit UX form for the contract that I (or my wallet)
+automatically fills out and then generates a proper address/spending
+transaction.</p>
+
+<p>Upon receipt of the deposit information, (which can in certain circumstances be
+completely on-chain in the txn, so no need for a separate communication
+channel), the exchange can us the WASM to generate an identical deposit program
+to verify the user isn’t cheating somehow. <strong>Bada-bing-bada-boom!</strong></p>
+
+<p>We’ll see in close detail examples like this coming in the following posts, but
+to sum up, Sapio helped us with the following:</p>
+
+<ol>
+  <li>Authoring a Smart Contract Application for a cold storage deposit solution</li>
+  <li>Distributing it as a deterministic executable with a GUI User using it to make a
+deposit</li>
+  <li>Receiving funds as a depositee directly into a smart contract</li>
+  <li>Generating withdrawal transactions out of the vault</li>
+  <li>Putting the remaining funds back into the cold storage</li>
+</ol>
+
+<p>This is not a hypothetical, all of these components exist and are usable today!
+Where there is an asterisk is that BIP-119 CTV does not yet exist, and so for
+apps like this the exchange would have to run some kind of <a href="https://learn.sapio-lang.org/ch05-01-ctv-emulator.html">signing
+server</a> you connect to.
+This works, but is a worse trust model.  For some applications, you don’t need
+CTV if you can get all of a contract’s parties to run their own oracles.
+Therefore you can still accomplish a lot without a worse trust model with what’s
+there today!</p>
+<hr />
+
+<p>Over the remaining posts we’ll go into great detail on different applications
+built in Sapio, but for now you can <a href="https://learn.sapio-lang.org">skim through
+learn.sapio-lang.org</a> to get started playing
+around with your own designs.</p>
+
+    </div>
+
+    
+    
+    
+
+    <div class="post-footer">
+        <h3>Share this post</h3>
+        <div class="post-share">
+            
+
+
+
+
+<div class="share-bar" role="list">
+  <a class="share-button" role="listitem"
+    href="https://twitter.com/intent/tweet?text=Sapio+Primer&url=https%3A%2F%2Frubin.io%2Fbitcoin%2F2021%2F12%2F06%2Fadvent-9%2F"
+    target="_blank" rel="noopener">Twitter</a>
+  <a class="share-button" role="listitem"
+    href="https://news.ycombinator.com/submitlink?u=https%3A%2F%2Frubin.io%2Fbitcoin%2F2021%2F12%2F06%2Fadvent-9%2F&t=Sapio%20Primer" target="_blank"
+    rel="noopener">HN</a>
+  <a class="share-button" role="listitem"
+    href="https://www.reddit.com/submit?url=https%3A%2F%2Frubin.io%2Fbitcoin%2F2021%2F12%2F06%2Fadvent-9%2F&title=Sapio+Primer"
+    target="_blank" rel="noopener">Reddit</a>
+  <a class="share-button" role="listitem"
+    href="mailto:?subject=Sapio+Primer&body=https%3A%2F%2Frubin.io%2Fbitcoin%2F2021%2F12%2F06%2Fadvent-9%2F">Email</a>
+  <a class="share-button" role="listitem"
+    href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Frubin.io%2Fbitcoin%2F2021%2F12%2F06%2Fadvent-9%2F" target="_blank"
+    rel="noopener">LinkedIn</a>
+</div>
+
+        </div>
+    </div>
+</article>
+
+<aside class="related">
+  <h3>You might also enjoy...</h3>
+  <ul class="related-posts">
+    
+      <li>
+        <a href="/talks/2026/02/02/2020-01-30-chaincode-3/">
+          
+          <small><time datetime="2026-02-02T00:01:12+00:00">02 Feb 2026</time></small>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/bitcoin/2025/05/04/delbrag-talk/">
+          Grokking DelBrag: Out-of-Band On-Chain Fraud Proofs through Circuit Garbling @ Bitcoin++ Austin
+          <small><time datetime="2025-05-04T00:00:00+00:00">04 May 2025</time></small>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/bitcoin/2025/04/04/delbrag/">
+          Delbrag
+          <small><time datetime="2025-04-04T00:00:00+00:00">04 Apr 2025</time></small>
+        </a>
+      </li>
+    
+  </ul>
+</aside>
+
+
+        </main>
+        <footer class="site-footer">
+            <div class="footer-inner">
+                <p>&copy; 2011-2026 Jeremy Rubin. All rights reserved.</p>
+                <a href="/atom.xml">RSS</a>
+            </div>
+        </footer>
+    </body>
+</html>

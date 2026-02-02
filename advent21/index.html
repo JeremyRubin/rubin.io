@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+  <title> Advent 2021 &middot; Jeremy Rubin </title>
+  <link href="https://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#c08a3a">
+  <meta name="color-scheme" content="dark">
+
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/font-awesome-4.5.0/css/font-awesome.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="/public/css/jr-2026.css">
+  
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+  <link rel="icon" type="image/svg+xml" href="/public/favicon.svg">
+  <link rel="shortcut icon" href="/public/favicon.ico">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Bitcoin research, smart contracts, and applied cryptography.">
+<meta name="author" content="Jeremy Rubin">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://rubin.io/advent21/">
+<meta property="og:title" content="Advent 2021 - Jeremy Rubin">
+<meta property="og:description" content="Bitcoin research, smart contracts, and applied cryptography.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://rubin.io/advent21/">
+<meta property="og:site_name" content="Jeremy Rubin">
+<meta property="og:locale" content="en_US">
+
+<meta property="og:image" content="https://rubin.io/public/img/jeremy.jpg">
+
+<meta name="twitter:card" content="summary_large_image">
+
+<meta name="twitter:image" content="https://rubin.io/public/img/jeremy.jpg">
+
+
+<meta name="twitter:site" content="@JeremyRubin">
+<meta name="twitter:creator" content="@JeremyRubin">
+
+
+<link rel="sitemap" type="application/xml" href="https://rubin.io/sitemap.xml">
+<link type="application/atom+xml" rel="alternate" href="https://rubin.io/feed.xml" title="Jeremy Rubin" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Jeremy Rubin",
+  "url": "https://rubin.io/",
+  "description": "Bitcoin research, smart contracts, and applied cryptography."
+}
+</script>
+
+
+  
+<!-- GA4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LF6VBT5B2T"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-LF6VBT5B2T');
+</script>
+
+
+  
+
+  <link rel="me" href="https://twitter.com/JeremyRubin">
+
+
+
+</head>
+
+    <body>
+        <a class="skip-link" href="#main">Skip to content</a>
+        <header class="site-header">
+    <div class="header-inner">
+        <div class="brand">
+            <a class="brand-mark" href="/">JR</a>
+            <div class="brand-text">
+                <a class="brand-name" href="/">Jeremy Rubin</a>
+                
+                <span class="brand-tagline">Bitcoin research, smart contracts, and applied cryptography.</span>
+                
+            </div>
+        </div>
+        <nav class="site-nav">
+            <a class="nav-link" href="/">Home</a>
+            <a class="nav-link" href="/blog/">Blog</a>
+            <a class="nav-link" href="/talks/">Talks</a>
+            <a class="nav-link" href="/projects/">Projects</a>
+            <a class="nav-link" href="/archive/">Site Index</a>
+        </nav>
+        <div class="site-actions">
+            
+            <a class="icon-button" href="/public/pdfs/resume.pdf" aria-label="Resume">
+                <i class="fa fa-file-text-o" aria-hidden="true"></i>
+            </a>
+            
+            
+            
+            <a class="icon-button" href="https://twitter.com/JeremyRubin" aria-label="Twitter">
+                <i class="fa fa-twitter" aria-hidden="true"></i>
+            </a>
+            
+        </div>
+    </div>
+</header>
+
+        <main id="main" class="content container">
+            <div class="page page-full">
+    
+    
+    <div class="page-body">
+        <section class="section">
+    <div class="section-head">
+        <h2 class="section-title">Advent 2021</h2>
+    </div>
+    <p>A daily series from 2021, collected here in order.</p>
+    <div class="content-list">
+        
+        
+        <article class="content-item">
+            <h3><a href="/bitcoin/2021/11/28/advent-1/">Day 1: Rubin's Bitcoin Advent Calendar</a></h3>
+            
+            <div class="meta">November 28, 2021</div>
+        </article>
+        
+        <article class="content-item">
+            <h3><a href="/bitcoin/2021/11/29/advent-2/">Pillars of Bitcoin: Scalability</a></h3>
+            
+            <div class="meta">Day 2: Rubin's Bitcoin Advent Calendar</div>
+            
+            <div class="meta">November 29, 2021</div>
+        </article>
+        
+        <article class="content-item">
+            <h3><a href="/bitcoin/2021/11/30/advent-3/">Pillars of Bitcoin: Self Custody</a></h3>
+            
+            <div class="meta">Day 3: Rubin's Bitcoin Advent Calendar</div>
+            
+            <div class="meta">November 30, 2021</div>
+        </article>
+        
+        <article class="content-item">
+            <h3><a href="/bitcoin/2021/12/01/advent-4/">Pillars of Bitcoin: Decentralization</a></h3>
+            
+            <div class="meta">Day 4: Rubin's Bitcoin Advent Calendar</div>
+            
+            <div class="meta">December 01, 2021</div>
+        </article>
+        
+        <article class="content-item">
+            <h3><a href="/bitcoin/2021/12/02/advent-5/">Pillars of Bitcoin: Privacy</a></h3>
+            
+            <div class="meta">Day 5: Rubin's Bitcoin Advent Calendar</div>
+            
+            <div class="meta">December 02, 2021</div>
+        </article>
+        
+        <article class="content-item">
+            <h3><a href="/bitcoin/2021/12/03/advent-6/">What's Smart about Smart Contracts: Bitcoin Maxi Edition</a></h3>
+            
+            <div class="meta">Day 6: Rubin's Bitcoin Advent Calendar</div>
+            
+            <div class="meta">December 03, 2021</div>
+        </article>
+        
+        <article class="content-item">
+            <h3><a href="/bitcoin/2021/12/04/advent-7/">Review of Smart Contract Concepts for Bitcoin</a></h3>
+            
+            <div class="meta">Day 7: Rubin's Bitcoin Advent Calendar</div>
+            
+            <div class="meta">December 04, 2021</div>
+        </article>
+        
+        <article class="content-item">
+            <h3><a href="/bitcoin/2021/12/05/advent-8/">Contracting Primitives and Upgrades to Bitcoin</a></h3>
+            
+            <div class="meta">Day 8: Rubin's Bitcoin Advent Calendar</div>
+            
+            <div class="meta">December 05, 2021</div>
+        </article>
+        
+        <article class="content-item">
+            <h3><a href="/bitcoin/2021/12/06/advent-9/">Sapio Primer</a></h3>
+            
+            <div class="meta">Day 9: Rubin's Bitcoin Advent Calendar</div>
+            
+            <div class="meta">December 06, 2021</div>
+        </article>
+        
+        <article class="content-item">
+            <h3><a href="/bitcoin/2021/12/07/advent-10/">Building Vaults on Bitcoin</a></h3>
+            
+            <div class="meta">Day 10: Rubin's Bitcoin Advent Calendar</div>
+            
+            <div class="meta">December 07, 2021</div>
+        </article>
+        
+        <article class="content-item">
+            <h3><a href="/bitcoin/2021/12/08/advent-11/">Inheritence Schemes for Bitcoin</a></h3>
+            
+            <div class="meta">Day 11: Rubin's Bitcoin Advent Calendar</div>
+            
+            <div class="meta">December 08, 2021</div>
+        </article>
+        
+        <article class="content-item">
+            <h3><a href="/bitcoin/2021/12/09/advent-12/">Congestion Control</a></h3>
+            
+            <div class="meta">Day 12: Rubin's Bitcoin Advent Calendar</div>
+            
+            <div class="meta">December 09, 2021</div>
+        </article>
+        
+        <article class="content-item">
+            <h3><a href="/bitcoin/2021/12/10/advent-13/">Payment Pools / Coin Pools</a></h3>
+            
+            <div class="meta">Day 13: Rubin's Bitcoin Advent Calendar</div>
+            
+            <div class="meta">December 10, 2021</div>
+        </article>
+        
+        <article class="content-item">
+            <h3><a href="/bitcoin/2021/12/11/advent-14/">Payment Channels in a CTV+Sapio World</a></h3>
+            
+            <div class="meta">Day 14: Rubin's Bitcoin Advent Calendar</div>
+            
+            <div class="meta">December 11, 2021</div>
+        </article>
+        
+        <article class="content-item">
+            <h3><a href="/bitcoin/2021/12/12/advent-15/">Decentralized Coordination Free Mining Pools</a></h3>
+            
+            <div class="meta">Day 15: Rubin's Bitcoin Advent Calendar</div>
+            
+            <div class="meta">December 12, 2021</div>
+        </article>
+        
+        <article class="content-item">
+            <h3><a href="/bitcoin/2021/12/13/advent-16/">Composability in Sapio Contracts</a></h3>
+            
+            <div class="meta">Day 16: Rubin's Bitcoin Advent Calendar</div>
+            
+            <div class="meta">December 13, 2021</div>
+        </article>
+        
+        <article class="content-item">
+            <h3><a href="/bitcoin/2021/12/14/advent-17/">A Defense of Having Fun (and maybe staying poor)</a></h3>
+            
+            <div class="meta">Day 17: Rubin's Bitcoin Advent Calendar</div>
+            
+            <div class="meta">December 14, 2021</div>
+        </article>
+        
+        <article class="content-item">
+            <h3><a href="/bitcoin/2021/12/15/advent-18/">Sapio Studio Payment Pool Walkthrough</a></h3>
+            
+            <div class="meta">Day 18: Rubin's Bitcoin Advent Calendar</div>
+            
+            <div class="meta">December 15, 2021</div>
+        </article>
+        
+        <article class="content-item">
+            <h3><a href="/bitcoin/2021/12/16/advent-19/">Part One: Implementing NFTs in Sapio</a></h3>
+            
+            <div class="meta">Day 19: Rubin's Bitcoin Advent Calendar</div>
+            
+            <div class="meta">December 16, 2021</div>
+        </article>
+        
+        <article class="content-item">
+            <h3><a href="/bitcoin/2021/12/17/advent-20/">Oracles, Bonds, and Attestation Chains</a></h3>
+            
+            <div class="meta">Day 20: Rubin's Bitcoin Advent Calendar</div>
+            
+            <div class="meta">December 17, 2021</div>
+        </article>
+        
+        <article class="content-item">
+            <h3><a href="/bitcoin/2021/12/18/advent-21/">Packaging Sapio Applications</a></h3>
+            
+            <div class="meta">Day 21: Rubin's Bitcoin Advent Calendar</div>
+            
+            <div class="meta">December 18, 2021</div>
+        </article>
+        
+        <article class="content-item">
+            <h3><a href="/bitcoin/2021/12/19/advent-22/">NFTs Part Two: Auctions, Royalties, Mints, Generative, Game Items</a></h3>
+            
+            <div class="meta">Day 22: Rubin's Bitcoin Advent Calendar</div>
+            
+            <div class="meta">December 19, 2021</div>
+        </article>
+        
+        <article class="content-item">
+            <h3><a href="/bitcoin/2021/12/20/advent-23/">Derivatives and Options For Bitcoin</a></h3>
+            
+            <div class="meta">Day 23: Rubin's Bitcoin Advent Calendar</div>
+            
+            <div class="meta">December 20, 2021</div>
+        </article>
+        
+        <article class="content-item">
+            <h3><a href="/bitcoin/2021/12/21/advent-24/">POWSWAP: Oracle Free Bitcoin Hashrate Derivatives</a></h3>
+            
+            <div class="meta">Day 24: Rubin's Bitcoin Advent Calendar</div>
+            
+            <div class="meta">December 21, 2021</div>
+        </article>
+        
+        <article class="content-item">
+            <h3><a href="/bitcoin/2021/12/22/advent-25/">Decentralized Autonomous Organizations (DAOs) Will Save Bitcoin</a></h3>
+            
+            <div class="meta">Day 25: Rubin's Bitcoin Advent Calendar</div>
+            
+            <div class="meta">December 22, 2021</div>
+        </article>
+        
+        <article class="content-item">
+            <h3><a href="/bitcoin/2021/12/23/advent-26/">The History and Future of Sapio</a></h3>
+            
+            <div class="meta">Day 26: Rubin's Bitcoin Advent Calendar</div>
+            
+            <div class="meta">December 23, 2021</div>
+        </article>
+        
+        <article class="content-item">
+            <h3><a href="/bitcoin/2021/12/24/advent-27/">RoadMap or Load o' Crap?</a></h3>
+            
+            <div class="meta">Day 27: Rubin's Bitcoin Advent Calendar</div>
+            
+            <div class="meta">December 24, 2021</div>
+        </article>
+        
+    </div>
+</section>
+
+    </div>
+</div>
+
+        </main>
+        <footer class="site-footer">
+            <div class="footer-inner">
+                <p>&copy; 2011-2026 Jeremy Rubin. All rights reserved.</p>
+                <a href="/atom.xml">RSS</a>
+            </div>
+        </footer>
+    </body>
+</html>

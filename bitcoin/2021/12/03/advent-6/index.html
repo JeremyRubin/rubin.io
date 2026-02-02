@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+  <title> What's Smart about Smart Contracts: Bitcoin Maxi Edition &middot; Jeremy Rubin </title>
+  <link href="https://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#c08a3a">
+  <meta name="color-scheme" content="dark">
+
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/font-awesome-4.5.0/css/font-awesome.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="/public/css/jr-2026.css">
+  
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+  <link rel="icon" type="image/svg+xml" href="/public/favicon.svg">
+  <link rel="shortcut icon" href="/public/favicon.ico">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Welcome to day 6 of my Bitcoin Advent Calendar. You can see an index of all the posts here or subscribe at judica.org/join to get new posts in your inbox">
+<meta name="author" content="Jeremy Rubin">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://rubin.io/bitcoin/2021/12/03/advent-6/">
+<meta property="og:title" content="What's Smart about Smart Contracts: Bitcoin Maxi Edition - Jeremy Rubin">
+<meta property="og:description" content="Welcome to day 6 of my Bitcoin Advent Calendar. You can see an index of all the posts here or subscribe at judica.org/join to get new posts in your inbox">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://rubin.io/bitcoin/2021/12/03/advent-6/">
+<meta property="og:site_name" content="Jeremy Rubin">
+<meta property="og:locale" content="en_US">
+
+<meta property="og:image" content="https://rubin.io/public/img/jeremy.jpg">
+
+<meta name="twitter:card" content="summary_large_image">
+
+<meta name="twitter:image" content="https://rubin.io/public/img/jeremy.jpg">
+
+
+<meta name="twitter:site" content="@JeremyRubin">
+<meta name="twitter:creator" content="@JeremyRubin">
+
+
+<meta property="article:published_time" content="2021-12-03T00:00:00+00:00">
+
+<link rel="sitemap" type="application/xml" href="https://rubin.io/sitemap.xml">
+<link type="application/atom+xml" rel="alternate" href="https://rubin.io/feed.xml" title="Jeremy Rubin" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Jeremy Rubin",
+  "url": "https://rubin.io/",
+  "description": "Bitcoin research, smart contracts, and applied cryptography."
+}
+</script>
+
+
+  
+<!-- GA4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LF6VBT5B2T"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-LF6VBT5B2T');
+</script>
+
+
+  
+
+  <link rel="me" href="https://twitter.com/JeremyRubin">
+
+
+
+</head>
+
+    <body>
+        <a class="skip-link" href="#main">Skip to content</a>
+        <header class="site-header">
+    <div class="header-inner">
+        <div class="brand">
+            <a class="brand-mark" href="/">JR</a>
+            <div class="brand-text">
+                <a class="brand-name" href="/">Jeremy Rubin</a>
+                
+                <span class="brand-tagline">Bitcoin research, smart contracts, and applied cryptography.</span>
+                
+            </div>
+        </div>
+        <nav class="site-nav">
+            <a class="nav-link" href="/">Home</a>
+            <a class="nav-link" href="/blog/">Blog</a>
+            <a class="nav-link" href="/talks/">Talks</a>
+            <a class="nav-link" href="/projects/">Projects</a>
+            <a class="nav-link" href="/archive/">Site Index</a>
+        </nav>
+        <div class="site-actions">
+            
+            <a class="icon-button" href="/public/pdfs/resume.pdf" aria-label="Resume">
+                <i class="fa fa-file-text-o" aria-hidden="true"></i>
+            </a>
+            
+            
+            
+            <a class="icon-button" href="https://twitter.com/JeremyRubin" aria-label="Twitter">
+                <i class="fa fa-twitter" aria-hidden="true"></i>
+            </a>
+            
+        </div>
+    </div>
+</header>
+
+        <main id="main" class="content container">
+            <article class="post">
+    <header class="post-header">
+        <h1 class="post-title">What's Smart about Smart Contracts: Bitcoin Maxi Edition</h1>
+        <p class="post-subtitle">Day 6: Rubin's Bitcoin Advent Calendar</p>
+        
+        <span class="post-date">03 Dec 2021</span>
+    </header>
+    <div class="post-body">
+        <p><em>Welcome to day 6 of my Bitcoin Advent Calendar. You can see an index of all
+the posts <a href="/advent21">here</a> or subscribe at
+<a href="https://judica.org/join">judica.org/join</a> to get new posts in your inbox</em></p>
+
+<p>Now that we’ve established the four pillars of Privacy, Decentralization, Self
+Custody, and Scalability, let’s get into smart contracts. But first…</p>
+
+<h1 id="does-bitcoin-have-smart-contracts">DOES BITCOIN HAVE SMART CONTRACTS?</h1>
+
+<p>There is a lot of fuss around if bitcoin has or doesn’t have smart contracts,
+and this is usually people talking past one another. Bitcoin does have enough
+functionality to create certain smart contracts. But Bitcoin does not “have
+Smart Contracts” in the same way that, say, Ethereum “has” Smart Contracts.
+Sure, one can argue that because Ethereum is weaker in terms of its fulfillment
+of the four pillars, it doesn’t really have smart contracts either. But almost
+undeniably there is something happening in the Ethereum Ecosystem that isn’t
+happening for Bitcoin – yet.</p>
+
+<p>Often, Bitcoin Boosters will say that the types of things happening on Ethereum
+aren’t desirable at all and are just scams. Many of these Boosters then go on to
+promote projects of similar dubious nature… but that’s off topic for this post!
+While there are many projects that frankly suck, there are also many projects on
+Ethereum that are relevant to the interests of Bitcoiners! Examples of projects
+that advance Ethereum’s realization of these 4 pillars that would be difficult
+to build on Bitcoin include: Gnosis Safe for Custody; Tornado Cash for Privacy;
+Optimistic/Zero Knowledge Rollups for scalability; SmartPool for on-chain mining
+pool coordination. It’s claimed that any time something of value proves out in
+the other ecosystems, Bitcoin can easily just incorporate the highlights.</p>
+
+<p>My position is somewhat unique on this matter: Smart Contracts aren’t something
+you build on top of a layer with good decentralization, privacy, scalability,
+and self custody – Smart Contracts are a central part of what makes achieving
+those pillars possible! In other words, we need a Smart Contract ecosystem that
+enables broad innovation in order to make our four pillars robust. This is not
+the same as saying we need the Ethereum VM, but we do need something to be
+different than the status quo today to empower builders to create new tools on
+top of Bitcoin. This differs from a traditional Bitcoiner perspective which is
+more along the lines of once we improve our (insert generic property here); then
+we can consider figuring out how to add more smart contracts.</p>
+
+<h2 id="that-bar-sucks-its-too-crowded">That bar sucks it’s too crowded</h2>
+
+<p>Another reason sometimes given for not wanting smart contracts is that they’re
+too expensive and won’t scale.  While this is a valid concern, the story around
+fees is somewhat interesting. You may have seen people complain about high fees
+on other platforms and say therefore it sucks and should die. It’s a bit like saying
+a crowded bar is no good. Obviously, if people are at the bar it is good. That
+your enjoyment is less is solely because you’re antisocial. On other platforms,
+there are users paying exorbiant fees to do transactions… but would they be
+doing them if they weren’t getting commensurate value? Let’s have a look at some
+data from <a href="https://cryptofees.info">cryptofees</a><sup id="fnref:date" role="doc-noteref"><a href="#fn:date" class="footnote" rel="footnote">1</a></sup>.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>1 Day Fees</th>
+      <th>7 Day Avg. Fees</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Ethereum</td>
+      <td>$62,620,320.03</td>
+      <td>$55,285,528.00</td>
+    </tr>
+    <tr>
+      <td>Uniswap</td>
+      <td>$11,315,687.79</td>
+      <td>$10,507,247.12</td>
+    </tr>
+    <tr>
+      <td>Binance Smart Chain</td>
+      <td>$7,240,187.13</td>
+      <td>$7,525,565.73</td>
+    </tr>
+    <tr>
+      <td>Balancer</td>
+      <td>$1,572,934.46</td>
+      <td>$445,368.69</td>
+    </tr>
+    <tr>
+      <td>Aave</td>
+      <td>$1,465,761.04</td>
+      <td>$1,354,792.55</td>
+    </tr>
+    <tr>
+      <td>SushiSwap</td>
+      <td>$1,379,856.87</td>
+      <td>$1,664,071.03</td>
+    </tr>
+    <tr>
+      <td>Bitcoin</td>
+      <td>$1,160,676.57</td>
+      <td>$730,368.10</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Clearly a lot of folks are willing to pay for Ethereum and projects on top of
+it. Bitcoin is ultimately a business, and it relies on its customers paying fees
+to incentivize the production of blocks. More fees, more incentive to provide
+security for Bitcoin. It’s a little problematic, therefore, when users are
+getting more utility from (by virtue of how much they are spending) other chains
+than Bitcoin<sup id="fnref:gent" role="doc-noteref"><a href="#fn:gent" class="footnote" rel="footnote">2</a></sup>.</p>
+
+<p>Although we need to be careful to not hurt Bitcoin’s essential properties, it’s
+clear that smart contracts provide massive leverage for incentivizing users to
+do transactions to pay for block production, without which Bitcoin falls apart.</p>
+
+<h2 id="capitalist-or-communist">Capitalist or Communist?</h2>
+
+<p>The last point I’ll leave you with is perhaps a bit charged / “problematic”, but
+I think it’s a good one. Bitcoin is a bit like America. Ethereum is a bit like China.
+Provisionally, America is the Free Market Capitalism country and China is the
+State Controlled Communist Markets country. In practice, if you visit a market
+in China there <em>seems</em> to be a lot more capitalism than in the US. Tons and tons
+of small businesses, operating with (seemingly) little regulation. On the other
+hand, in San Francisco you can spend
+<a href="https://sf.eater.com/2021/4/22/22397615/matcha-n-more-ice-cream-store-200000-quits">$200k</a>
+trying to get permits for an Ice Cream shop and fail. On the flip side, in the states once you’re
+successful and operating it’s pretty darn hard for the government to substantial interfere.
+In China, your CEO might vanish for a few weeks like Jack Ma.</p>
+
+<p>Bitcoin is a bit like America. Building on it is incredibly hard, but if you
+figure it out and crack the code it’s supposed to work forever and devs bend
+backwards to ensure your use case won’t break.</p>
+
+<p>Ethereum is a bit like China. Building on it is incredibly easy – at first –
+but if what you’re doing violates the “social order” your thing will get rekt by
+king VB with EIPscallibur. Examples of this include the removal of refunds for
+clearing space which bricked a popular gas fee arbitrage token.</p>
+
+<p>Now, obviously this description is tinged with preference. I <em>love</em> America.
+Best country in the world (or, rather, terrible country, just better than all
+the other terrible countries). However, Bitcoin is not America and Ethereum is
+not China. There can be a middle road, and benefits from such an approach as
+well. Smart contracts seem to be really good at enabling permissionless
+innovation. Permissionless innovation is great for capitalism! Capitalism is
+great for improving utility of users and coordinating people. Wouldn’t it be
+nice if building on Bitcoin didn’t require getting proposals passed the
+developer “commitiburo” and  more innovators picked Bitcoin as the best chain to
+build new ideas on top of? Obivously we don’t want to sacrifice the other parts
+that make Bitcoin great, but we can still entertain the types of economic
+benefits we would see by enabling more permissionless innovation. Because
+ultimately, and perhaps tautologically…</p>
+
+<h2 id="the-best-platform-for-capitalism-wins">The best platform for capitalism wins</h2>
+
+<p>As described, Bitcoin has certain positive and negative properties. Ethereum
+too. At the end of the day, in aggregate, what “matters” is what participants
+choose to use and rely on through a free market selection process. That’s why
+despite <em>not</em> offfering the playground of Ethereum, Bitcoin has something that
+people value more: stability. However, stability and stagnation are two sides of
+the same coin. Stagnate for too long and competitors will eat your lunch.  And
+perhaps the stability that makes Bitcoin unique will eventually be convincingly
+present in other ecosystems, despite Bitcoin’s head start in that endeavor.</p>
+
+<p>Spooky Scary!</p>
+
+<hr />
+
+<p>In the coming posts we’ll review the concepts more in depth, the state of the
+art research for Bitcoin Smart Contracts, and get into some examples of useful
+Bitcoin contracts.</p>
+
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:date" role="doc-endnote">
+      <p>Snapshot from December 2nd 2021 <a href="#fnref:date" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:gent" role="doc-endnote">
+      <p>Shoutout <a href="https://pleb.fi/transcripts/2020/miami/ryang/">Ryan Gentry</a>. <a href="#fnref:gent" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+    </div>
+
+    
+    
+    
+
+    <div class="post-footer">
+        <h3>Share this post</h3>
+        <div class="post-share">
+            
+
+
+
+
+<div class="share-bar" role="list">
+  <a class="share-button" role="listitem"
+    href="https://twitter.com/intent/tweet?text=What%27s+Smart+about+Smart+Contracts%3A+Bitcoin+Maxi+Edition&url=https%3A%2F%2Frubin.io%2Fbitcoin%2F2021%2F12%2F03%2Fadvent-6%2F"
+    target="_blank" rel="noopener">Twitter</a>
+  <a class="share-button" role="listitem"
+    href="https://news.ycombinator.com/submitlink?u=https%3A%2F%2Frubin.io%2Fbitcoin%2F2021%2F12%2F03%2Fadvent-6%2F&t=What%27s%20Smart%20about%20Smart%20Contracts%3A%20Bitcoin%20Maxi%20Edition" target="_blank"
+    rel="noopener">HN</a>
+  <a class="share-button" role="listitem"
+    href="https://www.reddit.com/submit?url=https%3A%2F%2Frubin.io%2Fbitcoin%2F2021%2F12%2F03%2Fadvent-6%2F&title=What%27s+Smart+about+Smart+Contracts%3A+Bitcoin+Maxi+Edition"
+    target="_blank" rel="noopener">Reddit</a>
+  <a class="share-button" role="listitem"
+    href="mailto:?subject=What%27s+Smart+about+Smart+Contracts%3A+Bitcoin+Maxi+Edition&body=https%3A%2F%2Frubin.io%2Fbitcoin%2F2021%2F12%2F03%2Fadvent-6%2F">Email</a>
+  <a class="share-button" role="listitem"
+    href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Frubin.io%2Fbitcoin%2F2021%2F12%2F03%2Fadvent-6%2F" target="_blank"
+    rel="noopener">LinkedIn</a>
+</div>
+
+        </div>
+    </div>
+</article>
+
+<aside class="related">
+  <h3>You might also enjoy...</h3>
+  <ul class="related-posts">
+    
+      <li>
+        <a href="/talks/2026/02/02/2020-01-30-chaincode-3/">
+          
+          <small><time datetime="2026-02-02T00:01:12+00:00">02 Feb 2026</time></small>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/bitcoin/2025/05/04/delbrag-talk/">
+          Grokking DelBrag: Out-of-Band On-Chain Fraud Proofs through Circuit Garbling @ Bitcoin++ Austin
+          <small><time datetime="2025-05-04T00:00:00+00:00">04 May 2025</time></small>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/bitcoin/2025/04/04/delbrag/">
+          Delbrag
+          <small><time datetime="2025-04-04T00:00:00+00:00">04 Apr 2025</time></small>
+        </a>
+      </li>
+    
+  </ul>
+</aside>
+
+
+        </main>
+        <footer class="site-footer">
+            <div class="footer-inner">
+                <p>&copy; 2011-2026 Jeremy Rubin. All rights reserved.</p>
+                <a href="/atom.xml">RSS</a>
+            </div>
+        </footer>
+    </body>
+</html>

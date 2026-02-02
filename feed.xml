@@ -1,0 +1,1454 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="https://rubin.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://rubin.io/" rel="alternate" type="text/html" /><updated>2026-02-02T00:01:12+00:00</updated><id>https://rubin.io/feed.xml</id><title type="html">Jeremy Rubin</title><subtitle>Bitcoin research, smart contracts, and applied cryptography.</subtitle><author><name>Jeremy Rubin</name></author><entry><title type="html"></title><link href="https://rubin.io/talks/2026/02/02/2020-01-30-chaincode-3/" rel="alternate" type="text/html" title="" /><published>2026-02-02T00:01:12+00:00</published><updated>2026-02-02T00:01:12+00:00</updated><id>https://rubin.io/talks/2026/02/02/2020-01-30-chaincode-3</id><content type="html" xml:base="https://rubin.io/talks/2026/02/02/2020-01-30-chaincode-3/">&lt;iframe src=&quot;https://anchor.fm/chaincode/embed/episodes/Jeremy-Rubin-and-CHECKTEMPLATEVERIFY---Episode-3-eahnt3/a-a1cotkp&quot; height=&quot;102px&quot; width=&quot;400px&quot; frameborder=&quot;0&quot; scrolling=&quot;no&quot;&gt;&lt;/iframe&gt;</content><author><name>Jeremy Rubin</name></author><category term="talks" /></entry><entry><title type="html">Grokking DelBrag: Out-of-Band On-Chain Fraud Proofs through Circuit Garbling @ Bitcoin++ Austin</title><link href="https://rubin.io/bitcoin/2025/05/04/delbrag-talk/" rel="alternate" type="text/html" title="Grokking DelBrag: Out-of-Band On-Chain Fraud Proofs through Circuit Garbling @ Bitcoin++ Austin" /><published>2025-05-04T00:00:00+00:00</published><updated>2025-05-04T00:00:00+00:00</updated><id>https://rubin.io/bitcoin/2025/05/04/delbrag-talk</id><content type="html" xml:base="https://rubin.io/bitcoin/2025/05/04/delbrag-talk/">&lt;p&gt;My talk at Bitcoin++ on how DelBrag protocols work, including detailed schematics and timing analysis.&lt;/p&gt;
+
+&lt;p&gt;Also introduces new concepts of optimistic circuit consistency checks.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;/public/pdfs/delbrag-talk-btcpp-austin-2025.pdf&quot;&gt;Get the Slides Here&lt;/a&gt;&lt;/p&gt;</content><author><name>Jeremy Rubin</name></author><category term="bitcoin" /><summary type="html">My talk at Bitcoin++ on how DelBrag protocols work, including detailed schematics and timing analysis.</summary></entry><entry><title type="html">Delbrag</title><link href="https://rubin.io/bitcoin/2025/04/04/delbrag/" rel="alternate" type="text/html" title="Delbrag" /><published>2025-04-04T00:00:00+00:00</published><updated>2025-04-04T00:00:00+00:00</updated><id>https://rubin.io/bitcoin/2025/04/04/delbrag</id><content type="html" xml:base="https://rubin.io/bitcoin/2025/04/04/delbrag/">&lt;p&gt;Delbrag is a paper explaining how garbled circuits can be applied to make BitVM style constructs fraud proofs substantially more efficient, at the cost of increased out-of-band information exchange.&lt;/p&gt;
+
+&lt;p&gt;Delbrag was originally authored in November, 2024, but wasn’t published sooner as the author procrastinated.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;/public/pdfs/delbrag.pdf&quot;&gt;Read the full paper.&lt;/a&gt;&lt;/p&gt;</content><author><name>Jeremy Rubin</name></author><category term="bitcoin" /><summary type="html">Delbrag is a paper explaining how garbled circuits can be applied to make BitVM style constructs fraud proofs substantially more efficient, at the cost of increased out-of-band information exchange.</summary></entry><entry><title type="html">Taproot Denial of Service Bug</title><link href="https://rubin.io/bitcoin/2025/03/11/core-vuln-taproot-dos/" rel="alternate" type="text/html" title="Taproot Denial of Service Bug" /><published>2025-03-11T00:00:00+00:00</published><updated>2025-03-11T00:00:00+00:00</updated><id>https://rubin.io/bitcoin/2025/03/11/core-vuln-taproot-dos</id><content type="html" xml:base="https://rubin.io/bitcoin/2025/03/11/core-vuln-taproot-dos/">&lt;p&gt;TL;DR: Taproot’s sighash implementation could cause blocks to take 60s or more to validate with specially crafted standard transactions. The patch adds a new cache during validation.&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt; &lt;/th&gt;
+      &lt;th&gt; &lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;patch:&lt;/td&gt;
+      &lt;td&gt;https://github.com/bitcoin/bitcoin/pull/24105&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Patched:&lt;/td&gt;
+      &lt;td&gt;24.x, 23.x.&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Unpatched:&lt;/td&gt;
+      &lt;td&gt;22.x&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;I discovered this vulnerability while addressing feedback on BIP-119 (CTV) regarding its denial of service risk mitigations.&lt;/p&gt;
+
+&lt;p&gt;During the comparison of BIPs’ text on DoS mitigations, I identified this vulnerability in the core’s Taproot implementation, made a proof of concept exploit, and patched it.&lt;/p&gt;
+
+&lt;p&gt;Special thanks to the reviewers and security maintainers of Bitcoin Core for assisting in resolving this issue.&lt;/p&gt;
+
+&lt;h1 id=&quot;exploit-explanation--fix&quot;&gt;Exploit Explanation &amp;amp; Fix&lt;/h1&gt;
+
+&lt;p&gt;The below code fragment is the core of the fix.&lt;/p&gt;
+
+&lt;p&gt;Before the patch, the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sha_single_output&lt;/code&gt; is computed on the fly during script evaluation, potentially. Because it is not cached, it could potentially get re-hashed multiple times.&lt;/p&gt;
+
+&lt;p&gt;After the patch, it is cached after the first evaluation (Cache on First Use).&lt;/p&gt;
+
+&lt;div class=&quot;language-diff highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gh&quot;&gt;diff --git a/src/script/interpreter.cpp b/src/script/interpreter.cpp
+index 95ffe40a74..07b44971b7 100644
+&lt;/span&gt;&lt;span class=&quot;gd&quot;&gt;--- a/src/script/interpreter.cpp
+&lt;/span&gt;&lt;span class=&quot;gi&quot;&gt;+++ b/src/script/interpreter.cpp
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;@@ -1568,9 +1568,12 @@&lt;/span&gt; bool SignatureHashSchnorr(uint256&amp;amp; hash_out, const ScriptExecutionData&amp;amp; execdata
+     // Data about the output (if only one).
+     if (output_type == SIGHASH_SINGLE) {
+         if (in_pos &amp;gt;= tx_to.vout.size()) return false;
+&lt;span class=&quot;gd&quot;&gt;-        CHashWriter sha_single_output(SER_GETHASH, 0);
+-        sha_single_output &amp;lt;&amp;lt; tx_to.vout[in_pos];
+-        ss &amp;lt;&amp;lt; sha_single_output.GetSHA256();
+&lt;/span&gt;&lt;span class=&quot;gi&quot;&gt;+        if (!execdata.m_output_hash) {
++            CHashWriter sha_single_output(SER_GETHASH, 0);
++            sha_single_output &amp;lt;&amp;lt; tx_to.vout[in_pos];
++            execdata.m_output_hash = sha_single_output.GetSHA256();
++        }
++        ss &amp;lt;&amp;lt; execdata.m_output_hash.value();
+&lt;/span&gt;     }
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;What could go wrong? Well, suppose I have a transaction that calls CHECKSIG with SIGHASH_SINGLE N times, and the corresponding SIGHASH_SINGLE output is length M. We can trigger &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;O(M*N)&lt;/code&gt; quadratic hashing.&lt;/p&gt;
+
+&lt;p&gt;The below code can be put into the feature_taproot test, along with a few other tweaks, to test this behavior. It makes a script with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;40000&lt;/code&gt; CHECKSIGS that each have to hash &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;230,000&lt;/code&gt; bytes. I think this was the largest size / repetition count I could figure out, and it took about 60s on an M1 Mac to validate.&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;spenders_taproot_active&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;&quot;&quot;&quot;Return a list of Spenders for testing post-Taproot activation behavior.&quot;&quot;&quot;&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;secs&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;generate_privkey&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;range&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;8&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)]&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;pubs&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;compute_xonly_pubkey&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sec&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sec&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;secs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+
+    &lt;span class=&quot;n&quot;&gt;spenders&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[]&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;# Expensive -- Pile up N CHECKSIGs, minding WU for 
+&lt;/span&gt;    &lt;span class=&quot;c1&quot;&gt;# sigops constraints
+&lt;/span&gt;    &lt;span class=&quot;n&quot;&gt;N&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;40000&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;scripts&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;exp&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;CScript&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;sa&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;0&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;8&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;OP_DROP&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;sa&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;0&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;13&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;OP_DROP&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;N&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;11&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;OP_DUP&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pubs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;OP_CHECKSIGVERIFY&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;N&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pubs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;OP_CHECKSIG&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]))]&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;tap&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;taproot_construct&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pubs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;scripts&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;add_spender&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;spenders&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;exp&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tap&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tap&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;leaf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;exp&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;standard&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;False&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;hashtype&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;SIGHASH_SINGLE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;key&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;secs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;SINGLE_SIG&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;failure&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;None&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;spenders&lt;/span&gt;
+
+
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;big_output&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tx&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;# Add 1 Big Output with 0 bytes
+&lt;/span&gt;    &lt;span class=&quot;n&quot;&gt;tx&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;vout&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;append&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;CTxOut&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;tx&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;vout&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;].&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nValue&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;in_value&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;in_value&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tx&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;vout&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;].&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nValue&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;tx&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;vout&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;].&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;scriptPubKey&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;CScript&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;sa&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;0&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;230000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tx&lt;/span&gt;
+    
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;There are variants of this attack that can rely on standard transactions as well, but the caching should eliminate all potential concern with SIGHASH_SINGLE.&lt;/p&gt;</content><author><name>Jeremy Rubin</name></author><category term="bitcoin" /><summary type="html">TL;DR: Taproot’s sighash implementation could cause blocks to take 60s or more to validate with specially crafted standard transactions. The patch adds a new cache during validation.</summary></entry><entry><title type="html">Fun with CSFS I</title><link href="https://rubin.io/bitcoin/2025/03/05/csfs-fun/" rel="alternate" type="text/html" title="Fun with CSFS I" /><published>2025-03-05T00:00:00+00:00</published><updated>2025-03-05T00:00:00+00:00</updated><id>https://rubin.io/bitcoin/2025/03/05/csfs-fun</id><content type="html" xml:base="https://rubin.io/bitcoin/2025/03/05/csfs-fun/">&lt;p&gt;In this blog series, I’ll write up some fun uses for CSFS I’m aware of.&lt;/p&gt;
+
+&lt;p&gt;The purpose is to document things that others might not know about.&lt;/p&gt;
+
+&lt;p&gt;Did I invent these? Maybe. Maybe not. Citations to prior work welcome!&lt;/p&gt;
+
+&lt;h1 id=&quot;irreplacable-irreusable-addresses&quot;&gt;Irreplacable Irreusable Addresses&lt;/h1&gt;
+
+&lt;p&gt;You create a taproot that is a NUMS keypath (the NUMS keypath and single tapleaf is so that you learn all the spending info always), and a tapleaf that says either a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&amp;lt;PK&amp;gt; CHECKSIG&lt;/code&gt;, or a proof that there were &amp;gt;1 signatures produced by that key of any data that are distinct from one another and then either:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;with CTV it can be sent to OP_RETURN, or;&lt;/li&gt;
+  &lt;li&gt;without CTV it is anyonecanspend&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;This means that as soon as you see a signature of a txn with this address, you know that there is no other txn that can be issued without harming the sender by making their funds burnable.&lt;/p&gt;
+
+&lt;p&gt;for extra fun:&lt;/p&gt;
+
+&lt;p&gt;The “equivocation bond” can be also in a different output, different address, to secure addresses with fresh collateral, even &lt;em&gt;retroactively&lt;/em&gt;.&lt;/p&gt;
+
+&lt;h1 id=&quot;function-lookup-table-precompiles&quot;&gt;Function Lookup Table Precompiles&lt;/h1&gt;
+&lt;p&gt;Suppose we want to add an opcode to Bitcoin that evaluates &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;f(x)&lt;/code&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;let X = musig(big one time setup federation).
+
+let CSFS(key, sig, data) = ...
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Recall &lt;a href=&quot;/bitcoin/2024/12/02/csfs-ctv-rekey-symmetry/&quot;&gt;key laddering&lt;/a&gt;…
+make a script with the following logic, via laddering:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;CSFS(X, sig_x, sig_arg)
+CSFS(Tweaked(X, arg), sig_arg, arg)
+CSFS(Tweaked(X, arg), sig_f, f(arg)))
+sig_f != sig_arg
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;now run (in signing committee) f(arg) over all values of arg.&lt;/p&gt;
+
+&lt;p&gt;you now get a lookup table that can be used in any script for an arbitrary sized tree for a constant cost of 3 sigs and 2 keys ==&amp;gt; 256 bytes, which is cheaper than using taproot pre-generated trees in many cases.&lt;/p&gt;
+
+&lt;p&gt;This technique can be modified to also work for multiple arguments, as long as the result can be precomputed. That rules out “big output spaces” like OP_CAT, but rules in lookup tables like e.g. merkle trees.&lt;/p&gt;
+
+&lt;p&gt;And for use cases where, e.g., a merkle tree would be signed by a key anyways, this is trust wise equivalent. E.g., a tree of user balances can be done in this fashion, and any user can “look up” their balance from the signature set.&lt;/p&gt;
+
+&lt;p&gt;For “standard library” type uses, big federations can be used for a one-time-trusted-setup.&lt;/p&gt;
+
+&lt;h1 id=&quot;sighash-flag-detection&quot;&gt;SIGHASH Flag Detection&lt;/h1&gt;
+
+&lt;p&gt;Presently, bitcoin scripts cannot restrict which sighash flags are used. CSFS enables a limited version of this in Taproot outoputs. Here’s how:&lt;/p&gt;
+
+&lt;p&gt;You can use CSFS to get the tx digest onto the stack from a signature.&lt;/p&gt;
+
+&lt;p&gt;without op_cat, this is of limited use…&lt;/p&gt;
+
+&lt;p&gt;however, we have the following formula:&lt;/p&gt;
+
+&lt;p&gt;^ What is the output length of SigMsg()? The total length of SigMsg() can be computed using the following formula: 174 - is_anyonecanpay * 49 - is_none * 32 + has_annex * 32&lt;/p&gt;
+
+&lt;p&gt;which is at most 206 bytes (when has_annex is set).&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;N.B. This number ends up being + 1 byte sighash epoch, + 64 bytes for the tag in taggedhash.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;this means that using CSFS, you can restrict a signature to use some particular sighash flags, by using OP_SIZE.&lt;/p&gt;
+
+&lt;p&gt;is_anyonecanpay=0, is_none=0, has_annex=0, size=174+65
+is_anyonecanpay=0, is_none=0, has_annex=1, size=206+65
+is_anyonecanpay=0, is_none=1, has_annex=0, size=142+65
+is_anyonecanpay=0, is_none=1, has_annex=1, size=174+65
+is_anyonecanpay=1, is_none=0, has_annex=0, size=125+65
+is_anyonecanpay=1, is_none=0, has_annex=1, size=157+65
+is_anyonecanpay=1, is_none=1, has_annex=0, size=93+65
+is_anyonecanpay=1, is_none=1, has_annex=1, size=125+65&lt;/p&gt;
+
+&lt;p&gt;this means you can use CSFS to differentiate flag combos with anyonecanpay and none and annex, except for when is_none + has_annex are both set or unset.&lt;/p&gt;
+
+&lt;p&gt;alas, this means you should probably only be interested in the following ability:&lt;/p&gt;
+
+&lt;p&gt;is_anyonecanpay=0, is_none=1, has_annex=0, size=142+65
+is_anyonecanpay=1, is_none=1, has_annex=0, size=93+65&lt;/p&gt;
+
+&lt;p&gt;and less interested but still interested in these, given the annex isn’t standard:&lt;/p&gt;
+
+&lt;p&gt;is_anyonecanpay=0, is_none=0, has_annex=1, size=206+65
+is_anyonecanpay=1, is_none=0, has_annex=1, size=157+65&lt;/p&gt;
+
+&lt;p&gt;note: the other flags can still be set given these ones!&lt;/p&gt;</content><author><name>Jeremy Rubin</name></author><category term="bitcoin" /><summary type="html">In this blog series, I’ll write up some fun uses for CSFS I’m aware of.</summary></entry><entry><title type="html">CSFS Re-Keying and Laddering, Deterministic Update Rekeying, &amp;amp; Applications to LN-Symmetry</title><link href="https://rubin.io/bitcoin/2024/12/02/csfs-ctv-rekey-symmetry/" rel="alternate" type="text/html" title="CSFS Re-Keying and Laddering, Deterministic Update Rekeying, &amp;amp; Applications to LN-Symmetry" /><published>2024-12-02T00:00:00+00:00</published><updated>2024-12-02T00:00:00+00:00</updated><id>https://rubin.io/bitcoin/2024/12/02/csfs-ctv-rekey-symmetry</id><content type="html" xml:base="https://rubin.io/bitcoin/2024/12/02/csfs-ctv-rekey-symmetry/">&lt;p&gt;&lt;em&gt;This is a collab post with &lt;a href=&quot;https://twitter.com/reardencode&quot;&gt;Rearden&lt;/a&gt;.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;At Bitcoin++ in Austin this year Rearden showed that there are many ways
+to realize Lightning Symmetry using various bitcoin upgrade proposals. All of
+these methods require either an extra signing round-trip for each channel
+update, or the ability to force the hash of the settlement transaction to be
+visible with its corresponding update transaction. This can be generalized as
+the requirement that the signature authorizing a given channel be both
+rebindable (i.e. not commit to a specific prior UTXO) and commit to some
+additional data being visible for that signature to be valid.&lt;/p&gt;
+
+&lt;p&gt;We’ll start by exploring why Lightning Symmetry requires this data visibility
+commitment, then dive into previously known solutions, and present a new
+generalized technique for using CSFS to two or more variables. Finally, we will
+present an optimized solution based on the principles we’ve developed to enable
+Lightning Symmetry using one extra signature, but no extra signing round-trip
+and without the need for concatenation or other explicit multi-commitments.&lt;/p&gt;
+
+&lt;h2 id=&quot;less-common-definitions&quot;&gt;Less Common Definitions&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;APO&lt;/code&gt;: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SIGHASH_ANYPREVOUT&lt;/code&gt; as defined in &lt;a href=&quot;https://github.com/bitcoin/bips/blob/master/bip-0118.mediawiki&quot;&gt;BIP118&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;IKEY&lt;/code&gt;: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;OP_INTERNALKEY&lt;/code&gt; as defined in &lt;a href=&quot;https://github.com/bitcoin/bips/blob/master/bip-0349.md&quot;&gt;BIP349&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CSFS&lt;/code&gt;: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;OP_CHECKSIGFROMSTACK&lt;/code&gt; as defined in &lt;a href=&quot;https://github.com/bitcoin/bips/pull/1535&quot;&gt;BIP348&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;S&lt;/code&gt;: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;500,000,000&lt;/code&gt; the lock time threshold &lt;a href=&quot;https://github.com/bitcoin/bitcoin/blob/master/src/script/script.h#L47&quot;&gt;defined in bitcoin&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;naive-ctv-csfs-lightning-symmetry-transactions&quot;&gt;Naive CTV-CSFS Lightning Symmetry transactions&lt;/h2&gt;
+
+&lt;p&gt;The scripts for a naive Taproot Lightning Symmetry channel are:&lt;/p&gt;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;channel:
+tr(musig(keyA, keyB), raw(CTV IKEY CSFS VERIFY &amp;lt;S+1&amp;gt; CLTV))
+update(n):
+tr(musig(keyA, keyB), raw(DEPTH NOTIF &amp;lt;settlement-n-hash&amp;gt; CTV ELSE CTV IKEY CSFS VERIFY &amp;lt;S+n+1&amp;gt; CLTV ENDIF))
+update-stack:
+&amp;lt;update-n-sig&amp;gt; &amp;lt;update-n-hash&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;If a channel enters force close, an update outpoint will be placed on chain by
+A, and B will have a CSV delay encoded in the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;settlement-n-hash&lt;/code&gt; before it
+can be settled within which to respond with a later state. One of the stated
+goals of Lightning Symmetry is to eliminate the need for each partner to store
+&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;O(n)&lt;/code&gt; state for each channel, but now we hit the problem. Because the update
+script is not visible on chain, while B can find the update, they cannot
+reconstruct the script without the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;settlement-n-hash&lt;/code&gt; and only A knows that
+hash unless B stores it for every state.&lt;/p&gt;
+
+&lt;h2 id=&quot;apo-annex-solution&quot;&gt;APO-annex solution&lt;/h2&gt;
+
+&lt;p&gt;In @instagibbs’ &lt;a href=&quot;https://delvingbitcoin.org/t/ln-symmetry-project-recap/359&quot;&gt;Lightning Symmetry
+work&lt;/a&gt;, he used APO
+and the Taproot Annex where both parties to a channel will only sign an update
+transaction if their signatures commit to an annex containing the
+corresponding settlement hash needed to reconstruct the update spend script.&lt;/p&gt;
+
+&lt;p&gt;The scripts for this are (roughly):&lt;/p&gt;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;channel:
+tr(musig(keyA, keyB), raw(&amp;lt;1&amp;gt; CHECKSIGVERIFY &amp;lt;S+1&amp;gt; CLTV))
+update(n):
+tr(musig(keyA, keyB), raw(DEPTH NOTIF &amp;lt;sig&amp;gt; &amp;lt;01||G&amp;gt; CHECKSIG ELSE &amp;lt;1&amp;gt; CHECKSIGVERIFY &amp;lt;S+n+1&amp;gt; CLTV ENDIF))
+update-stack:
+&amp;lt;update-n-sig&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Here we see the use of APO as a covenant by precomputing a signature for the
+secret key &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;1&lt;/code&gt; and public key &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;G&lt;/code&gt;. Because CHECKSIG operations commit to the
+Taproot Annex, these scripts require no special handling for the channel
+parties to require each other to place the settlement transaction hash in the
+annex and therefore make it possible for either party to later reconstruct any
+prior state’s script for spending. Without the annex, an APO-based
+implementation would either fall back to the additional signing round-trip, or
+using an &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;OP_RETURN&lt;/code&gt; to force this data to be visible.&lt;/p&gt;
+
+&lt;h2 id=&quot;naive-ctv-csfs-solution&quot;&gt;Naive CTV-CSFS solution&lt;/h2&gt;
+
+&lt;p&gt;Can we just commit to an additional hash using an additional signature?&lt;/p&gt;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;channel:
+tr(musig(keyA, keyB), raw(CTV IKEY CSFS VERIFY IKEY CSFS VERIFY &amp;lt;S+1&amp;gt; CLTV))
+update(n):
+tr(musig(keyA, keyB), raw(DEPTH NOTIF &amp;lt;settlement-n-hash&amp;gt; CTV ELSE CTV IKEY CSFS VERIFY IKEY CSFS VERIFY &amp;lt;S+n+1&amp;gt; CLTV ENDIF))
+update-stack:
+&amp;lt;settlement-n-sig&amp;gt; &amp;lt;settlement-n-hash&amp;gt; &amp;lt;update-n-sig&amp;gt; &amp;lt;update-n-hash&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;This method is broken because the two signatures are not linked in any way. A
+malicious channel partner can place a mismatched settlement hash, and update
+transaction on chain, preventing their partner who has a valid later update
+from reconstructing the scripts and updating the channel state.&lt;/p&gt;
+
+&lt;p&gt;One obvious solution would be to combine the update hash and the settlement
+hash, but since bitcoin lacks a concatenation operator, we cannot do that.
+Recently &lt;a href=&quot;https://x.com/4moonsettler&quot;&gt;@4moonsettler&lt;/a&gt; proposed
+&lt;a href=&quot;https://github.com/bitcoin/bips/pull/1699&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;OP_PAIRCOMMIT&lt;/code&gt;&lt;/a&gt; as an alternative
+for this purpose.&lt;/p&gt;
+
+&lt;h2 id=&quot;ctv-csfs-delegation-solution&quot;&gt;CTV-CSFS delegation solution&lt;/h2&gt;
+
+&lt;p&gt;Now we come to the new solution that we’ve developed, which ties the update
+and settlement hashes together by the keys which have signed them. CSFS is
+known to be useful for delegation, so we initially delegate to a rekey:&lt;/p&gt;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;script(n):
+    DUP TOALT DUP TOALT
+    IKEY CSFS VERIFY
+    OP_SIZE &amp;lt;32&amp;gt; EQUALVERIFY CTV
+    2DUP EQUAL NOT VERIFY
+    ROT SWAP FROMALT CSFS VERIFY
+    FROMALT CSFS VERIFY &amp;lt;S+n+1&amp;gt; CLTV
+channel:
+    tr(musig(keyA, keyB), raw(&amp;lt;script(0)&amp;gt;))
+update(n):
+    tr(musig(keyA, keyB),
+        raw(DEPTH NOTIF &amp;lt;settlement-n-hash&amp;gt; CTV ELSE &amp;lt;script(n)&amp;gt; ENDIF))
+stack(n):
+    &amp;lt;settlement-n-sig&amp;gt;
+    &amp;lt;update-n-sig&amp;gt;
+    &amp;lt;settlement-extradata&amp;gt;
+    &amp;lt;update-n-ctv&amp;gt;
+    &amp;lt;rekey-sig&amp;gt;
+    &amp;lt;rekey&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Here the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;rekey&lt;/code&gt; is an ephemeral key either randomly generated or derived
+for each state using something like BIP32 and based on the channel key. What
+matters is that the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;rekey&lt;/code&gt; is never used to sign anything other than the two
+messages corresponding to the update and settlement hashes for its state. In
+this way they are only valid together and the correct settlement hash must be
+available for a channel partner to reconstruct the scripts and update the
+channel settlement. One quirk of this solution is that if the two signed items
+are allowed to be equal, a malicious partner can simply place the same update
+hash on the stack with its signature twice, so they must be checked for
+inequality by the script.&lt;/p&gt;
+
+&lt;p&gt;This scheme is secure  because of the length check for the arg &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;update-n-ctv&lt;/code&gt;,
+it should be ensured that the other &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&amp;lt;settlement-extradata&amp;gt;&lt;/code&gt; is either not a
+valid CTV hash or is not length 32.&lt;/p&gt;
+
+&lt;h2 id=&quot;csfs-key-laddering&quot;&gt;CSFS Key Laddering&lt;/h2&gt;
+&lt;p&gt;Key Laddering extends the rekeying approach shown above to allow recursively
+rekeying to an arbitrary number of variables. This allows CSFS to be used without
+OP_CAT to sign over collections of variables to be plugged into a script.&lt;/p&gt;
+
+&lt;p&gt;For example, for 5 variables (not optimized, written for clarity):&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;DATASIGS: &amp;lt;sd1&amp;gt; &amp;lt;d1&amp;gt; &amp;lt;sd2&amp;gt; &amp;lt;d2&amp;gt; &amp;lt;sd3&amp;gt; &amp;lt;d3&amp;gt; &amp;lt;sd4&amp;gt; &amp;lt;d4&amp;gt; &amp;lt;sd5&amp;gt; &amp;lt;d5&amp;gt;
+stack: DATASIGS + &amp;lt;k5&amp;gt; &amp;lt;s5&amp;gt; &amp;lt;k4&amp;gt; &amp;lt;s4&amp;gt; &amp;lt;k3&amp;gt; &amp;lt;s3&amp;gt; &amp;lt;k2&amp;gt; &amp;lt;s2&amp;gt; &amp;lt;k1&amp;gt; &amp;lt;s1&amp;gt;
+
+program:
+
+\\ First, check that k1 is signed by IKEY
+    OVER IKEY CSFSV
+    DUP TOALT
+
+// Next, Check that k_i signs k_{i+1}
+    // stack: DATASIGS + &amp;lt;k5&amp;gt; &amp;lt;s5&amp;gt; &amp;lt;k4&amp;gt; &amp;lt;s4&amp;gt; &amp;lt;k3&amp;gt; &amp;lt;s3&amp;gt; &amp;lt;k2&amp;gt; &amp;lt;s2&amp;gt; &amp;lt;k1&amp;gt;
+    // altstack: &amp;lt;k1&amp;gt;
+
+        3DUP ROT SWAP CSFSV 2DROP DUP TOALT
+
+    // stack: DATASIGS + &amp;lt;k5&amp;gt; &amp;lt;s5&amp;gt; &amp;lt;k4&amp;gt; &amp;lt;s4&amp;gt; &amp;lt;k3&amp;gt; &amp;lt;s3&amp;gt; &amp;lt;k2&amp;gt;
+    // altstack: &amp;lt;k1&amp;gt; &amp;lt;k2&amp;gt;
+
+        3DUP ROT SWAP CSFSV 2DROP DUP TOALT
+
+    // stack: DATASIGS + &amp;lt;k5&amp;gt; &amp;lt;s5&amp;gt; &amp;lt;k4&amp;gt; &amp;lt;s4&amp;gt; &amp;lt;k3&amp;gt;
+    // altstack: &amp;lt;k1&amp;gt; &amp;lt;k2&amp;gt; &amp;lt;k3&amp;gt;
+
+        3DUP ROT SWAP CSFSV 2DROP DUP TOALT
+
+    // stack: DATASIGS + &amp;lt;k5&amp;gt; &amp;lt;s5&amp;gt; &amp;lt;k4&amp;gt;
+    // altstack: &amp;lt;k1&amp;gt; &amp;lt;k2&amp;gt; &amp;lt;k3&amp;gt; &amp;lt;k4&amp;gt;
+
+        3DUP ROT SWAP CSFSV 2DROP
+
+    // stack: &amp;lt;sd1&amp;gt; &amp;lt;d1&amp;gt; &amp;lt;sd2&amp;gt; &amp;lt;d2&amp;gt; &amp;lt;sd3&amp;gt; &amp;lt;d3&amp;gt; &amp;lt;sd4&amp;gt; &amp;lt;d4&amp;gt; &amp;lt;sd5&amp;gt; &amp;lt;d5&amp;gt; &amp;lt;k5&amp;gt;
+    // altstack: &amp;lt;k1&amp;gt; &amp;lt;k2&amp;gt; &amp;lt;k3&amp;gt; &amp;lt;k4&amp;gt;
+
+
+        FROMALT FROMALT FROMALT FROMALT
+
+    // stack: &amp;lt;sd1&amp;gt; &amp;lt;d1&amp;gt; &amp;lt;sd2&amp;gt; &amp;lt;d2&amp;gt; &amp;lt;sd3&amp;gt; &amp;lt;d3&amp;gt; &amp;lt;sd4&amp;gt; &amp;lt;d4&amp;gt; &amp;lt;sd5&amp;gt; &amp;lt;d5&amp;gt; &amp;lt;k5&amp;gt; &amp;lt;k4&amp;gt; &amp;lt;k3&amp;gt; &amp;lt;k2&amp;gt; &amp;lt;k1&amp;gt;
+    // altstack:
+
+// Now, check each signature of the data
+
+    &amp;lt;6&amp;gt; PICK // sd5
+    &amp;lt;6&amp;gt; PICK // d5
+    &amp;lt;6&amp;gt; PICK // k5
+    CSFSV
+
+    &amp;lt;8&amp;gt; PICK // sd4
+    &amp;lt;8&amp;gt; PICK // d4
+    &amp;lt;5&amp;gt; PICK // k4
+    CSFSV
+
+    &amp;lt;10&amp;gt; PICK // sd3
+    &amp;lt;10&amp;gt; PICK // d3
+    &amp;lt;4&amp;gt; PICK // k3
+    CSFSV
+
+    &amp;lt;12&amp;gt; PICK // sd2
+    &amp;lt;12&amp;gt; PICK // d2
+    &amp;lt;3&amp;gt; PICK // k2
+    CSFSV
+
+    &amp;lt;14&amp;gt; PICK // sd1
+    &amp;lt;14&amp;gt; PICK // d1
+    &amp;lt;2&amp;gt; PICK // k1
+    CSFSV
+
+// Now, Check the inequalities that no key is used as data:
+    // stack: &amp;lt;sd1&amp;gt; &amp;lt;d1&amp;gt; &amp;lt;sd2&amp;gt; &amp;lt;d2&amp;gt; &amp;lt;sd3&amp;gt; &amp;lt;d3&amp;gt; &amp;lt;sd4&amp;gt; &amp;lt;d4&amp;gt; &amp;lt;sd5&amp;gt; &amp;lt;d5&amp;gt; &amp;lt;k5&amp;gt; &amp;lt;k4&amp;gt; &amp;lt;k3&amp;gt; &amp;lt;k2&amp;gt; &amp;lt;k1&amp;gt;
+    // altstack:
+
+    // No need to check k1 != d0 since no d0
+
+    // Check that k2 != d1
+    &amp;lt;1&amp;gt; PICK
+    &amp;lt;14&amp;gt; PICK
+    NOT EQUAL VERIFY
+
+    // Check that k3 != d2
+    &amp;lt;2&amp;gt; PICK
+    &amp;lt;12&amp;gt; PICK
+    NOT EQUAL VERIFY
+
+
+    // Check that k4 != d3
+    &amp;lt;3&amp;gt; PICK
+    &amp;lt;8&amp;gt; PICK
+    NOT EQUAL VERIFY
+
+    // check that k5 != d4
+    &amp;lt;4&amp;gt; PICK
+    &amp;lt;6&amp;gt; PICK
+    NOT EQUAL VERIFY
+
+
+// stack: &amp;lt;sd1&amp;gt; &amp;lt;d1&amp;gt; &amp;lt;sd2&amp;gt; &amp;lt;d2&amp;gt; &amp;lt;sd3&amp;gt; &amp;lt;d3&amp;gt; &amp;lt;sd4&amp;gt; &amp;lt;d4&amp;gt; &amp;lt;sd5&amp;gt; &amp;lt;d5&amp;gt; &amp;lt;k5&amp;gt; &amp;lt;k4&amp;gt; &amp;lt;k3&amp;gt; &amp;lt;k2&amp;gt; &amp;lt;k1&amp;gt;
+// altstack:
+
+2DROP 2DROP DROP
+TOALT DROP
+TOALT DROP
+TOALT DROP
+TOALT DROP
+TOALT DROP
+
+// stack:
+// altstack: &amp;lt;d5&amp;gt; &amp;lt;d4&amp;gt; &amp;lt;d3&amp;gt; &amp;lt;d2&amp;gt; &amp;lt;d1&amp;gt;
+
+// Whatever else
+
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;This lets you sign an arbitrary number of variables in a sequence.&lt;/p&gt;
+
+&lt;p&gt;One “gotcha” not shown in the above script is there is a need to ensure the signature over data and signatures over keys are not exchangable at each hop.
+Care should be taken to ensure this.&lt;/p&gt;
+
+&lt;p&gt;One alternative scheme is to do “signature laddering”. That is, instead of signing a key at each step, sign instead the next signature.&lt;/p&gt;
+
+&lt;p&gt;E.g., re-key by signing with IKEY the first signature. Then verify it against any key / message pair it will validate against. The key can be used with a different signature for the value, and the message signed is the next signature. E.g.:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;stack:
+&amp;lt;sig B&amp;gt;
+&amp;lt;key A&amp;gt;
+&amp;lt;sig^IKEY(sig A)&amp;gt;
+&amp;lt;sig^A(sig B)&amp;gt;
+
+DUP TOALT
+IKEY CSFS VERIFY
+FROMALT
+
+stack:
+&amp;lt;sig B&amp;gt;
+&amp;lt;key A&amp;gt;
+&amp;lt;sig^A(sig B)&amp;gt;
+
+ROT ROT CSFS VERIFY
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;This laddering is convenient, because the first IKEY sig commits to the roles of
+all the other data (key v.s. sig v.s. argument).&lt;/p&gt;
+
+&lt;h2 id=&quot;ctv-csfs-with-derived-internal-keys-solution&quot;&gt;CTV-CSFS with derived internal keys solution&lt;/h2&gt;
+
+&lt;p&gt;For Lightning Symmetry, each update transaction is signed with a specific
+monotonically increasing locktime, and nothing requires the internal key to be
+exactly the same for each update, so we can replace the internal key with a
+key deterministically derived from the channel key and the locktime, and then
+almost use the naive CTV-CSFS scripts:&lt;/p&gt;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;internalkey(n):
+bip32_derive(musig(keyA, keyB), /&amp;lt;S+n+1&amp;gt;)
+script(n):
+CTV 2DUP EQUAL NOT VERIFY ROT SWAP IKEY CSFS VERIFY IKEY CSFS VERIFY &amp;lt;S+n+1&amp;gt; CLTV
+channel:
+tr(musig(keyA, keyB), raw(&amp;lt;script(0)&amp;gt;))
+update:
+tr(internalkey(n), raw(DEPTH NOTIF &amp;lt;settlement-n-hash&amp;gt; CTV ELSE &amp;lt;script(n)&amp;gt; ENDIF))
+update-stack:
+&amp;lt;settlement-n-sig&amp;gt; &amp;lt;update-n-sig&amp;gt; &amp;lt;settlement-n-hash&amp;gt; &amp;lt;update-n-hash&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Either channel partner can deterministicaly derive the correct internal key
+needed to reconstruct the spend stack from any update from the locktime of the
+update transaction itself. These derived internal keys are only used to sign
+one pair of update and settlement hash, and the script checks that the two
+signatures are for different data.&lt;/p&gt;
+
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;These techniques remove the need for bitcoin upgrade proposals which enable
+Lightning Symmetry to include a specific function for committing to multiple
+items with a single signature. Of course if a more efficient method for
+combining items into a single commitment is available Lightning developers
+will be able to take advantage of it and reduce the witness space required for
+Lightning Symmetry.&lt;/p&gt;</content><author><name>Jeremy Rubin</name></author><category term="bitcoin" /><summary type="html">This is a collab post with Rearden.</summary></entry><entry><title type="html">Un-FE’d Covenants</title><link href="https://rubin.io/bitcoin/2024/11/26/unfed-covenants/" rel="alternate" type="text/html" title="Un-FE’d Covenants" /><published>2024-11-26T00:00:00+00:00</published><updated>2024-11-26T00:00:00+00:00</updated><id>https://rubin.io/bitcoin/2024/11/26/unfed-covenants</id><content type="html" xml:base="https://rubin.io/bitcoin/2024/11/26/unfed-covenants/">&lt;p&gt;Covenants in Bitcoin represent a method to restrict how and where coins can
+move. Functional Encryption (FE) offers an exciting avenue to implement
+covenants without native protocol changes. However, FE remains impractical with
+current cryptographic tools. In this work, we propose a practical
+implementation using an oracle-assisted model that combines off-chain
+computation, key management, and a BitVM-style economic incentive structure
+to enforce covenants without requiring a Bitcoin soft fork.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;/public/pdfs/unfedcovenants.pdf&quot;&gt;Read the full paper.&lt;/a&gt;&lt;/p&gt;</content><author><name>Jeremy Rubin</name></author><category term="bitcoin" /><summary type="html">Covenants in Bitcoin represent a method to restrict how and where coins can move. Functional Encryption (FE) offers an exciting avenue to implement covenants without native protocol changes. However, FE remains impractical with current cryptographic tools. In this work, we propose a practical implementation using an oracle-assisted model that combines off-chain computation, key management, and a BitVM-style economic incentive structure to enforce covenants without requiring a Bitcoin soft fork. Read the full paper.</summary></entry><entry><title type="html">FE’d Up Covenants</title><link href="https://rubin.io/bitcoin/2024/05/29/fed-up-covenants/" rel="alternate" type="text/html" title="FE’d Up Covenants" /><published>2024-05-29T00:00:00+00:00</published><updated>2024-05-29T00:00:00+00:00</updated><id>https://rubin.io/bitcoin/2024/05/29/fed-up-covenants</id><content type="html" xml:base="https://rubin.io/bitcoin/2024/05/29/fed-up-covenants/">&lt;p&gt;Covenants are a way of expressing restrictions on Bitcoin. Covenants, while
+possible to implement as an extension to Bitcoin, do not exist natively. To
+enable them requires the Bitcoin community to agree upon upgrades such as CTV,
+CAT, CSFS, and more.  This paper serves to demonstrate at a high level how
+covenants could be introduced to Bitcoin without a soft fork using Functional
+Encryption and Zero Knowledge Proofs.
+&lt;a href=&quot;/public/pdfs/fedcov.pdf&quot;&gt;Read the full paper.&lt;/a&gt;&lt;/p&gt;</content><author><name>Jeremy Rubin</name></author><category term="bitcoin" /><summary type="html">Covenants are a way of expressing restrictions on Bitcoin. Covenants, while possible to implement as an extension to Bitcoin, do not exist natively. To enable them requires the Bitcoin community to agree upon upgrades such as CTV, CAT, CSFS, and more. This paper serves to demonstrate at a high level how covenants could be introduced to Bitcoin without a soft fork using Functional Encryption and Zero Knowledge Proofs. Read the full paper.</summary></entry><entry><title type="html">Spookchains: Drivechain Analog with Trusted Setup &amp;amp; APO</title><link href="https://rubin.io/bitcoin/2022/09/14/drivechain-apo/" rel="alternate" type="text/html" title="Spookchains: Drivechain Analog with Trusted Setup &amp;amp; APO" /><published>2022-09-14T00:00:00+00:00</published><updated>2022-09-14T00:00:00+00:00</updated><id>https://rubin.io/bitcoin/2022/09/14/drivechain-apo</id><content type="html" xml:base="https://rubin.io/bitcoin/2022/09/14/drivechain-apo/">&lt;p&gt;This post draws heavily from &lt;a href=&quot;https://lists.linuxfoundation.org/pipermail/bitcoin-dev/2022-February/019976.html&quot;&gt;Zmnscpxj’s fantastic
+post&lt;/a&gt;
+showing how to make drivechains with recursive covenants. In this post, I will
+show similar tricks that can accomplish something similar using ANYPREVOUT with
+a one time trusted setup ceremony.&lt;/p&gt;
+
+&lt;p&gt;This post presents general techniques that could be applied to many
+different types of covenant.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;note: I originally wrote this around May 5th, 2022, and shared it with a
+limited audience&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/public/img/bitcoin/spookchain.png&quot; alt=&quot;Spooky Chains&quot; /&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;peano-counters&quot;&gt;Peano Counters&lt;/h1&gt;
+
+&lt;p&gt;The first component we need to build is a Peano counter graph. Instead
+of using sha-256, like in Zmnscpxj’s scheme, we will use a key and
+build a simple 1 to 5 counter that has inc / dec.&lt;/p&gt;
+
+&lt;p&gt;Assume a key K1…K5, and a point NUMS which is e.g.
+HashToCurve(“Spookchains”).&lt;/p&gt;
+
+&lt;p&gt;Generate scripts as follows:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;1 || K1&amp;gt; CHECKSIG
+...
+&amp;lt;1 || K5&amp;gt; CHECKSIG
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Now generate 2 signatures under Ki with flags &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SIGHASH_SINGLE |
+SIGHASH_ANYONECANPAY | SIGHASH_ANYPREVOUT&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;rule-increment&quot;&gt;Rule Increment&lt;/h2&gt;
+&lt;p&gt;For each Ki, when &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;i &amp;lt; 5&lt;/code&gt;, create a signature that covers a
+transaction described as:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Amount: 1 satoshi
+Key: Tr(NUMS, {&amp;lt;1 || K{i+1}&amp;gt; CHECKSIG})
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;rule-decrement&quot;&gt;Rule Decrement&lt;/h2&gt;
+&lt;p&gt;For each Ki, when &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;i &amp;gt; 1&lt;/code&gt; The second signature should cover:&lt;/p&gt;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Amount: 1 satoshi
+Key: Tr(NUMS, {&amp;lt;1 || K{i-1}&amp;gt; CHECKSIG})
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;em&gt;Are these really Peano?&lt;/em&gt; Sort of. While a traditional Peano numeral
+is defined as a structural type, e.g. &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Succ(Succ(Zero))&lt;/code&gt;, here we
+define them via a Inc / Dec transaction operator, and we have to
+explicitly bound these Peano numbers since we need a unique key per
+element. They’re at least spiritually similar.&lt;/p&gt;
+
+&lt;h2 id=&quot;instantiation&quot;&gt;Instantiation&lt;/h2&gt;
+&lt;p&gt;Publish a booklet of all the signatures for the Increment and
+Decrement rules.&lt;/p&gt;
+
+&lt;p&gt;Honest parties should destroy the secret key sets &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;k&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;To create a counter, simply spend to output C:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Amount: 1 satoshi
+Key: Tr(NUMS, {&amp;lt;1 || K1&amp;gt; CHECKSIG})
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The signature from K1 can be bound to C to ‘transition’ it to (+1):&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Amount: 1 satoshi
+Key: Tr(NUMS, {&amp;lt;1 || K2&amp;gt; CHECKSIG})
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Which can then transition to (+1):&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Amount: 1 satoshi
+Key: Tr(NUMS, {&amp;lt;1 || K3&amp;gt; CHECKSIG})
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Which can then transition (-1) to:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Amount: 1 satoshi
+Key: Tr(NUMS, {&amp;lt;1 || K2&amp;gt; CHECKSIG})
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;This can repeat indefinitely.&lt;/p&gt;
+
+&lt;p&gt;We can generalize this technique from &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;1...5&lt;/code&gt; to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;1...N&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h1 id=&quot;handling-arbitrary-deposits--withdrawals&quot;&gt;Handling Arbitrary Deposits / Withdrawals&lt;/h1&gt;
+
+&lt;p&gt;One issue with the design presented previously is that it does not
+handle arbitrary deposits well.&lt;/p&gt;
+
+&lt;p&gt;One simple way to handle this is to instantiate the protocol for every
+amount you’d like to support.&lt;/p&gt;
+
+&lt;p&gt;This is not particularly efficient and requires a lot of storage
+space.&lt;/p&gt;
+
+&lt;p&gt;Alternatively, divide (using base 2 or another base) the deposit
+amount into a counter utxo per bit.&lt;/p&gt;
+
+&lt;p&gt;For each bit, instead of creating outputs with 1 satoshi, create
+outputs with 2^i satoshis.&lt;/p&gt;
+
+&lt;p&gt;Instead of using keys &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;K1...KN&lt;/code&gt;, create keys &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;K^i_j&lt;/code&gt;, where i
+represents the number of sats, and j represents the counter. Multiple
+keys are required per amount otherwise the signatures would be valid
+for burning funds.&lt;/p&gt;
+
+&lt;h2 id=&quot;splitting-and-joining&quot;&gt;Splitting and Joining&lt;/h2&gt;
+
+&lt;p&gt;For each &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;K^i_j&lt;/code&gt;, it may also be desirable to allow splitting or
+joining.&lt;/p&gt;
+
+&lt;p&gt;Splitting can be accomplished by pre-signing, for every &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;K^i_j&lt;/code&gt;, where
+&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;i!=0&lt;/code&gt;, with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SIGHASH_ALL | SIGHASH_ANYPREVOUT&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Input: 2^i sats with key K^i_j
+Outputs: 
+    - 2^i-1 sats to key K^{i-1}_j
+    - 2^i-1 sats to key K^{i-1}_j
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Joining can be accomplished by pre-signing, for every &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;K^i_j&lt;/code&gt;, where
+&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;i!=MAX&lt;/code&gt;, with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SIGHASH_ALL | SIGHASH_ANYPREVOUT&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Inputs:
+    - 2^i sats with key K^i_j
+    - 2^i sats with key K^i_j
+Outputs: 
+    - 2^i+1 sats to key K^{i+1}_j
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;N.B.: Joining allows for third parties to deposit money in externally,
+that is not a part of the covenant.&lt;/p&gt;
+
+&lt;p&gt;The splitting and joining behavior means that spookchain operators
+would be empowered to consolidate UTXOs to a smaller number, while
+allowing arbitrary deposits.&lt;/p&gt;
+
+&lt;h1 id=&quot;one-vote-per-block&quot;&gt;One Vote Per Block&lt;/h1&gt;
+
+&lt;p&gt;To enforce that only one vote per block mined is allowed, ensure that
+all signatures set the input sequence to 1 block. No CSV is required
+because nSequence is in the signatures already.&lt;/p&gt;
+
+&lt;h1 id=&quot;terminal-states--thresholds&quot;&gt;Terminal States / Thresholds&lt;/h1&gt;
+
+&lt;p&gt;When a counter reaches the Nth state, it represents a certain amount
+of accumulated work over a period where progress was agreed on for
+some outcome.&lt;/p&gt;
+
+&lt;p&gt;There should be some viable state transition at this point.&lt;/p&gt;
+
+&lt;p&gt;One solution would be to have the money at this point sent to an
+&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;OP_TRUE&lt;/code&gt; output, which the miner incrementing that state is
+responsible for following the rules of the spookchain. Or, it could be
+specified to be some administrator key / federation for convenience,
+with a N block timeout that degrades it to fewer signers (eventually
+0) if the federation is dead to allow recovery.&lt;/p&gt;
+
+&lt;p&gt;This would look like, from any &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;K^i_j&lt;/code&gt;, a signature for a transaction
+putting it into an &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;OP_TRUE&lt;/code&gt; and immediately spending it. Other
+spookchain miners would be expected to orphan that miner otherwise.&lt;/p&gt;
+
+&lt;h1 id=&quot;open-states--proposals&quot;&gt;Open States / Proposals&lt;/h1&gt;
+
+&lt;p&gt;From a state &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;K^i_1&lt;/code&gt;, the transaction transitioning to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;K^i_2&lt;/code&gt; can be
+treated as ‘special’ and the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;OP_RETURN&lt;/code&gt; output type can be used to
+commit to, e.g., the outputs that must be created in when the Terminal
+State is reached. This clarifies the issue of “what is being voted
+on”.&lt;/p&gt;
+
+&lt;p&gt;This method does not &lt;em&gt;lock in&lt;/em&gt; at a consensus layer what Terminal
+State is being voted on.&lt;/p&gt;
+
+&lt;p&gt;In certain circumstances, without violating the one-time-setup
+constraint, if a fixed list of withdrawer’s addresses is known in
+advance, the Open States could cover withdrawals to specific
+participants, which then must collect a certain number of votes from
+miners.  However, it seems impossible, without new primitives, for an
+arbitrary transaction proposal to be voted on.&lt;/p&gt;
+
+&lt;h1 id=&quot;setup-variants&quot;&gt;Setup Variants&lt;/h1&gt;
+
+&lt;h2 id=&quot;xpubs&quot;&gt;xpubs&lt;/h2&gt;
+
+&lt;p&gt;Instead of using randomly generated keys for each state, define each
+to be an xpub and derive a path where it is k/i/j for each
+state/satoshi amount. This saves some data, and also requires less
+entropy.&lt;/p&gt;
+
+&lt;h3 id=&quot;trustless-data-commit&quot;&gt;Trustless Data Commit:&lt;/h3&gt;
+
+&lt;p&gt;commit to the hash of the entire program spec as a tweak to the xpub,
+so that someone can quickly verify if they have all the signatures you
+are expected to generate if honest.&lt;/p&gt;
+
+&lt;p&gt;One way to do this is to convert a hash to a list of HD Child Numbers
+(9 of them) deterministically, and tweak the xpub by that. This is a
+convenient, yet inefficient, way to tweak an xpub because the child
+has a normal derivation path for signing devices.&lt;/p&gt;
+
+&lt;h2 id=&quot;single-party&quot;&gt;Single Party&lt;/h2&gt;
+
+&lt;p&gt;A single party pre-signs all the transactions for the spookchain, and
+then deletes their xpriv.&lt;/p&gt;
+
+&lt;p&gt;You trust them to have deleted the key, and signed properly, but you
+do not trust whoever served you the spookchain blob to have given you
+all the state transitions because of the trustless data commitment.&lt;/p&gt;
+
+&lt;h2 id=&quot;musig-multi-party&quot;&gt;MuSig Multi-Party&lt;/h2&gt;
+
+&lt;p&gt;Define a MuSig among all participants in the setup ceremony, N-of-N.&lt;/p&gt;
+
+&lt;p&gt;Now you simply trust that any one person in the one-time-setup was
+honest! Very good.&lt;/p&gt;
+
+&lt;h2 id=&quot;unaggregated-multi-party&quot;&gt;Unaggregated Multi-Party&lt;/h2&gt;
+
+&lt;p&gt;Allow for unaggregated multi-sig keys in the spec. This grows with
+O(signers), however, it means that a-la-carte you can aggregate setups
+from random participants who never interacted / performed setup
+ceremonies independently if they signed the same specs.&lt;/p&gt;
+
+&lt;p&gt;Can also combine multiple MuSig Multi-Parties in this way.&lt;/p&gt;
+
+&lt;p&gt;This is nice because MuSig inherently implies the parties colluded at
+one point to do a MuSig setup, whereas unaggregated multi-sig could be
+performed with no connectivity between parties.&lt;/p&gt;
+
+&lt;h2 id=&quot;soft-forking-away-trust&quot;&gt;Soft Forking Away Trust&lt;/h2&gt;
+
+&lt;p&gt;Suppose a spookchain becomes popular. You could configure your client
+to reject invalid state transitions, or restrict the spookchain keys
+to only sign with the known signatures. This soft fork would smoothly
+upgrade the trust assumption.&lt;/p&gt;
+
+&lt;h2 id=&quot;symmetry-of-state-transition-rules--dag-covenants&quot;&gt;Symmetry of State Transition Rules &amp;amp; DAG Covenants&lt;/h2&gt;
+
+&lt;p&gt;We could have our increment state transitions be done via a trustless
+covenant, and our backwards state transitions be done via the setup.&lt;/p&gt;
+
+&lt;p&gt;This would look something like the following for state i:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Tr(NUMS, {
+    `&amp;lt;sig for state K_{i+1}&amp;gt; &amp;lt;1 || PK_nonsecret&amp;gt; CHECKSIG`,
+    `&amp;lt;1 || Ki&amp;gt; CHECKSIG`
+})
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The advantage of such an optimization is theoretically nice because it
+means that &lt;em&gt;only&lt;/em&gt; the non-destructuring recursive part of the
+computation is subject to the one-time-setup trust assumption, which
+might be of use in various other protocols, where recursivity might
+only be unlocked e.g. after a timeout (but for spookchains it is used
+at each step).&lt;/p&gt;
+
+&lt;p&gt;A compiler writer might perform this task by starting with an arbitrary
+abstract graph, and then removing edges selectively (a number of heuristics may
+make sense, e.g., to minimize reliance on one-time-setup or minimize costs)
+until the graph is a Directed Acyclic Graph, consisting of one or more
+components, compiling those with committed covenants, and then adding the
+removed edges back using the one-time-setup key materials.&lt;/p&gt;
+
+&lt;h1 id=&quot;commentary-on-trust-and-covenantiness&quot;&gt;Commentary on Trust and Covenantiness&lt;/h1&gt;
+
+&lt;p&gt;Is this a covenant? I would say “yes”. When I defined covenants in my
+&lt;em&gt;Calculus of Covenants&lt;/em&gt; post, it was with a particular set of
+assumptions per covenant.&lt;/p&gt;
+
+&lt;p&gt;Under that model, you could, e.g., call a 7-10 multi-sig with specific
+committed instructions as 4-10 honest (requires 4 signatories to be
+honest to do invalid state transition) and 4-10 killable (requires 4
+signatories to die to have no way of recovering).&lt;/p&gt;
+
+&lt;p&gt;For emulations that are pre-signed, like the varieties used to emulate
+CTV, it is a different model because if your program is correct and
+you’ve pre-gotten the signatures for N-N it is 1-N honest (only 1
+party must be honest to prevent an invalid state transition) and
+unkillable (all parties can safely delete keys).&lt;/p&gt;
+
+&lt;p&gt;I model these types of assumptions around liveness and honesty as
+different ‘complexity classes’ than one another.&lt;/p&gt;
+
+&lt;p&gt;What I would point out is that with the counter model presented above,
+this is entirely a pre-signed 1-N honest and unkillable covenant that
+requires no liveness from signers. Further, with APO, new instances of
+the covenant do not require a new set of signers, the setup is truly
+one-time. Therefore this type of covenant exists in an even lower
+trust-complexity class than CTV emulation via presigneds, which
+requires a new federation to sign off on each contract instance.&lt;/p&gt;
+
+&lt;p&gt;With that preface, let us analyze this covenant:&lt;/p&gt;
+
+&lt;p&gt;1) A set of sets of transaction intents (a family), potentially
+recursive or co-recursive (e.g., the types of state transitions that
+can be generated).  These intents can also be represented by a
+language that generates the transactions, rather than the literal
+transactions themselves. We do the family rather than just sets at
+this level because to instantiate a covenant we must pick a member of
+the family to use.&lt;/p&gt;
+
+&lt;p&gt;The set of sets of transaction intents is to increment / decrement to
+a successor or predecessor, or to halve into two instances or double
+value by adding funds. Each successor or predecessor is the same type
+of covenant, with the excetion of the first and last, which have some
+special rules.&lt;/p&gt;
+
+&lt;p&gt;2) A verifier generator function that generates a function that
+accepts an intent that is any element of one member of the family of
+intents and a proof for it and rejects others.&lt;/p&gt;
+
+&lt;p&gt;The verifier generator is the simple APO CHECKSIG script.&lt;/p&gt;
+
+&lt;p&gt;3) A prover generator function that generates a function that takes an
+intent that is any element of one member of the family and some extra
+data and returns either a new prover function, a finished proof, or a
+rejection (if not a valid intent).&lt;/p&gt;
+
+&lt;p&gt;The prover generator is the selection of the correct signature from a
+table for a given script.&lt;/p&gt;
+
+&lt;p&gt;Run the prover generator with the private keys present &lt;em&gt;once&lt;/em&gt; to
+initialize over all reachable states, and cache the signatures, then
+the keys may be deleted for future runs.&lt;/p&gt;
+
+&lt;p&gt;4) A set of proofs that the Prover, Verifier, and a set of intents are
+“impedance matched”, that is, all statements the prover can prove and
+all statements the verifier can verify are one-to-one and onto (or
+something similar), and that this also is one-to-one and onto with one
+element of the intents (a set of transactions) and no other.&lt;/p&gt;
+
+&lt;p&gt;At a given key state the only things that may happen are signed
+transactions, no other data is interpreted off of the stack. Therefore
+there is perfect impedance match.&lt;/p&gt;
+
+&lt;p&gt;5) A set of assumptions under which the covenant is verified (e.g., a
+multi-sig covenant with at least 1-n honesty, a multisig covenant with
+any 3-n honesty required, Sha256 collision resistance, Discrete Log
+Hardness, a SGX module being correct).&lt;/p&gt;
+
+&lt;p&gt;Uniquely, that during the setup phase at least one of the keys
+were faithfully deleted.&lt;/p&gt;
+
+&lt;p&gt;The usual suspects for any bitcoin transaction are also assumed for
+security.&lt;/p&gt;
+
+&lt;p&gt;6) Composability:&lt;/p&gt;
+
+&lt;p&gt;The Terminal State can pay out into a pre-specified covenant if
+desired from any other family of covenants.&lt;/p&gt;</content><author><name>Jeremy Rubin</name></author><category term="bitcoin" /><summary type="html">This post draws heavily from Zmnscpxj’s fantastic post showing how to make drivechains with recursive covenants. In this post, I will show similar tricks that can accomplish something similar using ANYPREVOUT with a one time trusted setup ceremony.</summary></entry><entry><title type="html">7 Theses on a next step for BIP-119</title><link href="https://rubin.io/bitcoin/2022/04/17/next-steps-bip119/" rel="alternate" type="text/html" title="7 Theses on a next step for BIP-119" /><published>2022-04-17T00:00:00+00:00</published><updated>2022-04-17T00:00:00+00:00</updated><id>https://rubin.io/bitcoin/2022/04/17/next-steps-bip119</id><content type="html" xml:base="https://rubin.io/bitcoin/2022/04/17/next-steps-bip119/">&lt;p&gt;&lt;em&gt;Warning: this post assumes a great deal of context on CTV is already
+understood by the reader.  If you are not familiar, you may wish to start with
+&lt;a href=&quot;https://utxos.org&quot;&gt;utxos.org&lt;/a&gt;, &lt;a href=&quot;https://rubin.io/advent21&quot;&gt;the advent
+calendar&lt;/a&gt;, and the &lt;a href=&quot;https://github.com/bitcoin/bips/blob/master/bip-0119.mediawiki&quot;&gt;BIP-119
+text&lt;/a&gt; and
+&lt;a href=&quot;https://github.com/bitcoin/bitcoin/pull/21702&quot;&gt;reference implementation&lt;/a&gt;, as
+those may provide much needed context about what CTV is and why a next step is
+being discussed. If you only have a little time, minimally I would advise these
+two from the advent calendar as the minimum required context: &lt;a href=&quot;https://rubin.io/bitcoin/2021/12/05/advent-8/&quot;&gt;Contracting
+Primitives and Upgrades to
+Bitcoin&lt;/a&gt; and &lt;a href=&quot;https://rubin.io/bitcoin/2021/12/24/advent-27/&quot;&gt;RoadMap or Load o’
+Crap?&lt;/a&gt;.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;This post starts with a conclusion:&lt;/p&gt;
+
+&lt;p&gt;Within a week from today, you’ll find software builds for a CTV Bitcoin Client
+for all platforms linked here:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Mac OSX TODO:&lt;/li&gt;
+  &lt;li&gt;Windows TODO:&lt;/li&gt;
+  &lt;li&gt;Linux TODO:&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;These will be built using GUIX, which are reproducible for verification.  The
+intended code to be built will be
+https://github.com/JeremyRubin/bitcoin/tree/checktemplateverify-v23.0rc5-paramsv0
+which is based on Bitcoin Core v23.0 release candidate 5, with commit hash
+dd9a4e0ea8a109d1607ca1ec16119b1bc952d8b0. You can begin testing this
+immediately, and even producing your own GUIX builds as well.&lt;/p&gt;
+
+&lt;p&gt;Signatures for the builds will be available below:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;TODO: … .asc&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The source tarball:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;TODO: … .tar.gz&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The client has a Speedy Trial release similar to Taproots with parameters
+proposed to be:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Signal Start MTP: 1651708800 (May 5th, 2022, 00:00 UTC)&lt;/li&gt;
+  &lt;li&gt;Signal Timeout MTP: 1660262400 (August 12th, 2022, 00:00 UTC)&lt;/li&gt;
+  &lt;li&gt;Activation Height: 762048 (Approximately Nov 9th)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;See the appendix to verify these parameters.&lt;/p&gt;
+
+&lt;p&gt;This ensures 6 signalling periods to activate CTV. The Start and Timeout are
+targeting mid-period (if hashrate stays steady) times to ensure that it is
+unlikely we would have more or fewer periods.&lt;/p&gt;
+
+&lt;p&gt;The week delay between this post and builds is to provide time for review on
+the selection of parameters as well as ability to rebase onto a final v23.0
+release, should it become ready within the week. Backports are in the works for
+v22.0, but release builds may not be made available as Bitcoin’s release build
+processes have changed since v22.0 to use GUIX. The branch for backports is
+available here:
+https://github.com/JeremyRubin/bitcoin/tree/checktemplateverify-v22.0 with
+current commit hash 4d2c39314834a28cd46da943a12300cca8ffcb10, if you would like
+to help with testing.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;why-this-why-now&quot;&gt;Why this, why now?&lt;/h2&gt;
+
+&lt;p&gt;I’ve just returned from the Bitcoin Miami “Bacchanal”. Personally, I had a
+couple different goals for being there&lt;sup id=&quot;fnref:skate&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:skate&quot; class=&quot;footnote&quot; rel=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;. One of my primary focuses was
+on talking to as many people as possible about BIP-119 and the future road to
+take.&lt;/p&gt;
+
+&lt;p&gt;While consensus has to happen among a much broader set of people than can fit
+in a conference in Miami, the reality is that there were more than 20,000
+Bitcoiners at this event and a good representation across industry, developers,
+journalists, podcasters, plebs, whales, pool operators, miners, venture
+capitalists, and more. To say it was a representative sample wouldn’t be fair,
+but it certainly was not a homogeneous crowd. And I spoke to as many people as
+I could.&lt;/p&gt;
+
+&lt;p&gt;There were a couple common threads across the feedback I received:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Agree or disagree with CTV in particular, folks generally liked how/that I
+was driving a conversation forward, and respected the hustle required to do
+so.&lt;/li&gt;
+  &lt;li&gt;A lot of people felt that CTV would help them in a tangible way, and more
+than a few times, individuals approached me with a concrete use case they
+&lt;em&gt;needed&lt;/em&gt; but had not fully written it up yet.&lt;/li&gt;
+  &lt;li&gt;A lot of people wanted to know what the next step was and what I was
+planning to do to get it activated and when.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Some people had some suggestions on what I should do as a next step:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Some folks said I should just do a UASF and rally the users.&lt;/li&gt;
+  &lt;li&gt;Some said I needed to organize a summit for developers to explore covenants&lt;sup id=&quot;fnref:pleb&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:pleb&quot; class=&quot;footnote&quot; rel=&quot;footnote&quot;&gt;2&lt;/a&gt;&lt;/sup&gt;.&lt;/li&gt;
+  &lt;li&gt;Some said I didn’t need to do a UASF, nor advocate for it, but I &lt;em&gt;did&lt;/em&gt; need
+to decide on exact release parameters and distribute a reproducible binary
+so that it was clear what should be run and when so that end-to-end
+activation testing could proceed.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;It’s (un?)remarkably difficult to integrate all feedback on a complex topic
+like a Bitcoin upgrade coherently. But, having thought it through, I decided
+that the approach above was the correct next step. Below, you’ll find some
+reasoning on why I believe this to be proper and not out-of-line with how soft-fork
+development should go.&lt;/p&gt;
+
+&lt;p&gt;However, if I’m wrong &lt;em&gt;in your view&lt;/em&gt;, consider me a mere messenger and &lt;em&gt;please
+don’t shoot the messenger&lt;/em&gt;. You just need to communicate clearly to the
+community why they should &lt;em&gt;not&lt;/em&gt; run and signal for CTV and I’m confident that
+the wisdom of the consensus set will decide in it’s best interests.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;So why ship a binary and release parameters?&lt;/p&gt;
+
+&lt;h1 id=&quot;1-ctv-passes-a-basic-pre-flight-checklist&quot;&gt;1) CTV passes a basic pre-flight checklist.&lt;/h1&gt;
+
+&lt;p&gt;This discussion has to start anchored in a “pre-flight checklist” for CTV.
+These are fundamental questions that we should be able to tick boxes for for
+&lt;em&gt;any&lt;/em&gt; proposed upgrade…  Sadly, the community at large doesn’t have a
+codified checklist&lt;sup id=&quot;fnref:doit&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:doit&quot; class=&quot;footnote&quot; rel=&quot;footnote&quot;&gt;3&lt;/a&gt;&lt;/sup&gt;, but personally I tick off the following boxes:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;No material changes to the BIP/Spec/Ref Impl necessary for ~2 years (beyond rebases).&lt;/li&gt;
+  &lt;li&gt;A reasonably well reviewed and tested PR-implementation exists.&lt;/li&gt;
+  &lt;li&gt;~5 Months of a 5.5 BTC Bounty for bugs in CTV&lt;/li&gt;
+  &lt;li&gt;I socialized a similar
+&lt;a href=&quot;https://rubin.io/bitcoin/2021/12/24/advent-27/&quot;&gt;roadmap&lt;/a&gt; 5 months ago,
+which received a reasonably warm response so there are ‘few surprises’ here
+against previously communicated intent.&lt;/li&gt;
+  &lt;li&gt;A &lt;a href=&quot;https://utxos.org/signals&quot;&gt;community&lt;/a&gt; of supporters: breakdown, 16
+supporting orgs, 109 individuals, 3 mining pools (totalling about 15-18%
+depending on when you look).&lt;/li&gt;
+  &lt;li&gt;Only 3 individual NACKs + 1 org (owned by one
+of the individuals).
+You should read them yourself, but I think the NACKs are summarizable as “it’s
+too soon” and “there should be a different process” rather than “I have
+identified a flaw in the proposal”. See section 4 for more on this.
+ The NACKs are linked below:
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;https://github.com/JeremyRubin/utxos.org/issues/27&quot;&gt;Michael Folkson&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;https://github.com/JeremyRubin/utxos.org/issues/28&quot;&gt;John Carvalho/Synonym&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;https://github.com/JeremyRubin/utxos.org/issues/39&quot;&gt;Dr M Robotix&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Ample time to have produced a nack with a technical basis.&lt;/li&gt;
+  &lt;li&gt;7 regular meetings over ~16 weeks to discuss the upgrade.&lt;/li&gt;
+  &lt;li&gt;There exists software from multiple different parties for using CTV to
+accomplish various tasks. None of these users have uncovered issue or difficulty
+with CTV.&lt;/li&gt;
+  &lt;li&gt;Many in the community are arguing for &lt;em&gt;more&lt;/em&gt; functionality than what CTV
+offers, rather than that the functionality of CTV might be unsafe. CTV ends up
+being close to a subset of functionality offered by these upgrades.&lt;/li&gt;
+  &lt;li&gt;CTV does not impose a substantial validation burden and is designed carefully to
+not introduce any Denial of Service vectors.&lt;/li&gt;
+  &lt;li&gt;There exists a Signet with CTV active where people have been able to experiment.&lt;/li&gt;
+  &lt;li&gt;Backports for current release and prior release (will be) available.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h1 id=&quot;2-unforced-errors&quot;&gt;2) Unforced errors&lt;/h1&gt;
+
+&lt;p&gt;In tennis, an unforced error is a type of lost point where a player loses
+because of their own mistake. For example, suppose your opponent shoots a shot
+that’s a lob high in the air and slow. But it looks like it’s going out, so you
+do a little victory dance only to uncover that… the ball lands in. You had enough
+time to get to the ball, but you chose not to because you didn’t think it would
+go in. Contrast this to a forced error – your opponent hits a shot so hard and
+fast across the court no human could reach it let alone return it&lt;sup id=&quot;fnref:winner&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:winner&quot; class=&quot;footnote&quot; rel=&quot;footnote&quot;&gt;4&lt;/a&gt;&lt;/sup&gt;.&lt;/p&gt;
+
+&lt;p&gt;What’s this got to do with Bitcoin?&lt;/p&gt;
+
+&lt;p&gt;Community consensus is the ball, and we don’t know if by August it will be in
+or out.&lt;/p&gt;
+
+&lt;p&gt;Getting to where the ball might land is preparing a software artifact that can
+activate.&lt;/p&gt;
+
+&lt;p&gt;If an artifact isn’t prepared that does this, even if community consensus is
+ready by then, it’s an unforced error that it wasn’t ready which precludes us
+from being live in August.&lt;/p&gt;
+
+&lt;p&gt;When should you avoid an unforced error like this? When the cost of getting to
+the ball is sufficiently small.&lt;/p&gt;
+
+&lt;p&gt;I’m already maintaining a backportable to Bitcoin Core 23 and 22 patchset for
+CTV. It’s not much work to set parameters and do a release.&lt;/p&gt;
+
+&lt;p&gt;Which brings us to…&lt;/p&gt;
+
+&lt;h1 id=&quot;3-product-management-is-not-my-job--its-yours&quot;&gt;3) Product Management is not “my Job” – it’s yours.&lt;/h1&gt;
+
+&lt;p&gt;Devs don’t swing the racquet, we get to the ball. It’s the community’s job to
+decide to swing or not. One might rebutt this point – the community isn’t well
+informed to make that call, but fortunately devs and other tuned in individuals
+can serve as “coaches” to the public and advise on if the swing should happen.&lt;/p&gt;
+
+&lt;p&gt;Producing the code, the tools, the reviews, the builds, the dates, these are all
+getting to the ball activities.&lt;/p&gt;
+
+&lt;p&gt;It’s possible that as a developer, one could say that we should not get to the ball
+unless we know the community wants to swing.&lt;/p&gt;
+
+&lt;p&gt;But that’s false. What if the community wants to take a swing at it but
+developers haven’t gotten to the ball? What if developers &lt;em&gt;refuse&lt;/em&gt; to get to the
+ball because they don’t want the community to take that shot? Well, tennis can
+be a game of doubles (I’m really sticking with this metaphor), and maybe your
+teammate – the community itself – strives to go for it and sprints cross court
+to make up and take a shot. Maybe that shot looks like a UASF, maybe it looks
+like a hard fork, maybe it’s lower quality since there was less time to make the
+right shot placement (worse code if usual devs don’t review). But ultimately,
+the economic majority is what backstops this, the devs just have the
+opportunity to help it along, perhaps, a little smoother.&lt;/p&gt;
+
+&lt;p&gt;Largely, the formal critiques of CTV (the 3 NACKs) are based on topics of
+whether or not to swing the racquet, not if we should be at the ball.
+&lt;em&gt;There are other critiques as well, about the generality of the upgrade, but
+we’ll discuss those later in this post.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;I’ll excerpt some quotes from the NACKs below:&lt;/p&gt;
+
+&lt;p&gt;Michael writes,&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;I also think attempting regular soft forks with single features is a
+disturbing pattern to get into having just activated Taproot. As I say in the
+linked post it means less and less community scrutiny of consensus changes, it
+becomes a full time job to monitor the regular soft forks being activated (or
+attempting to be activated) and only a tiny minority of the community can
+dedicate the time to do that.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;So this seems to be a point largely about product management – we should only
+take a shot when we can line up more than once, due to the cost of swinging the
+racquet. Not really my job, it’s the communities.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Hence I’d like to register a “No” soft signal as I fundamentally disagree that a
+CTV soft fork should be attempted in the near future and my concerns over
+premature activation outweigh my enthusiasm for digging into the speculated real
+world use cases of CTV.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;If you disagree that it should be attempted, that’s fine. Your time to voice
+your concerns is in making the swing.&lt;/p&gt;
+
+&lt;p&gt;John writes,&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Generally, I do not think Bitcoin is ready for any new soft forked features at
+all in the short term. Taproot just arrived and there is already so much work to
+be done to adopt and utilize it.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;This is a product management point. “Work on feature X should block all work on
+other features”. It’s not a point on if CTV is a feature of independent merit.&lt;/p&gt;
+
+&lt;p&gt;Further, it’s a layer violation. Wallet progress is wholly independent of
+consensus upgrades, and generally, we don’t operate on a waterfall development
+model.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Any improvements CTV-eltoo may bring to LN are not significant enough to claim
+they are urgent for adoption or R&amp;amp;D for LN progress and adoption.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Again, a product management point. How do we measure what is important to the
+Lightning Community?  Oh, on &lt;a href=&quot;https://utxos.org/signals&quot;&gt;utxos.org&lt;/a&gt;, there are
+multiple Lightning Network companies and individuals (Lightning Labs, Muun
+Wallet, Roasbeef, ZmnSCPxj, LN Markets, Breez, fiatjaf, and more). So if &lt;em&gt;that&lt;/em&gt;
+represents the community, then it seems like a greenlight.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Since I am not qualified, nor are 99% of Bitcoiners, to evaluate this deeply,
+I feel much more time and scrutiny is required to accept CTV and the related
+projects Jeremy has prepared with it.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;em&gt;If you’re not qualified, remind me why we’re listening?&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Sorry, I couldn’t help the snark. Graciously, let’s accept the framing for a
+second – who are the stakeholders who need to sign off? What is this process
+like, concretely?&lt;/p&gt;
+
+&lt;p&gt;Is this a process that happens before or after we ‘get to the ball’?&lt;/p&gt;
+
+&lt;p&gt;It can definitely be after we get to the ball, and the decision to swing or not
+is a bit too product-management-y for how a dev should engage.&lt;/p&gt;
+
+&lt;p&gt;Also, related projects are a bit like the mix-ins at Cold Stone Creamery™. You
+are free, of course, to just get ice cream! That there are a myriad of uses
+doesn’t mean you need to accept all of them, it’s sufficient to just consider
+the one or two you care about.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;I am currently happy with what we have in Bitcoin, and would prefer Core
+development prioritize optimizations and cleanup work over more and more
+features that have no urgent need or chance of adoption anytime soon.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;This belies a basic misunderstanding of FLOSS:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;People work on what they want to&lt;/li&gt;
+  &lt;li&gt;CTV is already ‘finished’&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;A non-dev’s preference to spend time on cleanup or optimization doesn’t make
+any dev write that code or shift focus. Most core devs don’t have a boss, and
+if they do, it’s probably not you! It’s structurally impossible to direct the
+attention of developers.&lt;/p&gt;
+
+&lt;p&gt;And it so happens that &lt;em&gt;I&lt;/em&gt; am not happy with what we have in Bitcoin, so I did
+something about it. With respect to adoption,  people will likely be using CTV
+pretty soon after it’s available, since it is a big step up for a number of
+critical uses like vaults. These applications are already being built. They can
+be used on signet which can be deployed to mainnet immediately&lt;sup id=&quot;fnref:sec&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:sec&quot; class=&quot;footnote&quot; rel=&quot;footnote&quot;&gt;5&lt;/a&gt;&lt;/sup&gt;. The
+implementation details for basic custody contracts are pretty simple and don’t
+require the level of coordination for support that other contracts like
+lightning or DLCs, so adoption can be at the individual level.&lt;/p&gt;
+
+&lt;p&gt;The path around prioritization remains a product management question, and not
+something devs can be compelled to follow.&lt;/p&gt;
+
+&lt;h1 id=&quot;4-there-are-other-things-to-work-on&quot;&gt;4) There are other things to work on.&lt;/h1&gt;
+
+&lt;p&gt;I can get to the ball for this shot, but then I’d like to work on getting in
+position for the next shot on time.&lt;/p&gt;
+
+&lt;p&gt;There are other important technologies to work on, keeping covenants in limbo
+ties up a lot of human capital in trying to solve for &lt;em&gt;getting something&lt;/em&gt;, vs.
+&lt;em&gt;having something&lt;/em&gt; and being able to work on building solutions using it plus
+designing new technologies that make Bitcoin even better in different or
+complimentary ways.&lt;/p&gt;
+
+&lt;p&gt;What’s the right amount of rumination (chewing) to swallowing? Eventually, the
+mouthful you have is stopping you from taking the next bite.&lt;/p&gt;
+
+&lt;h1 id=&quot;5-consensus-is-memoryless&quot;&gt;5) Consensus is memoryless&lt;/h1&gt;
+
+&lt;p&gt;A memoryless process is something that “never makes progress”. For example,
+consider a board game, where you need to roll a 6 to win. You expect to need 6
+rolls to win. You roll a 5. How many more rolls do you need? It’s not 5. It’s 6
+– the process is memoryless.&lt;/p&gt;
+
+&lt;p&gt;Clearly consensus isn’t entirely memoryless. Something that is a concept only
+obviously has to be turned into a hard artifact.&lt;/p&gt;
+
+&lt;p&gt;CTV has been a ‘hard artifact’ for 2 years. 2 years ago I took a poll of 40 or
+so developers who attended my utxos.org workshop in Feb 2020. An average
+sentiment was that maybe we try to do CTV in a year or so, and that we could
+definitely do it maybe in 2 years.&lt;/p&gt;
+
+&lt;p&gt;I hear the same today from people who advocate a slower process. Maybe a year
+from now, we could definitely do it in maybe 2 years.&lt;/p&gt;
+
+&lt;p&gt;In 2 years, if we wait, won’t we hear the same?&lt;/p&gt;
+
+&lt;p&gt;Here’s a few reason why we might hear the same complaints in the future:&lt;/p&gt;
+
+&lt;p&gt;In 2 years, suppose Bitcoin is ~2x the price.&lt;/p&gt;
+
+&lt;p&gt;Shouldn’t we acknowledge twice as much at risk and do twice as much work to
+security audit things going into it? What if it’s not just El Salvador with
+Bitcoin as a national currency, but now Guatamala too?&lt;/p&gt;
+
+&lt;p&gt;Suppose we want to get to a point where 50% of the community has reviewed a
+change. In 2 years, what if the community is 2x the size?  Then even if we hit
+50% of today’s community, we only have 25% of the community read up.&lt;/p&gt;
+
+&lt;p&gt;Hopefully we keep innovating. And if we do keep innovating, we’ll come up with
+new things.  If we come up with a new thing that’s 2x as good as CTV in 2 years,
+but it takes another 2 years to implement it concretely, should we wait till we
+finish that? But what happens when we come up with something 2x better than
+that? Wait another 2 years? Now we’re 4 years out from when the swing to get CTV
+over the net was doable, and we’d have 0 in hand solutions for the problems CTV
+tries to solve.&lt;/p&gt;
+
+&lt;p&gt;All this points to the nature of the memorylessness of trying to get consensus
+in an open network.&lt;/p&gt;
+
+&lt;p&gt;The best I can do is to get to the ball and let the community decide to take the
+shot.&lt;/p&gt;
+
+&lt;p&gt;Concretely – what is the cost to having CTV in bitcoin during this time while
+the “better” alternative is being worked on, if we do decide to activate
+knowing we might one day obsolete CTV? What are the benefits to having 3-5
+years of basic covenants in the meantime? On the balance it seems, to me, net
+positive. It also seems to be a decision that the community at large can judge
+if the costs are worth the benefits.&lt;/p&gt;
+
+&lt;h1 id=&quot;6-you-can-fight-against-it&quot;&gt;6) You can fight against it.&lt;/h1&gt;
+
+&lt;p&gt;A criticism of the soft fork process is it’s not safe with Speedy Trial (ST)
+and ST is bad so we shouldn’t do it.  This is not a strong criticism: with
+Taproot,  our most important upgrade in years, went smoothly even though there
+was sharp disagreement over the safety of the mechanism at the time.&lt;/p&gt;
+
+&lt;p&gt;Here’s a breakdown of why Speedy Trial is OK from the perspective of different participants:&lt;/p&gt;
+
+&lt;h2 id=&quot;you-want-ctv-and-wont-take-no-for-an-answer&quot;&gt;You want CTV and won’t take no for an answer.&lt;/h2&gt;
+
+&lt;p&gt;Start with a ST. After 3 months, it either goes or it doesn’t. At least we were
+at the ball.  Now, let’s do a UASF with a LOT=true setting. Because ST is a fail
+fast, it’s in theory using time where otherwise we’d have to spend coordinating
+for the harsher realities of a LOT=true effort, so it’s a happy-path
+optimization.&lt;/p&gt;
+
+&lt;p&gt;If you’re a miner, you should signal during the period.&lt;/p&gt;
+
+&lt;h2 id=&quot;youd-like-ctv-and-might-take-no&quot;&gt;You’d like CTV and might take no.&lt;/h2&gt;
+
+&lt;p&gt;ST is for you. Can always follow up with another ST if the first fails, or
+another option if your opinion changes.&lt;/p&gt;
+
+&lt;p&gt;If you’re a miner, you should signal during the period.&lt;/p&gt;
+
+&lt;h2 id=&quot;you-do-not-want-ctv-but-if-others-do-want-it-whatever&quot;&gt;You do not want CTV, but if others do want it, whatever.&lt;/h2&gt;
+
+&lt;p&gt;ST is for you – it only goes through if others signal for it.&lt;/p&gt;
+
+&lt;p&gt;If you’re a miner, you can signal no during the period, and you can write a
+blogpost on why you don’t.&lt;/p&gt;
+
+&lt;h2 id=&quot;you-do-not-want-ctv-and-will-not-take-yes-for-an-answer&quot;&gt;You do not want CTV, and will not take yes for an answer.&lt;/h2&gt;
+
+&lt;p&gt;I’ve written &lt;a href=&quot;https://github.com/jeremyrubin/forkd&quot;&gt;forkd software&lt;/a&gt; in 40 lines
+of python which guarantees you to be on a non-activating chain.  Resist my
+evil&lt;sup id=&quot;fnref:really&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:really&quot; class=&quot;footnote&quot; rel=&quot;footnote&quot;&gt;6&lt;/a&gt;&lt;/sup&gt; fork!&lt;/p&gt;
+
+&lt;p&gt;If you’re a miner, you signal no during this period. You may want to optimize
+the forkd code for never building on the chain you don’t like.&lt;/p&gt;
+
+&lt;h1 id=&quot;7-bitcoin-core-is-not-bitcoin&quot;&gt;7) Bitcoin Core is not Bitcoin&lt;/h1&gt;
+
+&lt;p&gt;Bitcoin Core is a ‘reference client’ for the Bitcoin network, but it is not the
+job of &lt;em&gt;any&lt;/em&gt; of the maintainers of Bitcoin Core to decide what happens with respect to
+consensus upgrades.&lt;/p&gt;
+
+&lt;p&gt;When I’ve previously asked maintainers for clarity on what ‘merge rubric’ they
+might apply to the CTV pull request, I’ve been effectively stonewalled with no
+criterion (even for things that were historically merged) and claims that
+soft-fork discussion is outside the purview of maintainership. To be clear, I’m
+not asking maintainers &lt;em&gt;to merge&lt;/em&gt;, merely when they do make the decision to,
+what they are evaluating. The reticence to make clear guidelines around this
+was surprising to me, at first.&lt;/p&gt;
+
+&lt;p&gt;But then I understood: it isn’t the maintainer’s fault that they cannot give me
+any guidance, it’s how it &lt;strong&gt;must&lt;/strong&gt; be.&lt;/p&gt;
+
+&lt;p&gt;The idea that Bitcoin Core might serve as the deciding body for consensus
+upgrades puts developers of Bitcoin Core into a dangerous position in the
+future, whereby various agents might wrongfully attempt to compel Core
+developers (e.g., using the legal system) to release a soft-fork client for
+whatever nefarious goal. Making it clear that soft-forks are released by
+independent efforts and adopted by the community at large is the only process
+we can take that keeps Bitcoin Core apolitical and unexposed.&lt;/p&gt;
+
+&lt;p&gt;We’ve seen in other communities what it looks like when lead devs exert too
+much influence over the protocol and reference clients directly. Not good. We
+do not want to have a similar precedent for Bitcoin.&lt;/p&gt;
+
+&lt;p&gt;While previous soft-forks have generally been released by Core, I have no
+qualms with leading by example for how future soft-fork development should be.
+And if Core wants to merge CTV and do a release with compatible parameters,
+they are welcome to, without such a release being driven by the project
+maintainers directly, but rather to maintain compatibility with the will of the
+community.&lt;/p&gt;
+
+&lt;p&gt;Thus, &lt;em&gt;Alea Iacta Est&lt;/em&gt;.&lt;/p&gt;
+
+&lt;h1 id=&quot;bonus-what-do-i-do-now&quot;&gt;Bonus: What do I do now?&lt;/h1&gt;
+
+&lt;p&gt;I believe the community’s next steps are:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Evaluate the software proposed above and find any bugs (claim 5.5 BTC Bounties?)&lt;/li&gt;
+  &lt;li&gt;Discuss vociferously through the next few months if BIP-119 should be
+activated or not (that means you should e.g. post publicly if you/your org endorses
+this particular path, cover it in your news org, etc).&lt;/li&gt;
+  &lt;li&gt;Before the end of July, Miners should signal if the speedy trial should succeed&lt;/li&gt;
+  &lt;li&gt;Before November, if Speedy Trial passes, then all users should ensure they
+upgrade to validate CTV&lt;/li&gt;
+  &lt;li&gt;If Speedy Trial fails, at least we were at the ball, and we can either try
+again &lt;em&gt;next year&lt;/em&gt;, meaning CTV would be availble for use in at minimum 1.5
+years, or we can re-evaluate the design of CTV against alternatives that
+would take more time to prepare engineering wise (e.g., more general
+covenants, small tweaks to CTV).&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;what-is-jeremy-rubin-going-to-do&quot;&gt;What is &lt;em&gt;Jeremy Rubin&lt;/em&gt; going to do?&lt;/h2&gt;
+
+&lt;p&gt;Well, at this point I am unemotional about any outcome. Judica, my startup, is
+focused on Bitcoin infrastructure that can be used to great impact with or
+without CTV, so I’ve explicitly positioned myself to be personally indifferent
+to outcome. I personally think that CTV is ready to go, and will deliver
+immense benefits to the network, so I’ll advocate for signalling for it.&lt;/p&gt;
+
+&lt;p&gt;However, in my advocacy, I’ll be careful to note that it’s not a &lt;em&gt;must&lt;/em&gt;. All
+actors must decide if it’s in their own rational self-interest to have the
+soft-fork proceed.&lt;/p&gt;
+
+&lt;h2 id=&quot;but-what-about-uasf&quot;&gt;But what about UASF?&lt;/h2&gt;
+
+&lt;p&gt;Regrettably, no one has produced the ST compatible UASF code since last year,
+for various reasons. I understand the motives and tradeoffs of a UASF out the
+gate, but I still personally believe a UASF is best done as a follow-up to a
+ST, as I detailed in my mailing list post on the subject
+&lt;a href=&quot;https://lists.linuxfoundation.org/pipermail/bitcoin-dev/2021-April/018833.html&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h1 id=&quot;appendix-parameter-check&quot;&gt;Appendix: Parameter Check!&lt;/h1&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;gdate &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt;@1651708800 &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt;
+Thu May  5 00:00:00 UTC 2022
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;gdate &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt;@1660262400 &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt;
+Fri Aug 12 00:00:00 UTC 2022
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The below script simulates the passage of time and confirms that we are
+beginning at an expected mid-period time, and we are also ending near a
+mid-period time, given the assumed number of SIGNAL_PERIODS. This technique
+should guarantee with high certainty at least SIGNAL_PERIODS - 1, and
+repeating the simulation with up-to-date numbers as the signalling window
+progresses will produce more accurate forecasts.&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;datetime&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;SIGNAL_PERIODS&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;7&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;current_time&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1650301349&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;height_now&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;732450&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;minutes_till_may_5th&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;23457&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;height&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;height_now&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;minutes_till_may_5th&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;10.0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Expected Height&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;height&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;start_height&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;height&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2016&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;height&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2016&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Expected Start Height&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;start_height&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Start is mid period: &quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;start_height&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;height&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;2016.0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;minutes_from_now&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;start_height&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;height_now&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;In This many Minutes&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;minutes_from_now&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;In This many days&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;minutes_from_now&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;60.0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;24.0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;stop_height&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;start_height&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2016&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;SIGNAL_PERIODS&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Stopping at height&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;stop_height&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;total_blocks&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;stop_height&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;height_now&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;end_time&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;total_blocks&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2016&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;60&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;current_time&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;End of signalling at expected time&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;datetime&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;datetime&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fromtimestamp&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;end_time&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;active_height&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;762048&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;secs_till_active&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;active_height&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;height_now&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;60&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Active at&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;datetime&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;datetime&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fromtimestamp&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;current_time&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;secs_till_active&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Expected Height 734795
+Expected Start Height 735840
+Start is mid period:  0.5183531746031746
+In This many Minutes 33900
+In This many days 23.541666666666668
+Stopping at height 749952
+End of signalling at expected time 2022-08-10 23:02:29
+Active at 2022-11-09 23:02:29
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;div class=&quot;footnotes&quot; role=&quot;doc-endnotes&quot;&gt;
+  &lt;ol&gt;
+    &lt;li id=&quot;fn:skate&quot; role=&quot;doc-endnote&quot;&gt;
+      &lt;p&gt;including roller skating along the beach of course… &lt;a href=&quot;#fnref:skate&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:pleb&quot; role=&quot;doc-endnote&quot;&gt;
+      &lt;p&gt;in theory, pleb.fi was intended to be part of this… &lt;a href=&quot;#fnref:pleb&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:doit&quot; role=&quot;doc-endnote&quot;&gt;
+      &lt;p&gt;I think defining such a process more formally would be great, but it’d be controversial. &lt;a href=&quot;#fnref:doit&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:winner&quot; role=&quot;doc-endnote&quot;&gt;
+      &lt;p&gt;technically, if you don’t touch it, this is a winner. A forced error, as &lt;a href=&quot;https://twitter.com/bitcoins/status/1516522926463410187&quot;&gt;Mike West&lt;/a&gt; notes, is where you still got your racquet to the ball. However, winners and forced errors are pretty similar in contrast to unforced errors. &lt;a href=&quot;#fnref:winner&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:sec&quot; role=&quot;doc-endnote&quot;&gt;
+      &lt;p&gt;probably following a thorough security review &lt;a href=&quot;#fnref:sec&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:really&quot; role=&quot;doc-endnote&quot;&gt;
+      &lt;p&gt;sigh, if you really think I’m not working in good faith it’s a lost cause… &lt;a href=&quot;#fnref:really&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/div&gt;</content><author><name>Jeremy Rubin</name></author><category term="bitcoin" /><summary type="html">Warning: this post assumes a great deal of context on CTV is already understood by the reader. If you are not familiar, you may wish to start with utxos.org, the advent calendar, and the BIP-119 text and reference implementation, as those may provide much needed context about what CTV is and why a next step is being discussed. If you only have a little time, minimally I would advise these two from the advent calendar as the minimum required context: Contracting Primitives and Upgrades to Bitcoin and RoadMap or Load o’ Crap?.</summary></entry></feed>

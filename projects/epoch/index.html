@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+  <title> Epoch Mempool &middot; Jeremy Rubin </title>
+  <link href="https://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#c08a3a">
+  <meta name="color-scheme" content="dark">
+
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/font-awesome-4.5.0/css/font-awesome.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="/public/css/jr-2026.css">
+  
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+  <link rel="icon" type="image/svg+xml" href="/public/favicon.svg">
+  <link rel="shortcut icon" href="/public/favicon.ico">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="">
+<meta name="author" content="Jeremy Rubin">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://rubin.io/projects/epoch/">
+<meta property="og:title" content="Epoch Mempool - Jeremy Rubin">
+<meta property="og:description" content="">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://rubin.io/projects/epoch/">
+<meta property="og:site_name" content="Jeremy Rubin">
+<meta property="og:locale" content="en_US">
+
+<meta property="og:image" content="https://rubin.io/public/img/jeremy.jpg">
+
+<meta name="twitter:card" content="summary_large_image">
+
+<meta name="twitter:image" content="https://rubin.io/public/img/jeremy.jpg">
+
+
+<meta name="twitter:site" content="@JeremyRubin">
+<meta name="twitter:creator" content="@JeremyRubin">
+
+
+<link rel="sitemap" type="application/xml" href="https://rubin.io/sitemap.xml">
+<link type="application/atom+xml" rel="alternate" href="https://rubin.io/feed.xml" title="Jeremy Rubin" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Jeremy Rubin",
+  "url": "https://rubin.io/",
+  "description": "Bitcoin research, smart contracts, and applied cryptography."
+}
+</script>
+
+
+  
+<!-- GA4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LF6VBT5B2T"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-LF6VBT5B2T');
+</script>
+
+
+  
+
+  <link rel="me" href="https://twitter.com/JeremyRubin">
+
+
+
+</head>
+
+    <body>
+        <a class="skip-link" href="#main">Skip to content</a>
+        <header class="site-header">
+    <div class="header-inner">
+        <div class="brand">
+            <a class="brand-mark" href="/">JR</a>
+            <div class="brand-text">
+                <a class="brand-name" href="/">Jeremy Rubin</a>
+                
+                <span class="brand-tagline">Bitcoin research, smart contracts, and applied cryptography.</span>
+                
+            </div>
+        </div>
+        <nav class="site-nav">
+            <a class="nav-link" href="/">Home</a>
+            <a class="nav-link" href="/blog/">Blog</a>
+            <a class="nav-link" href="/talks/">Talks</a>
+            <a class="nav-link" href="/projects/">Projects</a>
+            <a class="nav-link" href="/archive/">Site Index</a>
+        </nav>
+        <div class="site-actions">
+            
+            <a class="icon-button" href="/public/pdfs/resume.pdf" aria-label="Resume">
+                <i class="fa fa-file-text-o" aria-hidden="true"></i>
+            </a>
+            
+            
+            
+            <a class="icon-button" href="https://twitter.com/JeremyRubin" aria-label="Twitter">
+                <i class="fa fa-twitter" aria-hidden="true"></i>
+            </a>
+            
+        </div>
+    </div>
+</header>
+
+        <main id="main" class="content container">
+            <article class="post">
+    <header class="post-header">
+        <h1 class="post-title">Epoch Mempool</h1>
+        <p class="post-subtitle">Hansel and Gretel, left bread crumb trails as they went, but birds ate them all.</p>
+        <span class="post-date">October 26, 2019</span>
+    </header>
+    <div class="post-body">
+        <p class="center-image rounded"><a href="https://github.com/bitcoin/bitcoin/pull/17268"><img src="/public/img/epoch.png" alt="Tx Graph" /></a></p>
+
+<p>The Epoch Mempool is a project to improve the asymptotic complexity of many of
+the mempool’s algorithms as well as makes them more performant in practice.</p>
+
+<p>In the mempool we have a lot of algorithms which depend on rather
+computationally expensive state tracking. The state tracking algorithms we use
+make a lot of algorithms inefficient because we’re inserting into various sets
+that grow with the number of ancestors and descendants, or we may have to
+iterate multiple times of data we’ve already seen.</p>
+
+<p>To address these inefficiencies, we can closely limit the maximum possible data
+we iterate and reject transactions above the limits.</p>
+
+<p>However, a rational miner/user will purchase faster hardware and raise these
+limits to be able to collect more fee revenue or process more transactions.
+Further, changes coming from around the ecosystem (lightning, OP_SECURETHEBAG)
+have critical use cases which benefit when the mempool has fewer limitations.</p>
+
+<p>Rather than use expensive state tracking, we can do something simpler. Like
+Hansel and Gretel, we can leave breadcrumbs in the mempool as we traverse it,
+so we can know if we are going somewhere we’ve already been. Luckily, in
+bitcoind there are no birds!</p>
+
+<p>These breadcrumbs are a uint64_t epoch per CTxMemPoolEntry. (64 bits is enough
+that it will never overflow). The mempool also has a counter.</p>
+
+<p>Every time we begin traversing the mempool, and we need some help tracking
+state, we increment the mempool’s counter. Any CTxMemPoolEntry with an epoch
+less than the MemPools has not yet been touched, and should be traversed and
+have it’s epoch set higher.</p>
+
+<p>Given the one-to-one mapping between CTxMemPool entries and transactions, this
+is a safe way to cache data.</p>
+
+<p>Using these bread-crumbs allows us to get rid of many of the std::set
+accumulators in favor of a std::vector as we no longer rely on the
+de-duplicative properties of std::set.</p>
+
+<p>We can also improve many of the related algorithms to no longer make heavy use
+of heapstack based processing.</p>
+
+<p><a href="https://github.com/bitcoin/bitcoin/projects/14#card-31846646">Keep up on the Epoch Mempool progress.</a></p>
+
+    </div>
+</article>
+
+
+        </main>
+        <footer class="site-footer">
+            <div class="footer-inner">
+                <p>&copy; 2011-2026 Jeremy Rubin. All rights reserved.</p>
+                <a href="/atom.xml">RSS</a>
+            </div>
+        </footer>
+    </body>
+</html>

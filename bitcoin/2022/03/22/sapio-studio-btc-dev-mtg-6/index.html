@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+  <title> Sapio Studio Tutorial for CTV Meeting &middot; Jeremy Rubin </title>
+  <link href="https://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#c08a3a">
+  <meta name="color-scheme" content="dark">
+
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/font-awesome-4.5.0/css/font-awesome.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="/public/css/jr-2026.css">
+  
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+  <link rel="icon" type="image/svg+xml" href="/public/favicon.svg">
+  <link rel="shortcut icon" href="/public/favicon.ico">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Other people have followed this tutorial with some success:">
+<meta name="author" content="Jeremy Rubin">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://rubin.io/bitcoin/2022/03/22/sapio-studio-btc-dev-mtg-6/">
+<meta property="og:title" content="Sapio Studio Tutorial for CTV Meeting - Jeremy Rubin">
+<meta property="og:description" content="Other people have followed this tutorial with some success:">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://rubin.io/bitcoin/2022/03/22/sapio-studio-btc-dev-mtg-6/">
+<meta property="og:site_name" content="Jeremy Rubin">
+<meta property="og:locale" content="en_US">
+
+<meta property="og:image" content="https://rubin.io/public/img/jeremy.jpg">
+
+<meta name="twitter:card" content="summary_large_image">
+
+<meta name="twitter:image" content="https://rubin.io/public/img/jeremy.jpg">
+
+
+<meta name="twitter:site" content="@JeremyRubin">
+<meta name="twitter:creator" content="@JeremyRubin">
+
+
+<meta property="article:published_time" content="2022-03-22T00:00:00+00:00">
+
+<link rel="sitemap" type="application/xml" href="https://rubin.io/sitemap.xml">
+<link type="application/atom+xml" rel="alternate" href="https://rubin.io/feed.xml" title="Jeremy Rubin" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Jeremy Rubin",
+  "url": "https://rubin.io/",
+  "description": "Bitcoin research, smart contracts, and applied cryptography."
+}
+</script>
+
+
+  
+<!-- GA4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LF6VBT5B2T"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-LF6VBT5B2T');
+</script>
+
+
+  
+
+  <link rel="me" href="https://twitter.com/JeremyRubin">
+
+
+
+</head>
+
+    <body>
+        <a class="skip-link" href="#main">Skip to content</a>
+        <header class="site-header">
+    <div class="header-inner">
+        <div class="brand">
+            <a class="brand-mark" href="/">JR</a>
+            <div class="brand-text">
+                <a class="brand-name" href="/">Jeremy Rubin</a>
+                
+                <span class="brand-tagline">Bitcoin research, smart contracts, and applied cryptography.</span>
+                
+            </div>
+        </div>
+        <nav class="site-nav">
+            <a class="nav-link" href="/">Home</a>
+            <a class="nav-link" href="/blog/">Blog</a>
+            <a class="nav-link" href="/talks/">Talks</a>
+            <a class="nav-link" href="/projects/">Projects</a>
+            <a class="nav-link" href="/archive/">Site Index</a>
+        </nav>
+        <div class="site-actions">
+            
+            <a class="icon-button" href="/public/pdfs/resume.pdf" aria-label="Resume">
+                <i class="fa fa-file-text-o" aria-hidden="true"></i>
+            </a>
+            
+            
+            
+            <a class="icon-button" href="https://twitter.com/JeremyRubin" aria-label="Twitter">
+                <i class="fa fa-twitter" aria-hidden="true"></i>
+            </a>
+            
+        </div>
+    </div>
+</header>
+
+        <main id="main" class="content container">
+            <article class="post">
+    <header class="post-header">
+        <h1 class="post-title">Sapio Studio Tutorial for CTV Meeting</h1>
+        <p class="post-subtitle">On Your Mark Get Set GOOOOOO</p>
+        
+        <span class="post-date">22 Mar 2022</span>
+    </header>
+    <div class="post-body">
+        <p>Other people have followed this tutorial with some success:</p>
+
+<p>Common sticking points include:</p>
+
+<ol>
+  <li>Not building latest sapio binary before starting</li>
+  <li>Not building latest sapio-studio project before starting</li>
+  <li>Not having the correct clang version (&gt;=12)</li>
+  <li>brew installing clang somewhere else (try /opt/homebrew, but also /usr/local/Cellar)</li>
+</ol>
+
+<hr />
+<ol>
+  <li>Set up a signet node.</li>
+</ol>
+
+<p>Build this branch https://github.com/JeremyRubin/bitcoin/tree/checktemplateverify-signet-23.0-alpha</p>
+
+<p>You’ll likely want settings like this in
+   your bitcoin.conf too:</p>
+<div class="language-toml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nn">[signet]</span>
+<span class="py">server</span> <span class="p">=</span> <span class="mi">1</span>
+<span class="py">txindex</span><span class="p">=</span><span class="mi">1</span>
+<span class="py">signetchallenge</span><span class="p">=</span><span class="mf">512102946e8</span><span class="err">ba</span><span class="mi">8</span><span class="err">eca</span><span class="mf">597194e7</span><span class="err">ed</span><span class="mi">90377</span><span class="err">d</span><span class="mi">9</span><span class="err">bbebc</span><span class="mi">5</span><span class="err">d</span><span class="mi">17</span><span class="err">a</span><span class="mi">9609</span><span class="err">ab</span><span class="mf">3e35</span><span class="err">e</span><span class="mi">706612</span><span class="err">ee</span><span class="mi">882759351</span><span class="err">ae</span> 
+<span class="err">rpcport=</span><span class="mi">18332</span>
+<span class="py">rpcworkqueue</span><span class="p">=</span><span class="mi">1000</span>
+<span class="py">fallbackfee</span><span class="p">=</span><span class="mf">0.0002</span>
+<span class="py">addnode</span><span class="p">=</span><span class="mf">50.18.75.225</span>
+<span class="py">minrelaytxfee</span><span class="p">=</span><span class="mi">0</span>
+</code></pre></div></div>
+
+<ol>
+  <li>You’ll need to create a new wallet, if you’ve not done it before</li>
+</ol>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./bitcoin-cli <span class="nt">-signet</span> createwallet sapio-studio-tutorial <span class="c"># If you've done this before fine</span>
+./bitcoin-cli <span class="nt">-signet</span> getnewaddress
+</code></pre></div></div>
+
+<ol>
+  <li>
+    <p>Get coins to your address https://faucet.ctvsignet.com/ / DM me for more</p>
+  </li>
+  <li>Follow the install instructions on
+https://learn.sapio-lang.org/ch01-01-installation.html You can skip the the
+sapio-studio part / pod part and just do the Local Quickstart up until
+“Instantiate a contract from the plugin”.</li>
+  <li>run cargo build –release from the root directory to build the sapio-cli.</li>
+</ol>
+
+<h2 id="start-up-sapio-studio">Start Up Sapio Studio</h2>
+<ol>
+  <li>Get <a href="https://yarnpkg.com/getting-started/install">Yarn</a></li>
+  <li>Install Sapio Studio
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone <span class="nt">--depth</span> 1 git@github.com:sapio-lang/sapio-studio.git <span class="o">&amp;&amp;</span> <span class="nb">cd </span>sapio-studio
+yarn <span class="nb">install</span>
+</code></pre></div>    </div>
+  </li>
+  <li>Start react server
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yarn start-react
+</code></pre></div>    </div>
+    <p>Leave that running in  tab</p>
+  </li>
+  <li>Start electron server
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yarn start-electron
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<p>Once it launches this is what you should see:
+<img src="/public/img/bitcoin/sapio-studio-tut-ctv6/1-sapio-studio-init.png" alt="" />
+Go ahead and click on settings to configure the sapio cli for the first time.
+<img src="/public/img/bitcoin/sapio-studio-tut-ctv6/Screen-Shot-2022-03-22-at-10.16.35-AM.png" alt="" />
+First, let’s configure our sapio-cli. Go head and do “Configured Here” and leave
+everything blank. Click on the select file and point sapio studio to your (freshly done) release build of sapio-cli.</p>
+
+<p>Click Save Settings.
+<img src="/public/img/bitcoin/sapio-studio-tut-ctv6/Screen-Shot-2022-03-22-at-10.17.37-AM.png" alt="" /></p>
+
+<p>Now, you should see the following confirmation.
+<img src="/public/img/bitcoin/sapio-studio-tut-ctv6/Screen-Shot-2022-03-22-at-10.18.09-AM.png" alt="" /></p>
+
+<p>Next let’s configure your node. Clikc select file and point it to your
+.cookie file and then configure the node as Signet &amp; set the RPC port to whatever you used. Save it.
+<img src="/public/img/bitcoin/sapio-studio-tut-ctv6/Screen-Shot-2022-03-22-at-10.18.59-AM.png" alt="" /></p>
+
+<p>Click test connection – it should tell you… something.
+<img src="/public/img/bitcoin/sapio-studio-tut-ctv6/Screen-Shot-2022-03-22-at-10.19.39-AM.png" alt="" /></p>
+
+<p>Navigate back to wallet. You should see some balance or something (assuming you did the faucet).
+<img src="/public/img/bitcoin/sapio-studio-tut-ctv6/Screen-Shot-2022-03-22-at-10.20.12-AM.png" alt="" /></p>
+
+<p>Next, click “Load WASM Plugin” and find your plugin-example/target/wasm32-unknown-unknown/debug/*.wasm files. Go ahead and pick the jamesob vault one.
+<img src="/public/img/bitcoin/sapio-studio-tut-ctv6/Screen-Shot-2022-03-22-at-10.20.41-AM.png" alt="" /></p>
+
+<p>Next, click Create new contract.
+<img src="/public/img/bitcoin/sapio-studio-tut-ctv6/Screen-Shot-2022-03-22-at-10.21.17-AM.png" alt="" /></p>
+
+<p>You’ll see a little applet for the JameVault. Look at that handsome guy!
+<img src="/public/img/bitcoin/sapio-studio-tut-ctv6/Screen-Shot-2022-03-22-at-10.22.07-AM.png" alt="" /></p>
+
+<p>Next, we need to create some Taproot keys for this – gonna need some command line action:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./bitcoin-cli <span class="nt">-signet</span> getaddressinfo <span class="si">$(</span>./bitcoin-cli <span class="nt">-signet</span> getnewaddress <span class="s2">"vault_project"</span> <span class="s2">"bech32m"</span><span class="si">)</span>
+</code></pre></div></div>
+
+<p>and then copy the witness program. do this twice – one for cold one for hot.
+<img src="/public/img/bitcoin/sapio-studio-tut-ctv6/Screen-Shot-2022-03-22-at-10.27.25-AM.png" alt="" /></p>
+
+<p>Now click on your applet and start filling it out. You can get new addresses by clicking on Bitcoin Node (just not keys yet)
+<img src="/public/img/bitcoin/sapio-studio-tut-ctv6/Screen-Shot-2022-03-22-at-10.35.18-AM.png" alt="" />
+n.b. sometimes things are in btc, sometimes in sats. c’est la vie.
+<img src="/public/img/bitcoin/sapio-studio-tut-ctv6/Screen-Shot-2022-03-22-at-10.35.48-AM.png" alt="" />
+finish up and click submit
+<img src="/public/img/bitcoin/sapio-studio-tut-ctv6/Screen-Shot-2022-03-22-at-10.36.02-AM.png" alt="" />
+If all is right, you should see a contract get created!
+<img src="/public/img/bitcoin/sapio-studio-tut-ctv6/Screen-Shot-2022-03-22-at-10.36.17-AM.png" alt="" />
+To actually create it, click on the parent txn and then sign it…
+<img src="/public/img/bitcoin/sapio-studio-tut-ctv6/Screen-Shot-2022-03-22-at-10.36.51-AM.png" alt="" />
+<img src="/public/img/bitcoin/sapio-studio-tut-ctv6/Screen-Shot-2022-03-22-at-10.37.00-AM.png" alt="" />
+and then broadcast it (with real money you’ll want to verify before doing this)
+<img src="/public/img/bitcoin/sapio-studio-tut-ctv6/Screen-Shot-2022-03-22-at-10.37.03-AM.png" alt="" />
+it’ll now pop up in the mempool.</p>
+
+<p>n.b. BUG ALERT: the viewer on the right hand side is a little glitchy. before playing
+with the psbts/txn signing logic, always close it and re-open by clicking on the txn 
+you want.
+<img src="/public/img/bitcoin/sapio-studio-tut-ctv6/Screen-Shot-2022-03-22-at-10.37.14-AM.png" alt="" />
+<img src="/public/img/bitcoin/sapio-studio-tut-ctv6/Screen-Shot-2022-03-22-at-10.37.25-AM.png" alt="" />
+Now you can click on the begin redeem txn and broadcast and sign that one so it’s in the mempool
+<img src="/public/img/bitcoin/sapio-studio-tut-ctv6/Screen-Shot-2022-03-22-at-10.44.38-AM.png" alt="" />
+Click on the updatable output, and you’ll see some options.
+<img src="/public/img/bitcoin/sapio-studio-tut-ctv6/Screen-Shot-2022-03-22-at-10.44.57-AM.png" alt="" />
+<img src="/public/img/bitcoin/sapio-studio-tut-ctv6/Screen-Shot-2022-03-22-at-11.53.45-AM.png" alt="" />
+click on spend hot, and fill out the form. Hit submit, and then hit recompile.</p>
+
+<p>Be sure to pick an amount that is amount in input - fee (todo: make this smarter!).
+<img src="/public/img/bitcoin/sapio-studio-tut-ctv6/Screen-Shot-2022-03-22-at-11.53.54-AM.png" alt="" />
+if all is well, you’ll see a hot spend.
+<img src="/public/img/bitcoin/sapio-studio-tut-ctv6/Screen-Shot-2022-03-22-at-11.47.10-AM.png" alt="" /></p>
+
+<p>if you picked a relative timelock &gt; 1 block, try playing with the simulate tab :D.</p>
+
+<p>If you navigate back to the CONTRACTS tab you can pull up contracts you previously made /
+recompilations with effects, even across sessions.
+<img src="/public/img/bitcoin/sapio-studio-tut-ctv6/Screen-Shot-2022-03-22-at-11.47.20-AM.png" alt="" /></p>
+
+    </div>
+
+    
+    
+    
+
+    <div class="post-footer">
+        <h3>Share this post</h3>
+        <div class="post-share">
+            
+
+
+
+
+<div class="share-bar" role="list">
+  <a class="share-button" role="listitem"
+    href="https://twitter.com/intent/tweet?text=Sapio+Studio+Tutorial+for+CTV+Meeting&url=https%3A%2F%2Frubin.io%2Fbitcoin%2F2022%2F03%2F22%2Fsapio-studio-btc-dev-mtg-6%2F"
+    target="_blank" rel="noopener">Twitter</a>
+  <a class="share-button" role="listitem"
+    href="https://news.ycombinator.com/submitlink?u=https%3A%2F%2Frubin.io%2Fbitcoin%2F2022%2F03%2F22%2Fsapio-studio-btc-dev-mtg-6%2F&t=Sapio%20Studio%20Tutorial%20for%20CTV%20Meeting" target="_blank"
+    rel="noopener">HN</a>
+  <a class="share-button" role="listitem"
+    href="https://www.reddit.com/submit?url=https%3A%2F%2Frubin.io%2Fbitcoin%2F2022%2F03%2F22%2Fsapio-studio-btc-dev-mtg-6%2F&title=Sapio+Studio+Tutorial+for+CTV+Meeting"
+    target="_blank" rel="noopener">Reddit</a>
+  <a class="share-button" role="listitem"
+    href="mailto:?subject=Sapio+Studio+Tutorial+for+CTV+Meeting&body=https%3A%2F%2Frubin.io%2Fbitcoin%2F2022%2F03%2F22%2Fsapio-studio-btc-dev-mtg-6%2F">Email</a>
+  <a class="share-button" role="listitem"
+    href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Frubin.io%2Fbitcoin%2F2022%2F03%2F22%2Fsapio-studio-btc-dev-mtg-6%2F" target="_blank"
+    rel="noopener">LinkedIn</a>
+</div>
+
+        </div>
+    </div>
+</article>
+
+<aside class="related">
+  <h3>You might also enjoy...</h3>
+  <ul class="related-posts">
+    
+      <li>
+        <a href="/talks/2026/02/02/2020-01-30-chaincode-3/">
+          
+          <small><time datetime="2026-02-02T00:01:12+00:00">02 Feb 2026</time></small>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/bitcoin/2025/05/04/delbrag-talk/">
+          Grokking DelBrag: Out-of-Band On-Chain Fraud Proofs through Circuit Garbling @ Bitcoin++ Austin
+          <small><time datetime="2025-05-04T00:00:00+00:00">04 May 2025</time></small>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/bitcoin/2025/04/04/delbrag/">
+          Delbrag
+          <small><time datetime="2025-04-04T00:00:00+00:00">04 Apr 2025</time></small>
+        </a>
+      </li>
+    
+  </ul>
+</aside>
+
+
+        </main>
+        <footer class="site-footer">
+            <div class="footer-inner">
+                <p>&copy; 2011-2026 Jeremy Rubin. All rights reserved.</p>
+                <a href="/atom.xml">RSS</a>
+            </div>
+        </footer>
+    </body>
+</html>

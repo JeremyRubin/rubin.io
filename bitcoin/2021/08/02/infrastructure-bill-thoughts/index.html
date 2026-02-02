@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+  <title> Infrastructure Bill: It's Go Time for Radical Self Custody &middot; Jeremy Rubin </title>
+  <link href="https://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#c08a3a">
+  <meta name="color-scheme" content="dark">
+
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/font-awesome-4.5.0/css/font-awesome.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="/public/css/jr-2026.css">
+  
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+  <link rel="icon" type="image/svg+xml" href="/public/favicon.svg">
+  <link rel="shortcut icon" href="/public/favicon.ico">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="TL;DR: click here to answer call to action">
+<meta name="author" content="Jeremy Rubin">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://rubin.io/bitcoin/2021/08/02/infrastructure-bill-thoughts/">
+<meta property="og:title" content="Infrastructure Bill: It's Go Time for Radical Self Custody - Jeremy Rubin">
+<meta property="og:description" content="TL;DR: click here to answer call to action">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://rubin.io/bitcoin/2021/08/02/infrastructure-bill-thoughts/">
+<meta property="og:site_name" content="Jeremy Rubin">
+<meta property="og:locale" content="en_US">
+
+<meta property="og:image" content="https://rubin.io/public/img/jeremy.jpg">
+
+<meta name="twitter:card" content="summary_large_image">
+
+<meta name="twitter:image" content="https://rubin.io/public/img/jeremy.jpg">
+
+
+<meta name="twitter:site" content="@JeremyRubin">
+<meta name="twitter:creator" content="@JeremyRubin">
+
+
+<meta property="article:published_time" content="2021-08-02T00:00:00+00:00">
+
+<link rel="sitemap" type="application/xml" href="https://rubin.io/sitemap.xml">
+<link type="application/atom+xml" rel="alternate" href="https://rubin.io/feed.xml" title="Jeremy Rubin" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Jeremy Rubin",
+  "url": "https://rubin.io/",
+  "description": "Bitcoin research, smart contracts, and applied cryptography."
+}
+</script>
+
+
+  
+<!-- GA4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LF6VBT5B2T"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-LF6VBT5B2T');
+</script>
+
+
+  
+
+  <link rel="me" href="https://twitter.com/JeremyRubin">
+
+
+
+</head>
+
+    <body>
+        <a class="skip-link" href="#main">Skip to content</a>
+        <header class="site-header">
+    <div class="header-inner">
+        <div class="brand">
+            <a class="brand-mark" href="/">JR</a>
+            <div class="brand-text">
+                <a class="brand-name" href="/">Jeremy Rubin</a>
+                
+                <span class="brand-tagline">Bitcoin research, smart contracts, and applied cryptography.</span>
+                
+            </div>
+        </div>
+        <nav class="site-nav">
+            <a class="nav-link" href="/">Home</a>
+            <a class="nav-link" href="/blog/">Blog</a>
+            <a class="nav-link" href="/talks/">Talks</a>
+            <a class="nav-link" href="/projects/">Projects</a>
+            <a class="nav-link" href="/archive/">Site Index</a>
+        </nav>
+        <div class="site-actions">
+            
+            <a class="icon-button" href="/public/pdfs/resume.pdf" aria-label="Resume">
+                <i class="fa fa-file-text-o" aria-hidden="true"></i>
+            </a>
+            
+            
+            
+            <a class="icon-button" href="https://twitter.com/JeremyRubin" aria-label="Twitter">
+                <i class="fa fa-twitter" aria-hidden="true"></i>
+            </a>
+            
+        </div>
+    </div>
+</header>
+
+        <main id="main" class="content container">
+            <article class="post">
+    <header class="post-header">
+        <h1 class="post-title">Infrastructure Bill: It's Go Time for Radical Self Custody</h1>
+        
+        
+        <span class="post-date">02 Aug 2021</span>
+    </header>
+    <div class="post-body">
+        <p><a href="https://github.com/JeremyRubin/utxos.org/pull/4">TL;DR: click here to answer call to action</a></p>
+
+<p><a href="https://github.com/JeremyRubin/utxos.org/pull/4"> <img src="/public/img/bitcoin/virginchadcustody.png" alt="" /> </a></p>
+
+<p>The infrastructure bill draft has been circulating which contains language that
+would have massive impact for the crypto ecosystem (and Bitcoin) in the United
+States, and most likely globally. The broad implication of the proposed bill is
+that many types of service provider would be categorized as brokers, even if
+fully ‘non custodial’. E.g., a coinjoin coordinator might be a broker, even if
+they never take control of the funds, because they are facilitating a
+transaction. There’s a lot of nuance, and the language is still being changed,
+so we’ll see where it lands. But that’s not the point of this blog post.</p>
+
+<p>The point of this blog post is that we need to <em>hurry the fuck up</em> and improve
+the self-sovereign software available and widely used by bitcoiners. You heard
+me right, <em>hurry the fuck up</em>.</p>
+
+<p>While there’s space for debate around perfect designs and optima for protocol
+improvements, these discussions take years to turn into code running in end
+users wallets. I do not believe that we have time to leisurely improve
+self-sovereign custody solutions while regulators figure out a wrench to throw
+in our spokes.</p>
+
+<p>Why am I so concerned about this bill in particular? A confidential source
+tells me that this language came out of the blue, an executive branch driven
+regulatory ninja attack of sorts. Normally, when the government looks to
+regulate an industry, the provisions and terms get floated around by
+legislators for a long while with industry input, comment periods, and more.
+Then, when a bill or other rules get passed, it’s something that the industry
+has at least had a chance to weigh in on and prepare for. My source claims no
+one has seen the clauses in the infrastructure bill before, and they infer that
+may mean this is a part of a broader crack-down coming from specific political
+personalities and agencies. This means we may be seeing government actions
+further restricting users’ rights in the pipeline much sooner than anyone could
+anticipate.</p>
+
+<p>I’ve long been saying that we should be deploying <a href="https://utxos.org">BIP-119
+CTV</a> for congestion control <em>before</em> we see broad congestion
+on the network. If you wait until a problem is manifest, it can take years to
+deploy a solution. This merits proactivity in solving a problem before it
+comes. Today, the need to improve self-custody looms urgently on the horizon.</p>
+
+<p>CTV is not a panacea solution. It doesn’t magically fix all custodial issues.
+But, along with <a href="https://learn.sapio-lang.org">Sapio</a>, it does offer a pathway
+to dramatically improving self custody options, letting users customize vault
+smart contracts which do not depend on any third parties. Deploying CTV now is
+an opportunity to put in motion the wheels for broad ecosystem support for
+these enhanced custody protocols. We may come up with better options in the
+future which may obsolete CTV in place of more clever technologies. I cheer
+those efforts. But we need solutions for Tomorrow.</p>
+
+<p>A soft fork activation for CTV could be deployable for Bitcoin imminently,
+should the community embrace it. The spec is nearly 2 years old, the code has
+required only small updates to be mergeable with other changes to Bitcoin Core.
+The review burden is 185 lines of consensus code, and a couple hundred lines of
+tests. To that end I believe it is prudent for the Bitcoin community to embrace
+the deployment of CTV and I’m calling on the community to <a href="https://github.com/JeremyRubin/utxos.org/pull/4">soft-signal
+intent</a> for a soft-fork
+activation of CTV.</p>
+
+<p>We cannot control what rules state authorities attempt to mandate. But we can
+individually control our own compliance with measures we see as unjust, and as
+a community we can advance technologies and solutions that ensure that choice
+remains squarely in the hands of every user and not the service providers they
+may use.</p>
+
+    </div>
+
+    
+    
+    
+
+    <div class="post-footer">
+        <h3>Share this post</h3>
+        <div class="post-share">
+            
+
+
+
+
+<div class="share-bar" role="list">
+  <a class="share-button" role="listitem"
+    href="https://twitter.com/intent/tweet?text=Infrastructure+Bill%3A+It%27s+Go+Time+for+Radical+Self+Custody&url=https%3A%2F%2Frubin.io%2Fbitcoin%2F2021%2F08%2F02%2Finfrastructure-bill-thoughts%2F"
+    target="_blank" rel="noopener">Twitter</a>
+  <a class="share-button" role="listitem"
+    href="https://news.ycombinator.com/submitlink?u=https%3A%2F%2Frubin.io%2Fbitcoin%2F2021%2F08%2F02%2Finfrastructure-bill-thoughts%2F&t=Infrastructure%20Bill%3A%20It%27s%20Go%20Time%20for%20Radical%20Self%20Custody" target="_blank"
+    rel="noopener">HN</a>
+  <a class="share-button" role="listitem"
+    href="https://www.reddit.com/submit?url=https%3A%2F%2Frubin.io%2Fbitcoin%2F2021%2F08%2F02%2Finfrastructure-bill-thoughts%2F&title=Infrastructure+Bill%3A+It%27s+Go+Time+for+Radical+Self+Custody"
+    target="_blank" rel="noopener">Reddit</a>
+  <a class="share-button" role="listitem"
+    href="mailto:?subject=Infrastructure+Bill%3A+It%27s+Go+Time+for+Radical+Self+Custody&body=https%3A%2F%2Frubin.io%2Fbitcoin%2F2021%2F08%2F02%2Finfrastructure-bill-thoughts%2F">Email</a>
+  <a class="share-button" role="listitem"
+    href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Frubin.io%2Fbitcoin%2F2021%2F08%2F02%2Finfrastructure-bill-thoughts%2F" target="_blank"
+    rel="noopener">LinkedIn</a>
+</div>
+
+        </div>
+    </div>
+</article>
+
+<aside class="related">
+  <h3>You might also enjoy...</h3>
+  <ul class="related-posts">
+    
+      <li>
+        <a href="/talks/2026/02/02/2020-01-30-chaincode-3/">
+          
+          <small><time datetime="2026-02-02T00:01:12+00:00">02 Feb 2026</time></small>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/bitcoin/2025/05/04/delbrag-talk/">
+          Grokking DelBrag: Out-of-Band On-Chain Fraud Proofs through Circuit Garbling @ Bitcoin++ Austin
+          <small><time datetime="2025-05-04T00:00:00+00:00">04 May 2025</time></small>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/bitcoin/2025/04/04/delbrag/">
+          Delbrag
+          <small><time datetime="2025-04-04T00:00:00+00:00">04 Apr 2025</time></small>
+        </a>
+      </li>
+    
+  </ul>
+</aside>
+
+
+        </main>
+        <footer class="site-footer">
+            <div class="footer-inner">
+                <p>&copy; 2011-2026 Jeremy Rubin. All rights reserved.</p>
+                <a href="/atom.xml">RSS</a>
+            </div>
+        </footer>
+    </body>
+</html>

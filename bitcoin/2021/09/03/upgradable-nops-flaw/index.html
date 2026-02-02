@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+  <title> CheckSequenceVerify DISCOURAGE_UPGRADABLE_NOPS Defect &middot; Jeremy Rubin </title>
+  <link href="https://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#c08a3a">
+  <meta name="color-scheme" content="dark">
+
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/font-awesome-4.5.0/css/font-awesome.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="/public/css/jr-2026.css">
+  
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+  <link rel="icon" type="image/svg+xml" href="/public/favicon.svg">
+  <link rel="shortcut icon" href="/public/favicon.ico">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="The other day I was writing some tests for BIP-119 (shoutout Gloria for the detailed feedback on improving tests). I noticed something peculiar while attempt...">
+<meta name="author" content="Jeremy Rubin">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://rubin.io/bitcoin/2021/09/03/upgradable-nops-flaw/">
+<meta property="og:title" content="CheckSequenceVerify DISCOURAGE_UPGRADABLE_NOPS Defect - Jeremy Rubin">
+<meta property="og:description" content="The other day I was writing some tests for BIP-119 (shoutout Gloria for the detailed feedback on improving tests). I noticed something peculiar while attempt...">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://rubin.io/bitcoin/2021/09/03/upgradable-nops-flaw/">
+<meta property="og:site_name" content="Jeremy Rubin">
+<meta property="og:locale" content="en_US">
+
+<meta property="og:image" content="https://rubin.io/public/img/jeremy.jpg">
+
+<meta name="twitter:card" content="summary_large_image">
+
+<meta name="twitter:image" content="https://rubin.io/public/img/jeremy.jpg">
+
+
+<meta name="twitter:site" content="@JeremyRubin">
+<meta name="twitter:creator" content="@JeremyRubin">
+
+
+<meta property="article:published_time" content="2021-09-03T00:00:00+00:00">
+
+<link rel="sitemap" type="application/xml" href="https://rubin.io/sitemap.xml">
+<link type="application/atom+xml" rel="alternate" href="https://rubin.io/feed.xml" title="Jeremy Rubin" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Jeremy Rubin",
+  "url": "https://rubin.io/",
+  "description": "Bitcoin research, smart contracts, and applied cryptography."
+}
+</script>
+
+
+  
+<!-- GA4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LF6VBT5B2T"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-LF6VBT5B2T');
+</script>
+
+
+  
+
+  <link rel="me" href="https://twitter.com/JeremyRubin">
+
+
+
+</head>
+
+    <body>
+        <a class="skip-link" href="#main">Skip to content</a>
+        <header class="site-header">
+    <div class="header-inner">
+        <div class="brand">
+            <a class="brand-mark" href="/">JR</a>
+            <div class="brand-text">
+                <a class="brand-name" href="/">Jeremy Rubin</a>
+                
+                <span class="brand-tagline">Bitcoin research, smart contracts, and applied cryptography.</span>
+                
+            </div>
+        </div>
+        <nav class="site-nav">
+            <a class="nav-link" href="/">Home</a>
+            <a class="nav-link" href="/blog/">Blog</a>
+            <a class="nav-link" href="/talks/">Talks</a>
+            <a class="nav-link" href="/projects/">Projects</a>
+            <a class="nav-link" href="/archive/">Site Index</a>
+        </nav>
+        <div class="site-actions">
+            
+            <a class="icon-button" href="/public/pdfs/resume.pdf" aria-label="Resume">
+                <i class="fa fa-file-text-o" aria-hidden="true"></i>
+            </a>
+            
+            
+            
+            <a class="icon-button" href="https://twitter.com/JeremyRubin" aria-label="Twitter">
+                <i class="fa fa-twitter" aria-hidden="true"></i>
+            </a>
+            
+        </div>
+    </div>
+</header>
+
+        <main id="main" class="content container">
+            <article class="post">
+    <header class="post-header">
+        <h1 class="post-title">CheckSequenceVerify DISCOURAGE_UPGRADABLE_NOPS Defect</h1>
+        
+        
+        <span class="post-date">03 Sep 2021</span>
+    </header>
+    <div class="post-body">
+        <p>The other day I was writing some tests for BIP-119 (shoutout
+<a href="https://twitter.com/glozow">Gloria</a> for the detailed feedback on improving
+tests). I noticed something peculiar while attempting to write static test
+vectors for CTV. This peculiar thing led me to discover a minor flaw in
+Bitcoin’s interpreter – it isn’t going to break anything in the short term,
+but it has implications for how certain upgrades might be done in the future.</p>
+
+<p>In the interpreter we pass specific flags in at different times to check
+different rules at different times. This is used because we generally want the
+Mempool to be “restrictive” and block validation to be unrestrictive.  That
+sounds like the opposite of what you would want, but it’s because we want to
+ensure that we never break a consensus rule, so our mempool is “strict” to
+protect e.g. a miner from making a bad block, because our node’s understanding
+of consensus validation is less strict so we always know the mempool is full of
+stuff that will pass consensus.</p>
+
+<p>One of the specific types of “stricter” that is in the mempool is for things
+that may be changed in the future. For example, Taproot (a change proposed to
+Bitcoin) uses a Witness V1 script. Before Taproot activates, Witness V1 Scripts
+are <em>always</em> valid no matter if they’re signed or not. After it activates, a
+new rule takes effect in consensus, and Witness V1 Scripts will be processed in
+accordance with Taproot’s rules. Because the Mempool is stricter, it never lets in
+any Witness V1 script spends until it knows how to properly validate it. That way,
+for a miner who doesn’t want to upgrade to Taproot, they can use the old rules in their
+Mempool and not ever mine a bad block.</p>
+
+<p>One of the flags used for this purpose is DISCOURAGE_UPGRADABLE_NOPS. A NOP
+is simply an opcode in bitcoin that has no effect (nada). In the future,
+someone could add a rule to that NOP (e.g., check that the stack args present
+when the NOP executes satisfy some properties or the transaction is invalid,
+but do not remove anything from the stack so that the old consensus rules still
+seem correct). This is sufficient for consensus, but maybe people have decided
+that they want to create a bunch of outputs with NOPs in it because they are
+cute. Then, a fork that would add new semantics to a NOP would have the impact
+of locking people out of their wallets.  To prevent this, the Mempool uses the
+rule DISCOURAGE_UPGRADABLE_NOPS which makes it so that if you try to
+broadcast an output script with a NOP it gets bounced from the Mempool (but not
+consensus of course, should a deviant miner mine such a transaction). Hopefully
+our users get the message to not use NOPs because we… discourage upgradable
+nops.</p>
+
+<p>CheckSequenceVerify (CSV) was one such NOP before it grew up to be a big n’
+important opcode. Essentially all that CSV does is check that the sequence
+field is set in a particular manner. This lets you set relative block and time
+lock (e.g., takes this much time before a coin is spendable again). However,
+it’s possible that we might come up with new kinds of lock times in the future,
+so we have a bit we can set in the sequence that makes it ignored for consensus
+purposes. Maybe in the future, someone would find something nice to do with it,
+eh?</p>
+
+<p>This is the sequence verification code:</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">case</span> <span class="n">OP_CHECKSEQUENCEVERIFY</span><span class="p">:</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="n">flags</span> <span class="o">&amp;</span> <span class="n">SCRIPT_VERIFY_CHECKSEQUENCEVERIFY</span><span class="p">))</span> <span class="p">{</span>
+        <span class="c1">// not enabled; treat as a NOP3</span>
+        <span class="k">break</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">stack</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">set_error</span><span class="p">(</span><span class="n">serror</span><span class="p">,</span> <span class="n">SCRIPT_ERR_INVALID_STACK_OPERATION</span><span class="p">);</span>
+
+    <span class="c1">// nSequence, like nLockTime, is a 32-bit unsigned integer</span>
+    <span class="c1">// field. See the comment in CHECKLOCKTIMEVERIFY regarding</span>
+    <span class="c1">// 5-byte numeric operands.</span>
+    <span class="k">const</span> <span class="n">CScriptNum</span> <span class="n">nSequence</span><span class="p">(</span><span class="n">stacktop</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">fRequireMinimal</span><span class="p">,</span> <span class="mi">5</span><span class="p">);</span>
+
+    <span class="c1">// In the rare event that the argument may be &lt; 0 due to</span>
+    <span class="c1">// some arithmetic being done first, you can always use</span>
+    <span class="c1">// 0 MAX CHECKSEQUENCEVERIFY.</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">nSequence</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">set_error</span><span class="p">(</span><span class="n">serror</span><span class="p">,</span> <span class="n">SCRIPT_ERR_NEGATIVE_LOCKTIME</span><span class="p">);</span>
+
+    <span class="c1">// To provide for future soft-fork extensibility, if the</span>
+    <span class="c1">// operand has the disabled lock-time flag set,</span>
+    <span class="c1">// CHECKSEQUENCEVERIFY behaves as a NOP.</span>
+    <span class="k">if</span> <span class="p">((</span><span class="n">nSequence</span> <span class="o">&amp;</span> <span class="n">CTxIn</span><span class="o">::</span><span class="n">SEQUENCE_LOCKTIME_DISABLE_FLAG</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">break</span><span class="p">;</span>
+
+    <span class="c1">// Compare the specified sequence number with the input.</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">checker</span><span class="p">.</span><span class="n">CheckSequence</span><span class="p">(</span><span class="n">nSequence</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">set_error</span><span class="p">(</span><span class="n">serror</span><span class="p">,</span> <span class="n">SCRIPT_ERR_UNSATISFIED_LOCKTIME</span><span class="p">);</span>
+
+    <span class="k">break</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Spot anything funky? Look closer…</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="c1">// To provide for future soft-fork extensibility, if the</span>
+    <span class="c1">// operand has the disabled lock-time flag set,</span>
+    <span class="c1">// CHECKSEQUENCEVERIFY behaves as a NOP.</span>
+    <span class="k">if</span> <span class="p">((</span><span class="n">nSequence</span> <span class="o">&amp;</span> <span class="n">CTxIn</span><span class="o">::</span><span class="n">SEQUENCE_LOCKTIME_DISABLE_FLAG</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">break</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>Here, where we say it behaves as a NOP we don’t check any rules and skip the checks.</p>
+
+<p>See where the problem lies? If we ever <em>did</em> get around to a future upgrade
+here, then old miners who refuse to upgrade would be more than happy to accept
+invalid transactions into their mempool, and then following the fork, would end
+up mining invalid blocks leading to potential network partitions.</p>
+
+<p>That would be bad! Let’s not do that.</p>
+
+<p>What we really should be doing is:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="c1">// To provide for future soft-fork extensibility, if the</span>
+    <span class="c1">// operand has the disabled lock-time flag set,</span>
+    <span class="c1">// CHECKSEQUENCEVERIFY behaves as a NOP.</span>
+    <span class="k">if</span> <span class="p">((</span><span class="n">nSequence</span> <span class="o">&amp;</span> <span class="n">CTxIn</span><span class="o">::</span><span class="n">SEQUENCE_LOCKTIME_DISABLE_FLAG</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">flags</span> <span class="o">&amp;</span> <span class="n">SCRIPT_VERIFY_DISCOURAGE_UPGRADABLE_NOPS</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">set_error</span><span class="p">(</span><span class="n">serror</span><span class="p">,</span> <span class="n">SCRIPT_ERR_DISCOURAGE_UPGRADABLE_NOPS</span><span class="p">);</span>
+        <span class="k">break</span><span class="p">;</span>
+    <span class="p">}</span>
+</code></pre></div></div>
+
+<p>Which is exactly what I propose to do in <a href="https://github.com/bitcoin/bitcoin/pull/22871">this PR</a>.</p>
+
+<p>If this solution is adopted, then after the last release of the Bitcoin Core
+Implementation that has the unpatched code goes
+<a href="https://bitcoincore.org/en/lifecycle/">End-of-Life</a>, we could safely deploy
+new sequence rules. Because it takes a while for software to go EOL, I hope we
+can patch this soon.</p>
+
+    </div>
+
+    
+    
+    
+
+    <div class="post-footer">
+        <h3>Share this post</h3>
+        <div class="post-share">
+            
+
+
+
+
+<div class="share-bar" role="list">
+  <a class="share-button" role="listitem"
+    href="https://twitter.com/intent/tweet?text=CheckSequenceVerify+DISCOURAGE_UPGRADABLE_NOPS+Defect&url=https%3A%2F%2Frubin.io%2Fbitcoin%2F2021%2F09%2F03%2Fupgradable-nops-flaw%2F"
+    target="_blank" rel="noopener">Twitter</a>
+  <a class="share-button" role="listitem"
+    href="https://news.ycombinator.com/submitlink?u=https%3A%2F%2Frubin.io%2Fbitcoin%2F2021%2F09%2F03%2Fupgradable-nops-flaw%2F&t=CheckSequenceVerify%20DISCOURAGE_UPGRADABLE_NOPS%20Defect" target="_blank"
+    rel="noopener">HN</a>
+  <a class="share-button" role="listitem"
+    href="https://www.reddit.com/submit?url=https%3A%2F%2Frubin.io%2Fbitcoin%2F2021%2F09%2F03%2Fupgradable-nops-flaw%2F&title=CheckSequenceVerify+DISCOURAGE_UPGRADABLE_NOPS+Defect"
+    target="_blank" rel="noopener">Reddit</a>
+  <a class="share-button" role="listitem"
+    href="mailto:?subject=CheckSequenceVerify+DISCOURAGE_UPGRADABLE_NOPS+Defect&body=https%3A%2F%2Frubin.io%2Fbitcoin%2F2021%2F09%2F03%2Fupgradable-nops-flaw%2F">Email</a>
+  <a class="share-button" role="listitem"
+    href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Frubin.io%2Fbitcoin%2F2021%2F09%2F03%2Fupgradable-nops-flaw%2F" target="_blank"
+    rel="noopener">LinkedIn</a>
+</div>
+
+        </div>
+    </div>
+</article>
+
+<aside class="related">
+  <h3>You might also enjoy...</h3>
+  <ul class="related-posts">
+    
+      <li>
+        <a href="/talks/2026/02/02/2020-01-30-chaincode-3/">
+          
+          <small><time datetime="2026-02-02T00:01:12+00:00">02 Feb 2026</time></small>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/bitcoin/2025/05/04/delbrag-talk/">
+          Grokking DelBrag: Out-of-Band On-Chain Fraud Proofs through Circuit Garbling @ Bitcoin++ Austin
+          <small><time datetime="2025-05-04T00:00:00+00:00">04 May 2025</time></small>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/bitcoin/2025/04/04/delbrag/">
+          Delbrag
+          <small><time datetime="2025-04-04T00:00:00+00:00">04 Apr 2025</time></small>
+        </a>
+      </li>
+    
+  </ul>
+</aside>
+
+
+        </main>
+        <footer class="site-footer">
+            <div class="footer-inner">
+                <p>&copy; 2011-2026 Jeremy Rubin. All rights reserved.</p>
+                <a href="/atom.xml">RSS</a>
+            </div>
+        </footer>
+    </body>
+</html>

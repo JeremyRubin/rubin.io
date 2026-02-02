@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+  <title> Building Vaults on Bitcoin &middot; Jeremy Rubin </title>
+  <link href="https://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#c08a3a">
+  <meta name="color-scheme" content="dark">
+
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/font-awesome-4.5.0/css/font-awesome.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="/public/css/jr-2026.css">
+  
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+  <link rel="icon" type="image/svg+xml" href="/public/favicon.svg">
+  <link rel="shortcut icon" href="/public/favicon.ico">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Welcome to day 10 of my Bitcoin Advent Calendar. You can see an index of all the posts here or subscribe at judica.org/join to get new posts in your inbox">
+<meta name="author" content="Jeremy Rubin">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://rubin.io/bitcoin/2021/12/07/advent-10/">
+<meta property="og:title" content="Building Vaults on Bitcoin - Jeremy Rubin">
+<meta property="og:description" content="Welcome to day 10 of my Bitcoin Advent Calendar. You can see an index of all the posts here or subscribe at judica.org/join to get new posts in your inbox">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://rubin.io/bitcoin/2021/12/07/advent-10/">
+<meta property="og:site_name" content="Jeremy Rubin">
+<meta property="og:locale" content="en_US">
+
+<meta property="og:image" content="https://rubin.io/public/img/jeremy.jpg">
+
+<meta name="twitter:card" content="summary_large_image">
+
+<meta name="twitter:image" content="https://rubin.io/public/img/jeremy.jpg">
+
+
+<meta name="twitter:site" content="@JeremyRubin">
+<meta name="twitter:creator" content="@JeremyRubin">
+
+
+<meta property="article:published_time" content="2021-12-07T00:00:00+00:00">
+
+<link rel="sitemap" type="application/xml" href="https://rubin.io/sitemap.xml">
+<link type="application/atom+xml" rel="alternate" href="https://rubin.io/feed.xml" title="Jeremy Rubin" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Jeremy Rubin",
+  "url": "https://rubin.io/",
+  "description": "Bitcoin research, smart contracts, and applied cryptography."
+}
+</script>
+
+
+  
+<!-- GA4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LF6VBT5B2T"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-LF6VBT5B2T');
+</script>
+
+
+  
+
+  <link rel="me" href="https://twitter.com/JeremyRubin">
+
+
+
+</head>
+
+    <body>
+        <a class="skip-link" href="#main">Skip to content</a>
+        <header class="site-header">
+    <div class="header-inner">
+        <div class="brand">
+            <a class="brand-mark" href="/">JR</a>
+            <div class="brand-text">
+                <a class="brand-name" href="/">Jeremy Rubin</a>
+                
+                <span class="brand-tagline">Bitcoin research, smart contracts, and applied cryptography.</span>
+                
+            </div>
+        </div>
+        <nav class="site-nav">
+            <a class="nav-link" href="/">Home</a>
+            <a class="nav-link" href="/blog/">Blog</a>
+            <a class="nav-link" href="/talks/">Talks</a>
+            <a class="nav-link" href="/projects/">Projects</a>
+            <a class="nav-link" href="/archive/">Site Index</a>
+        </nav>
+        <div class="site-actions">
+            
+            <a class="icon-button" href="/public/pdfs/resume.pdf" aria-label="Resume">
+                <i class="fa fa-file-text-o" aria-hidden="true"></i>
+            </a>
+            
+            
+            
+            <a class="icon-button" href="https://twitter.com/JeremyRubin" aria-label="Twitter">
+                <i class="fa fa-twitter" aria-hidden="true"></i>
+            </a>
+            
+        </div>
+    </div>
+</header>
+
+        <main id="main" class="content container">
+            <article class="post">
+    <header class="post-header">
+        <h1 class="post-title">Building Vaults on Bitcoin</h1>
+        <p class="post-subtitle">Day 10: Rubin's Bitcoin Advent Calendar</p>
+        
+        <span class="post-date">07 Dec 2021</span>
+    </header>
+    <div class="post-body">
+        <p><em>Welcome to day 10 of my Bitcoin Advent Calendar. You can see an index of all
+the posts <a href="/advent21">here</a> or subscribe at
+<a href="https://judica.org/join">judica.org/join</a> to get new posts in your inbox</em></p>
+
+<p>A “Vault” is a general concept for a way of protecting Bitcoin from theft
+through a cold-storage smart contract. While there is not formal definition of
+what is and is not a Vault, generally a Vault has more structure around a
+withdrawal than just a multisig.</p>
+
+<p>One of the earlier
+<a href="https://hackingdistributed.com/2016/02/26/how-to-implement-secure-bitcoin-vaults/">references</a>
+for Vaults was a design whereby every time you request to withdraw from it you
+can “reset” the request within a time limit.  This means that while an attacker
+might steal your keys, you can “fight” to make it a negative sum game – e.g.,
+they’ll just keep on paying fees to eventually steal an amount less than they
+paid. This might serve to disincentivize hacking exchanges if hackers are less
+likely to actually get coins.</p>
+
+<p>Similar Vaults can be built using Sapio, but the logic for them involves
+unrolling the contract a predefined number of steps. This isn’t bad because if
+the period of timeout is 1 week then just unrolling 5,200 times gets you one
+thousand years of hacking disincentive.</p>
+
+<p>The contract for that might look something like this in Sapio (<em>note: I was
+running behind on this post so I may make modifications to make these examples
+better later</em>):</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="n">VaultOne</span> <span class="p">{</span>
+    <span class="c">/// Key that will authorize:</span>
+    <span class="c">/// 1) Recursing with the vault</span>
+    <span class="c">/// 2) Spending from the vault after not moved for a period</span>
+    <span class="n">key</span><span class="p">:</span> <span class="nn">bitcoin</span><span class="p">::</span><span class="n">PublicKey</span><span class="p">,</span>
+    <span class="c">/// How long should the vault live for</span>
+    <span class="n">steps</span><span class="p">:</span> <span class="nb">u32</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="k">impl</span> <span class="n">VaultOne</span> <span class="p">{</span>
+    <span class="c">/// Checks if steps are remaining</span>
+    <span class="nd">#[compile_if]</span>
+    <span class="k">fn</span> <span class="nf">not_out_of_steps</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="k">self</span><span class="py">.steps</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">{</span>
+            <span class="nn">ConditionalCompileType</span><span class="p">::</span><span class="n">Never</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="nn">ConditionalCompileType</span><span class="p">::</span><span class="n">NoConstraint</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="nd">#[guard]</span>
+    <span class="k">fn</span> <span class="nf">authorize</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nn">Clause</span><span class="p">::</span><span class="nf">Key</span><span class="p">(</span><span class="k">self</span><span class="py">.key</span><span class="nf">.clone</span><span class="p">())</span>
+    <span class="p">}</span>
+
+    <span class="c">/// Recurses the vault if authorized</span>
+    <span class="nd">#[then(compile_if</span> <span class="nd">=</span> <span class="s">"[Self::not_out_of_steps]"</span><span class="nd">,</span> <span class="nd">guarded_by</span> <span class="nd">=</span> <span class="s">"[Self::authorize]"</span><span class="nd">)]</span>
+    <span class="k">fn</span> <span class="nf">step</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">let</span> <span class="n">next</span> <span class="o">=</span> <span class="n">VaultOne</span> <span class="p">{</span>
+            <span class="n">key</span><span class="p">:</span> <span class="k">self</span><span class="py">.key</span><span class="nf">.clone</span><span class="p">(),</span>
+            <span class="n">steps</span><span class="p">:</span> <span class="k">self</span><span class="py">.steps</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="p">};</span>
+        <span class="k">let</span> <span class="n">amt</span> <span class="o">=</span> <span class="n">ctx</span><span class="nf">.funds</span><span class="p">();</span>
+        <span class="n">ctx</span><span class="nf">.template</span><span class="p">()</span>
+            <span class="nf">.add_output</span><span class="p">(</span><span class="n">amt</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">next</span><span class="p">,</span> <span class="nb">None</span><span class="p">)</span><span class="o">?</span>
+            <span class="c">// For Paying fees via CPFP. Note that we should totally definitely</span>
+            <span class="c">// get rid of the dust limit for contracts like this, or enable</span>
+            <span class="c">// IUTXOS with 0 Value</span>
+            <span class="nf">.add_output</span><span class="p">(</span><span class="nn">Amount</span><span class="p">::</span><span class="nf">from_sat</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="o">&amp;</span><span class="k">self</span><span class="py">.key</span><span class="p">,</span> <span class="nb">None</span><span class="p">)</span><span class="o">?</span>
+            <span class="nf">.into</span><span class="p">()</span>
+    <span class="p">}</span>
+    <span class="c">/// Allow spending after a week long delay</span>
+    <span class="nd">#[guard]</span>
+    <span class="k">fn</span> <span class="nf">finish</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nn">Clause</span><span class="p">::</span><span class="nf">And</span><span class="p">(</span><span class="nd">vec!</span><span class="p">[</span>
+            <span class="nn">Clause</span><span class="p">::</span><span class="nf">Key</span><span class="p">(</span><span class="k">self</span><span class="py">.key</span><span class="nf">.clone</span><span class="p">()),</span>
+            <span class="nn">RelTime</span><span class="p">::</span><span class="nf">try_from</span><span class="p">(</span><span class="nn">Duration</span><span class="p">::</span><span class="nf">from_secs</span><span class="p">(</span><span class="mi">7</span> <span class="o">*</span> <span class="mi">24</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">60</span><span class="p">))</span>
+                <span class="nf">.unwrap</span><span class="p">()</span>
+                <span class="nf">.into</span><span class="p">(),</span>
+        <span class="p">])</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="c">/// Binds the logic to the Contract</span>
+<span class="k">impl</span> <span class="n">Contract</span> <span class="k">for</span> <span class="n">VaultOne</span> <span class="p">{</span>
+    <span class="nd">declare!</span> <span class="p">{</span><span class="n">then</span><span class="p">,</span> <span class="nn">Self</span><span class="p">::</span><span class="n">step</span><span class="p">}</span>
+    <span class="nd">declare!</span> <span class="p">{</span><span class="n">finish</span><span class="p">,</span> <span class="nn">Self</span><span class="p">::</span><span class="n">finish</span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>But we can also build much more sophisticated Vaults that do more. Suppose we
+want to have a vault where once a week you can claim a trickle of bitcoin into a
+hot wallet, or you can send it back to a cold storage key. This is a “structured
+liquidity vault” that gives you time-release Bitcoin. Let’s check out some code
+and talk about it more:</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">#[derive(Clone)]</span>
+<span class="k">struct</span> <span class="n">VaultTwo</span> <span class="p">{</span>
+    <span class="c">/// Key just for authorizing steps</span>
+    <span class="n">authorize_key</span><span class="p">:</span> <span class="nn">bitcoin</span><span class="p">::</span><span class="n">PublicKey</span><span class="p">,</span>
+    <span class="n">amount_per_step</span><span class="p">:</span> <span class="nn">bitcoin</span><span class="p">::</span><span class="n">Amount</span><span class="p">,</span>
+    <span class="c">/// Hot wallet key</span>
+    <span class="n">hot_key</span><span class="p">:</span> <span class="nn">bitcoin</span><span class="p">::</span><span class="n">PublicKey</span><span class="p">,</span>
+    <span class="c">/// Cold wallet key</span>
+    <span class="n">cold_key</span><span class="p">:</span> <span class="nn">bitcoin</span><span class="p">::</span><span class="n">PublicKey</span><span class="p">,</span>
+    <span class="n">steps</span><span class="p">:</span> <span class="nb">u32</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="k">impl</span> <span class="n">VaultTwo</span> <span class="p">{</span>
+    <span class="nd">#[compile_if]</span>
+    <span class="k">fn</span> <span class="nf">not_out_of_steps</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="k">self</span><span class="py">.steps</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">{</span>
+            <span class="nn">ConditionalCompileType</span><span class="p">::</span><span class="n">Never</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="nn">ConditionalCompileType</span><span class="p">::</span><span class="n">NoConstraint</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="nd">#[guard]</span>
+    <span class="k">fn</span> <span class="nf">authorized</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nn">Clause</span><span class="p">::</span><span class="nf">Key</span><span class="p">(</span><span class="k">self</span><span class="py">.authorize_key</span><span class="nf">.clone</span><span class="p">())</span>
+    <span class="p">}</span>
+    <span class="nd">#[then(compile_if</span> <span class="nd">=</span> <span class="s">"[Self::not_out_of_steps]"</span><span class="nd">,</span> <span class="nd">guarded_by</span> <span class="nd">=</span> <span class="s">"[Self::authorized]"</span><span class="nd">)]</span>
+    <span class="k">fn</span> <span class="nf">step</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c">// Creates a recursive vault with one fewer steps</span>
+        <span class="k">let</span> <span class="n">next</span> <span class="o">=</span> <span class="n">VaultTwo</span> <span class="p">{</span>
+            <span class="n">steps</span><span class="p">:</span> <span class="k">self</span><span class="py">.steps</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="o">..</span><span class="k">self</span><span class="nf">.clone</span><span class="p">()</span>
+        <span class="p">};</span>
+        <span class="k">let</span> <span class="n">amt</span> <span class="o">=</span> <span class="n">ctx</span><span class="nf">.funds</span><span class="p">();</span>
+        <span class="n">ctx</span><span class="nf">.template</span><span class="p">()</span>
+            <span class="c">// send to the new vault</span>
+            <span class="nf">.add_output</span><span class="p">(</span><span class="n">amt</span> <span class="o">-</span> <span class="k">self</span><span class="py">.amount_per_step</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">next</span><span class="p">,</span> <span class="nb">None</span><span class="p">)</span><span class="o">?</span>
+            <span class="c">// withdraw some to hot storage</span>
+            <span class="nf">.add_output</span><span class="p">(</span><span class="k">self</span><span class="py">.amount_per_step</span><span class="p">,</span> <span class="o">&amp;</span><span class="k">self</span><span class="py">.hot_key</span><span class="p">,</span> <span class="nb">None</span><span class="p">)</span><span class="o">?</span>
+            <span class="c">// For Paying fees via CPFP. Note that we should totally definitely</span>
+            <span class="c">// get rid of the dust limit for contracts like this, or enable</span>
+            <span class="c">// IUTXOS with 0 Value</span>
+            <span class="nf">.add_output</span><span class="p">(</span><span class="nn">Amount</span><span class="p">::</span><span class="nf">from_sat</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="o">&amp;</span><span class="k">self</span><span class="py">.authorize_key</span><span class="p">,</span> <span class="nb">None</span><span class="p">)</span><span class="o">?</span>
+            <span class="c">// restrict that we have to wait a week</span>
+            <span class="nf">.set_sequence</span><span class="p">(</span>
+                <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
+                <span class="nn">RelTime</span><span class="p">::</span><span class="nf">try_from</span><span class="p">(</span><span class="nn">Duration</span><span class="p">::</span><span class="nf">from_secs</span><span class="p">(</span><span class="mi">7</span> <span class="o">*</span> <span class="mi">24</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">60</span><span class="p">))</span><span class="o">?</span><span class="nf">.into</span><span class="p">(),</span>
+            <span class="p">)</span><span class="o">?</span>
+            <span class="nf">.into</span><span class="p">()</span>
+    <span class="p">}</span>
+    <span class="c">/// allow sending the remaining funds into cold storage</span>
+    <span class="nd">#[then(compile_if</span> <span class="nd">=</span> <span class="s">"[Self::not_out_of_steps]"</span><span class="nd">,</span> <span class="nd">guarded_by</span> <span class="nd">=</span> <span class="s">"[Self::authorized]"</span><span class="nd">)]</span>
+    <span class="k">fn</span> <span class="nf">terminate</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">ctx</span><span class="nf">.template</span><span class="p">()</span>
+            <span class="c">// send the remaining funds to cold storage</span>
+            <span class="nf">.add_output</span><span class="p">(</span><span class="k">self</span><span class="py">.amount_per_step</span><span class="o">*</span><span class="k">self</span><span class="py">.steps</span><span class="p">,</span> <span class="o">&amp;</span><span class="k">self</span><span class="py">.cold_key</span><span class="p">,</span> <span class="nb">None</span><span class="p">)</span><span class="o">?</span>
+            <span class="c">// For Paying fees via CPFP. Note that we should totally definitely</span>
+            <span class="c">// get rid of the dust limit for contracts like this, or enable</span>
+            <span class="c">// IUTXOS with 0 Value</span>
+            <span class="nf">.add_output</span><span class="p">(</span><span class="nn">Amount</span><span class="p">::</span><span class="nf">from_sat</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="o">&amp;</span><span class="k">self</span><span class="py">.authorize_key</span><span class="p">,</span> <span class="nb">None</span><span class="p">)</span><span class="o">?</span>
+            <span class="nf">.into</span><span class="p">()</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">impl</span> <span class="n">Contract</span> <span class="k">for</span> <span class="n">VaultTwo</span> <span class="p">{</span>
+    <span class="nd">declare!</span> <span class="p">{</span><span class="n">then</span><span class="p">,</span> <span class="nn">Self</span><span class="p">::</span><span class="n">step</span><span class="p">,</span> <span class="nn">Self</span><span class="p">::</span><span class="n">terminate</span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>This type of Vault is particularly interesting for e.g., withdrawing from an
+exchange business.  Imagine a user, Elsa who wants to have a great cold storage
+system. So Elsa sets up a xpub key and puts it on ice. She then generates a new
+address, and requests that the exchange let the funds go to it. Later that
+month, Elsa wants to buy a coffee with her Bitcoin so she has to thaw out her
+cold storage to spend (maybe using a offline PSBT signing), and transfer the
+funds to her destination or to a hot wallet if she wants a bit of extra pocket
+money. Instead suppose Elsa sets up a timerelease vault. Then, she can set up
+her cold vault and automatically be able to claim 1 Bitcoin a month out of it,
+or if she notices some coins missing from her hot wallet redirect the funds
+solely under her ice castle.</p>
+
+<p>This has many benefits for an average user. One is that you can invest in your
+cold storage of keys <em>once</em> in your life and only have to access it in
+unexpected circumstance. This means that: users might elect to use something
+more secure/inconvenient to access (e.g. strongly geo-sharded); that they won’t
+reveal access patterns by visiting their key storage facility; and that they
+don’t need to expose themselves to recurring fat-finger<sup id="fnref:fat" role="doc-noteref"><a href="#fn:fat" class="footnote" rel="footnote">1</a></sup> risk.</p>
+
+<h2 id="getting-a-little-more-advanced">Getting a little more advanced</h2>
+
+<p>What are some other things we might want to do in a vault?  Let’s do a quickfire
+– we won’t code these here, but you’ll see examples of these techniques in
+posts to come:</p>
+
+<h3 id="send-a-percentage-not-a-fixed-amount">Send a percentage, not a fixed amount</h3>
+
+<p>Let the contract know the intended amount, and then compute the withdrawals as
+percentages in the program.</p>
+
+<h3 id="non-key-destinations">Non-Key Destinations</h3>
+<p>In the examples above, we use keys for hot wallet, cold wallet, and authorizations.</p>
+
+<p>However, we could very well use other programs! For example, imagine a
+time-release vault that goes into a anti-theft locker.</p>
+
+<h3 id="change-hot-wallet-every-step">Change Hot Wallet Every Step</h3>
+
+<p>This one is pretty simple – if you have N steps just provide a list of N
+different destinations and use the i-th one as you go!</p>
+
+<h3 id="topping-up">Topping up:</h3>
+
+<p>There are advanced techniques that can be used to allow depositing <em>into</em> a
+vault after it has been created (i.e., topping up), but that’s too advanced to
+go into detail today. For those inclined, a small hint: make the “top up” vault
+consume an output from the previous vault, CTV commits to the script so you can
+use a salted P2SH out.</p>
+
+<h2 id="even-more-advanced">Even more advanced</h2>
+
+<p>What if we want to ensure that after a withdraw funds are re-inserted into the Vault?</p>
+
+<p>We’ll ditch the recursion (for now), and just look at some basic logic. Imagine
+a coin is held by a cold storage key, and we want to use Sapio to generate a transaction
+that withdraws funds to an address and sends the rest back into cold storage.</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="n">VaultThree</span> <span class="p">{</span>
+    <span class="n">key</span><span class="p">:</span> <span class="nn">bitcoin</span><span class="p">::</span><span class="n">PublicKey</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c">/// Special struct for passing arguments to a created contract</span>
+<span class="k">enum</span> <span class="n">Withdrawal</span> <span class="p">{</span>
+    <span class="nb">Send</span> <span class="p">{</span>
+        <span class="n">addr</span><span class="p">:</span> <span class="nn">bitcoin</span><span class="p">::</span><span class="n">Address</span><span class="p">,</span>
+        <span class="n">amount</span><span class="p">:</span> <span class="nn">bitcoin</span><span class="p">::</span><span class="n">Amount</span><span class="p">,</span>
+        <span class="n">fees</span><span class="p">:</span> <span class="nn">bitcoin</span><span class="p">::</span><span class="n">Amount</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="n">Nothing</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="c">/// required...</span>
+<span class="k">impl</span> <span class="n">Default</span> <span class="k">for</span> <span class="n">Withdrawal</span> <span class="p">{</span>
+    <span class="k">fn</span> <span class="nf">default</span><span class="p">()</span> <span class="k">-&gt;</span> <span class="n">Self</span> <span class="p">{</span>
+        <span class="nn">Withdrawal</span><span class="p">::</span><span class="n">Nothing</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="k">impl</span> <span class="n">StatefulArgumentsTrait</span> <span class="k">for</span> <span class="n">Withdrawal</span> <span class="p">{}</span>
+
+<span class="c">/// helper for rust type system issue</span>
+<span class="k">fn</span> <span class="nf">default_coerce</span><span class="p">(</span>
+    <span class="n">k</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">VaultThree</span> <span class="k">as</span> <span class="n">Contract</span><span class="o">&gt;</span><span class="p">::</span><span class="n">StatefulArguments</span><span class="p">,</span>
+<span class="p">)</span> <span class="k">-&gt;</span> <span class="n">Result</span><span class="o">&lt;</span><span class="n">Withdrawal</span><span class="p">,</span> <span class="n">CompilationError</span><span class="o">&gt;</span> <span class="p">{</span>
+    <span class="nf">Ok</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="k">impl</span> <span class="n">VaultThree</span> <span class="p">{</span>
+    <span class="nd">#[guard]</span>
+    <span class="k">fn</span> <span class="nf">signed</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nn">Clause</span><span class="p">::</span><span class="nf">Key</span><span class="p">(</span><span class="k">self</span><span class="py">.key</span><span class="nf">.clone</span><span class="p">())</span>
+    <span class="p">}</span>
+    <span class="nd">#[continuation(guarded_by</span> <span class="nd">=</span> <span class="s">"[Self::signed]"</span><span class="nd">,</span> <span class="nd">coerce_args</span> <span class="nd">=</span> <span class="s">"default_coerce"</span><span class="nd">)]</span>
+    <span class="k">fn</span> <span class="nf">withdraw</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">,</span> <span class="n">request</span><span class="p">:</span> <span class="n">Withdrawal</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="k">let</span> <span class="nn">Withdrawal</span><span class="p">::</span><span class="nb">Send</span> <span class="p">{</span> <span class="n">amount</span><span class="p">,</span> <span class="n">fees</span><span class="p">,</span> <span class="n">addr</span> <span class="p">}</span> <span class="o">=</span> <span class="n">request</span> <span class="p">{</span>
+            <span class="k">let</span> <span class="n">amt</span> <span class="o">=</span> <span class="n">ctx</span><span class="nf">.funds</span><span class="p">();</span>
+            <span class="n">ctx</span><span class="nf">.template</span><span class="p">()</span>
+                <span class="c">// send the rest recursively to this contract</span>
+                <span class="nf">.add_output</span><span class="p">(</span><span class="n">amt</span> <span class="o">-</span> <span class="n">amount</span> <span class="o">-</span> <span class="n">fees</span><span class="p">,</span> <span class="k">self</span><span class="p">,</span> <span class="nb">None</span><span class="p">)</span><span class="o">?</span>
+                <span class="c">// process the withdrawal</span>
+                <span class="nf">.add_output</span><span class="p">(</span><span class="n">amount</span><span class="p">,</span> <span class="o">&amp;</span><span class="nn">Compiled</span><span class="p">::</span><span class="nf">from_address</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="nb">None</span><span class="p">),</span> <span class="nb">None</span><span class="p">)</span><span class="o">?</span>
+                <span class="c">// mark fees as spent</span>
+                <span class="nf">.spend_amount</span><span class="p">(</span><span class="n">fees</span><span class="p">)</span><span class="o">?</span>
+                <span class="nf">.into</span><span class="p">()</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="nf">empty</span><span class="p">()</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="k">impl</span> <span class="n">Contract</span> <span class="k">for</span> <span class="n">VaultThree</span> <span class="p">{</span>
+    <span class="nd">declare!</span> <span class="p">{</span><span class="n">updatable</span><span class="o">&lt;</span><span class="n">Withdrawal</span><span class="o">&gt;</span><span class="p">,</span> <span class="nn">Self</span><span class="p">::</span><span class="n">withdraw</span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>Now we’ve seen how updatable continuation clauses can be used to dynamically
+pass arguments to a Sapio contract and let the module figure out what the next
+transactions should be, managing recursive and non-enumerated state transitions
+(albeit with a trust model).</p>
+
+<hr />
+
+<p>That’s probably enough for today, before I make your head explode. We’ll see more examples soon!</p>
+
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:fat" role="doc-endnote">
+      <p>Sending the wrong amount because you click the wrong key with your too-large hands. <a href="#fnref:fat" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+    </div>
+
+    
+    
+    
+
+    <div class="post-footer">
+        <h3>Share this post</h3>
+        <div class="post-share">
+            
+
+
+
+
+<div class="share-bar" role="list">
+  <a class="share-button" role="listitem"
+    href="https://twitter.com/intent/tweet?text=Building+Vaults+on+Bitcoin&url=https%3A%2F%2Frubin.io%2Fbitcoin%2F2021%2F12%2F07%2Fadvent-10%2F"
+    target="_blank" rel="noopener">Twitter</a>
+  <a class="share-button" role="listitem"
+    href="https://news.ycombinator.com/submitlink?u=https%3A%2F%2Frubin.io%2Fbitcoin%2F2021%2F12%2F07%2Fadvent-10%2F&t=Building%20Vaults%20on%20Bitcoin" target="_blank"
+    rel="noopener">HN</a>
+  <a class="share-button" role="listitem"
+    href="https://www.reddit.com/submit?url=https%3A%2F%2Frubin.io%2Fbitcoin%2F2021%2F12%2F07%2Fadvent-10%2F&title=Building+Vaults+on+Bitcoin"
+    target="_blank" rel="noopener">Reddit</a>
+  <a class="share-button" role="listitem"
+    href="mailto:?subject=Building+Vaults+on+Bitcoin&body=https%3A%2F%2Frubin.io%2Fbitcoin%2F2021%2F12%2F07%2Fadvent-10%2F">Email</a>
+  <a class="share-button" role="listitem"
+    href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Frubin.io%2Fbitcoin%2F2021%2F12%2F07%2Fadvent-10%2F" target="_blank"
+    rel="noopener">LinkedIn</a>
+</div>
+
+        </div>
+    </div>
+</article>
+
+<aside class="related">
+  <h3>You might also enjoy...</h3>
+  <ul class="related-posts">
+    
+      <li>
+        <a href="/talks/2026/02/02/2020-01-30-chaincode-3/">
+          
+          <small><time datetime="2026-02-02T00:01:12+00:00">02 Feb 2026</time></small>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/bitcoin/2025/05/04/delbrag-talk/">
+          Grokking DelBrag: Out-of-Band On-Chain Fraud Proofs through Circuit Garbling @ Bitcoin++ Austin
+          <small><time datetime="2025-05-04T00:00:00+00:00">04 May 2025</time></small>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/bitcoin/2025/04/04/delbrag/">
+          Delbrag
+          <small><time datetime="2025-04-04T00:00:00+00:00">04 Apr 2025</time></small>
+        </a>
+      </li>
+    
+  </ul>
+</aside>
+
+
+        </main>
+        <footer class="site-footer">
+            <div class="footer-inner">
+                <p>&copy; 2011-2026 Jeremy Rubin. All rights reserved.</p>
+                <a href="/atom.xml">RSS</a>
+            </div>
+        </footer>
+    </body>
+</html>

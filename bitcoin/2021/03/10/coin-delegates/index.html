@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+  <title> Delegated signatures in Bitcoin within existing rules, no fork required (Connector Outputs) &middot; Jeremy Rubin </title>
+  <link href="https://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#c08a3a">
+  <meta name="color-scheme" content="dark">
+
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/font-awesome-4.5.0/css/font-awesome.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="/public/css/jr-2026.css">
+  
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+  <link rel="icon" type="image/svg+xml" href="/public/favicon.svg">
+  <link rel="shortcut icon" href="/public/favicon.ico">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="This originally appeared on the mailing list, and has been edited lightly for some updates in 2025.">
+<meta name="author" content="Jeremy Rubin">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://rubin.io/bitcoin/2021/03/10/coin-delegates/">
+<meta property="og:title" content="Delegated signatures in Bitcoin within existing rules, no fork required (Connector Outputs) - Jeremy Rubin">
+<meta property="og:description" content="This originally appeared on the mailing list, and has been edited lightly for some updates in 2025.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://rubin.io/bitcoin/2021/03/10/coin-delegates/">
+<meta property="og:site_name" content="Jeremy Rubin">
+<meta property="og:locale" content="en_US">
+
+<meta property="og:image" content="https://rubin.io/public/img/jeremy.jpg">
+
+<meta name="twitter:card" content="summary_large_image">
+
+<meta name="twitter:image" content="https://rubin.io/public/img/jeremy.jpg">
+
+
+<meta name="twitter:site" content="@JeremyRubin">
+<meta name="twitter:creator" content="@JeremyRubin">
+
+
+<meta property="article:published_time" content="2021-03-10T00:00:00+00:00">
+
+<link rel="sitemap" type="application/xml" href="https://rubin.io/sitemap.xml">
+<link type="application/atom+xml" rel="alternate" href="https://rubin.io/feed.xml" title="Jeremy Rubin" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Jeremy Rubin",
+  "url": "https://rubin.io/",
+  "description": "Bitcoin research, smart contracts, and applied cryptography."
+}
+</script>
+
+
+  
+<!-- GA4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LF6VBT5B2T"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-LF6VBT5B2T');
+</script>
+
+
+  
+
+  <link rel="me" href="https://twitter.com/JeremyRubin">
+
+
+
+</head>
+
+    <body>
+        <a class="skip-link" href="#main">Skip to content</a>
+        <header class="site-header">
+    <div class="header-inner">
+        <div class="brand">
+            <a class="brand-mark" href="/">JR</a>
+            <div class="brand-text">
+                <a class="brand-name" href="/">Jeremy Rubin</a>
+                
+                <span class="brand-tagline">Bitcoin research, smart contracts, and applied cryptography.</span>
+                
+            </div>
+        </div>
+        <nav class="site-nav">
+            <a class="nav-link" href="/">Home</a>
+            <a class="nav-link" href="/blog/">Blog</a>
+            <a class="nav-link" href="/talks/">Talks</a>
+            <a class="nav-link" href="/projects/">Projects</a>
+            <a class="nav-link" href="/archive/">Site Index</a>
+        </nav>
+        <div class="site-actions">
+            
+            <a class="icon-button" href="/public/pdfs/resume.pdf" aria-label="Resume">
+                <i class="fa fa-file-text-o" aria-hidden="true"></i>
+            </a>
+            
+            
+            
+            <a class="icon-button" href="https://twitter.com/JeremyRubin" aria-label="Twitter">
+                <i class="fa fa-twitter" aria-hidden="true"></i>
+            </a>
+            
+        </div>
+    </div>
+</header>
+
+        <main id="main" class="content container">
+            <article class="post">
+    <header class="post-header">
+        <h1 class="post-title">Delegated signatures in Bitcoin within existing rules, no fork required (Connector Outputs)</h1>
+        
+        
+        <span class="post-date">10 Mar 2021</span>
+    </header>
+    <div class="post-body">
+        <p><em>This originally appeared on the <a href="https://gnusha.org/pi/bitcoindev/CAD5xwhhC1Y13p7KazfUOXFZ5vi5MA9EQ-scyafv4aNkjskoXBg@mail.gmail.com/">mailing list</a>, and has been edited lightly for some updates in 2025.</em></p>
+
+<p>I’m aware that some folks (I think nullc, sipa, myself… maybe more?) are
+aware of how to do script delegation in Bitcoin today (without any
+modifications to Bitcoin), but realized in a conversation with Andrew P
+that the technique is not widely known. So I figured it made sense to do a
+brief explainer of how this works for the archives / so the technique is
+documented. If someone has other citations for this, please let me know. This 
+technique is now popular in BitVM and in Ark.</p>
+
+<p>If you like cartoons follow along <a href="https://docs.google.com/presentation/d/1ikcthy3p-Ah59pJyss0TLEj-Q2FF6tv7BXhkORzErAE/edit#slide=id.p">here</a>.</p>
+
+<p>Technically what we are doing is delegating a UTXO to a specific UTXO, and
+not to a script.</p>
+
+<p>Suppose you have a coin on UTXO A. You would like to delegate it to script
+S. You can either scan the chain for any UTXOs bound to S or use some
+arbitrary coin B to create a transaction X with an output D that has script
+S (doesn’t have to have any value, but let’s say it has a nominal amount to
+avoid dust issues). Because tx X is not malleable, we don’t need to
+actually broadcast it and spend B till we want to use the delegation, and
+it can be created (for the TXID) without B’s owner being online. However
+you get the UTXO, and if it exists or not yet, let’s call it D.</p>
+
+<p><em>Note: if you’re using a delegation script multiple times, you can optimize
+the creation step a bit</em></p>
+
+<p>Now, using A, you sign a transaction with 2 inputs (one of them being D)
+and SIGHASH_NONE. This signs all of the inputs (but not their sequences!)
+but none of the outputs. Let’s call this transaction stub G.</p>
+
+<p>Now, using S, you sign D’s input on G with SIGHASH_ALL and the outputs you
+want to create (whatever they may be). Let’s call the finished transaction
+F.</p>
+
+<p>Effectively, the holder of A has delegated the control of their coin to a
+specific instance of the script S. Once delegated, S may authorize almost
+any transaction they want (complicated if they want to sign a multiple
+input transaction; but there are good substitutes).</p>
+
+<p>Advanced Topics:</p>
+
+<p><em>Revocation</em>: There are multiple ways to revoke, either moving A, moving D,
+refusing to sign and create D (when D is derived from B), etc. Because
+these are UTXO-bound they are revocable. (the cartoon may help here)
+<em>Cross input delegation</em>: A set of N coins may create a sighash_none
+transaction with 1 additional input for the delegating script
+<em>Partial Spending Authorizations</em>: Replacing sighash_none with
+sighash_single allows an input to specify a single change address (plug –
+OP_CTV covenants can be thought of as a way to get around sighash_single to
+allow sighash_single to cover signing a set of outputs)
+<em>Delegation after time</em>: Because the lock_time field is covered,
+delegations can be set up to only be valid at some point in the future.
+Only a single sequence lock per delegated coin may be used directly.
+<em>Multiple Delegates: *By signing a txn with several delegate outputs, it is
+possible to enforce multiple disparate conditions. Normally this is
+superfluous – why not just concatenate S1 and S2? The answer is that you
+may have S1 require a relative height lock and S2 require a relative time
+lock (this was one of the mechanisms investigated for powswap.com).
+*Sequenced Contingent Delegation</em>: By constructing a specific TXID that may
+delegate the coins, you can make a coin’s delegation contingent on some
+other contract reaching a specific state. For example, suppose I had a
+contract that had 100 different possible end states, all with fixed
+outpoints at the end. I could delegate coins in different arrangements to
+be claimable only if the contract reaches that state. Note that such a
+model requires some level of coordination between the main and observing
+contract as each Coin delegate can only be claimed one time.
+*CTV Specific P2SH Non Coin Delegation: *OP_CTV allows for a similar form
+of delegation where by a Segwit P2SH address, as a part of the CTV
+committed data, can be used without binding it to any specific UTXO. With
+the addition of OP_CAT, it would be possible to both programmatically
+change the outputs (rather than just approving the fixed txn) and to
+dynamically select the script.
+*Redelegating: *This is where A delegates to S, S delegates to S’. This
+type of mechanism most likely requires the coin to be moved on-chain to the
+script (A OR S or S’), but the on-chain movement may be delayed (via
+presigned transactions) until S’ actually wants to do something with the
+coin.</p>
+
+<p>There are obviously many other things you can do with delegation in
+general, the above are specific to how coin delegation is done. I’m
+probably missing some of the fun stuff – please riff on this!</p>
+
+    </div>
+
+    
+    
+    
+
+    <div class="post-footer">
+        <h3>Share this post</h3>
+        <div class="post-share">
+            
+
+
+
+
+<div class="share-bar" role="list">
+  <a class="share-button" role="listitem"
+    href="https://twitter.com/intent/tweet?text=Delegated+signatures+in+Bitcoin+within+existing+rules%2C+no+fork+required+%28Connector+Outputs%29&url=https%3A%2F%2Frubin.io%2Fbitcoin%2F2021%2F03%2F10%2Fcoin-delegates%2F"
+    target="_blank" rel="noopener">Twitter</a>
+  <a class="share-button" role="listitem"
+    href="https://news.ycombinator.com/submitlink?u=https%3A%2F%2Frubin.io%2Fbitcoin%2F2021%2F03%2F10%2Fcoin-delegates%2F&t=Delegated%20signatures%20in%20Bitcoin%20within%20existing%20rules%2C%20no%20fork%20required%20%28Conn..." target="_blank"
+    rel="noopener">HN</a>
+  <a class="share-button" role="listitem"
+    href="https://www.reddit.com/submit?url=https%3A%2F%2Frubin.io%2Fbitcoin%2F2021%2F03%2F10%2Fcoin-delegates%2F&title=Delegated+signatures+in+Bitcoin+within+existing+rules%2C+no+fork+required+%28Connector+Outputs%29"
+    target="_blank" rel="noopener">Reddit</a>
+  <a class="share-button" role="listitem"
+    href="mailto:?subject=Delegated+signatures+in+Bitcoin+within+existing+rules%2C+no+fork+required+%28Connector+Outputs%29&body=https%3A%2F%2Frubin.io%2Fbitcoin%2F2021%2F03%2F10%2Fcoin-delegates%2F">Email</a>
+  <a class="share-button" role="listitem"
+    href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Frubin.io%2Fbitcoin%2F2021%2F03%2F10%2Fcoin-delegates%2F" target="_blank"
+    rel="noopener">LinkedIn</a>
+</div>
+
+        </div>
+    </div>
+</article>
+
+<aside class="related">
+  <h3>You might also enjoy...</h3>
+  <ul class="related-posts">
+    
+      <li>
+        <a href="/talks/2026/02/02/2020-01-30-chaincode-3/">
+          
+          <small><time datetime="2026-02-02T00:01:12+00:00">02 Feb 2026</time></small>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/bitcoin/2025/05/04/delbrag-talk/">
+          Grokking DelBrag: Out-of-Band On-Chain Fraud Proofs through Circuit Garbling @ Bitcoin++ Austin
+          <small><time datetime="2025-05-04T00:00:00+00:00">04 May 2025</time></small>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/bitcoin/2025/04/04/delbrag/">
+          Delbrag
+          <small><time datetime="2025-04-04T00:00:00+00:00">04 Apr 2025</time></small>
+        </a>
+      </li>
+    
+  </ul>
+</aside>
+
+
+        </main>
+        <footer class="site-footer">
+            <div class="footer-inner">
+                <p>&copy; 2011-2026 Jeremy Rubin. All rights reserved.</p>
+                <a href="/atom.xml">RSS</a>
+            </div>
+        </footer>
+    </body>
+</html>

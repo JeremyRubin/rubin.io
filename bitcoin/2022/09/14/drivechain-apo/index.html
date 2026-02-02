@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+  <title> Spookchains: Drivechain Analog with Trusted Setup & APO &middot; Jeremy Rubin </title>
+  <link href="https://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#c08a3a">
+  <meta name="color-scheme" content="dark">
+
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/font-awesome-4.5.0/css/font-awesome.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="/public/css/jr-2026.css">
+  
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+  <link rel="icon" type="image/svg+xml" href="/public/favicon.svg">
+  <link rel="shortcut icon" href="/public/favicon.ico">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="This post draws heavily from Zmnscpxj’s fantastic post showing how to make drivechains with recursive covenants. In this post, I will show similar tricks tha...">
+<meta name="author" content="Jeremy Rubin">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://rubin.io/bitcoin/2022/09/14/drivechain-apo/">
+<meta property="og:title" content="Spookchains: Drivechain Analog with Trusted Setup & APO - Jeremy Rubin">
+<meta property="og:description" content="This post draws heavily from Zmnscpxj’s fantastic post showing how to make drivechains with recursive covenants. In this post, I will show similar tricks tha...">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://rubin.io/bitcoin/2022/09/14/drivechain-apo/">
+<meta property="og:site_name" content="Jeremy Rubin">
+<meta property="og:locale" content="en_US">
+
+<meta property="og:image" content="https://rubin.io/public/img/jeremy.jpg">
+
+<meta name="twitter:card" content="summary_large_image">
+
+<meta name="twitter:image" content="https://rubin.io/public/img/jeremy.jpg">
+
+
+<meta name="twitter:site" content="@JeremyRubin">
+<meta name="twitter:creator" content="@JeremyRubin">
+
+
+<meta property="article:published_time" content="2022-09-14T00:00:00+00:00">
+
+<link rel="sitemap" type="application/xml" href="https://rubin.io/sitemap.xml">
+<link type="application/atom+xml" rel="alternate" href="https://rubin.io/feed.xml" title="Jeremy Rubin" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Jeremy Rubin",
+  "url": "https://rubin.io/",
+  "description": "Bitcoin research, smart contracts, and applied cryptography."
+}
+</script>
+
+
+  
+<!-- GA4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LF6VBT5B2T"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-LF6VBT5B2T');
+</script>
+
+
+  
+
+  <link rel="me" href="https://twitter.com/JeremyRubin">
+
+
+
+</head>
+
+    <body>
+        <a class="skip-link" href="#main">Skip to content</a>
+        <header class="site-header">
+    <div class="header-inner">
+        <div class="brand">
+            <a class="brand-mark" href="/">JR</a>
+            <div class="brand-text">
+                <a class="brand-name" href="/">Jeremy Rubin</a>
+                
+                <span class="brand-tagline">Bitcoin research, smart contracts, and applied cryptography.</span>
+                
+            </div>
+        </div>
+        <nav class="site-nav">
+            <a class="nav-link" href="/">Home</a>
+            <a class="nav-link" href="/blog/">Blog</a>
+            <a class="nav-link" href="/talks/">Talks</a>
+            <a class="nav-link" href="/projects/">Projects</a>
+            <a class="nav-link" href="/archive/">Site Index</a>
+        </nav>
+        <div class="site-actions">
+            
+            <a class="icon-button" href="/public/pdfs/resume.pdf" aria-label="Resume">
+                <i class="fa fa-file-text-o" aria-hidden="true"></i>
+            </a>
+            
+            
+            
+            <a class="icon-button" href="https://twitter.com/JeremyRubin" aria-label="Twitter">
+                <i class="fa fa-twitter" aria-hidden="true"></i>
+            </a>
+            
+        </div>
+    </div>
+</header>
+
+        <main id="main" class="content container">
+            <article class="post">
+    <header class="post-header">
+        <h1 class="post-title">Spookchains: Drivechain Analog with Trusted Setup & APO</h1>
+        
+        
+        <span class="post-date">14 Sep 2022</span>
+    </header>
+    <div class="post-body">
+        <p>This post draws heavily from <a href="https://lists.linuxfoundation.org/pipermail/bitcoin-dev/2022-February/019976.html">Zmnscpxj’s fantastic
+post</a>
+showing how to make drivechains with recursive covenants. In this post, I will
+show similar tricks that can accomplish something similar using ANYPREVOUT with
+a one time trusted setup ceremony.</p>
+
+<p>This post presents general techniques that could be applied to many
+different types of covenant.</p>
+
+<p><em>note: I originally wrote this around May 5th, 2022, and shared it with a
+limited audience</em></p>
+
+<p><img src="/public/img/bitcoin/spookchain.png" alt="Spooky Chains" /></p>
+
+<h1 id="peano-counters">Peano Counters</h1>
+
+<p>The first component we need to build is a Peano counter graph. Instead
+of using sha-256, like in Zmnscpxj’s scheme, we will use a key and
+build a simple 1 to 5 counter that has inc / dec.</p>
+
+<p>Assume a key K1…K5, and a point NUMS which is e.g.
+HashToCurve(“Spookchains”).</p>
+
+<p>Generate scripts as follows:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;1 || K1&gt; CHECKSIG
+...
+&lt;1 || K5&gt; CHECKSIG
+</code></pre></div></div>
+
+<p>Now generate 2 signatures under Ki with flags <code class="language-plaintext highlighter-rouge">SIGHASH_SINGLE |
+SIGHASH_ANYONECANPAY | SIGHASH_ANYPREVOUT</code>.</p>
+
+<h2 id="rule-increment">Rule Increment</h2>
+<p>For each Ki, when <code class="language-plaintext highlighter-rouge">i &lt; 5</code>, create a signature that covers a
+transaction described as:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Amount: 1 satoshi
+Key: Tr(NUMS, {&lt;1 || K{i+1}&gt; CHECKSIG})
+</code></pre></div></div>
+
+<h2 id="rule-decrement">Rule Decrement</h2>
+<p>For each Ki, when <code class="language-plaintext highlighter-rouge">i &gt; 1</code> The second signature should cover:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Amount: 1 satoshi
+Key: Tr(NUMS, {&lt;1 || K{i-1}&gt; CHECKSIG})
+</code></pre></div></div>
+
+<p><em>Are these really Peano?</em> Sort of. While a traditional Peano numeral
+is defined as a structural type, e.g. <code class="language-plaintext highlighter-rouge">Succ(Succ(Zero))</code>, here we
+define them via a Inc / Dec transaction operator, and we have to
+explicitly bound these Peano numbers since we need a unique key per
+element. They’re at least spiritually similar.</p>
+
+<h2 id="instantiation">Instantiation</h2>
+<p>Publish a booklet of all the signatures for the Increment and
+Decrement rules.</p>
+
+<p>Honest parties should destroy the secret key sets <code class="language-plaintext highlighter-rouge">k</code>.</p>
+
+<p>To create a counter, simply spend to output C:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Amount: 1 satoshi
+Key: Tr(NUMS, {&lt;1 || K1&gt; CHECKSIG})
+</code></pre></div></div>
+
+<p>The signature from K1 can be bound to C to ‘transition’ it to (+1):</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Amount: 1 satoshi
+Key: Tr(NUMS, {&lt;1 || K2&gt; CHECKSIG})
+</code></pre></div></div>
+
+<p>Which can then transition to (+1):</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Amount: 1 satoshi
+Key: Tr(NUMS, {&lt;1 || K3&gt; CHECKSIG})
+</code></pre></div></div>
+
+<p>Which can then transition (-1) to:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Amount: 1 satoshi
+Key: Tr(NUMS, {&lt;1 || K2&gt; CHECKSIG})
+</code></pre></div></div>
+
+<p>This can repeat indefinitely.</p>
+
+<p>We can generalize this technique from <code class="language-plaintext highlighter-rouge">1...5</code> to <code class="language-plaintext highlighter-rouge">1...N</code>.</p>
+
+<h1 id="handling-arbitrary-deposits--withdrawals">Handling Arbitrary Deposits / Withdrawals</h1>
+
+<p>One issue with the design presented previously is that it does not
+handle arbitrary deposits well.</p>
+
+<p>One simple way to handle this is to instantiate the protocol for every
+amount you’d like to support.</p>
+
+<p>This is not particularly efficient and requires a lot of storage
+space.</p>
+
+<p>Alternatively, divide (using base 2 or another base) the deposit
+amount into a counter utxo per bit.</p>
+
+<p>For each bit, instead of creating outputs with 1 satoshi, create
+outputs with 2^i satoshis.</p>
+
+<p>Instead of using keys <code class="language-plaintext highlighter-rouge">K1...KN</code>, create keys <code class="language-plaintext highlighter-rouge">K^i_j</code>, where i
+represents the number of sats, and j represents the counter. Multiple
+keys are required per amount otherwise the signatures would be valid
+for burning funds.</p>
+
+<h2 id="splitting-and-joining">Splitting and Joining</h2>
+
+<p>For each <code class="language-plaintext highlighter-rouge">K^i_j</code>, it may also be desirable to allow splitting or
+joining.</p>
+
+<p>Splitting can be accomplished by pre-signing, for every <code class="language-plaintext highlighter-rouge">K^i_j</code>, where
+<code class="language-plaintext highlighter-rouge">i!=0</code>, with <code class="language-plaintext highlighter-rouge">SIGHASH_ALL | SIGHASH_ANYPREVOUT</code>:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Input: 2^i sats with key K^i_j
+Outputs: 
+    - 2^i-1 sats to key K^{i-1}_j
+    - 2^i-1 sats to key K^{i-1}_j
+</code></pre></div></div>
+
+<p>Joining can be accomplished by pre-signing, for every <code class="language-plaintext highlighter-rouge">K^i_j</code>, where
+<code class="language-plaintext highlighter-rouge">i!=MAX</code>, with <code class="language-plaintext highlighter-rouge">SIGHASH_ALL | SIGHASH_ANYPREVOUT</code>:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Inputs:
+    - 2^i sats with key K^i_j
+    - 2^i sats with key K^i_j
+Outputs: 
+    - 2^i+1 sats to key K^{i+1}_j
+</code></pre></div></div>
+
+<p>N.B.: Joining allows for third parties to deposit money in externally,
+that is not a part of the covenant.</p>
+
+<p>The splitting and joining behavior means that spookchain operators
+would be empowered to consolidate UTXOs to a smaller number, while
+allowing arbitrary deposits.</p>
+
+<h1 id="one-vote-per-block">One Vote Per Block</h1>
+
+<p>To enforce that only one vote per block mined is allowed, ensure that
+all signatures set the input sequence to 1 block. No CSV is required
+because nSequence is in the signatures already.</p>
+
+<h1 id="terminal-states--thresholds">Terminal States / Thresholds</h1>
+
+<p>When a counter reaches the Nth state, it represents a certain amount
+of accumulated work over a period where progress was agreed on for
+some outcome.</p>
+
+<p>There should be some viable state transition at this point.</p>
+
+<p>One solution would be to have the money at this point sent to an
+<code class="language-plaintext highlighter-rouge">OP_TRUE</code> output, which the miner incrementing that state is
+responsible for following the rules of the spookchain. Or, it could be
+specified to be some administrator key / federation for convenience,
+with a N block timeout that degrades it to fewer signers (eventually
+0) if the federation is dead to allow recovery.</p>
+
+<p>This would look like, from any <code class="language-plaintext highlighter-rouge">K^i_j</code>, a signature for a transaction
+putting it into an <code class="language-plaintext highlighter-rouge">OP_TRUE</code> and immediately spending it. Other
+spookchain miners would be expected to orphan that miner otherwise.</p>
+
+<h1 id="open-states--proposals">Open States / Proposals</h1>
+
+<p>From a state <code class="language-plaintext highlighter-rouge">K^i_1</code>, the transaction transitioning to <code class="language-plaintext highlighter-rouge">K^i_2</code> can be
+treated as ‘special’ and the <code class="language-plaintext highlighter-rouge">OP_RETURN</code> output type can be used to
+commit to, e.g., the outputs that must be created in when the Terminal
+State is reached. This clarifies the issue of “what is being voted
+on”.</p>
+
+<p>This method does not <em>lock in</em> at a consensus layer what Terminal
+State is being voted on.</p>
+
+<p>In certain circumstances, without violating the one-time-setup
+constraint, if a fixed list of withdrawer’s addresses is known in
+advance, the Open States could cover withdrawals to specific
+participants, which then must collect a certain number of votes from
+miners.  However, it seems impossible, without new primitives, for an
+arbitrary transaction proposal to be voted on.</p>
+
+<h1 id="setup-variants">Setup Variants</h1>
+
+<h2 id="xpubs">xpubs</h2>
+
+<p>Instead of using randomly generated keys for each state, define each
+to be an xpub and derive a path where it is k/i/j for each
+state/satoshi amount. This saves some data, and also requires less
+entropy.</p>
+
+<h3 id="trustless-data-commit">Trustless Data Commit:</h3>
+
+<p>commit to the hash of the entire program spec as a tweak to the xpub,
+so that someone can quickly verify if they have all the signatures you
+are expected to generate if honest.</p>
+
+<p>One way to do this is to convert a hash to a list of HD Child Numbers
+(9 of them) deterministically, and tweak the xpub by that. This is a
+convenient, yet inefficient, way to tweak an xpub because the child
+has a normal derivation path for signing devices.</p>
+
+<h2 id="single-party">Single Party</h2>
+
+<p>A single party pre-signs all the transactions for the spookchain, and
+then deletes their xpriv.</p>
+
+<p>You trust them to have deleted the key, and signed properly, but you
+do not trust whoever served you the spookchain blob to have given you
+all the state transitions because of the trustless data commitment.</p>
+
+<h2 id="musig-multi-party">MuSig Multi-Party</h2>
+
+<p>Define a MuSig among all participants in the setup ceremony, N-of-N.</p>
+
+<p>Now you simply trust that any one person in the one-time-setup was
+honest! Very good.</p>
+
+<h2 id="unaggregated-multi-party">Unaggregated Multi-Party</h2>
+
+<p>Allow for unaggregated multi-sig keys in the spec. This grows with
+O(signers), however, it means that a-la-carte you can aggregate setups
+from random participants who never interacted / performed setup
+ceremonies independently if they signed the same specs.</p>
+
+<p>Can also combine multiple MuSig Multi-Parties in this way.</p>
+
+<p>This is nice because MuSig inherently implies the parties colluded at
+one point to do a MuSig setup, whereas unaggregated multi-sig could be
+performed with no connectivity between parties.</p>
+
+<h2 id="soft-forking-away-trust">Soft Forking Away Trust</h2>
+
+<p>Suppose a spookchain becomes popular. You could configure your client
+to reject invalid state transitions, or restrict the spookchain keys
+to only sign with the known signatures. This soft fork would smoothly
+upgrade the trust assumption.</p>
+
+<h2 id="symmetry-of-state-transition-rules--dag-covenants">Symmetry of State Transition Rules &amp; DAG Covenants</h2>
+
+<p>We could have our increment state transitions be done via a trustless
+covenant, and our backwards state transitions be done via the setup.</p>
+
+<p>This would look something like the following for state i:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Tr(NUMS, {
+    `&lt;sig for state K_{i+1}&gt; &lt;1 || PK_nonsecret&gt; CHECKSIG`,
+    `&lt;1 || Ki&gt; CHECKSIG`
+})
+</code></pre></div></div>
+
+<p>The advantage of such an optimization is theoretically nice because it
+means that <em>only</em> the non-destructuring recursive part of the
+computation is subject to the one-time-setup trust assumption, which
+might be of use in various other protocols, where recursivity might
+only be unlocked e.g. after a timeout (but for spookchains it is used
+at each step).</p>
+
+<p>A compiler writer might perform this task by starting with an arbitrary
+abstract graph, and then removing edges selectively (a number of heuristics may
+make sense, e.g., to minimize reliance on one-time-setup or minimize costs)
+until the graph is a Directed Acyclic Graph, consisting of one or more
+components, compiling those with committed covenants, and then adding the
+removed edges back using the one-time-setup key materials.</p>
+
+<h1 id="commentary-on-trust-and-covenantiness">Commentary on Trust and Covenantiness</h1>
+
+<p>Is this a covenant? I would say “yes”. When I defined covenants in my
+<em>Calculus of Covenants</em> post, it was with a particular set of
+assumptions per covenant.</p>
+
+<p>Under that model, you could, e.g., call a 7-10 multi-sig with specific
+committed instructions as 4-10 honest (requires 4 signatories to be
+honest to do invalid state transition) and 4-10 killable (requires 4
+signatories to die to have no way of recovering).</p>
+
+<p>For emulations that are pre-signed, like the varieties used to emulate
+CTV, it is a different model because if your program is correct and
+you’ve pre-gotten the signatures for N-N it is 1-N honest (only 1
+party must be honest to prevent an invalid state transition) and
+unkillable (all parties can safely delete keys).</p>
+
+<p>I model these types of assumptions around liveness and honesty as
+different ‘complexity classes’ than one another.</p>
+
+<p>What I would point out is that with the counter model presented above,
+this is entirely a pre-signed 1-N honest and unkillable covenant that
+requires no liveness from signers. Further, with APO, new instances of
+the covenant do not require a new set of signers, the setup is truly
+one-time. Therefore this type of covenant exists in an even lower
+trust-complexity class than CTV emulation via presigneds, which
+requires a new federation to sign off on each contract instance.</p>
+
+<p>With that preface, let us analyze this covenant:</p>
+
+<p>1) A set of sets of transaction intents (a family), potentially
+recursive or co-recursive (e.g., the types of state transitions that
+can be generated).  These intents can also be represented by a
+language that generates the transactions, rather than the literal
+transactions themselves. We do the family rather than just sets at
+this level because to instantiate a covenant we must pick a member of
+the family to use.</p>
+
+<p>The set of sets of transaction intents is to increment / decrement to
+a successor or predecessor, or to halve into two instances or double
+value by adding funds. Each successor or predecessor is the same type
+of covenant, with the excetion of the first and last, which have some
+special rules.</p>
+
+<p>2) A verifier generator function that generates a function that
+accepts an intent that is any element of one member of the family of
+intents and a proof for it and rejects others.</p>
+
+<p>The verifier generator is the simple APO CHECKSIG script.</p>
+
+<p>3) A prover generator function that generates a function that takes an
+intent that is any element of one member of the family and some extra
+data and returns either a new prover function, a finished proof, or a
+rejection (if not a valid intent).</p>
+
+<p>The prover generator is the selection of the correct signature from a
+table for a given script.</p>
+
+<p>Run the prover generator with the private keys present <em>once</em> to
+initialize over all reachable states, and cache the signatures, then
+the keys may be deleted for future runs.</p>
+
+<p>4) A set of proofs that the Prover, Verifier, and a set of intents are
+“impedance matched”, that is, all statements the prover can prove and
+all statements the verifier can verify are one-to-one and onto (or
+something similar), and that this also is one-to-one and onto with one
+element of the intents (a set of transactions) and no other.</p>
+
+<p>At a given key state the only things that may happen are signed
+transactions, no other data is interpreted off of the stack. Therefore
+there is perfect impedance match.</p>
+
+<p>5) A set of assumptions under which the covenant is verified (e.g., a
+multi-sig covenant with at least 1-n honesty, a multisig covenant with
+any 3-n honesty required, Sha256 collision resistance, Discrete Log
+Hardness, a SGX module being correct).</p>
+
+<p>Uniquely, that during the setup phase at least one of the keys
+were faithfully deleted.</p>
+
+<p>The usual suspects for any bitcoin transaction are also assumed for
+security.</p>
+
+<p>6) Composability:</p>
+
+<p>The Terminal State can pay out into a pre-specified covenant if
+desired from any other family of covenants.</p>
+
+
+    </div>
+
+    
+    
+    
+
+    <div class="post-footer">
+        <h3>Share this post</h3>
+        <div class="post-share">
+            
+
+
+
+
+<div class="share-bar" role="list">
+  <a class="share-button" role="listitem"
+    href="https://twitter.com/intent/tweet?text=Spookchains%3A+Drivechain+Analog+with+Trusted+Setup+%26+APO&url=https%3A%2F%2Frubin.io%2Fbitcoin%2F2022%2F09%2F14%2Fdrivechain-apo%2F"
+    target="_blank" rel="noopener">Twitter</a>
+  <a class="share-button" role="listitem"
+    href="https://news.ycombinator.com/submitlink?u=https%3A%2F%2Frubin.io%2Fbitcoin%2F2022%2F09%2F14%2Fdrivechain-apo%2F&t=Spookchains%3A%20Drivechain%20Analog%20with%20Trusted%20Setup%20%26%20APO" target="_blank"
+    rel="noopener">HN</a>
+  <a class="share-button" role="listitem"
+    href="https://www.reddit.com/submit?url=https%3A%2F%2Frubin.io%2Fbitcoin%2F2022%2F09%2F14%2Fdrivechain-apo%2F&title=Spookchains%3A+Drivechain+Analog+with+Trusted+Setup+%26+APO"
+    target="_blank" rel="noopener">Reddit</a>
+  <a class="share-button" role="listitem"
+    href="mailto:?subject=Spookchains%3A+Drivechain+Analog+with+Trusted+Setup+%26+APO&body=https%3A%2F%2Frubin.io%2Fbitcoin%2F2022%2F09%2F14%2Fdrivechain-apo%2F">Email</a>
+  <a class="share-button" role="listitem"
+    href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Frubin.io%2Fbitcoin%2F2022%2F09%2F14%2Fdrivechain-apo%2F" target="_blank"
+    rel="noopener">LinkedIn</a>
+</div>
+
+        </div>
+    </div>
+</article>
+
+<aside class="related">
+  <h3>You might also enjoy...</h3>
+  <ul class="related-posts">
+    
+      <li>
+        <a href="/talks/2026/02/02/2020-01-30-chaincode-3/">
+          
+          <small><time datetime="2026-02-02T00:01:12+00:00">02 Feb 2026</time></small>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/bitcoin/2025/05/04/delbrag-talk/">
+          Grokking DelBrag: Out-of-Band On-Chain Fraud Proofs through Circuit Garbling @ Bitcoin++ Austin
+          <small><time datetime="2025-05-04T00:00:00+00:00">04 May 2025</time></small>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/bitcoin/2025/04/04/delbrag/">
+          Delbrag
+          <small><time datetime="2025-04-04T00:00:00+00:00">04 Apr 2025</time></small>
+        </a>
+      </li>
+    
+  </ul>
+</aside>
+
+
+        </main>
+        <footer class="site-footer">
+            <div class="footer-inner">
+                <p>&copy; 2011-2026 Jeremy Rubin. All rights reserved.</p>
+                <a href="/atom.xml">RSS</a>
+            </div>
+        </footer>
+    </body>
+</html>
